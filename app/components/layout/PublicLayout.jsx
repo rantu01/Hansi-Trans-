@@ -6,9 +6,8 @@ import Hero from "../common/Hero";
 export default function PublicLayout({ children }) {
   return (
     <>
-      <Navbar></Navbar>
-      <Hero></Hero>
-      <main className="min-h-screen container mx-auto p-4">
+      {/* <Hero></Hero> */}
+      <main className="">
         {children}
       </main>
       <Footer />

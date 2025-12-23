@@ -1,9 +1,15 @@
+import Hero from "@/app/components/common/Hero";
 import PublicLayout from "@/app/components/layout/PublicLayout";
 
 export default function ContactPage() {
   return (
     <PublicLayout>
-      <h1 className="text-3xl font-bold">Contact Us</h1>
+      <Hero
+        title="Contact"
+        breadcrumb="Home › Contact"
+        description="this is the contact page description."
+      ></Hero>
+      
     </PublicLayout>
   );
 }

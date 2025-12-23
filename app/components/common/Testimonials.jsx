@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ArrowRight, Play, Quote, Sparkles } from 'lucide-react';
 
-const AboutUs = () => {
+const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
@@ -50,7 +50,7 @@ const AboutUs = () => {
         </div>
 
         {/* Testimonial Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 container mx-auto">
           {testimonials.map((item) => (
             <div key={item.id} className="bg-white rounded-[40px] p-4 shadow-2xl shadow-blue-100/50 border border-gray-50 flex flex-col h-full">
               {item.type === "text" ? (
@@ -109,4 +109,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default Testimonials;
