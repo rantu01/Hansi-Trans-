@@ -21,7 +21,7 @@ const Footer = () => {
           {/* Background Image/Overlay */}
           <div className="absolute inset-0 opacity-40 mix-blend-overlay">
             <img 
-              src="/photo/home/lets-contact.png" 
+              src="https://i.ibb.co.com/0jtd7Mtr/lets-contact.png" 
               alt="Background" 
               className="w-full h-full object-cover"
             />
@@ -32,7 +32,7 @@ const Footer = () => {
             <div className="relative rounded-[35px] overflow-hidden border-4 border-white/10 shadow-2xl h-[300px]">
               
               <img 
-                src="photo/home/lets-contact.png" 
+                src="https://i.ibb.co.com/0jtd7Mtr/lets-contact.png" 
                 alt="Recording" 
                 className="w-full h-full object-cover"
               />
