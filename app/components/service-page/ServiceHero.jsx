@@ -17,7 +17,7 @@ const ServiceHero = () => {
 
 
   return (
-    <section className="relative w-full h-[400px] md:h-[500px] overflow-hidden flex items-center justify-center -mt-25">
+    <section className="relative w-full h-[400px] md:h-[300px] overflow-hidden flex items-center justify-center">
       {/* Background with soft blue-grey gradient */}
       <div className="absolute inset-0 pointer-events-none"></div>
 

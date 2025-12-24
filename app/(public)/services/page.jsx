@@ -5,7 +5,7 @@ import PublicLayout from "@/app/components/layout/PublicLayout";
 import OurServices from "@/app/components/service-page/OurServices";
 import ServiceHero from "@/app/components/service-page/ServiceHero";
 
-export default function ContactPage() {
+export default function ServicePage() {
   return (
     <PublicLayout>
       <Hero
