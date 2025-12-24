@@ -11,12 +11,17 @@ export default function NotFound() {
         breadcrumb="Home › 404"
         description="Commming Soon!"
       >
-        <div className="flex gap-5">
-          <img src="/photo/404.png" alt="" />
-          <div className="items-center justify-center flex">
+        <div className="flex flex-col md:flex-row gap-5 items-center">
+          <img
+            src="/photo/404.png"
+            alt="404"
+            className="w-full max-w-sm md:max-w-none"
+          />
+
+          <div className="flex justify-center md:justify-start w-full">
             <Link
               href="/"
-              className="px-6 py-3 my-10 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              className="px-6 py-3 my-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
               Go Back Home
             </Link>

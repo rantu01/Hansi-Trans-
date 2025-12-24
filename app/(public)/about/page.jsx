@@ -1,9 +1,9 @@
 import CEO from "@/app/components/about-page/CSO";
-import Domains from "@/app/components/about-page/Domains";
 import OurCompany from "@/app/components/about-page/OurCompany";
 import OurFullStories from "@/app/components/about-page/OurFullStories";
 import Schedule from "@/app/components/about-page/Schedule";
 import WorkWithUs from "@/app/components/about-page/WorkWithUs";
+import Domains from "@/app/components/common/Domains";
 import Hero from "@/app/components/common/Hero";
 import OurInfluencer from "@/app/components/common/OurInfluencer";
 import Stats from "@/app/components/common/stats";
@@ -24,8 +24,8 @@ export default function AboutPage() {
   return (
     <PublicLayout>
       <Hero
-        title="About"
-        breadcrumb="Home › About"
+        title="About HS+"
+        breadcrumb="Home › About US"
         description="Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."
       >
         <WorkWithUs />
