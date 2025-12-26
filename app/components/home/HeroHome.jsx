@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu, ArrowRight, X } from "lucide-react";
 import Link from "next/link";
+import { API } from "@/app/config/api";
 
 const HansiTrans = () => {
   const [language, setLanguage] = useState("EN");
@@ -22,7 +23,7 @@ const HansiTrans = () => {
   useEffect(() => {
     const fetchLogo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/site");
+        const res = await fetch(API.site.getConfig);
         const data = await res.json();
 
         if (data?.success && data?.data?.logo) {

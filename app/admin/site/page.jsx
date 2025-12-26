@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { requireAdminAuth } from "@/utils/adminAuth";
+import { API } from "@/app/config/api";
 
 const SiteSettingsPage = () => {
   const [logoPreview, setLogoPreview] = useState(null);
@@ -24,7 +25,7 @@ const SiteSettingsPage = () => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/site");
+        const res = await fetch(API.site.getConfig);
         const data = await res.json();
 
         if (data?.success) {
@@ -76,7 +77,7 @@ const SiteSettingsPage = () => {
         formData.append(key, value)
       );
 
-      const res = await fetch("http://localhost:5000/api/site", {
+      const res = await fetch(API.site.getConfig, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

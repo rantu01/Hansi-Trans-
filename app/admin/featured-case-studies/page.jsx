@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import CaseForm from "./CaseForm";
+import { API } from "@/app/config/api";
 
 export default function FeaturedCaseStudiesAdmin() {
   const [cases, setCases] = useState([]);
@@ -14,7 +15,7 @@ export default function FeaturedCaseStudiesAdmin() {
 
   const fetchCases = async () => {
     const res = await fetch(
-      "http://localhost:5000/api/common/featured-case-studies"
+      API.featuredCaseStudies
     );
     const data = await res.json();
     setCases(data.data || []);
@@ -28,7 +29,7 @@ export default function FeaturedCaseStudiesAdmin() {
     if (!confirm("Delete this case study?")) return;
 
     await fetch(
-      `http://localhost:5000/api/common/featured-case-studies/${id}`,
+      `${API.featuredCaseStudies}/${id}`,
       {
         method: "DELETE",
         headers: {

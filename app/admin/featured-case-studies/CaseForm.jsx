@@ -1,5 +1,6 @@
 "use client";
 
+import { API } from "@/app/config/api";
 import { useEffect, useState } from "react";
 
 export default function CaseForm({
@@ -40,7 +41,7 @@ export default function CaseForm({
     formData.append("image", file);
 
     const res = await fetch(
-      "http://localhost:5000/api/upload/image",
+      API.uploadImage,
       {
         method: "POST",
         headers: {
@@ -87,8 +88,8 @@ export default function CaseForm({
     };
 
     const url = editing
-      ? `http://localhost:5000/api/common/featured-case-studies/${editing._id}`
-      : "http://localhost:5000/api/common/featured-case-studies";
+      ? `${API.featuredCaseStudies}/${editing._id}`
+      : API.featuredCaseStudies;
 
     const method = editing ? "PUT" : "POST";
 

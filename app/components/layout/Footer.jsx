@@ -11,6 +11,7 @@ import {
   Globe,
   ArrowRight,
 } from "lucide-react";
+import { API } from "@/app/config/api";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -27,7 +28,7 @@ const Footer = () => {
   useEffect(() => {
     const fetchSiteConfig = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/site");
+        const res = await fetch(API.siteConfig);
         const data = await res.json();
 
         if (data?.success && data?.data) {

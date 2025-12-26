@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { API } from "@/app/config/api";
 
 const CaseStudyContent = () => {
   const { slug } = useParams();
@@ -9,7 +10,7 @@ const CaseStudyContent = () => {
   useEffect(() => {
     const fetchCase = async () => {
       const res = await fetch(
-        "http://localhost:5000/api/common/featured-case-studies"
+        API.featuredCaseStudies
       );
       const data = await res.json();
 

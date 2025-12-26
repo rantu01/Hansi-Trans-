@@ -9,6 +9,7 @@ import {
   BarChart3,
   PenLine,
 } from "lucide-react";
+import { API } from "@/app/config/api";
 
 /* icon mapper */
 const iconMap = {
@@ -26,7 +27,7 @@ const FeaturedCaseStudies = () => {
     const fetchCases = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/common/featured-case-studies",
+          API.featuredCaseStudies,
           { cache: "no-store" }
         );
         const data = await res.json();
