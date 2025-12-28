@@ -16,5 +16,11 @@ export const API = {
   },
   site:{
     getConfig: `${API_BASE_URL}/api/site`,
-  }
+  },
+  OurInfluencer: {
+    getInfluencers: `${API_BASE_URL}/api/common/our-influencers`,
+  },
+  Testimonials: {
+    getTestimonials: `${API_BASE_URL}/api/common/testimonials`,
+  },
 };

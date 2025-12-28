@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { API } from "@/app/config/api";
 
@@ -12,35 +12,77 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // prevent double submit
+  const isSubmitting = useRef(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (isSubmitting.current) return;
+
     setError("");
     setLoading(true);
+    isSubmitting.current = true;
 
     try {
+      const controller = new AbortController();
+
+      // ⏱️ timeout safety (12s for Render)
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 12000);
+
       const res = await fetch(API.auth.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        signal: controller.signal,
       });
 
-      const data = await res.json();
+      clearTimeout(timeoutId);
 
-      if (!res.ok || !data.success) {
-        setError(data.message || "Login failed");
-        setLoading(false);
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+
+      /**
+       * ✅ SUCCESS CONDITIONS (important)
+       * - token present = success
+       * - success true = success
+       */
+      if (data?.token) {
+        localStorage.setItem("adminToken", data.token);
+        router.push("/admin");
         return;
       }
 
-      // ✅ SAVE TOKEN
-      localStorage.setItem("adminToken", data.token);
+      if (data?.success === true) {
+        localStorage.setItem("adminToken", data.token);
+        router.push("/admin");
+        return;
+      }
 
-      // ✅ REDIRECT TO ADMIN
-      router.push("/admin");
+      // ❌ real failure
+      setError(
+        data?.message ||
+          "Invalid email or password"
+      );
     } catch (err) {
-      setError("Server error. Try again.");
+      if (err.name === "AbortError") {
+        setError(
+          "Server is waking up. Please try again."
+        );
+      } else {
+        setError(
+          "Network error. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
+      isSubmitting.current = false;
     }
   };
 
@@ -80,10 +122,16 @@ export default function LoginPage() {
 
         <button
           disabled={loading}
-          className="bg-black text-white w-full py-2 rounded hover:bg-gray-800"
+          className="bg-black text-white w-full py-2 rounded hover:bg-gray-800 disabled:opacity-60"
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        {loading && (
+          <p className="text-xs text-gray-400 text-center mt-3">
+            Render server may be waking up, please wait...
+          </p>
+        )}
       </form>
     </div>
   );

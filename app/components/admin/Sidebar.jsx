@@ -30,6 +30,20 @@ const Sidebar = () => {
           <Settings size={20} />
           Featured Case Studies
         </Link>
+        <Link
+          href="/admin/influencers"
+          className="flex items-center gap-3 p-3 rounded hover:bg-white/10"
+        >
+          <Settings size={20} />
+          Our Influencers
+        </Link>
+        <Link
+          href="/admin/testimonials"
+          className="flex items-center gap-3 p-3 rounded hover:bg-white/10"
+        >
+          <Settings size={20} />
+          Testimonials
+        </Link>
       </nav>
     </aside>
   );
