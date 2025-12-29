@@ -3,11 +3,7 @@
 import { API } from "@/app/config/api";
 import { useEffect, useState } from "react";
 
-export default function CaseForm({
-  refresh,
-  editing,
-  clearEdit,
-}) {
+export default function CaseForm({ refresh, editing, clearEdit }) {
   const token =
     typeof window !== "undefined"
       ? localStorage.getItem("adminToken")
@@ -20,8 +16,8 @@ export default function CaseForm({
   const [isReverse, setIsReverse] = useState(false);
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
-
   const [stats, setStats] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (editing) {
@@ -36,31 +32,28 @@ export default function CaseForm({
     }
   }, [editing]);
 
+  // Image upload function
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch(
-      API.uploadImage,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      }
-    );
+    const res = await fetch(API.uploadImage, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+    
+
 
     const data = await res.json();
     return data.url;
   };
 
-  /* ---------- Stats handlers ---------- */
+  // Stats handlers
   const addStat = () => {
-    setStats([
-      ...stats,
-      { label: "", value: "", isIcon: false },
-    ]);
+    setStats([...stats, { label: "", value: "", isIcon: false }]);
   };
 
   const updateStat = (index, field, value) => {
@@ -70,12 +63,17 @@ export default function CaseForm({
   };
 
   const removeStat = (index) => {
-    const updated = stats.filter((_, i) => i !== index);
-    setStats(updated);
+    setStats(stats.filter((_, i) => i !== index));
   };
 
+  // Form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!image) {
+      alert("Please wait for image upload to finish");
+      return;
+    }
 
     const payload = {
       title,
@@ -119,10 +117,7 @@ export default function CaseForm({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="border p-4 rounded space-y-4"
-    >
+    <form onSubmit={handleSubmit} className="border p-4 rounded space-y-4">
       <h2 className="font-semibold">
         {editing ? "Edit Case Study" : "Add New Case Study"}
       </h2>
@@ -161,9 +156,7 @@ export default function CaseForm({
         <input
           type="checkbox"
           checked={isReverse}
-          onChange={(e) =>
-            setIsReverse(e.target.checked)
-          }
+          onChange={(e) => setIsReverse(e.target.checked)}
         />
         Reverse Layout
       </label>
@@ -175,9 +168,19 @@ export default function CaseForm({
         onChange={async (e) => {
           const file = e.target.files[0];
           if (!file) return;
+
+          setUploading(true);
           setPreview(URL.createObjectURL(file));
-          const url = await uploadImage(file);
-          setImage(url);
+
+          try {
+            const url = await uploadImage(file);
+            setImage(url);
+          } catch (err) {
+            alert("Image upload failed");
+            setPreview("");
+          } finally {
+            setUploading(false);
+          }
         }}
       />
 
@@ -188,7 +191,7 @@ export default function CaseForm({
         />
       )}
 
-      {/* ---------- STATS ---------- */}
+      {/* Stats */}
       <div className="border rounded p-3 space-y-3">
         <div className="flex justify-between items-center">
           <p className="font-semibold">Stats</p>
@@ -229,14 +232,10 @@ export default function CaseForm({
                 type="checkbox"
                 checked={stat.isIcon}
                 onChange={(e) =>
-                  updateStat(
-                    index,
-                    "isIcon",
-                    e.target.checked
-                  )
+                  updateStat(index, "isIcon", e.target.checked)
                 }
               />
-              Is Icon (✔)
+              Is Icon
             </label>
 
             <button
@@ -250,8 +249,20 @@ export default function CaseForm({
         ))}
       </div>
 
-      <button className="bg-black text-white px-6 py-2 rounded">
-        {editing ? "Update" : "Create"}
+      {/* Submit Button */}
+      <button
+        disabled={uploading}
+        className={`px-6 py-2 rounded text-white ${
+          uploading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-black"
+        }`}
+      >
+        {uploading
+          ? "Uploading image..."
+          : editing
+          ? "Update"
+          : "Create"}
       </button>
     </form>
   );
