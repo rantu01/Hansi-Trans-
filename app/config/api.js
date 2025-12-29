@@ -24,4 +24,5 @@ export const API = {
     getTestimonials: `${API_BASE_URL}/api/common/testimonials`,
   },
   WhyChooseUs: `${API_BASE_URL}/api/common/why-choose-us`,
+  WorkProcess: `${API_BASE_URL}/api/common/work-process`,
 };

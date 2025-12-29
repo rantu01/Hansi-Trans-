@@ -1,44 +1,47 @@
-import React from 'react';
-import { 
-  Search, Users, Layers, Rocket, 
-  Handshake, Settings, CheckCircle2, 
-  Sparkles 
-} from 'lucide-react';
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Search,
+  Users,
+  Layers,
+  Rocket,
+  Handshake,
+  Settings,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
+import { API } from "@/app/config/api";
+
+/* ICON MAP */
+const iconMap = {
+  Search,
+  Users,
+  Layers,
+  Rocket,
+};
 
 const WorkProcess = () => {
-  const steps = [
-    {
-      title: "Discover",
-      desc: "We analyze your content, target markets, and specific requirements to create a tailored strategy.",
-      icon: <Search className="w-10 h-10 text-blue-500" />,
-      topIcon: null
-    },
-    {
-      title: "Team & Setup",
-      desc: "We get to know your brand, goals, and audience. strategy calls, research.",
-      icon: null,
-      topIcon: <Users className="w-10 h-10 text-blue-600" />
-    },
-    {
-      title: "Produce & QA",
-      desc: "Rigorous production process with multiple quality checkpoints and cultural validation.",
-      icon: <Layers className="w-10 h-10 text-blue-600" />,
-      topIcon: null
-    },
-    {
-      title: "Deliver & Optimize",
-      desc: "We get to know your brand, goals, and audience. Through calls, research.",
-      icon: null,
-      topIcon: <Rocket className="w-10 h-10 text-blue-600" />
-    }
-  ];
+  const [steps, setSteps] = useState([]);
+  const [studios, setStudios] = useState([]);
 
-  const studios = [
-    { code: "CN", name: "Chengdu Studio", lang: "Mandarin & Cantonese" },
-    { code: "JP", name: "Tokyo Studio", lang: "Japanese Voice Acting" },
-    { code: "KR", name: "Seoul Studio", lang: "Korean Dubbing" },
-    { code: "US", name: "Los Angeles Studio", lang: "Mandarin & Cantonese" },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(API.WorkProcess, {
+          cache: "no-store",
+        });
+        const data = await res.json();
+
+        setSteps(data.steps || []);
+        setStudios(data.studios || []);
+      } catch (err) {
+        console.error("Failed to load work process", err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <section className="py-20 bg-gradient-to-b from-[#aadbff] to-white rounded-t-4xl">
@@ -64,29 +67,44 @@ const WorkProcess = () => {
 
         {/* 4 Card Steps Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-[30px] p-8 flex flex-col justify-between min-h-[350px] shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div>
-                {step.topIcon && <div className="mb-6">{step.topIcon}</div>}
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  {step.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  {step.desc}
-                </p>
+          {steps.map((step, index) => {
+            const Icon = iconMap[step.icon];
+            const TopIcon = iconMap[step.topIcon];
+
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-[30px] p-8 flex flex-col justify-between min-h-[350px] shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div>
+                  {TopIcon && (
+                    <div className="mb-6">
+                      <TopIcon className="w-10 h-10 text-blue-600" />
+                    </div>
+                  )}
+
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+
+                {Icon && (
+                  <div className="mt-6">
+                    <Icon className="w-10 h-10 text-blue-600" />
+                  </div>
+                )}
               </div>
-              {step.icon && <div className="mt-6">{step.icon}</div>}
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Lower Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           
-          {/* Partner Studios (Centered) */}
+          {/* Partner Studios */}
           <div className="flex flex-col items-center text-center">
             <div className="flex items-center gap-4 mb-8">
               <Handshake className="w-10 h-10 text-blue-600" />
@@ -99,7 +117,7 @@ const WorkProcess = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="space-y-4 flex flex-col items-center">
               {studios.map((studio, i) => (
                 <div

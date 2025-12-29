@@ -51,6 +51,13 @@ const Sidebar = () => {
           <Settings size={20} />
           WhyChooseUs
         </Link>
+        <Link
+          href="/admin/work-process"
+          className="flex items-center gap-3 p-3 rounded hover:bg-white/10"
+        >
+          <Settings size={20} />
+          Work Process
+        </Link>
       </nav>
     </aside>
   );
