@@ -44,6 +44,13 @@ const Sidebar = () => {
           <Settings size={20} />
           Testimonials
         </Link>
+        <Link
+          href="/admin/why-choose-us"
+          className="flex items-center gap-3 p-3 rounded hover:bg-white/10"
+        >
+          <Settings size={20} />
+          WhyChooseUs
+        </Link>
       </nav>
     </aside>
   );

@@ -11,15 +11,14 @@ const Testimonials = () => {
     const fetchTestimonials = async () => {
       try {
         const res = await fetch(API.Testimonials.getTestimonials);
-        const data = await res.json();
+        if (!res.ok) throw new Error("Failed to fetch testimonials");
 
-        if (data) {
-          setTestimonials(data.testimonials || []);
-          setBottomNav(data.bottomNav || []);
-        }
+        const data = await res.json();
+        setTestimonials(data.testimonials || []);
+        setBottomNav(data.bottomNav || []);
       } catch (err) {
         console.error("Failed to load testimonials", err);
-      }z
+      }
     };
 
     fetchTestimonials();

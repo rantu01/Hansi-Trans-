@@ -30,36 +30,71 @@ export default function AdminTestimonials() {
 
   /* Fetch existing data */
   useEffect(() => {
-    fetch(API.Testimonials.getTestimonials)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setTestimonials(data.testimonials || []);
-          setBottomNav(data.bottomNav || []);
-        }
-      });
+    const fetchTestimonials = async () => {
+      try {
+        const res = await fetch(API.Testimonials.getTestimonials);
+        if (!res.ok) throw new Error("Failed to fetch testimonials");
+
+        const data = await res.json();
+        setTestimonials(data.testimonials || []);
+        setBottomNav(data.bottomNav || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchTestimonials();
   }, []);
 
   /* Save (Add / Edit) */
   const saveAll = async () => {
+    if (!token) {
+      alert("You are not authorized");
+      return;
+    }
+
     setLoading(true);
-    await fetch(API.Testimonials.getTestimonials, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ testimonials, bottomNav }),
-    });
-    setLoading(false);
-    alert("Saved successfully");
+    try {
+      const res = await fetch(API.Testimonials.getTestimonials, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ testimonials, bottomNav }),
+      });
+
+      if (!res.ok) throw new Error("Failed to save");
+
+      alert("Saved successfully");
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+    } finally {
+      setLoading(false);
+    }
   };
 
   /* Delete testimonial */
-  const removeTestimonial = (id) => {
-    setTestimonials(
-      testimonials.filter((item) => item._id !== id)
-    );
+  const removeTestimonial = async (id) => {
+    if (!token) {
+      alert("You are not authorized");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API.Testimonials.getTestimonials}/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) throw new Error("Failed to delete");
+
+      setTestimonials(testimonials.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting testimonial");
+    }
   };
 
   return (
@@ -84,33 +119,29 @@ export default function AdminTestimonials() {
             </div>
 
             {item.type === "text" && (
-              <>
-                <input
-                  placeholder="Quote"
-                  className="input"
-                  value={item.quote}
-                  onChange={(e) => {
-                    const copy = [...testimonials];
-                    copy[index].quote = e.target.value;
-                    setTestimonials(copy);
-                  }}
-                />
-              </>
+              <input
+                placeholder="Quote"
+                className="input"
+                value={item.quote}
+                onChange={(e) => {
+                  const copy = [...testimonials];
+                  copy[index].quote = e.target.value;
+                  setTestimonials(copy);
+                }}
+              />
             )}
 
             {item.type === "video" && (
-              <>
-                <input
-                  placeholder="Thumbnail URL"
-                  className="input"
-                  value={item.thumbnail}
-                  onChange={(e) => {
-                    const copy = [...testimonials];
-                    copy[index].thumbnail = e.target.value;
-                    setTestimonials(copy);
-                  }}
-                />
-              </>
+              <input
+                placeholder="Thumbnail URL"
+                className="input"
+                value={item.thumbnail}
+                onChange={(e) => {
+                  const copy = [...testimonials];
+                  copy[index].thumbnail = e.target.value;
+                  setTestimonials(copy);
+                }}
+              />
             )}
 
             <input
@@ -152,18 +183,14 @@ export default function AdminTestimonials() {
       {/* Add Buttons */}
       <div className="flex gap-4 my-8">
         <button
-          onClick={() =>
-            setTestimonials([...testimonials, emptyText])
-          }
+          onClick={() => setTestimonials([...testimonials, emptyText])}
           className="btn"
         >
           + Add Text Testimonial
         </button>
 
         <button
-          onClick={() =>
-            setTestimonials([...testimonials, emptyVideo])
-          }
+          onClick={() => setTestimonials([...testimonials, emptyVideo])}
           className="btn"
         >
           + Add Video Testimonial
@@ -172,9 +199,7 @@ export default function AdminTestimonials() {
 
       {/* Bottom Nav */}
       <div className="mt-12">
-        <h2 className="text-xl font-bold mb-4">
-          Bottom Navigation
-        </h2>
+        <h2 className="text-xl font-bold mb-4">Bottom Navigation</h2>
 
         {bottomNav.map((nav, i) => (
           <div key={i} className="flex gap-4 mb-3">
@@ -202,9 +227,7 @@ export default function AdminTestimonials() {
         ))}
 
         <button
-          onClick={() =>
-            setBottomNav([...bottomNav, { name: "", company: "" }])
-          }
+          onClick={() => setBottomNav([...bottomNav, { name: "", company: "" }])}
           className="btn mt-2"
         >
           + Add Bottom Nav

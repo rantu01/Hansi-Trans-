@@ -4,7 +4,7 @@ const API_BASE_URL =
 export const API = {
   featuredCaseStudies:
     `${API_BASE_URL}/api/common/featured-case-studies`,
-    
+
 
   uploadImage:
     `${API_BASE_URL}/api/upload/image`,
@@ -14,7 +14,7 @@ export const API = {
     register: `${API_BASE_URL}/api/auth/register`,
     refreshToken: `${API_BASE_URL}/api/auth/refresh-token`,
   },
-  site:{
+  site: {
     getConfig: `${API_BASE_URL}/api/site`,
   },
   OurInfluencer: {
@@ -23,4 +23,5 @@ export const API = {
   Testimonials: {
     getTestimonials: `${API_BASE_URL}/api/common/testimonials`,
   },
+  WhyChooseUs: `${API_BASE_URL}/api/common/why-choose-us`,
 };

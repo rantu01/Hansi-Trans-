@@ -1,7 +1,57 @@
-import React from 'react';
-import { Sparkles, Settings, Globe2, Zap, Gamepad2, Clock } from 'lucide-react';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import {
+  Sparkles,
+  Settings,
+  Globe2,
+  Gamepad2,
+  Clock,
+} from "lucide-react";
+import { API } from "@/app/config/api";
+
+/* icon mapper */
+const ICONS = {
+  Gamepad2: Gamepad2,
+  Settings: Settings,
+  Globe2: Globe2,
+  Clock: Clock,
+};
 
 const WhyChooseUs = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchWhyChoose = async () => {
+      try {
+        const res = await fetch(API.WhyChooseUs, {
+          cache: "no-store",
+        });
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        console.error("WhyChooseUs fetch failed");
+      }
+    };
+
+    fetchWhyChoose();
+  }, []);
+
+  if (!data) return null;
+
+  const getCard = (key) =>
+    data.cards.find((c) => c.key === key);
+
+  const left = getCard("left");
+  const middleTop = getCard("middleTop");
+  const middleBottom = getCard("middleBottom");
+  const right = getCard("right");
+
+  const LeftIcon = ICONS[left?.icon];
+  const MidTopIcon = ICONS[middleTop?.icon];
+  const MidBottomIcon = ICONS[middleBottom?.icon];
+  const RightIcon = ICONS[right?.icon];
+
   return (
     <section className="py-20 bg-[#020d1f] text-white rounded-t-4xl">
       <div className="container mx-auto px-4">
@@ -27,70 +77,85 @@ const WhyChooseUs = () => {
         {/* Main Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
           
-          {/* Left Large Card: ACG Focus */}
+          {/* Left Large Card */}
           <div className="bg-white rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl">
             <div className="text-left">
               <h3 className="text-[#0066b2] text-3xl font-bold mb-6">
-                ACG Focus Since <br /> 2010
+                {left.title.split("<br />")[0]} <br />
+                {left.title.split("<br />")[1]}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed font-medium">
-                Deep expertise in anime, comics, and gaming culture with 14+ years of specialized experience in entertainment localization.
+                {left.description}
               </p>
             </div>
             <div className="mt-10">
-              <Gamepad2 className="w-14 h-14 text-[#0066b2]" />
+              {LeftIcon && (
+                <LeftIcon className="w-14 h-14 text-[#0066b2]" />
+              )}
             </div>
           </div>
 
-          {/* Middle Section: Two Stacked Cards */}
+          {/* Middle Section */}
           <div className="flex flex-col gap-6">
-            {/* Integrated Workflow */}
             <div className="bg-white rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl">
               <div className="mt-2">
-                <Settings className="w-10 h-10 text-[#0066b2]" />
+                {MidTopIcon && (
+                  <MidTopIcon className="w-10 h-10 text-[#0066b2]" />
+                )}
               </div>
               <div className="text-left">
-                <h3 className="text-[#0066b2] text-xl font-bold mb-3">Integrated Workflow</h3>
+                <h3 className="text-[#0066b2] text-xl font-bold mb-3">
+                  {middleTop.title}
+                </h3>
                 <p className="text-gray-500 text-xs leading-relaxed font-medium">
-                  Seamless integration between localization, voice-over, and KOL marketing for consistent brand messaging across all touchpoints.
+                  {middleTop.description}
                 </p>
               </div>
             </div>
 
-            {/* Scalable Network */}
             <div className="bg-white rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl">
               <div className="mt-2">
-                <Globe2 className="w-10 h-10 text-[#0066b2]" />
+                {MidBottomIcon && (
+                  <MidBottomIcon className="w-10 h-10 text-[#0066b2]" />
+                )}
               </div>
               <div className="text-left">
-                <h3 className="text-[#0066b2] text-xl font-bold mb-3">Scalable Network</h3>
+                <h3 className="text-[#0066b2] text-xl font-bold mb-3">
+                  {middleBottom.title}
+                </h3>
                 <p className="text-gray-500 text-xs leading-relaxed font-medium">
-                  Global network of 2,000+ linguists and 3,000+ voice talents ready to scale with your project needs across 40+ languages.
+                  {middleBottom.description}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Right Large Card: Fast & Reliable */}
+          {/* Right Large Card */}
           <div className="bg-white rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl">
             <div className="text-left">
               <h3 className="text-[#0066b2] text-3xl font-bold mb-6">
-                Fast & Reliable <br /> Delivery
+                {right.title.split("<br />")[0]} <br />
+                {right.title.split("<br />")[1]}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed font-medium">
-                Proven track record of on-time delivery with 24/7 project management and real-time progress tracking for peace of mind.
+                {right.description}
               </p>
             </div>
             <div className="mt-10 flex justify-end">
               <div className="relative">
-                <Clock className="w-14 h-14 text-[#0066b2]" />
-                <span className="absolute -bottom-1 -right-1 bg-[#0066b2] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">24</span>
+                {RightIcon && (
+                  <RightIcon className="w-14 h-14 text-[#0066b2]" />
+                )}
+                {right.badge && (
+                  <span className="absolute -bottom-1 -right-1 bg-[#0066b2] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                    {right.badge}
+                  </span>
+                )}
               </div>
             </div>
           </div>
 
         </div>
-
       </div>
     </section>
   );
