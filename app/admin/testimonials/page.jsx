@@ -98,165 +98,197 @@ export default function AdminTestimonials() {
   };
 
   return (
-    <div className="p-10 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Testimonials Admin</h1>
+    <div className="p-4 md:p-10 max-w-6xl mx-auto">
+      <h1 className="text-2xl md:text-3xl font-bold mb-8 text-gray-800">Testimonials Admin</h1>
 
-      {/* Testimonials */}
+      {/* Testimonials List */}
       <div className="space-y-6">
         {testimonials.map((item, index) => (
           <div
             key={item._id || index}
-            className="border p-6 rounded-xl bg-white shadow"
+            className="border p-4 md:p-6 rounded-xl bg-white shadow-sm border-gray-100"
           >
-            <div className="flex justify-between mb-4">
-              <strong>{item.type.toUpperCase()}</strong>
+            <div className="flex justify-between items-center mb-4 border-b pb-2">
+              <span className="bg-gray-100 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider text-gray-600">
+                {item.type}
+              </span>
               <button
                 onClick={() => removeTestimonial(item._id)}
-                className="text-red-600 text-sm"
+                className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors"
               >
-                Delete
+                Delete Card
               </button>
             </div>
 
-            {item.type === "text" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {item.type === "text" && (
+                <div className="md:col-span-2">
+                  <textarea
+                    placeholder="Testimonial Quote"
+                    className="input min-h-[100px]"
+                    value={item.quote}
+                    onChange={(e) => {
+                      const copy = [...testimonials];
+                      copy[index].quote = e.target.value;
+                      setTestimonials(copy);
+                    }}
+                  />
+                </div>
+              )}
+
+              {item.type === "video" && (
+                <div className="md:col-span-2">
+                  <input
+                    placeholder="Thumbnail URL"
+                    className="input"
+                    value={item.thumbnail}
+                    onChange={(e) => {
+                      const copy = [...testimonials];
+                      copy[index].thumbnail = e.target.value;
+                      setTestimonials(copy);
+                    }}
+                  />
+                </div>
+              )}
+
               <input
-                placeholder="Quote"
+                placeholder="Person Name"
                 className="input"
-                value={item.quote}
+                value={item.name}
                 onChange={(e) => {
                   const copy = [...testimonials];
-                  copy[index].quote = e.target.value;
+                  copy[index].name = e.target.value;
                   setTestimonials(copy);
                 }}
               />
-            )}
 
-            {item.type === "video" && (
               <input
-                placeholder="Thumbnail URL"
+                placeholder="Role / Title"
                 className="input"
-                value={item.thumbnail}
+                value={item.role}
                 onChange={(e) => {
                   const copy = [...testimonials];
-                  copy[index].thumbnail = e.target.value;
+                  copy[index].role = e.target.value;
                   setTestimonials(copy);
                 }}
               />
-            )}
 
-            <input
-              placeholder="Name"
-              className="input"
-              value={item.name}
-              onChange={(e) => {
-                const copy = [...testimonials];
-                copy[index].name = e.target.value;
-                setTestimonials(copy);
-              }}
-            />
-
-            <input
-              placeholder="Role"
-              className="input"
-              value={item.role}
-              onChange={(e) => {
-                const copy = [...testimonials];
-                copy[index].role = e.target.value;
-                setTestimonials(copy);
-              }}
-            />
-
-            <input
-              placeholder="Avatar URL"
-              className="input"
-              value={item.avatar}
-              onChange={(e) => {
-                const copy = [...testimonials];
-                copy[index].avatar = e.target.value;
-                setTestimonials(copy);
-              }}
-            />
+              <div className="md:col-span-2">
+                <input
+                  placeholder="Avatar Image URL"
+                  className="input"
+                  value={item.avatar}
+                  onChange={(e) => {
+                    const copy = [...testimonials];
+                    copy[index].avatar = e.target.value;
+                    setTestimonials(copy);
+                  }}
+                />
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Add Buttons */}
-      <div className="flex gap-4 my-8">
+      {/* Add Card Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 my-10">
         <button
           onClick={() => setTestimonials([...testimonials, emptyText])}
-          className="btn"
+          className="btn flex-1 bg-white border border-gray-300 hover:bg-gray-50 transition-colors py-4"
         >
           + Add Text Testimonial
         </button>
 
         <button
           onClick={() => setTestimonials([...testimonials, emptyVideo])}
-          className="btn"
+          className="btn flex-1 bg-white border border-gray-300 hover:bg-gray-50 transition-colors py-4"
         >
           + Add Video Testimonial
         </button>
       </div>
 
-      {/* Bottom Nav */}
-      <div className="mt-12">
-        <h2 className="text-xl font-bold mb-4">Bottom Navigation</h2>
+      {/* Bottom Nav Section */}
+      <div className="mt-12 p-4 md:p-6 bg-gray-50 rounded-2xl border border-gray-200">
+        <h2 className="text-xl font-bold mb-6 text-gray-700">Bottom Navigation List</h2>
 
-        {bottomNav.map((nav, i) => (
-          <div key={i} className="flex gap-4 mb-3">
-            <input
-              placeholder="Name"
-              className="input"
-              value={nav.name}
-              onChange={(e) => {
-                const copy = [...bottomNav];
-                copy[i].name = e.target.value;
-                setBottomNav(copy);
-              }}
-            />
-            <input
-              placeholder="Company"
-              className="input"
-              value={nav.company}
-              onChange={(e) => {
-                const copy = [...bottomNav];
-                copy[i].company = e.target.value;
-                setBottomNav(copy);
-              }}
-            />
-          </div>
-        ))}
+        <div className="space-y-4">
+          {bottomNav.map((nav, i) => (
+            <div key={i} className="flex flex-col md:flex-row gap-3 bg-white p-3 rounded-lg shadow-sm">
+              <input
+                placeholder="Name"
+                className="input !mb-0"
+                value={nav.name}
+                onChange={(e) => {
+                  const copy = [...bottomNav];
+                  copy[i].name = e.target.value;
+                  setBottomNav(copy);
+                }}
+              />
+              <input
+                placeholder="Company"
+                className="input !mb-0"
+                value={nav.company}
+                onChange={(e) => {
+                  const copy = [...bottomNav];
+                  copy[i].company = e.target.value;
+                  setBottomNav(copy);
+                }}
+              />
+              <button 
+                onClick={() => setBottomNav(bottomNav.filter((_, idx) => idx !== i))}
+                className="text-red-400 hover:text-red-600 px-2"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
 
         <button
           onClick={() => setBottomNav([...bottomNav, { name: "", company: "" }])}
-          className="btn mt-2"
+          className="mt-4 text-blue-600 font-semibold text-sm hover:underline"
         >
-          + Add Bottom Nav
+          + Add New Nav Item
         </button>
       </div>
 
-      {/* Save */}
-      <button
-        disabled={loading}
-        onClick={saveAll}
-        className="mt-10 bg-blue-600 text-white px-8 py-3 rounded-lg"
-      >
-        {loading ? "Saving..." : "Save All"}
-      </button>
+      {/* Final Save Button */}
+      <div className="sticky bottom-4 mt-10">
+        <button
+          disabled={loading}
+          onClick={saveAll}
+          className={`w-full md:w-auto min-w-[200px] bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-xl font-bold shadow-2xl transition-all active:scale-95 ${
+            loading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
+        >
+          {loading ? "Processing..." : "Save All Changes"}
+        </button>
+      </div>
 
-      {/* small utility styles */}
       <style jsx>{`
         .input {
           width: 100%;
-          border: 1px solid #ddd;
-          padding: 10px;
-          border-radius: 8px;
-          margin-bottom: 10px;
+          border: 1px solid #e2e8f0;
+          padding: 12px;
+          border-radius: 10px;
+          margin-bottom: 0px;
+          font-size: 14px;
+          background: white;
+          transition: border-color 0.2s;
+        }
+        .input:focus {
+          outline: none;
+          border-color: #3b82f6;
+          ring: 2px solid #3b82f6;
         }
         .btn {
-          background: #f1f5f9;
-          padding: 10px 16px;
-          border-radius: 8px;
-          font-weight: 500;
+          padding: 12px 20px;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       `}</style>
     </div>

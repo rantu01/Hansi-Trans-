@@ -100,86 +100,120 @@ const SiteSettingsPage = () => {
   };
 
   return (
-    <div className="max-w-4xl bg-white p-8 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6">Site Settings</h2>
+    // Padding p-4 for mobile, p-8 for desktop
+    <div className="p-4 md:p-8 flex justify-center">
+      <div className="w-full max-w-4xl bg-white p-6 md:p-8 rounded-xl shadow-md border border-gray-100">
+        <h2 className="text-xl md:text-2xl font-bold mb-6 text-gray-800">Site Settings</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* LOGO UPLOAD */}
-        <div>
-          <label className="block font-semibold mb-2">Website Logo</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* LOGO UPLOAD */}
+          <div className="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300">
+            <label className="block font-semibold mb-3 text-gray-700 text-sm md:text-base">Website Logo</label>
 
-          {logoPreview && (
-            <img
-              src={logoPreview}
-              alt="Logo Preview"
-              className="w-24 h-24 object-contain border rounded mb-3"
-            />
-          )}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              {logoPreview && (
+                <img
+                  src={logoPreview}
+                  alt="Logo Preview"
+                  className="w-20 h-20 md:w-24 md:h-24 object-contain bg-white border rounded shadow-sm"
+                />
+              )}
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleLogoChange}
-          />
-        </div>
+              <div className="w-full overflow-hidden">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                  className="block w-full text-xs md:text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-[#003d66] file:text-white
+                    hover:file:bg-blue-800 transition-all cursor-pointer"
+                />
+                <p className="mt-2 text-xs text-gray-400">Recommended size: 200x200px (PNG/SVG)</p>
+              </div>
+            </div>
+          </div>
 
-        {/* BRAND TEXT */}
-        <div>
-          <label className="block font-semibold mb-2">Brand Text</label>
-          <input
-            type="text"
-            name="brandText"
-            value={form.brandText}
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-        </div>
+          {/* Form Fields Grid for Desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* BRAND TEXT */}
+            <div className="md:col-span-2">
+              <label className="block font-semibold mb-2 text-gray-700 text-sm md:text-base">Brand Text</label>
+              <input
+                type="text"
+                name="brandText"
+                value={form.brandText}
+                onChange={handleChange}
+                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                placeholder="Enter company name"
+              />
+            </div>
 
-        {/* FOOTER TEXT */}
-        <div>
-          <label className="block font-semibold mb-2">Footer Text</label>
-          <textarea
-            name="footerText"
-            value={form.footerText}
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-            rows={3}
-          />
-        </div>
+            {/* FOOTER TEXT */}
+            <div>
+              <label className="block font-semibold mb-2 text-gray-700 text-sm md:text-base">Footer Text</label>
+              <textarea
+                name="footerText"
+                value={form.footerText}
+                onChange={handleChange}
+                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                rows={4}
+                placeholder="About company description..."
+              />
+            </div>
 
-        {/* ADDRESS */}
-        <div>
-          <label className="block font-semibold mb-2">Footer Address</label>
-          <textarea
-            name="footerAddress"
-            value={form.footerAddress}
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-            rows={2}
-          />
-        </div>
+            {/* ADDRESS */}
+            <div>
+              <label className="block font-semibold mb-2 text-gray-700 text-sm md:text-base">Footer Address</label>
+              <textarea
+                name="footerAddress"
+                value={form.footerAddress}
+                onChange={handleChange}
+                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                rows={4}
+                placeholder="Office location address..."
+              />
+            </div>
 
-        {/* COPYRIGHT */}
-        <div>
-          <label className="block font-semibold mb-2">Copyright Text</label>
-          <input
-            type="text"
-            name="copyrightText"
-            value={form.copyrightText}
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-        </div>
+            {/* COPYRIGHT */}
+            <div className="md:col-span-2">
+              <label className="block font-semibold mb-2 text-gray-700 text-sm md:text-base">Copyright Text</label>
+              <input
+                type="text"
+                name="copyrightText"
+                value={form.copyrightText}
+                onChange={handleChange}
+                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                placeholder="© 2024 Your Company. All rights reserved."
+              />
+            </div>
+          </div>
 
-        {/* SAVE BUTTON */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-[#003d66] text-white px-6 py-3 rounded font-semibold hover:bg-blue-800"
-        >
-          {loading ? "Saving..." : "Save Settings"}
-        </button>
-      </form>
+          {/* SAVE BUTTON */}
+          <div className="pt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full md:w-auto min-w-[200px] text-white px-8 py-3 rounded-lg font-bold shadow-lg transition-all 
+                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#003d66] hover:bg-blue-800 hover:shadow-xl active:scale-95"}`}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Saving...
+                </span>
+              ) : (
+                "Save Settings"
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

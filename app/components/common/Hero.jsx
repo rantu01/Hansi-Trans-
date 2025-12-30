@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Hero = ({
   title = "About HS+",
@@ -12,6 +13,7 @@ const Hero = ({
 }) => {
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname(); // 🔹 current route
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -25,7 +27,7 @@ const Hero = ({
   return (
     <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-black">
       
-      {/* 🔹 VIDEO BACKGROUND (design unchanged) */}
+      {/* 🔹 VIDEO BACKGROUND */}
       <video
         autoPlay
         loop
@@ -37,7 +39,7 @@ const Hero = ({
         <source src="/upper-cloud.webm" type="video/webm" />
       </video>
 
-      {/* overlay (same depth as GIF) */}
+      {/* overlay */}
       <div className="absolute inset-0 bg-black/40 z-0"></div>
 
       <div className="container mx-auto px-6 md:px-12 relative z-10 pt-6 flex-grow flex flex-col">
@@ -58,15 +60,26 @@ const Hero = ({
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-8 flex-[2]">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.path}
-                  className="hover:bg-blue-400 text-sm lg:text-base text-white bg-[#4e728e] bg-opacity-20 rounded-3xl transition-colors px-4 py-2 whitespace-nowrap"
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navLinks.map((item) => {
+                const isActive =
+                  pathname === item.path ||
+                  (item.path !== "/" && pathname.startsWith(item.path));
+
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    className={`text-sm lg:text-base rounded-3xl transition-colors px-4 py-2 whitespace-nowrap
+                      ${
+                        isActive
+                          ? "bg-blue-400 text-white"
+                          : "text-white bg-[#4e728e] bg-opacity-20 hover:bg-blue-400"
+                      }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Right Action */}
@@ -100,16 +113,27 @@ const Hero = ({
           {/* Mobile Menu */}
           {menuOpen && (
             <div className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-8 z-50 p-6 overflow-y-auto">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.path}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-2xl font-medium hover:text-blue-400"
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navLinks.map((item) => {
+                const isActive =
+                  pathname === item.path ||
+                  (item.path !== "/" && pathname.startsWith(item.path));
+
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    onClick={() => setMenuOpen(false)}
+                    className={`text-2xl font-medium transition-colors
+                      ${
+                        isActive
+                          ? "text-blue-400"
+                          : "text-white hover:text-blue-400"
+                      }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
 
               <Link
                 href="/contact"
