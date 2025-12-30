@@ -23,15 +23,23 @@ const Hero = ({
   ];
 
   return (
-    <section
-      className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col"
-      style={{
-        backgroundImage: "url('/optimized.gif')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-black">
+      
+      {/* 🔹 VIDEO BACKGROUND (design unchanged) */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/upper-cloud.webm" type="video/webm" />
+      </video>
+
+      {/* overlay (same depth as GIF) */}
+      <div className="absolute inset-0 bg-black/40 z-0"></div>
+
       <div className="container mx-auto px-6 md:px-12 relative z-10 pt-6 flex-grow flex flex-col">
         {/* ================= NAVBAR ================= */}
         <nav className="relative z-50 mb-16">
