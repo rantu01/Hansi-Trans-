@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import CEO from "@/app/components/about-page/CSO";
 import OurCompany from "@/app/components/about-page/OurCompany";
 import OurFullStories from "@/app/components/about-page/OurFullStories";
@@ -12,6 +15,7 @@ import WhyChooseUs from "@/app/components/common/WhyChooseUs";
 import PublicLayout from "@/app/components/layout/PublicLayout";
 
 import { FaUser, FaStar, FaGlobe, FaBriefcase } from "react-icons/fa";
+import { API } from "@/app/config/api";
 
 const statsData = [
   { icon: <FaUser />, value: "120K+", label: "Users" },
@@ -21,26 +25,44 @@ const statsData = [
 ];
 
 export default function AboutPage() {
+  const [heroData, setHeroData] = useState(null);
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const res = await fetch(API.AboutUs.get);
+        const data = await res.json();
+        setHeroData(data?.hero);
+      } catch (err) {
+        console.error("Failed to load About Us hero");
+      }
+    };
+
+    fetchAbout();
+  }, []);
+
   return (
     <PublicLayout>
       <Hero
-        title="About HS+"
-        breadcrumb="Home › About US"
-        description="Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."
+        title={heroData?.title || "About HS+"}
+        breadcrumb="Home › About Us"
+        description={
+          heroData?.description ||
+          "Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."
+        }
       >
         <WorkWithUs />
         <Stats stats={statsData} />
-        
       </Hero>
-      <OurCompany></OurCompany>
-      <OurFullStories></OurFullStories>
-      <WhyChooseUs></WhyChooseUs>
-      <Domains></Domains>
-      <OurInfluencer></OurInfluencer>
-      <CEO></CEO>
-      <Testimonials></Testimonials>
-      <Schedule></Schedule>
 
+      <OurCompany />
+      <OurFullStories />
+      <WhyChooseUs />
+      <Domains />
+      <OurInfluencer />
+      <CEO />
+      <Testimonials />
+      <Schedule />
     </PublicLayout>
   );
 }

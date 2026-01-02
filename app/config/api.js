@@ -25,4 +25,10 @@ export const API = {
   },
   WhyChooseUs: `${API_BASE_URL}/api/common/why-choose-us`,
   WorkProcess: `${API_BASE_URL}/api/common/work-process`,
+  AboutUs: {
+    get: `${API_BASE_URL}/api/about-us`,
+    upsert: `${API_BASE_URL}/api/about-us`,
+    deleteGalleryImage: `${API_BASE_URL}/api/about-us/gallery`,
+  },
+  Domains: `${API_BASE_URL}/api/common/domains`,
 };

@@ -1,60 +1,35 @@
 "use client";
-import React from "react";
-import { 
-  Gamepad2, 
-  Clapperboard, 
-  Smartphone, 
-  Zap, 
-  FlaskConical, 
-  Megaphone, 
-  Globe, 
-  ShoppingBag,
-  ChevronDown 
-} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import * as Icons from "lucide-react"; // সব আইকন ইমপোর্ট করা হলো ডাইনামিক রেন্ডারিং এর জন্য
+import { ChevronDown } from "lucide-react";
+import { API } from "@/app/config/api";
 
 const Domains = () => {
-  const domainsData = [
-    {
-      title: "Games",
-      icon: <Gamepad2 className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Anime & Animation",
-      icon: <Clapperboard className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Apps & Saas",
-      icon: <Smartphone className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Comic & Manga",
-      icon: <Zap className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Life Sciences",
-      icon: <FlaskConical className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Marketing & AdTech",
-      icon: <Megaphone className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Entertainment IP",
-      icon: <Globe className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-    {
-      title: "Retail & Ecom",
-      icon: <ShoppingBag className="text-blue-600 w-6 h-6" />,
-      tags: ["Localization", "Digital", "Music", "Voice over", "Distribution"],
-    },
-  ];
+  const [domainsData, setDomainsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDomains = async () => {
+      try {
+        const res = await fetch(API.Domains);
+        const data = await res.json();
+        setDomainsData(data);
+      } catch (err) {
+        console.error("Failed to fetch domains:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDomains();
+  }, []);
+
+  // আইকন রেন্ডার করার ফাংশন
+  const renderIcon = (iconName) => {
+    const IconComponent = Icons[iconName];
+    return IconComponent ? <IconComponent className="text-blue-600 w-6 h-6" /> : <Icons.HelpCircle className="text-blue-600 w-6 h-6" />;
+  };
+
+  if (loading) return <div className="py-20 text-center">Loading Domains...</div>;
 
   return (
     <section className="bg-[#e0f0ff] py-20 px-6 md:px-12 font-sans relative overflow-hidden">
@@ -78,22 +53,22 @@ const Domains = () => {
           </div>
         </div>
 
-        {/* Main Domains Grid (Full Opacity) */}
+        {/* Main Domains Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-          {domainsData.slice(0, 8).map((domain, index) => (
+          {domainsData.map((domain, index) => (
             <div 
-              key={index} 
+              key={domain._id || index} 
               className="bg-white p-8 rounded-[32px] shadow-sm hover:shadow-md transition-shadow flex flex-col items-start"
             >
               <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                {domain.icon}
+                {renderIcon(domain.icon)}
               </div>
               <h3 className="text-xl font-bold text-[#1a1a1a] mb-3">{domain.title}</h3>
               <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                Global network of linguists and 3,000+ voice talents ready to scale.
+                {domain.description || "Global network of linguists and 3,000+ voice talents ready to scale."}
               </p>
               <div className="flex flex-wrap gap-2 mt-auto">
-                {domain.tags.map((tag, idx) => (
+                {domain.tags?.map((tag, idx) => (
                   <span key={idx} className="text-[10px] font-medium text-gray-500 border border-gray-100 px-3 py-1 rounded-full">
                     {tag}
                   </span>
@@ -103,12 +78,12 @@ const Domains = () => {
           ))}
         </div>
 
-        {/* Faded Row (Bottom Row with reduced opacity and blur) */}
+        {/* Faded Row (Visual Effect) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 opacity-30 blur-[1px] pointer-events-none">
           {domainsData.slice(0, 4).map((domain, index) => (
             <div key={`faded-${index}`} className="bg-white p-8 rounded-[32px] flex flex-col items-start">
                <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                {domain.icon}
+                {renderIcon(domain.icon)}
               </div>
               <h3 className="text-xl font-bold text-[#1a1a1a] mb-3">{domain.title}</h3>
               <div className="h-4 w-full bg-gray-100 rounded mb-4"></div>

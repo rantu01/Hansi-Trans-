@@ -34,6 +34,7 @@ const CommonComponentDropdown = ({ closeSidebar }) => {
             ["Testimonials", "/admin/testimonials"],
             ["Why Choose Us", "/admin/why-choose-us"],
             ["Work Process", "/admin/work-process"],
+            ["Domains", "/admin/domainsAdmin"],
           ].map(([label, href]) => (
             <Link
               key={href}
@@ -91,6 +92,13 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
           className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
         >
           <Settings size={18} /> Site Settings
+        </Link>
+        <Link
+          href="/admin/about-us"
+          onClick={closeSidebar}
+          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
+        >
+          <Settings size={18} /> AboutUS Settings
         </Link>
 
         <div className="pt-4">
