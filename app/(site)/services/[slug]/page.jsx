@@ -49,7 +49,7 @@ export default async function ServiceDetailsPage({ params }) {
 
       
       <CoreVoiceOver mainSlug={service.slug} />
-      <ProfessionalSupport></ProfessionalSupport>
+      <ProfessionalSupport data={service.professionalSupports} />
       <OurServices></OurServices>
       <WorkProcess></WorkProcess>
       <Testimonials></Testimonials>

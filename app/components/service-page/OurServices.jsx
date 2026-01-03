@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
-import { API } from "@/app/config/api"; // আপনার API পাথ অনুযায়ী নিশ্চিত হয়ে নিন
+import { API } from "@/app/config/api";
 
 const OurServices = () => {
   const [serviceList, setServiceList] = useState([]);
@@ -14,7 +14,11 @@ const OurServices = () => {
       try {
         const response = await axios.get(API.services.main);
         if (response.data.success) {
-          setServiceList(response.data.data);
+          // 🔹 ফ্রন্টএন্ডে চেক করা হচ্ছে এটি মেইন সার্ভিস কি না (parentService না থাকলে সেটি মেইন)
+          const mainServices = response.data.data.filter(
+            (service) => !service.parentService
+          );
+          setServiceList(mainServices);
         }
       } catch (error) {
         console.error("Error fetching services:", error);
@@ -25,7 +29,7 @@ const OurServices = () => {
     fetchServices();
   }, []);
 
-  if (loading) return null; // অথবা একটি subtle Skeleton দিতে পারেন
+  if (loading) return null;
 
   return (
     <section className="bg-white py-20 px-6 md:px-12 font-sans">

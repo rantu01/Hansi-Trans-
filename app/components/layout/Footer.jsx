@@ -28,9 +28,21 @@ const Footer = () => {
   useEffect(() => {
     const fetchSiteConfig = async () => {
       try {
-        const res = await fetch(API.siteConfig);
-        const data = await res.json();
+        // API.siteConfig পরিবর্তন করে API.site.getConfig করা হয়েছে
+        const res = await fetch(API.site.getConfig);
 
+        if (!res.ok) {
+          console.error(`Error: ${res.status} - ${res.statusText}`);
+          return;
+        }
+
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          console.error("Oops! Backend sent HTML instead of JSON. Check your API URL.");
+          return;
+        }
+
+        const data = await res.json();
         if (data?.success && data?.data) {
           setSiteConfig(data.data);
         }

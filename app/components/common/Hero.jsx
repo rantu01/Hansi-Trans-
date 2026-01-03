@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { API } from "@/app/config/api";
 
 const Hero = ({
   title = "About HS+",
@@ -13,7 +14,13 @@ const Hero = ({
 }) => {
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname(); // 🔹 current route
+  const pathname = usePathname();
+
+  // 🔹 State for dynamic site configuration
+  const [siteConfig, setSiteConfig] = useState({
+    logo: null,
+    brandText: "Hansi", // Default text
+  });
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -23,6 +30,25 @@ const Hero = ({
     { name: "Blog", path: "/blog" },
     { name: "Others", path: "/others" },
   ];
+
+  // 🔹 Fetch dynamic logo and brand text
+  useEffect(() => {
+    const fetchSiteData = async () => {
+      try {
+        const res = await fetch(API.site.getConfig);
+        const data = await res.json();
+        if (data?.success && data?.data) {
+          setSiteConfig({
+            logo: data.data.logo || null,
+            brandText: data.data.brandText || "Hansi",
+          });
+        }
+      } catch (error) {
+        console.error("Hero site data fetch failed", error);
+      }
+    };
+    fetchSiteData();
+  }, []);
 
   return (
     <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-black">
@@ -46,15 +72,18 @@ const Hero = ({
         {/* ================= NAVBAR ================= */}
         <nav className="relative z-50 mb-16">
           <div className="flex justify-between items-center">
-            {/* Logo */}
+            {/* Logo & Brand Text (Dynamic) */}
             <Link href="/" className="flex items-center space-x-2 flex-1">
               <img
-                src="/Hansi-Logo1.png"
+                src={siteConfig.logo || "/Hansi-Logo1.png"}
+                onError={(e) => {
+                  e.currentTarget.src = "/Hansi-Logo1.png";
+                }}
                 alt="hansi logo"
                 className="w-8 h-8 md:w-10 md:h-10 object-contain"
               />
               <span className="text-xl md:text-2xl font-bold tracking-wider">
-                Hansi
+                {siteConfig.brandText}
               </span>
             </Link>
 

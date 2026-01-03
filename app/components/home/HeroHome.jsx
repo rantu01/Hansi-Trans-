@@ -7,7 +7,12 @@ import { API } from "@/app/config/api";
 const HansiTrans = () => {
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [logo, setLogo] = useState(null);
+  
+  // 🔹 State updated to hold full site info
+  const [siteConfig, setSiteConfig] = useState({
+    logo: null,
+    brandText: "Hansi Trans" // Default text
+  });
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -19,18 +24,21 @@ const HansiTrans = () => {
   ];
 
   useEffect(() => {
-    const fetchLogo = async () => {
+    const fetchSiteData = async () => {
       try {
         const res = await fetch(API.site.getConfig);
         const data = await res.json();
-        if (data?.success && data?.data?.logo) {
-          setLogo(data.data.logo);
+        if (data?.success && data?.data) {
+          setSiteConfig({
+            logo: data.data.logo || null,
+            brandText: data.data.brandText || "Hansi Trans"
+          });
         }
       } catch (error) {
-        console.error("Logo fetch failed", error);
+        console.error("Site data fetch failed", error);
       }
     };
-    fetchLogo();
+    fetchSiteData();
   }, []);
 
   return (
@@ -53,21 +61,22 @@ const HansiTrans = () => {
       {/* Navigation */}
       <nav className="relative z-50 container mx-auto px-4 md:px-6 py-4 md:py-6">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo & Brand Text (Dynamic & Centered) */}
           <Link
             href="/"
             className="flex flex-col items-center justify-center space-y-1 flex-1 text-center"
           >
             <img
-              src={logo || "/Hansi-Logo1.png"}
+              src={siteConfig.logo || "/Hansi-Logo1.png"}
               onError={(e) => {
                 e.currentTarget.src = "/Hansi-Logo1.png";
               }}
               alt="hansi logo"
               className="w-8 h-8 md:w-10 md:h-10 object-contain"
             />
+            {/* Dynamic Brand Text exactly below logo */}
             <span className="text-xl md:text-2xl font-bold tracking-wider">
-              Hansi Trans
+              {siteConfig.brandText}
             </span>
           </Link>
 
@@ -150,9 +159,6 @@ const HansiTrans = () => {
             into a digital experience. Let's build something
             unforgettable—together!
           </p>
-
-          {/* 🔻 rest of your UI stays EXACTLY same */}
-          {/* (No design change done here) */}
         </div>
       </section>
     </div>
