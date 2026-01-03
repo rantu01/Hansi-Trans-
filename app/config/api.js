@@ -31,4 +31,9 @@ export const API = {
     deleteGalleryImage: `${API_BASE_URL}/api/about-us/gallery`,
   },
   Domains: `${API_BASE_URL}/api/common/domains`,
+  services: {
+    main: `${API_BASE_URL}/api/services`, // সব মেইন সার্ভিস
+    details: (slug) => `${API_BASE_URL}/api/services/${slug}`, // সিঙ্গেল সার্ভিস
+    subServices: (parentSlug) => `${API_BASE_URL}/api/services/sub/${parentSlug}`, // সাব-সার্ভিস
+  },
 };

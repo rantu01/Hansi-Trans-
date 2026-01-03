@@ -1,63 +1,31 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
+import axios from "axios";
+import { API } from "@/app/config/api"; // আপনার API পাথ অনুযায়ী নিশ্চিত হয়ে নিন
 
 const OurServices = () => {
-  const serviceList = [
-    {
-      title: "Multilingual Voice-Over",
-      slug: "voice-over",
-      description: "Translate & adapt your product for 40+ languages with cultural precision.",
-      features: [
-        "End-to-end game & product localization (UI, lore, marketing content)",
-        "Creation of termbase & style guides for consistency",
-        "LQA (Linguistic Quality Assurance) included",
-        "Coverage across 40+ languages",
-      ],
-      image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=800",
-      bgColor: "bg-[#cce9ff]",
-    },
-    {
-      title: "Localization",
-      slug: "localization",
-      description: "Translate & adapt your product for 40+ languages with cultural precision.",
-      features: [
-        "End-to-end game & product localization (UI, lore, marketing content)",
-        "Creation of termbase & style guides for consistency",
-        "LQA (Linguistic Quality Assurance) included",
-        "Coverage across 40+ languages",
-      ],
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800",
-      bgColor: "bg-[#e0f2fe]",
-    },
-    {
-      title: "Content Distribution & UA",
-      slug: "content-distribution",
-      description: "Translate & adapt your product for 40+ languages with cultural precision.",
-      features: [
-        "End-to-end game & product localization (UI, lore, marketing content)",
-        "Creation of termbase & style guides for consistency",
-        "LQA (Linguistic Quality Assurance) included",
-        "Coverage across 40+ languages",
-      ],
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800",
-      bgColor: "bg-[#f0f9ff]",
-    },
-    {
-      title: "LQA / Testing",
-      slug: "lqa-testing",
-      description: "Translate & adapt your product for 40+ languages with cultural precision.",
-      features: [
-        "End-to-end game & product localization (UI, lore, marketing content)",
-        "Creation of termbase & style guides for consistency",
-        "LQA (Linguistic Quality Assurance) included",
-        "Coverage across 40+ languages",
-      ],
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
-      bgColor: "bg-[#e0f2fe]",
-    },
-  ];
+  const [serviceList, setServiceList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(API.services.main);
+        if (response.data.success) {
+          setServiceList(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  if (loading) return null; // অথবা একটি subtle Skeleton দিতে পারেন
 
   return (
     <section className="bg-white py-20 px-6 md:px-12 font-sans">
@@ -82,7 +50,7 @@ const OurServices = () => {
           {serviceList.map((service, index) => (
             <div
               key={service.slug}
-              className={`${service.bgColor} rounded-[40px] p-8 md:p-12 flex flex-col ${
+              className={`${service.bgColor || "bg-[#e0f2fe]"} rounded-[40px] p-8 md:p-12 flex flex-col ${
                 index % 2 !== 0 ? "md:flex-row-reverse" : "md:flex-row"
               } items-center gap-12`}
             >
