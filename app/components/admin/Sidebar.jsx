@@ -1,49 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Settings,
   ChevronDown,
   ChevronUp,
   X,
+  Briefcase,
+  Layers,
+  FileText,
+  Info
 } from "lucide-react";
+import { API } from "@/app/config/api";
+
+const NavLink = ({ href, icon: Icon, label, onClick }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`
+        flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium
+        ${isActive 
+          ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30" 
+          : "text-slate-400 hover:bg-white/5 hover:text-white"}
+      `}
+    >
+      <Icon size={20} />
+      <span>{label}</span>
+    </Link>
+  );
+};
 
 const CommonComponentDropdown = ({ closeSidebar }) => {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const menuItems = [
+    { label: "Case Studies", href: "/admin/featured-case-studies" },
+    { label: "Influencers", href: "/admin/influencers" },
+    { label: "Testimonials", href: "/admin/testimonials" },
+    { label: "Why Choose Us", href: "/admin/why-choose-us" },
+    { label: "Work Process", href: "/admin/work-process" },
+    { label: "Domains", href: "/admin/domainsAdmin" },
+    { label: "Stats", href: "/admin/admin-stats" },
+  ];
 
   return (
     <div className="w-full">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-white/10 transition-colors"
+        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all
+          ${open ? "bg-white/5 text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}
       >
         <span className="flex items-center gap-3 font-medium">
-          <Settings size={18} />
-          Common Content
+          <Layers size={20} />
+          Components
         </span>
         {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
 
       {open && (
-        <div className="ml-6 mt-1 space-y-1 border-l border-white/20 pl-3">
-          {[
-            ["Featured Case Studies", "/admin/featured-case-studies"],
-            ["Our Influencers", "/admin/influencers"],
-            ["Testimonials", "/admin/testimonials"],
-            ["Why Choose Us", "/admin/why-choose-us"],
-            ["Work Process", "/admin/work-process"],
-            ["Domains", "/admin/domainsAdmin"],
-            ["Stats", "/admin/admin-stats"],
-          ].map(([label, href]) => (
+        <div className="ml-9 mt-2 space-y-1 border-l border-slate-700 pl-4 animate-in slide-in-from-top-2 duration-300">
+          {menuItems.map((item) => (
             <Link
-              key={href}
-              href={href}
+              key={item.href}
+              href={item.href}
               onClick={closeSidebar}
-              className="block p-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+              className={`block py-2 text-sm transition-colors ${
+                pathname === item.href ? "text-blue-400 font-semibold" : "text-slate-400 hover:text-white"
+              }`}
             >
-              {label}
+              {item.label}
             </Link>
           ))}
         </div>
@@ -53,76 +86,85 @@ const CommonComponentDropdown = ({ closeSidebar }) => {
 };
 
 const Sidebar = ({ isOpen, closeSidebar }) => {
+  const [siteConfig, setSiteConfig] = useState({
+    logo: "",
+    brandText: "Loading...",
+  });
+
+  // 🔹 Fetch site config for Logo and Brand Name
+  useEffect(() => {
+    const fetchSiteConfig = async () => {
+      try {
+        const res = await fetch(API.site.getConfig);
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.success && data?.data) {
+            setSiteConfig(data.data);
+          }
+        }
+      } catch (error) {
+        console.error("Sidebar config fetch failed", error);
+      }
+    };
+    fetchSiteConfig();
+  }, []);
+
   return (
     <aside
       className={`
-        fixed top-0 left-0 z-50 h-screen w-64
-        bg-[#002a4d] text-white p-5 flex flex-col
-        transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 z-50 h-screen w-72
+        bg-[#0f172a] text-white p-6 flex flex-col
+        transition-transform duration-300 ease-in-out border-r border-slate-800
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0
       `}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8 shrink-0">
-        <h2 className="font-black tracking-widest uppercase text-blue-400">
-          Admin Panel
-        </h2>
+      {/* Sidebar Logo & Brand Name (Dynamic) */}
+      <div className="flex items-center justify-between mb-10">
+        <div className="flex items-center gap-3 overflow-hidden">
+          <div className="w-10 h-10 flex-shrink-0 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-500/10">
+            {siteConfig.logo ? (
+              <img 
+                src={siteConfig.logo} 
+                alt="Logo" 
+                className="w-full h-full object-contain p-1"
+              />
+            ) : (
+              <span className="font-bold text-xl text-blue-500">
+                {siteConfig.brandText?.charAt(0) || "A"}
+              </span>
+            )}
+          </div>
+          <h2 className="font-bold text-lg tracking-tight truncate">
+            {siteConfig.brandText || "Nexus Admin"}
+          </h2>
+        </div>
 
         <button
           onClick={closeSidebar}
-          className="lg:hidden p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+          className="lg:hidden p-2 hover:bg-white/10 rounded-xl transition-all flex-shrink-0"
         >
-          <X size={22} />
+          <X size={20} />
         </button>
       </div>
 
-      {/* Navigation - custom scrollbar added */}
-      <nav className="flex-1 space-y-2 overflow-y-auto pr-2 custom-scrollbar">
-        <Link
-          href="/admin"
-          onClick={closeSidebar}
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
-        >
-          <LayoutDashboard size={18} /> Dashboard
-        </Link>
+      {/* Navigation */}
+      <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
+        <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Menu</p>
+        
+        <NavLink href="/admin" icon={LayoutDashboard} label="Dashboard" onClick={closeSidebar} />
+        <NavLink href="/admin/site" icon={Settings} label="Site Settings" onClick={closeSidebar} />
+        <NavLink href="/admin/about-us" icon={Info} label="About Us" onClick={closeSidebar} />
+        <NavLink href="/admin/services" icon={Briefcase} label="Services" onClick={closeSidebar} />
+        <NavLink href="/admin/CaseStudiesAdmin" icon={FileText} label="Case Studies" onClick={closeSidebar} />
 
-        <Link
-          href="/admin/site"
-          onClick={closeSidebar}
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
-        >
-          <Settings size={18} /> Site Settings
-        </Link>
-        <Link
-          href="/admin/about-us"
-          onClick={closeSidebar}
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
-        >
-          <Settings size={18} /> AboutUS Settings
-        </Link>
-        <Link
-          href="/admin/services"
-          onClick={closeSidebar}
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
-        >
-          <Settings size={18} /> services Settings
-        </Link>
-        <Link
-          href="/admin/CaseStudiesAdmin"
-          onClick={closeSidebar}
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
-        >
-          <Settings size={18} /> CaseStudies Settings
-        </Link>
-
-        <div className="pt-4">
-          <p className="text-[10px] text-gray-400 uppercase mb-2 px-3 font-bold tracking-widest">
-            Components
-          </p>
+        <div className="pt-6">
+          <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Advanced</p>
           <CommonComponentDropdown closeSidebar={closeSidebar} />
         </div>
       </nav>
+
+      
     </aside>
   );
 };

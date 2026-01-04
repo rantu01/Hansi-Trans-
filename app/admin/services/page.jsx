@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { Plus, Trash2, Pencil, Loader2 } from "lucide-react";
+import { Plus, Trash2, Pencil, Loader2, Layers, Globe, Filter } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2"; // SweetAlert2 ইমপোর্ট করা হয়েছে
 
 export default function AdminServiceList() {
   const [services, setServices] = useState([]);
@@ -18,7 +20,7 @@ export default function AdminServiceList() {
         setFilteredServices(res.data.data);
       }
     } catch (err) {
-      console.error("Fetch Error:", err);
+      toast.error("Failed to fetch services!");
     } finally {
       setLoading(false);
     }
@@ -26,108 +28,169 @@ export default function AdminServiceList() {
 
   useEffect(() => { fetchAllServices(); }, []);
 
-  // ফিল্টার লজিক (এটি খুবই গুরুত্বপূর্ণ অংশ)
+  // Filter logic...
   useEffect(() => {
     let result = [...services];
-
     if (filterType === "main") {
-      // যাদের parentService নেই বা null বা undefined
-      result = services.filter(s => {
-        return !s.parentService || s.parentService === null;
-      });
-    } 
-    else if (filterType === "sub") {
-      // যাদের parentService আছে (সেটি অবজেক্ট বা স্ট্রিং যাই হোক)
-      result = services.filter(s => {
-        if (!s.parentService) return false;
-        
-        // যদি parentService একটি অবজেক্ট হয় (যেমন $oid সহ) অথবা স্ট্রিং হয়
-        const hasId = typeof s.parentService === 'object' ? Object.keys(s.parentService).length > 0 : !!s.parentService;
-        return hasId;
-      });
+      result = services.filter(s => !s.parentService);
+    } else if (filterType === "sub") {
+      result = services.filter(s => s.parentService);
     }
-
     setFilteredServices(result);
   }, [filterType, services]);
 
+  // আপডেট করা deleteService ফাংশন
   const deleteService = async (id) => {
-    if (!confirm("Are you sure?")) return;
-    try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/delete/${id}`);
-      fetchAllServices(); 
-    } catch (err) {
-      alert("Delete failed");
+    // SweetAlert2 কনফার্মেশন ডায়ালগ
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this service!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444", // Red-500
+      cancelButtonColor: "#64748b",  // Slate-500
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel",
+      reverseButtons: true,
+      borderRadius: "1.5rem",
+      customClass: {
+        popup: 'rounded-[2rem] font-sans',
+        confirmButton: 'rounded-xl px-6 py-3 font-bold',
+        cancelButton: 'rounded-xl px-6 py-3 font-bold'
+      }
+    });
+
+    if (result.isConfirmed) {
+      const loadingToast = toast.loading("Deleting service...");
+      try {
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/delete/${id}`);
+        
+        // ডিলিট সফল হলে SweetAlert দিয়ে জানানো (ঐচ্ছিক, চাইলে শুধু টোস্টও রাখতে পারেন)
+        Swal.fire({
+          title: "Deleted!",
+          text: "The service has been removed.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+          borderRadius: "1.5rem",
+        });
+
+        toast.success("Service deleted!", { id: loadingToast });
+        fetchAllServices(); 
+      } catch (err) {
+        toast.error("Delete failed. Please try again.", { id: loadingToast });
+      }
     }
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <div className="p-6 md:p-10 bg-[#f8fafc] min-h-screen font-sans">
+      <Toaster position="top-right" reverseOrder={false} />
+      
+      <div className="max-w-7xl mx-auto space-y-8">
         
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">Service Management</h1>
-          <Link href="/admin/services/add" className="bg-[#0066b2] text-white px-6 py-3 rounded-xl flex items-center gap-2">
-            <Plus size={18} /> Add New
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Service Directory</h1>
+            <p className="text-slate-500 mt-1 font-medium">Manage your main offerings and specialized sub-services</p>
+          </div>
+          <Link href="/admin/services/add" className="bg-slate-900 hover:bg-blue-600 text-white px-8 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl shadow-slate-200 active:scale-95 font-bold">
+            <Plus size={20} /> Add New Service
           </Link>
         </div>
 
-        {/* ফিল্টার ট্যাব */}
-        <div className="flex items-center gap-2 mb-6 bg-gray-100 p-1.5 rounded-xl w-fit">
-          {["all", "main", "sub"].map((type) => (
-            <button 
-              key={type}
-              onClick={() => setFilterType(type)}
-              className={`px-6 py-2 rounded-lg text-sm font-bold transition capitalize ${filterType === type ? "bg-white text-[#0066b2] shadow-sm" : "text-gray-500"}`}
-            >
-              {type === 'all' ? `All (${services.length})` : type === 'main' ? 'Main Services' : 'Sub Services'}
-            </button>
-          ))}
+        {/* Filter Bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between bg-white px-6 py-4 rounded-[1.8rem] shadow-sm border border-slate-50 gap-4">
+          <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-2xl w-full sm:w-auto overflow-x-auto">
+            {["all", "main", "sub"].map((type) => (
+              <button 
+                key={type}
+                onClick={() => setFilterType(type)}
+                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all capitalize whitespace-nowrap ${filterType === type ? "bg-white text-blue-600 shadow-md" : "text-slate-500 hover:text-slate-800"}`}
+              >
+                {type === 'all' ? `All Items (${services.length})` : type === 'main' ? 'Main' : 'Sub'}
+              </button>
+            ))}
+          </div>
+          <div className="text-slate-400 hidden md:flex items-center gap-2 text-sm font-semibold uppercase tracking-widest">
+            <Filter size={14} /> {filteredServices.length} Records Showing
+          </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Services Table */}
+        <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden overflow-x-auto">
           {loading ? (
-            <div className="flex justify-center py-20"><Loader2 className="animate-spin text-blue-500" size={40} /></div>
+            <div className="flex flex-col items-center justify-center py-32 gap-4">
+              <Loader2 className="animate-spin text-blue-500" size={48} />
+              <p className="font-bold text-slate-400 animate-pulse uppercase tracking-widest text-xs">Syncing Database...</p>
+            </div>
           ) : (
-            <table className="w-full text-left">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
-                <tr className="text-gray-400 text-[11px] uppercase font-bold border-b">
-                  <th className="pb-4 px-4">Service</th>
-                  <th className="pb-4 px-4">Type</th>
-                  <th className="pb-4 px-4 text-right">Actions</th>
+                <tr className="bg-slate-50/50 text-slate-400 text-[11px] uppercase tracking-[2px] font-black border-b border-slate-100">
+                  <th className="py-6 px-8">Service Info</th>
+                  <th className="py-6 px-8">Category Type</th>
+                  <th className="py-6 px-8 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-50">
                 {filteredServices.map((s) => (
-                  <tr key={s._id} className="border-b last:border-0 hover:bg-gray-50">
-                    <td className="py-4 px-4">
-                      <div className="flex items-center gap-3">
-                        <img src={s.image} className="w-10 h-10 rounded bg-gray-100 object-cover" />
-                        <span className="font-semibold text-gray-700">{s.title}</span>
+                  <tr key={s._id} className="group hover:bg-blue-50/30 transition-colors">
+                    <td className="py-5 px-8">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-inner bg-slate-100 border-2 border-white group-hover:border-blue-200 transition-all flex-shrink-0">
+                          <img 
+                             src={s.image || "https://via.placeholder.com/150"} 
+                             alt={s.title}
+                             className="w-full h-full object-cover" 
+                             onError={(e) => e.target.src = "https://via.placeholder.com/150"}
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block font-bold text-slate-800 text-lg group-hover:text-blue-700 transition-colors truncate">{s.title}</span>
+                          <span className="text-xs font-medium text-slate-400 tracking-tight block truncate">{s.slug}</span>
+                        </div>
                       </div>
                     </td>
-                    <td className="py-4 px-4">
+                    <td className="py-5 px-8">
                       {s.parentService ? (
-                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">SUB SERVICE</span>
+                        <div className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-blue-600 bg-blue-100/50 px-3 py-1.5 rounded-full uppercase">
+                          <Layers size={12} /> Sub Service
+                        </div>
                       ) : (
-                        <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">MAIN SERVICE</span>
+                        <div className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-emerald-600 bg-emerald-100/50 px-3 py-1.5 rounded-full uppercase">
+                          <Globe size={12} /> Global Main
+                        </div>
                       )}
                     </td>
-                    <td className="py-4 px-4 text-right flex justify-end gap-2">
-                      <Link href={`/admin/services/edit/${s._id}`} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                        <Pencil size={18} />
-                      </Link>
-                      <button onClick={() => deleteService(s._id)} className="p-2 text-red-500 hover:bg-red-50 rounded">
-                        <Trash2 size={18} />
-                      </button>
+                    <td className="py-5 px-8 text-right">
+                      <div className="flex justify-end gap-3">
+                        <Link href={`/admin/services/edit/${s._id}`} className="p-3 text-slate-400 hover:text-blue-600 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100">
+                          <Pencil size={18} />
+                        </Link>
+                        <button 
+                          onClick={() => deleteService(s._id)} 
+                          className="p-3 text-slate-400 hover:text-red-500 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
+
+          {/* Empty State */}
           {!loading && filteredServices.length === 0 && (
-            <div className="text-center py-20 text-gray-400 font-medium">
-              No services found for "{filterType}" filter.
+            <div className="text-center py-32 animate-in fade-in zoom-in duration-300">
+              <div className="inline-flex p-6 bg-slate-50 rounded-full mb-4 text-slate-200">
+                 <Layers size={48} />
+              </div>
+              <p className="text-slate-400 font-bold text-lg">No services found.</p>
+              <p className="text-slate-300 text-sm">Try changing your filters or add a new service.</p>
             </div>
           )}
         </div>

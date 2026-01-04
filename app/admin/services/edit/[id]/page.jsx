@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Save, Loader2, Upload, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { API } from "@/app/config/api";
+import toast, { Toaster } from "react-hot-toast"; // টোস্ট ইমপোর্ট করা হয়েছে
 
 export default function EditServicePage() {
   const router = useRouter();
@@ -25,7 +26,6 @@ export default function EditServicePage() {
     bgColor: "bg-[#e0f2fe]",
     features: "",
     parentService: "",
-    // Professional Support এর জন্য ডাটা
     professionalSupports: [
       { title: "", description: "", image: "" },
       { title: "", description: "", image: "" },
@@ -51,7 +51,6 @@ export default function EditServicePage() {
             bgColor: currentData.bgColor || "bg-[#e0f2fe]",
             features: currentData.features ? currentData.features.join(", ") : "",
             parentService: currentData.parentService || "",
-            // যদি ডাটাবেজে professionalSupports থাকে তবে সেটি সেট হবে, নাহলে ৩টি খালি অবজেক্ট
             professionalSupports: currentData.professionalSupports && currentData.professionalSupports.length > 0 
               ? currentData.professionalSupports 
               : [{ title: "", description: "", image: "" }, { title: "", description: "", image: "" }, { title: "", description: "", image: "" }],
@@ -59,7 +58,7 @@ export default function EditServicePage() {
           setPreview(currentData.image || "");
         }
       } catch (err) {
-        console.error("Error loading data:", err);
+        toast.error("Failed to load service data");
       } finally {
         setLoading(false);
       }
@@ -67,11 +66,16 @@ export default function EditServicePage() {
     fetchData();
   }, [id]);
 
-  // ইমেজ আপলোড ফাংশন (মেইন এবং সাপোর্ট কার্ড উভয়ের জন্য)
   const handleImageUpload = async (file, index = null) => {
     if (!file) return;
+    
+    // ফাইল সাইজ ভ্যালিডেশন
+    if (file.size > 2 * 1024 * 1024) {
+      return toast.error("Image must be less than 2MB");
+    }
 
     setUploading(true);
+    const loadingToast = toast.loading("Uploading image...");
     const data = new FormData();
     data.append("image", file);
 
@@ -85,18 +89,17 @@ export default function EditServicePage() {
       
       if (result.url) {
         if (index !== null) {
-          // সাপোর্ট কার্ডের ইমেজ আপডেট
           const updatedSupports = [...formData.professionalSupports];
           updatedSupports[index].image = result.url;
           setFormData({ ...formData, professionalSupports: updatedSupports });
         } else {
-          // মেইন ইমেজ আপডেট
           setFormData({ ...formData, image: result.url });
           setPreview(result.url);
         }
+        toast.success("Image uploaded successfully!", { id: loadingToast });
       }
     } catch (err) {
-      alert("Image upload failed!");
+      toast.error("Image upload failed!", { id: loadingToast });
     } finally {
       setUploading(false);
     }
@@ -110,23 +113,24 @@ export default function EditServicePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.image) return alert("Image is required");
+    if (!formData.image) return toast.error("Main image is required");
     
     setSaveLoading(true);
+    const loadingToast = toast.loading("Updating service...");
+
     const dataToSend = {
       ...formData,
       features: formData.features.split(",").map(f => f.trim()),
       parentService: formData.parentService || null,
-      // শুধু সেগুলোই পাঠানো হবে যেগুলোতে অন্তত টাইটেল আছে
       professionalSupports: formData.professionalSupports.filter(s => s.title.trim() !== "")
     };
 
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/update/${id}`, dataToSend);
-      alert("Service Updated Successfully!");
-      router.push("/admin/services");
+      toast.success("Service Updated Successfully! ✨", { id: loadingToast });
+      setTimeout(() => router.push("/admin/services"), 1500);
     } catch (err) {
-      alert("Error updating service");
+      toast.error("Error updating service", { id: loadingToast });
     } finally {
       setSaveLoading(false);
     }
@@ -135,18 +139,20 @@ export default function EditServicePage() {
   if (loading) return (
     <div className="p-20 text-center flex flex-col items-center gap-4">
       <Loader2 className="animate-spin text-blue-600" size={40} />
-      <p className="text-gray-500 font-medium">Fetching Service Data...</p>
+      <p className="text-gray-500 font-medium animate-pulse">Fetching Service Data...</p>
     </div>
   );
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans text-[#1a1a1a]">
+      <Toaster position="top-right" reverseOrder={false} />
+
       <div className="max-w-4xl mx-auto">
         <Link href="/admin/services" className="flex items-center gap-2 text-gray-500 mb-6 hover:text-gray-800 transition w-fit text-sm">
           <ArrowLeft size={18} /> Back to List
         </Link>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in duration-500">
           {/* Main Service Info */}
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6">
             <div className="border-b pb-4">
@@ -155,16 +161,8 @@ export default function EditServicePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Title</label>
-                <input required value={formData.title} className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" 
-                  onChange={e => setFormData({...formData, title: e.target.value})} />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Slug</label>
-                <input required value={formData.slug} className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" 
-                  onChange={e => setFormData({...formData, slug: e.target.value})} />
-              </div>
+              <InputGroup label="Title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+              <InputGroup label="Slug" value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -176,11 +174,7 @@ export default function EditServicePage() {
                   {mainServices.map(s => <option key={s._id} value={s._id}>{s.title}</option>)}
                 </select>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Features</label>
-                <input value={formData.features} className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" 
-                  placeholder="Feature 1, Feature 2" onChange={e => setFormData({...formData, features: e.target.value})} />
-              </div>
+              <InputGroup label="Features (Comma separated)" value={formData.features} placeholder="Cloud, Security, Support" onChange={e => setFormData({...formData, features: e.target.value})} />
             </div>
 
             <div>
@@ -195,8 +189,9 @@ export default function EditServicePage() {
                   {uploading && <div className="absolute inset-0 bg-black/40 flex items-center justify-center"><Loader2 className="animate-spin text-white" size={18} /></div>}
                </div>
                <div className="space-y-2">
-                  <input type="file" accept="image/*" className="text-xs" onChange={(e) => handleImageUpload(e.target.files[0])} />
-                  <p className="text-[10px] text-blue-400 uppercase font-bold">Change Main Image</p>
+                  <input type="file" accept="image/*" className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" 
+                    onChange={(e) => handleImageUpload(e.target.files[0])} />
+                  <p className="text-[10px] text-blue-400 uppercase font-bold tracking-wider">Change Main Banner Image</p>
                </div>
             </div>
           </div>
@@ -210,27 +205,27 @@ export default function EditServicePage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {formData.professionalSupports.map((support, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-4">
-                  <span className="text-[10px] font-bold text-gray-400">SUPPORT CARD 0{index + 1}</span>
+                <div key={index} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-4 hover:border-blue-200 transition-colors">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase">Support Card 0{index + 1}</span>
                   <input 
                     placeholder="Title" 
-                    className="w-full p-2 text-sm bg-white border rounded-lg outline-none focus:ring-1 focus:ring-blue-400"
+                    className="w-full p-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-400 transition"
                     value={support.title}
                     onChange={(e) => handleSupportChange(index, "title", e.target.value)}
                   />
                   <textarea 
-                    placeholder="Description" 
-                    className="w-full p-2 text-xs bg-white border rounded-lg h-16 outline-none resize-none"
+                    placeholder="Brief description..." 
+                    className="w-full p-2 text-xs bg-white border border-gray-200 rounded-lg h-16 outline-none resize-none focus:ring-1 focus:ring-blue-400"
                     value={support.description}
                     onChange={(e) => handleSupportChange(index, "description", e.target.value)}
                   />
-                  <div className="space-y-2">
-                    {support.image && <img src={support.image} className="w-full h-20 object-cover rounded-lg border shadow-sm" />}
-                    <input 
-                      type="file" 
-                      className="text-[10px] w-full" 
-                      onChange={(e) => handleImageUpload(e.target.files[0], index)} 
-                    />
+                  <div className="space-y-3">
+                    {support.image && <img src={support.image} className="w-full h-20 object-cover rounded-lg border border-white shadow-sm" />}
+                    <label className="flex items-center justify-center w-full py-2 bg-white border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-blue-50 transition group">
+                        <Upload size={14} className="text-gray-400 group-hover:text-blue-500 mr-2" />
+                        <span className="text-[10px] font-bold text-gray-500 group-hover:text-blue-600 uppercase">Upload Icon</span>
+                        <input type="file" className="hidden" onChange={(e) => handleImageUpload(e.target.files[0], index)} />
+                    </label>
                   </div>
                 </div>
               ))}
@@ -240,7 +235,7 @@ export default function EditServicePage() {
           <button 
             type="submit"
             disabled={saveLoading || uploading} 
-            className={`w-full py-4 rounded-xl font-bold flex justify-center items-center gap-2 transition-all shadow-lg active:scale-[0.98] ${saveLoading || uploading ? "bg-gray-400 cursor-not-allowed" : "bg-[#0066b2] hover:bg-blue-700 text-white"}`}
+            className={`w-full py-4 rounded-xl font-bold flex justify-center items-center gap-2 transition-all shadow-lg active:scale-[0.98] ${saveLoading || uploading ? "bg-gray-400 cursor-not-allowed" : "bg-[#0066b2] hover:bg-blue-700 text-white shadow-blue-200"}`}
           >
             {saveLoading ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
             {saveLoading ? "Saving Changes..." : "Update Everything"}
@@ -250,3 +245,15 @@ export default function EditServicePage() {
     </div>
   );
 }
+
+// Reusable Input Component for cleaner UI
+const InputGroup = ({ label, ...props }) => (
+  <div>
+    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{label}</label>
+    <input 
+      required 
+      className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition placeholder:text-gray-300" 
+      {...props} 
+    />
+  </div>
+);
