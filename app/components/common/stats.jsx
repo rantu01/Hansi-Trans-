@@ -1,7 +1,29 @@
 "use client";
-import React from "react";
+import { API } from "@/app/config/api";
+import React, { useEffect, useState } from "react";
 
-const Stats = ({ stats }) => {
+const Stats = () => {
+  const [stats, setStats] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(API.Stats);
+        const data = await response.json();
+        setStats(data);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  if (loading || stats.length === 0) return null;
+
   return (
     <div className="max-w-6xl mx-auto mb-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-[80px] overflow-hidden shadow-sm bg-gradient-to-b from-[#abdbfe] to-white">

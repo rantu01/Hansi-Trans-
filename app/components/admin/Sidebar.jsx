@@ -35,6 +35,7 @@ const CommonComponentDropdown = ({ closeSidebar }) => {
             ["Why Choose Us", "/admin/why-choose-us"],
             ["Work Process", "/admin/work-process"],
             ["Domains", "/admin/domainsAdmin"],
+            ["Stats", "/admin/admin-stats"],
           ].map(([label, href]) => (
             <Link
               key={href}
