@@ -108,6 +108,13 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         >
           <Settings size={18} /> services Settings
         </Link>
+        <Link
+          href="/admin/CaseStudiesAdmin"
+          onClick={closeSidebar}
+          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all font-medium"
+        >
+          <Settings size={18} /> CaseStudies Settings
+        </Link>
 
         <div className="pt-4">
           <p className="text-[10px] text-gray-400 uppercase mb-2 px-3 font-bold tracking-widest">

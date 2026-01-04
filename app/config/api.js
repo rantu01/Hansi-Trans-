@@ -38,5 +38,12 @@ export const API = {
     details: (slug) => `${API_BASE_URL}/api/services/${slug}`, // সিঙ্গেল সার্ভিস
     subServices: (parentSlug) => `${API_BASE_URL}/api/services/sub/${parentSlug}`, // সাব-সার্ভিস
   },
+
+  CaseStudies: {
+    getAll: `${API_BASE_URL}/api/case-studies`,
+    add: `${API_BASE_URL}/api/case-studies/add`,
+    update: (id) => `${API_BASE_URL}/api/case-studies/${id}`,
+    delete: (id) => `${API_BASE_URL}/api/case-studies/${id}`,
+  },
   
 };
