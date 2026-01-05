@@ -12,7 +12,8 @@ import {
   Briefcase,
   Layers,
   FileText,
-  Info
+  Info,
+  ToyBrick
 } from "lucide-react";
 import { API } from "@/app/config/api";
 
@@ -26,8 +27,8 @@ const NavLink = ({ href, icon: Icon, label, onClick }) => {
       onClick={onClick}
       className={`
         flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium
-        ${isActive 
-          ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30" 
+        ${isActive
+          ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30"
           : "text-slate-400 hover:bg-white/5 hover:text-white"}
       `}
     >
@@ -72,9 +73,8 @@ const CommonComponentDropdown = ({ closeSidebar }) => {
               key={item.href}
               href={item.href}
               onClick={closeSidebar}
-              className={`block py-2 text-sm transition-colors ${
-                pathname === item.href ? "text-blue-400 font-semibold" : "text-slate-400 hover:text-white"
-              }`}
+              className={`block py-2 text-sm transition-colors ${pathname === item.href ? "text-blue-400 font-semibold" : "text-slate-400 hover:text-white"
+                }`}
             >
               {item.label}
             </Link>
@@ -124,9 +124,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="w-10 h-10 flex-shrink-0 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-500/10">
             {siteConfig.logo ? (
-              <img 
-                src={siteConfig.logo} 
-                alt="Logo" 
+              <img
+                src={siteConfig.logo}
+                alt="Logo"
                 className="w-full h-full object-contain p-1"
               />
             ) : (
@@ -151,12 +151,13 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
       {/* Navigation */}
       <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
         <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Menu</p>
-        
+
         <NavLink href="/admin" icon={LayoutDashboard} label="Dashboard" onClick={closeSidebar} />
         <NavLink href="/admin/site" icon={Settings} label="Site Settings" onClick={closeSidebar} />
         <NavLink href="/admin/about-us" icon={Info} label="About Us" onClick={closeSidebar} />
         <NavLink href="/admin/services" icon={Briefcase} label="Services" onClick={closeSidebar} />
         <NavLink href="/admin/CaseStudiesAdmin" icon={FileText} label="Case Studies" onClick={closeSidebar} />
+        <NavLink href="/admin/blog" icon={ToyBrick} label="Blog" onClick={closeSidebar} />
 
         <div className="pt-6">
           <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Advanced</p>
@@ -164,7 +165,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         </div>
       </nav>
 
-      
+
     </aside>
   );
 };

@@ -45,5 +45,11 @@ export const API = {
     update: (id) => `${API_BASE_URL}/api/case-studies/${id}`,
     delete: (id) => `${API_BASE_URL}/api/case-studies/${id}`,
   },
-  
+  Blogs: {
+    getAll: `${API_BASE_URL}/api/blogs`,
+    getSingle: (slug) => `${API_BASE_URL}/api/blogs/${slug}`,
+    add: `${API_BASE_URL}/api/blogs`,
+    update: (id) => `${API_BASE_URL}/api/blogs/${id}`,
+    delete: (id) => `${API_BASE_URL}/api/blogs/${id}`,
+  },
 };
