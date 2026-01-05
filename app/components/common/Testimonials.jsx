@@ -6,8 +6,21 @@ import { API } from "@/app/config/api";
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [bottomNav, setBottomNav] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // স্ক্রিন সাইজ চেক করার ফাংশন
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // শুরুতে একবার রান করবে
+    handleResize();
+
+    // রিসাইজ ইভেন্ট লিসেনার যোগ করা
+    window.addEventListener("resize", handleResize);
+
     const fetchTestimonials = async () => {
       try {
         const res = await fetch(API.Testimonials.getTestimonials);
@@ -22,7 +35,33 @@ const Testimonials = () => {
     };
 
     fetchTestimonials();
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Navigation Logic
+  const nextSlide = () => {
+    // ডেক্সটপে ২টা করে কার্ড দেখালে index length-2 পর্যন্ত যাবে
+    const maxIndex = isMobile ? testimonials.length - 1 : testimonials.length - 2;
+    if (currentIndex < maxIndex) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      setCurrentIndex(0);
+    }
+  };
+
+  const prevSlide = () => {
+    const maxIndex = isMobile ? testimonials.length - 1 : testimonials.length - 2;
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    } else {
+      setCurrentIndex(Math.max(0, maxIndex));
+    }
+  };
+
+  // স্লাইডিং ভ্যালু ক্যালকুলেশন
+  // মোবাইলে ১০০% সরবে, ডেক্সটপে ৫০% সরবে
+  const translateValue = currentIndex * (isMobile ? 100 : 50);
 
   return (
     <section className="py-20 bg-white">
@@ -46,72 +85,85 @@ const Testimonials = () => {
           </div>
         </div>
 
-        {/* Testimonial Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 container mx-auto">
-          {testimonials.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white rounded-[40px] p-4 shadow-2xl shadow-blue-100/50 border border-gray-50 flex flex-col h-full"
-            >
-              {item.type === "text" ? (
-                <div className="bg-gray-50/50 rounded-[35px] p-10 flex-grow flex flex-col justify-center items-start mb-6">
-                  <Quote className="w-12 h-12 text-[#0066b2] fill-[#0066b2] opacity-20 mb-6" />
-                  <p className="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">
-                    {item.quote}
-                  </p>
-                </div>
-              ) : (
-                <div className="relative rounded-[35px] overflow-hidden mb-6 h-[300px] md:h-full min-h-[300px]">
+        {/* Testimonial Cards Slider Container */}
+        <div className="overflow-hidden mb-12 container mx-auto">
+          <div 
+            className="flex transition-transform duration-500 ease-in-out gap-8"
+            style={{ transform: `translateX(-${translateValue}%)`, display: 'flex' }}
+          >
+            {testimonials.map((item) => (
+              <div
+                key={item._id}
+                className="w-full md:w-[calc(50%-16px)] flex-shrink-0 bg-white rounded-[40px] p-4 shadow-2xl shadow-blue-100/50 border border-gray-50 flex flex-col h-full"
+              >
+                {item.type === "text" ? (
+                  <div className="bg-gray-50/50 rounded-[35px] p-10 flex-grow flex flex-col justify-center items-start mb-6">
+                    <Quote className="w-12 h-12 text-[#0066b2] fill-[#0066b2] opacity-20 mb-6" />
+                    <p className="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">
+                      {item.quote}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="relative rounded-[35px] overflow-hidden mb-6 h-[300px] md:h-[400px] min-h-[300px]">
+                    <img
+                      src={item.thumbnail}
+                      alt="Client"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+                      <button className="bg-[#0070c0] text-white p-4 rounded-full shadow-lg transform transition hover:scale-110">
+                        <Play className="w-6 h-6 fill-white" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* User Info */}
+                <div className="flex items-center gap-4 px-6 pb-4">
                   <img
-                    src={item.thumbnail}
-                    alt="Client"
-                    className="w-full h-full object-cover"
+                    src={item.avatar}
+                    alt={item.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
                   />
-                  <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                    <button className="bg-[#0070c0] text-white p-4 rounded-full shadow-lg transform transition hover:scale-110">
-                      <Play className="w-6 h-6 fill-white" />
-                    </button>
+                  <div className="text-left">
+                    <h4 className="font-bold text-gray-900 leading-none mb-1">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 text-xs">{item.role}</p>
                   </div>
                 </div>
-              )}
-
-              {/* User Info */}
-              <div className="flex items-center gap-4 px-6 pb-4">
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
-                />
-                <div className="text-left">
-                  <h4 className="font-bold text-gray-900 leading-none mb-1">
-                    {item.name}
-                  </h4>
-                  <p className="text-gray-400 text-xs">{item.role}</p>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Custom Navigation Bar */}
-        <div className="max-w-6xl mx-auto bg-white border border-gray-100 rounded-full p-3 flex flex-wrap md:flex-nowrap items-center justify-between shadow-sm">
-          <div className="flex items-center gap-3 ml-2">
-            <button className="p-4 bg-gray-50 rounded-full hover:bg-gray-100 transition">
+        <div className="max-w-6xl mx-auto bg-white border border-gray-100 rounded-full p-3 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-3 ml-2 shrink-0">
+            <button 
+              onClick={prevSlide}
+              className="p-4 bg-gray-50 rounded-full hover:bg-gray-100 transition active:scale-95"
+            >
               <ArrowLeft className="w-5 h-5 text-gray-400" />
             </button>
-            <button className="p-4 bg-[#0070c0] text-white rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+            <button 
+              onClick={nextSlide}
+              className="p-4 bg-[#0070c0] text-white rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-200 active:scale-95"
+            >
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="hidden md:flex flex-grow justify-around items-center px-8">
+          <div className="hidden md:flex flex-grow justify-around items-center px-8 overflow-hidden">
             {bottomNav.map((nav, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center border-r last:border-0 border-gray-100 px-10"
+                className={`flex flex-col items-center border-r last:border-0 border-gray-100 px-10 transition-opacity duration-300 ${
+                  i >= currentIndex && i < currentIndex + 4 ? "opacity-100" : "opacity-40"
+                }`}
               >
-                <p className="text-gray-900 font-bold text-sm">{nav.name}</p>
-                <p className="text-gray-400 text-[10px] uppercase tracking-wider">
+                <p className="text-gray-900 font-bold text-sm whitespace-nowrap">{nav.name}</p>
+                <p className="text-gray-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
                   {nav.company}
                 </p>
               </div>

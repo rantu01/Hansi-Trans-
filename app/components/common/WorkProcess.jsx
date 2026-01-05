@@ -24,6 +24,7 @@ const iconMap = {
 const WorkProcess = () => {
   const [steps, setSteps] = useState([]);
   const [studios, setStudios] = useState([]);
+  const [tools, setTools] = useState([]); // নতুন স্টেট
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +36,7 @@ const WorkProcess = () => {
 
         setSteps(data.steps || []);
         setStudios(data.studios || []);
+        setTools(data.tools || []); // ব্যাকএন্ড থেকে টুলস সেট করা হচ্ছে
       } catch (err) {
         console.error("Failed to load work process", err);
       }
@@ -154,14 +156,19 @@ const WorkProcess = () => {
               </div>
             </div>
 
+            {/* DYNAMIC TOOLS GRID - No design change */}
             <div className="grid grid-cols-4 gap-4 mb-8">
-              {[...Array(12)].map((_, i) => (
+              {tools.map((tool, i) => (
                 <div
                   key={i}
                   className="aspect-square bg-white rounded-2xl flex items-center justify-center shadow-sm overflow-hidden p-2"
                 >
                   <div className="w-full h-full rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-[10px] text-gray-400 font-bold">
-                    TOOL {i + 1}
+                    {tool.image ? (
+                      <img src={tool.image} alt={tool.name} className="w-full h-full object-contain" />
+                    ) : (
+                      tool.name || `TOOL ${i + 1}`
+                    )}
                   </div>
                 </div>
               ))}
