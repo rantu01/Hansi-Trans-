@@ -91,7 +91,19 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
     brandText: "Loading...",
   });
 
-  // 🔹 Fetch site config for Logo and Brand Name
+  // 🔹 সাইডবার খোলা থাকলে ব্যাকগ্রাউন্ড স্ক্রল বন্ধ করার জন্য
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  // 🔹 Fetch site config
   useEffect(() => {
     const fetchSiteConfig = async () => {
       try {
@@ -110,63 +122,71 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
   }, []);
 
   return (
-    <aside
-      className={`
-        fixed top-0 left-0 z-50 h-screen w-72
-        bg-[#0f172a] text-white p-6 flex flex-col
-        transition-transform duration-300 ease-in-out border-r border-slate-800
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0
-      `}
-    >
-      {/* Sidebar Logo & Brand Name (Dynamic) */}
-      <div className="flex items-center justify-between mb-10">
-        <div className="flex items-center gap-3 overflow-hidden">
-          <div className="w-10 h-10 flex-shrink-0 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-500/10">
-            {siteConfig.logo ? (
-              <img
-                src={siteConfig.logo}
-                alt="Logo"
-                className="w-full h-full object-contain p-1"
-              />
-            ) : (
-              <span className="font-bold text-xl text-blue-500">
-                {siteConfig.brandText?.charAt(0) || "A"}
-              </span>
-            )}
-          </div>
-          <h2 className="font-bold text-lg tracking-tight truncate">
-            {siteConfig.brandText || "Nexus Admin"}
-          </h2>
-        </div>
-
-        <button
+    <>
+      {/* মোবাইল ডিভাইসে সাইডবার খোলা থাকলে বাইরের অংশে ক্লিক করলে বন্ধ হওয়ার জন্য Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
           onClick={closeSidebar}
-          className="lg:hidden p-2 hover:bg-white/10 rounded-xl transition-all flex-shrink-0"
-        >
-          <X size={20} />
-        </button>
-      </div>
+        />
+      )}
 
-      {/* Navigation */}
-      <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
-        <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Menu</p>
+      <aside
+        className={`
+          fixed top-0 left-0 z-50 h-screen w-72
+          bg-[#0f172a] text-white p-6 flex flex-col
+          transition-transform duration-300 ease-in-out border-r border-slate-800
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0
+        `}
+      >
+        {/* Sidebar Header (Fixed) */}
+        <div className="flex items-center justify-between mb-10 flex-shrink-0">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="w-10 h-10 flex-shrink-0 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-500/10">
+              {siteConfig.logo ? (
+                <img
+                  src={siteConfig.logo}
+                  alt="Logo"
+                  className="w-full h-full object-contain p-1"
+                />
+              ) : (
+                <span className="font-bold text-xl text-blue-500">
+                  {siteConfig.brandText?.charAt(0) || "A"}
+                </span>
+              )}
+            </div>
+            <h2 className="font-bold text-lg tracking-tight truncate">
+              {siteConfig.brandText || "Nexus Admin"}
+            </h2>
+          </div>
 
-        <NavLink href="/admin" icon={LayoutDashboard} label="Dashboard" onClick={closeSidebar} />
-        <NavLink href="/admin/site" icon={Settings} label="Site Settings" onClick={closeSidebar} />
-        <NavLink href="/admin/about-us" icon={Info} label="About Us" onClick={closeSidebar} />
-        <NavLink href="/admin/services" icon={Briefcase} label="Services" onClick={closeSidebar} />
-        <NavLink href="/admin/CaseStudiesAdmin" icon={FileText} label="Case Studies" onClick={closeSidebar} />
-        <NavLink href="/admin/blog" icon={ToyBrick} label="Blog" onClick={closeSidebar} />
-
-        <div className="pt-6">
-          <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Advanced</p>
-          <CommonComponentDropdown closeSidebar={closeSidebar} />
+          <button
+            onClick={closeSidebar}
+            className="lg:hidden p-2 hover:bg-white/10 rounded-xl transition-all flex-shrink-0"
+          >
+            <X size={20} />
+          </button>
         </div>
-      </nav>
 
+        {/* Navigation Area (Scrollable) */}
+        <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar -mr-2 pr-2">
+          <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Menu</p>
 
-    </aside>
+          <NavLink href="/admin" icon={LayoutDashboard} label="Dashboard" onClick={closeSidebar} />
+          <NavLink href="/admin/site" icon={Settings} label="Site Settings" onClick={closeSidebar} />
+          <NavLink href="/admin/about-us" icon={Info} label="About Us" onClick={closeSidebar} />
+          <NavLink href="/admin/services" icon={Briefcase} label="Services" onClick={closeSidebar} />
+          <NavLink href="/admin/CaseStudiesAdmin" icon={FileText} label="Case Studies" onClick={closeSidebar} />
+          <NavLink href="/admin/blog" icon={ToyBrick} label="Blog" onClick={closeSidebar} />
+
+          <div className="pt-6 pb-4">
+            <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Advanced</p>
+            <CommonComponentDropdown closeSidebar={closeSidebar} />
+          </div>
+        </nav>
+      </aside>
+    </>
   );
 };
 
