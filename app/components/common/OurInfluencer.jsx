@@ -1,15 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Twitter, Facebook, Linkedin } from "lucide-react";
-
-// Swiper imports
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-
-// Swiper styles
-import "swiper/css";
+import Marquee from "react-fast-marquee"; // প্যাকেজ ইমপোর্ট
+import { motion } from "framer-motion"; // প্রফেশনাল এনিমেশনের জন্য
 import { API } from "@/app/config/api";
-
 
 const OurInfluencer = () => {
   const [influencers, setInfluencers] = useState([]);
@@ -36,14 +30,19 @@ const OurInfluencer = () => {
     fetchInfluencers();
   }, []);
 
-  if (loading) return null; // 👉 design break না করার জন্য
+  if (loading) return null;
 
   return (
     <section className="bg-white py-20 px-6 md:px-12 font-sans overflow-hidden w-full">
       <div className="mx-auto">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto"
+        >
           <div className="max-w-xl">
             <div className="flex items-center gap-2 bg-gray-100 px-4 py-1.5 rounded-full mb-6 w-fit">
               <span className="text-gray-600 text-sm">✦</span>
@@ -60,65 +59,53 @@ const OurInfluencer = () => {
               Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Swiper Slider Area */}
-        <div className="w-full">
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={24}
-            slidesPerView={1}
-            loop={true}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 5 },
-            }}
-            className="mySwiper"
+        {/* Marquee Area */}
+        <div className="w-full mt-10">
+          <Marquee 
+            speed={40} 
+            pauseOnHover={true} 
+            gradient={false}
           >
             {influencers.map((person) => (
-              <SwiperSlide key={person._id}>
-                <div className="flex flex-col items-center text-center group">
-                  
-                  {/* Image Card */}
-                  <div className="w-full aspect-square mb-6 overflow-hidden rounded-[40px]">
-                    <img
-                      src={person.image}
-                      alt={person.name}
-                      className="w-full h-full object-cover shadow-sm transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-
-                  {/* Info */}
-                  <h3 className="text-xl font-bold text-[#1a1a1a] mb-1">
-                    {person.name}
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-4">
-                    {person.role}
-                  </p>
-
-                  {/* Social Icons */}
-                  <div className="flex items-center gap-4">
-                    <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
-                      <Twitter size={18} fill="currentColor" stroke="none" />
-                    </a>
-                    <a href="#" className="text-gray-400 hover:text-blue-700 transition-colors">
-                      <Facebook size={18} fill="currentColor" stroke="none" />
-                    </a>
-                    <a href="#" className="text-gray-400 hover:text-blue-800 transition-colors">
-                      <Linkedin size={18} fill="currentColor" stroke="none" />
-                    </a>
-                  </div>
-
+              <motion.div 
+                key={person._id}
+                whileHover={{ y: -5 }} // হোভারে হালকা উপরে উঠবে
+                className="flex flex-col items-center text-center group mx-6 w-[250px]"
+              >
+                {/* Image Card */}
+                <div className="w-full aspect-square mb-6 overflow-hidden rounded-[40px] shadow-sm">
+                  <img
+                    src={person.image}
+                    alt={person.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
-              </SwiperSlide>
+
+                {/* Info */}
+                <h3 className="text-xl font-bold text-[#1a1a1a] mb-1">
+                  {person.name}
+                </h3>
+                <p className="text-gray-500 text-sm mb-4">
+                  {person.role}
+                </p>
+
+                {/* Social Icons */}
+                <div className="flex items-center gap-4">
+                  <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+                    <Twitter size={18} fill="currentColor" stroke="none" />
+                  </a>
+                  <a href="#" className="text-gray-400 hover:text-blue-700 transition-colors">
+                    <Facebook size={18} fill="currentColor" stroke="none" />
+                  </a>
+                  <a href="#" className="text-gray-400 hover:text-blue-800 transition-colors">
+                    <Linkedin size={18} fill="currentColor" stroke="none" />
+                  </a>
+                </div>
+              </motion.div>
             ))}
-          </Swiper>
+          </Marquee>
         </div>
 
       </div>

@@ -1,30 +1,38 @@
-import React from 'react';
+"use client"
+import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
+import axios from 'axios';
+import { API } from '@/app/config/api';
 
 const Blogs = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      date: "12 Sep 2025",
-      category: "ACG Localization Tips",
-      title: "HS+ Delivered Flawless JP/EN VO On A Tough Timeline.",
-      image: "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=1000&auto=format&fit=crop"
-    },
-    {
-      id: 2,
-      date: "12 Sep 2025",
-      category: "VO Casting Guide",
-      title: "HS+ Delivered Flawless JP/EN VO On A Tough Timeline.",
-      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"
-    },
-    {
-      id: 3,
-      date: "12 Sep 2025",
-      category: "Cross-Border KOL Trends",
-      title: "HS+ Delivered Flawless JP/EN VO On A Tough Timeline.",
-      image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000&auto=format&fit=crop"
-    }
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [loading, setLoading] = useState(true);
+
+  // এপিআই থেকে ডাটা ফেচ করা
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(API.Blogs.getAll);
+        setBlogs(response.data);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  // 'See All' বাটনের ফাংশন
+  const handleSeeAll = () => {
+    setVisibleCount(blogs.length);
+  };
+
+  if (loading) {
+    return <div className="py-20 text-center">Loading Blogs...</div>;
+  }
 
   return (
     <section className="py-20 bg-white">
@@ -50,13 +58,13 @@ const Blogs = () => {
 
         {/* Blog Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 container mx-auto">
-          {blogPosts.map((post) => (
-            <div key={post.id} className="group cursor-pointer">
+          {blogs.slice(0, visibleCount).map((post) => (
+            <div key={post._id} className="group cursor-pointer">
               {/* Image Container */}
               <div className="relative rounded-[30px] overflow-hidden mb-6 aspect-[4/3]">
                 <img 
                   src={post.image} 
-                  alt={post.category} 
+                  alt={post.title} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
@@ -72,22 +80,27 @@ const Blogs = () => {
               </div>
 
               {/* Title */}
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 leading-snug group-hover:text-[#0070c0] transition-colors">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 leading-snug group-hover:text-[#0070c0] transition-colors line-clamp-2">
                 {post.title}
               </h3>
             </div>
           ))}
         </div>
 
-        {/* Bottom Button */}
-        <div className="flex justify-center">
-          <button className="inline-flex items-center gap-3 border border-blue-400 text-[#0070c0] pl-8 pr-2 py-2 rounded-full font-bold hover:bg-blue-50 transition-all group shadow-sm">
-            See All Blog
-            <span className="bg-[#0070c0] text-white rounded-full p-2 transition-transform group-hover:rotate-45">
-              <ArrowUpRight className="w-5 h-5" />
-            </span>
-          </button>
-        </div>
+        {/* Bottom Button - শুধুমাত্র তখনই দেখাবে যখন আরও ব্লগ বাকি থাকবে */}
+        {visibleCount < blogs.length && (
+          <div className="flex justify-center">
+            <button 
+              onClick={handleSeeAll}
+              className="inline-flex items-center gap-3 border border-blue-400 text-[#0070c0] pl-8 pr-2 py-2 rounded-full font-bold hover:bg-blue-50 transition-all group shadow-sm"
+            >
+              See All Blog
+              <span className="bg-[#0070c0] text-white rounded-full p-2 transition-transform group-hover:rotate-45">
+                <ArrowUpRight className="w-5 h-5" />
+              </span>
+            </button>
+          </div>
+        )}
 
       </div>
     </section>

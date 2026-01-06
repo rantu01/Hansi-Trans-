@@ -6,6 +6,8 @@ export default function InfluencerForm({
   refresh,
   editing,
   setEditing,
+  isUploading,
+  setIsUploading,
 }) {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -26,80 +28,118 @@ export default function InfluencerForm({
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (isUploading) return;
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("role", role);
-    if (image) formData.append("image", image);
+    try {
+      setIsUploading(true);
 
-    const url = editing
-      ? `${API.OurInfluencer.getInfluencers}/${editing._id}`
-      : API.OurInfluencer.getInfluencers;
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("role", role);
+      if (image) formData.append("image", image);
 
-    const method = editing ? "PUT" : "POST";
+      const url = editing
+        ? `${API.OurInfluencer.getInfluencers}/${editing._id}`
+        : API.OurInfluencer.getInfluencers;
 
-    await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+      const method = editing ? "PUT" : "POST";
 
-    setName("");
-    setRole("");
-    setImage(null);
-    setEditing(null);
-    refresh();
+      await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      setName("");
+      setRole("");
+      setImage(null);
+      setEditing(null);
+      refresh();
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
     <form
       onSubmit={submitHandler}
-      className="border p-6 rounded-xl bg-gray-50"
+      className="bg-white border rounded-2xl p-6 md:p-8 shadow-sm"
     >
-      <h2 className="text-xl font-bold mb-4">
-        {editing ? "Edit Influencer" : "Add Influencer"}
+      <h2 className="text-2xl font-black mb-6">
+        {editing ? "Update Influencer" : "Add Influencer"}
       </h2>
 
-      <div className="grid gap-4">
+      <div className="grid gap-5">
+        {/* Name */}
         <input
           type="text"
-          placeholder="Name"
-          className="border p-2 rounded"
+          placeholder="Influencer Name"
+          className="border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          disabled={isUploading}
         />
 
+        {/* Role */}
         <input
           type="text"
-          placeholder="Role"
-          className="border p-2 rounded"
+          placeholder="Role / Position"
+          className="border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={role}
           onChange={(e) => setRole(e.target.value)}
           required
+          disabled={isUploading}
         />
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-        />
+        {/* Image */}
+        <div>
+          <label className="block text-sm font-semibold mb-2">
+            Profile Image
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            disabled={isUploading}
+            onChange={(e) => setImage(e.target.files[0])}
+            className="block w-full text-sm file:mr-4 file:py-2 file:px-4
+              file:rounded-lg file:border-0
+              file:bg-gray-900 file:text-white
+              hover:file:bg-blue-600
+              disabled:opacity-50 disabled:cursor-not-allowed"
+          />
+        </div>
 
-        <div className="flex gap-3">
+        {/* Buttons */}
+        <div className="flex gap-3 pt-2">
           <button
             type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded"
+            disabled={isUploading}
+            className={`flex-1 py-3 rounded-xl font-bold transition ${
+              isUploading
+                ? "bg-gray-300 cursor-not-allowed text-gray-500"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
+            }`}
           >
-            {editing ? "Update" : "Add"}
+            {isUploading
+              ? "Uploading..."
+              : editing
+              ? "Update Influencer"
+              : "Add Influencer"}
           </button>
 
           {editing && (
             <button
               type="button"
+              disabled={isUploading}
               onClick={() => setEditing(null)}
-              className="bg-gray-400 text-white px-4 py-2 rounded"
+              className={`px-6 py-3 rounded-xl font-bold transition ${
+                isUploading
+                  ? "bg-gray-200 cursor-not-allowed text-gray-400"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+              }`}
             >
               Cancel
             </button>

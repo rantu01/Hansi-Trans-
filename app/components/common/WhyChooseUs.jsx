@@ -8,6 +8,7 @@ import {
   Gamepad2,
   Clock,
 } from "lucide-react";
+import { motion } from "framer-motion"; // প্যাকেজ ইমপোর্ট
 import { API } from "@/app/config/api";
 
 /* icon mapper */
@@ -39,8 +40,7 @@ const WhyChooseUs = () => {
 
   if (!data) return null;
 
-  const getCard = (key) =>
-    data.cards.find((c) => c.key === key);
+  const getCard = (key) => data.cards.find((c) => c.key === key);
 
   const left = getCard("left");
   const middleTop = getCard("middleTop");
@@ -52,12 +52,31 @@ const WhyChooseUs = () => {
   const MidBottomIcon = ICONS[middleBottom?.icon];
   const RightIcon = ICONS[right?.icon];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
   return (
-    <section className="py-20 bg-[#020d1f] text-white rounded-t-4xl">
+    <section className="py-20 bg-[#020d1f] text-white rounded-t-4xl overflow-hidden">
       <div className="container mx-auto px-4">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6"
+        >
           <div className="max-w-2xl text-left">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 text-sm font-medium text-gray-300 mb-6 bg-white/5 backdrop-blur-sm shadow-sm">
               <Sparkles className="w-4 h-4 text-gray-400" />
@@ -72,13 +91,24 @@ const WhyChooseUs = () => {
               Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto"
+        >
           
           {/* Left Large Card */}
-          <div className="bg-white rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl">
+          <motion.div 
+            variants={itemVariants}
+            whileHover={{ y: -8, scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            className="bg-white rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl cursor-pointer"
+          >
             <div className="text-left">
               <h3 className="text-[#0066b2] text-3xl font-bold mb-6">
                 {left.title.split("<br />")[0]} <br />
@@ -89,49 +119,50 @@ const WhyChooseUs = () => {
               </p>
             </div>
             <div className="mt-10">
-              {LeftIcon && (
-                <LeftIcon className="w-14 h-14 text-[#0066b2]" />
-              )}
+              {LeftIcon && <LeftIcon className="w-14 h-14 text-[#0066b2]" />}
             </div>
-          </div>
+          </motion.div>
 
           {/* Middle Section */}
           <div className="flex flex-col gap-6">
-            <div className="bg-white rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ y: -5, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl cursor-pointer"
+            >
               <div className="mt-2">
-                {MidTopIcon && (
-                  <MidTopIcon className="w-10 h-10 text-[#0066b2]" />
-                )}
+                {MidTopIcon && <MidTopIcon className="w-10 h-10 text-[#0066b2]" />}
               </div>
               <div className="text-left">
-                <h3 className="text-[#0066b2] text-xl font-bold mb-3">
-                  {middleTop.title}
-                </h3>
-                <p className="text-gray-500 text-xs leading-relaxed font-medium">
-                  {middleTop.description}
-                </p>
+                <h3 className="text-[#0066b2] text-xl font-bold mb-3">{middleTop.title}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed font-medium">{middleTop.description}</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-white rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ y: -5, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl cursor-pointer"
+            >
               <div className="mt-2">
-                {MidBottomIcon && (
-                  <MidBottomIcon className="w-10 h-10 text-[#0066b2]" />
-                )}
+                {MidBottomIcon && <MidBottomIcon className="w-10 h-10 text-[#0066b2]" />}
               </div>
               <div className="text-left">
-                <h3 className="text-[#0066b2] text-xl font-bold mb-3">
-                  {middleBottom.title}
-                </h3>
-                <p className="text-gray-500 text-xs leading-relaxed font-medium">
-                  {middleBottom.description}
-                </p>
+                <h3 className="text-[#0066b2] text-xl font-bold mb-3">{middleBottom.title}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed font-medium">{middleBottom.description}</p>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Large Card */}
-          <div className="bg-white rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl">
+          <motion.div 
+            variants={itemVariants}
+            whileHover={{ y: -8, scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            className="bg-white rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl cursor-pointer"
+          >
             <div className="text-left">
               <h3 className="text-[#0066b2] text-3xl font-bold mb-6">
                 {right.title.split("<br />")[0]} <br />
@@ -143,9 +174,7 @@ const WhyChooseUs = () => {
             </div>
             <div className="mt-10 flex justify-end">
               <div className="relative">
-                {RightIcon && (
-                  <RightIcon className="w-14 h-14 text-[#0066b2]" />
-                )}
+                {RightIcon && <RightIcon className="w-14 h-14 text-[#0066b2]" />}
                 {right.badge && (
                   <span className="absolute -bottom-1 -right-1 bg-[#0066b2] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {right.badge}
@@ -153,9 +182,9 @@ const WhyChooseUs = () => {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
