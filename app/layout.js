@@ -1,3 +1,4 @@
+import ThemeApplier from "./components/theme/ThemeApplier";
 import "./globals.css";
 
 export const metadata = {
@@ -9,6 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-gray-50 text-gray-900">
+        <ThemeApplier />
         {children}
       </body>
     </html>

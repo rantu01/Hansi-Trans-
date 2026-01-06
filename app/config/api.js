@@ -52,4 +52,8 @@ export const API = {
     update: (id) => `${API_BASE_URL}/api/blogs/${id}`,
     delete: (id) => `${API_BASE_URL}/api/blogs/${id}`,
   },
+  ThemeSettings: {
+    get: `${API_BASE_URL}/api/site/settings`,
+    update: `${API_BASE_URL}/api/site/settings/update`,
+  },
 };

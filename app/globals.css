@@ -6,7 +6,7 @@
   
   /* Brand Colors */
   --primary: #0070c0;    /* Main Blue */
-  --secondary: #000203;  /* Dark Blue */
+  --secondary: #003d66;  /* Dark Blue */
   --accent: #347fb9;     /* Action Blue */
   --gradient: #51a1da;   /* Sky Blue for gradients */
   --text-link: #dbeafe;  /* Equivalent to text-blue-100 for CTA description */    
@@ -16,7 +16,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
-    --foreground: #000000;
+    --foreground: #ffffff;
     /* ডার্ক মোডে চাইলে কালার একটু চেঞ্জ করতে পারেন */
   }
 }

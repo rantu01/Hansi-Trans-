@@ -175,6 +175,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
           <NavLink href="/admin" icon={LayoutDashboard} label="Dashboard" onClick={closeSidebar} />
           <NavLink href="/admin/site" icon={Settings} label="Site Settings" onClick={closeSidebar} />
+          <NavLink href="/admin/color-setting" icon={Settings} label="Color Settings" onClick={closeSidebar} />
           <NavLink href="/admin/about-us" icon={Info} label="About Us" onClick={closeSidebar} />
           <NavLink href="/admin/services" icon={Briefcase} label="Services" onClick={closeSidebar} />
           <NavLink href="/admin/CaseStudiesAdmin" icon={FileText} label="Case Studies" onClick={closeSidebar} />
