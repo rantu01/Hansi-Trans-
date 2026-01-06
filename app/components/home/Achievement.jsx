@@ -1,6 +1,8 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { FaUser, FaStar, FaGlobe, FaBriefcase } from "react-icons/fa";
+import Marquee from "react-fast-marquee"; // প্যাকেজ ইমপোর্ট
 import Stats from "../common/stats";
 import { API } from "@/app/config/api";
 
@@ -9,7 +11,6 @@ const Achievement = () => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Icon mapping logic
   const iconMap = {
     FaUser: <FaUser />,
     FaStar: <FaStar />,
@@ -20,16 +21,14 @@ const Achievement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Parallel fetching for performance
         const [statsRes, partnersRes] = await Promise.all([
           fetch(`${API.Stats}?category=general`),
-          fetch(API.Partners)
+          fetch(API.Partners),
         ]);
 
         const statsJson = await statsRes.json();
         const partnersJson = await partnersRes.json();
 
-        // Convert icon strings to React Components
         const formattedStats = statsJson.map((item) => ({
           ...item,
           icon: iconMap[item.icon] || item.icon,
@@ -38,54 +37,67 @@ const Achievement = () => {
         setStatsData(formattedStats);
         setPartners(partnersJson);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching achievement data:", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
+  const firstRow = partners.slice(0, Math.ceil(partners.length / 2));
+  const secondRow = partners.slice(Math.ceil(partners.length / 2));
+
+  if (loading) return null; // লোডিং অবস্থায় সাদা স্ক্রিন বা স্পিনার রাখতে পারেন
+
   return (
-    <section className="py-16 bg-white overflow-hidden">
+    <section className="min-h-screen flex items-center bg-white overflow-hidden py-16">
       <div className="container mx-auto px-4">
-        {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#0066b2]">
-            Our Big Achievement ✨
+            Our Big Achievement
           </h2>
         </div>
 
-        {/* Stats Section */}
-        {!loading && statsData.length > 0 && <Stats stats={statsData} />}
+        <Stats stats={statsData} />
 
-        {/* Trusted By Section */}
-        <div className="text-center">
+        <div className="text-center mt-10">
           <h3 className="text-xl md:text-2xl font-semibold mb-10">
             Trusted By Teams In Games, Anime, And Tech
           </h3>
 
-          <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
-            {partners.length > 0 ? (
-              partners.map((partner, i) => (
+          <div className="flex flex-col gap-6">
+            {/* প্রথম রো: বাম দিকে যাবে */}
+            <Marquee gradient={false} speed={50} pauseOnHover={true}>
+              {firstRow.map((partner, i) => (
                 <div
-                  key={partner._id || i}
-                  className="bg-white border px-6 py-3 rounded-full shadow-sm"
+                  key={`row1-${i}`}
+                  className="bg-white border px-8 py-3 mx-3 rounded-full shadow-sm flex items-center justify-center"
                 >
                   <img
-                    src={partner.logo} 
-                    alt={partner.name || "Partner Logo"}
+                    src={partner.logo}
+                    alt={partner.name || "Partner"}
                     className="h-10 w-auto object-contain opacity-80"
                   />
                 </div>
-              ))
-            ) : (
-              // Empty state jodi backend e data na thake (loading chara)
-              !loading && Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="bg-gray-50 border px-6 py-3 rounded-full animate-pulse w-32 h-16"></div>
-              ))
-            )}
+              ))}
+            </Marquee>
+
+            {/* দ্বিতীয় রো: ডান দিকে যাবে (direction="right") */}
+            <Marquee gradient={false} speed={50} pauseOnHover={true} direction="right">
+              {secondRow.map((partner, i) => (
+                <div
+                  key={`row2-${i}`}
+                  className="bg-white border px-8 py-3 mx-3 rounded-full shadow-sm flex items-center justify-center"
+                >
+                  <img
+                    src={partner.logo}
+                    alt={partner.name || "Partner"}
+                    className="h-10 w-auto object-contain opacity-80"
+                  />
+                </div>
+              ))}
+            </Marquee>
           </div>
         </div>
       </div>
