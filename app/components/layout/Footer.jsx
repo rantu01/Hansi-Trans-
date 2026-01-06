@@ -20,9 +20,9 @@ const Footer = () => {
     footerText: "",
     footerAddress: "",
     copyrightText: "",
-    ctaTitle: "",        // নতুন যোগ করা হয়েছে
-    ctaDescription: "",  // নতুন যোগ করা হয়েছে
-    ctaImage: "",        // নতুন যোগ করা হয়েছে
+    ctaTitle: "",
+    ctaDescription: "",
+    ctaImage: "",
     socialFacebook: "",
     socialGlobe: "",
     socialLinkedin: "",
@@ -34,12 +34,10 @@ const Footer = () => {
     const fetchSiteConfig = async () => {
       try {
         const res = await fetch(API.site.getConfig);
-
         if (!res.ok) {
           console.error(`Error: ${res.status} - ${res.statusText}`);
           return;
         }
-
         const data = await res.json();
         if (data?.success && data?.data) {
           setSiteConfig(data.data);
@@ -48,11 +46,10 @@ const Footer = () => {
         console.error("Site config fetch failed", error);
       }
     };
-
     fetchSiteConfig();
   }, []);
 
-  // সোশ্যাল মিডিয়া আইকন ম্যাপ করার জন্য একটি অ্যারে
+  // Array for mapping social media links
   const socialLinks = [
     { Icon: Twitter, url: siteConfig.socialTwitter },
     { Icon: Linkedin, url: siteConfig.socialLinkedin },
@@ -62,11 +59,13 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-gradient-to-bl from-[#a3c9e5] via-white to-[#a3c9e5] pt-20">
+    /* Replaced [#a3c9e5] with gradient-base variable */
+    <footer className="relative bg-gradient-to-bl from-gradient-base via-white to-gradient-base pt-20">
       <div className="container mx-auto px-4">
         
         {/* CTA Banner Section */}
-        <div className="relative overflow-hidden bg-[#003d66] rounded-[40px] md:rounded-[60px] mb-20 p-8 md:p-16 flex flex-col md:flex-row items-center gap-10">
+        {/* Replaced [#003d66] with secondary variable */}
+        <div className="relative overflow-hidden bg-secondary rounded-[40px] md:rounded-[60px] mb-20 p-8 md:p-16 flex flex-col md:flex-row items-center gap-10">
           <div className="absolute inset-0 opacity-40 mix-blend-overlay">
             <img
               src={siteConfig.ctaImage || "https://i.ibb.co.com/0jtd7Mtr/lets-contact.png"}
@@ -82,7 +81,8 @@ const Footer = () => {
                 alt="CTA Banner"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#003d66] to-transparent"></div>
+              {/* Replaced [#003d66] with secondary variable */}
+              <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-secondary to-transparent"></div>
             </div>
           </div>
 
@@ -90,12 +90,14 @@ const Footer = () => {
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
               {siteConfig.ctaTitle || "Ready To Go Global?"}
             </h2>
-            <p className="text-blue-100 text-lg mb-10 leading-relaxed max-w-md">
+            {/* Replaced text-blue-100 with cta-text variable */}
+            <p className="text-cta-text text-lg mb-10 leading-relaxed max-w-md">
               {siteConfig.ctaDescription || "Expanding your game into Asian markets..."}
             </p>
-            <button className="inline-flex items-center gap-3 bg-white text-[#0070c0] px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-all group shadow-xl">
+            {/* Replaced text-[#0070c0] with primary variable */}
+            <button className="inline-flex items-center gap-3 bg-white text-primary px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-all group shadow-xl">
               Let's connect
-              <span className="bg-[#0070c0] text-white rounded-full p-1.5 transition-transform group-hover:rotate-45">
+              <span className="bg-primary text-white rounded-full p-1.5 transition-transform group-hover:rotate-45">
                 <ArrowUpRight className="w-5 h-5" />
               </span>
             </button>
@@ -124,7 +126,8 @@ const Footer = () => {
 
             <div className="space-y-3 mt-4">
               <div className="flex items-start gap-3 text-gray-600">
-                <MapPin className="w-4 h-4 text-blue-500 mt-1" />
+                {/* Replaced text-blue-500 with primary variable (closest match) */}
+                <MapPin className="w-4 h-4 text-primary mt-1" />
                 <span className="text-sm font-medium whitespace-pre-line">
                   {siteConfig.footerAddress || "Dhaka, Bangladesh"}
                 </span>
@@ -136,11 +139,11 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-gray-900 mb-6">Company</h4>
             <ul className="space-y-4 text-gray-500 text-sm font-medium">
-              <li className="hover:text-blue-600 cursor-pointer">Home</li>
-              <li className="hover:text-blue-600 cursor-pointer">About us</li>
-              <li className="hover:text-blue-600 cursor-pointer">Work</li>
-              <li className="hover:text-blue-600 cursor-pointer">Blog</li>
-              <li className="hover:text-blue-600 cursor-pointer">Contact Us</li>
+              <li className="hover:text-primary cursor-pointer">Home</li>
+              <li className="hover:text-primary cursor-pointer">About us</li>
+              <li className="hover:text-primary cursor-pointer">Work</li>
+              <li className="hover:text-primary cursor-pointer">Blog</li>
+              <li className="hover:text-primary cursor-pointer">Contact Us</li>
             </ul>
           </div>
 
@@ -148,8 +151,8 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-gray-900 mb-6">Utilities</h4>
             <ul className="space-y-4 text-gray-500 text-sm font-medium">
-              <li className="hover:text-blue-600 cursor-pointer">Privacy & policy</li>
-              <li className="hover:text-blue-600 cursor-pointer">Terms of service</li>
+              <li className="hover:text-primary cursor-pointer">Privacy & policy</li>
+              <li className="hover:text-primary cursor-pointer">Terms of service</li>
             </ul>
           </div>
 
@@ -163,7 +166,8 @@ const Footer = () => {
                   href={item.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-10 h-10 bg-[#0070c0] rounded-full flex items-center justify-center text-white cursor-pointer hover:bg-blue-700 transition shadow-md ${!item.url && 'opacity-50 cursor-not-allowed'}`}
+                  /* Replaced bg-[#0070c0] with primary variable */
+                  className={`w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white cursor-pointer hover:opacity-90 transition shadow-md ${!item.url && 'opacity-50 cursor-not-allowed'}`}
                 >
                   <item.Icon className="w-5 h-5" />
                 </a>
@@ -178,8 +182,8 @@ const Footer = () => {
             © {currentYear} {siteConfig.brandText || "HANSI Trans"} — {siteConfig.copyrightText || "All Rights Reserved."}
           </p>
           <div className="flex gap-8">
-            <span className="hover:text-blue-600 cursor-pointer">Privacy policy</span>
-            <span className="hover:text-blue-600 cursor-pointer">Terms of service</span>
+            <span className="hover:text-primary cursor-pointer">Privacy policy</span>
+            <span className="hover:text-primary cursor-pointer">Terms of service</span>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import axios from 'axios';
@@ -9,7 +9,6 @@ const Blogs = () => {
   const [visibleCount, setVisibleCount] = useState(3);
   const [loading, setLoading] = useState(true);
 
-  // এপিআই থেকে ডাটা ফেচ করা
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -25,17 +24,16 @@ const Blogs = () => {
     fetchBlogs();
   }, []);
 
-  // 'See All' বাটনের ফাংশন
   const handleSeeAll = () => {
     setVisibleCount(blogs.length);
   };
 
   if (loading) {
-    return <div className="py-20 text-center">Loading Blogs...</div>;
+    return <div className="py-20 text-center text-gray-500">Loading Blogs...</div>;
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         
         {/* Header Section */}
@@ -45,7 +43,7 @@ const Blogs = () => {
               <Sparkles className="w-4 h-4 text-gray-400" />
               Blogs
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight uppercase">
               Insights And <br /> Resources
             </h2>
           </div>
@@ -61,7 +59,7 @@ const Blogs = () => {
           {blogs.slice(0, visibleCount).map((post) => (
             <div key={post._id} className="group cursor-pointer">
               {/* Image Container */}
-              <div className="relative rounded-[30px] overflow-hidden mb-6 aspect-[4/3]">
+              <div className="relative rounded-[30px] overflow-hidden mb-6 aspect-[4/3] border border-gray-50">
                 <img 
                   src={post.image} 
                   alt={post.title} 
@@ -74,28 +72,32 @@ const Blogs = () => {
                 <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">
                   {post.date}
                 </span>
-                <span className="text-[#0070c0] text-xs font-bold uppercase tracking-wider">
+                {/* Replaced blue-700 with primary */}
+                <span className="text-primary text-xs font-bold uppercase tracking-wider">
                   {post.category}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 leading-snug group-hover:text-[#0070c0] transition-colors line-clamp-2">
+              {/* Replaced blue-700 with primary on hover */}
+              <h3 className="text-xl md:text-2xl font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
                 {post.title}
               </h3>
             </div>
           ))}
         </div>
 
-        {/* Bottom Button - শুধুমাত্র তখনই দেখাবে যখন আরও ব্লগ বাকি থাকবে */}
+        {/* Bottom Button */}
         {visibleCount < blogs.length && (
           <div className="flex justify-center">
+            {/* Used primary/accent for borders and text */}
             <button 
               onClick={handleSeeAll}
-              className="inline-flex items-center gap-3 border border-blue-400 text-[#0070c0] pl-8 pr-2 py-2 rounded-full font-bold hover:bg-blue-50 transition-all group shadow-sm"
+              className="inline-flex items-center gap-3 border border-accent/40 text-primary pl-8 pr-2 py-2 rounded-full font-bold hover:bg-gradient-base/5 transition-all group shadow-sm"
             >
               See All Blog
-              <span className="bg-[#0070c0] text-white rounded-full p-2 transition-transform group-hover:rotate-45">
+              {/* Replaced blue with primary */}
+              <span className="bg-primary text-white rounded-full p-2 transition-transform group-hover:rotate-45">
                 <ArrowUpRight className="w-5 h-5" />
               </span>
             </button>

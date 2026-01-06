@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Twitter, Facebook, Linkedin } from "lucide-react";
-import Marquee from "react-fast-marquee"; // প্যাকেজ ইমপোর্ট
-import { motion } from "framer-motion"; // প্রফেশনাল এনিমেশনের জন্য
+import Marquee from "react-fast-marquee"; 
+import { motion } from "framer-motion"; 
 import { API } from "@/app/config/api";
 
 const OurInfluencer = () => {
@@ -33,7 +33,7 @@ const OurInfluencer = () => {
   if (loading) return null;
 
   return (
-    <section className="bg-white py-20 px-6 md:px-12 font-sans overflow-hidden w-full">
+    <section className="bg-background py-20 px-6 md:px-12 font-sans overflow-hidden w-full">
       <div className="mx-auto">
         
         {/* Header Section */}
@@ -50,7 +50,8 @@ const OurInfluencer = () => {
                 Influencer
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0066b2] leading-tight">
+            {/* Replaced [#0066b2] with primary brand color */}
+            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight">
               What Our Influencer Say <br /> About Us!
             </h2>
           </div>
@@ -71,11 +72,11 @@ const OurInfluencer = () => {
             {influencers.map((person) => (
               <motion.div 
                 key={person._id}
-                whileHover={{ y: -5 }} // হোভারে হালকা উপরে উঠবে
+                whileHover={{ y: -5 }} 
                 className="flex flex-col items-center text-center group mx-6 w-[250px]"
               >
                 {/* Image Card */}
-                <div className="w-full aspect-square mb-6 overflow-hidden rounded-[40px] shadow-sm">
+                <div className="w-full aspect-square mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-50">
                   <img
                     src={person.image}
                     alt={person.name}
@@ -84,22 +85,22 @@ const OurInfluencer = () => {
                 </div>
 
                 {/* Info */}
-                <h3 className="text-xl font-bold text-[#1a1a1a] mb-1">
+                <h3 className="text-xl font-bold text-foreground mb-1">
                   {person.name}
                 </h3>
                 <p className="text-gray-500 text-sm mb-4">
                   {person.role}
                 </p>
 
-                {/* Social Icons */}
+                {/* Social Icons - Using primary and accent for hover states */}
                 <div className="flex items-center gap-4">
-                  <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+                  <a href="#" className="text-gray-400 hover:text-primary transition-colors">
                     <Twitter size={18} fill="currentColor" stroke="none" />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-blue-700 transition-colors">
+                  <a href="#" className="text-gray-400 hover:text-accent transition-colors">
                     <Facebook size={18} fill="currentColor" stroke="none" />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-blue-800 transition-colors">
+                  <a href="#" className="text-gray-400 hover:text-secondary transition-colors">
                     <Linkedin size={18} fill="currentColor" stroke="none" />
                   </a>
                 </div>

@@ -23,19 +23,20 @@ const OurFullStories = () => {
   const images = gallery?.images || [];
 
   return (
-    <section className="bg-white py-20 px-6 md:px-12 font-sans">
+    <section className="bg-background py-20 px-6 md:px-12 font-sans text-foreground">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
           <div className="max-w-xl">
-            <div className="flex items-center gap-2 bg-gray-100 px-4 py-1.5 rounded-full mb-6 w-fit">
-              <span className="text-gray-600">✦</span>
-              <span className="text-xs font-medium text-gray-600 uppercase tracking-wider">
+            {/* Replaced gray-100 with a subtle version of primary blue for the badge */}
+            <div className="flex items-center gap-2 bg-primary/5 px-4 py-1.5 rounded-full mb-6 w-fit border border-primary/10">
+              <span className="text-primary">✦</span>
+              <span className="text-xs font-semibold text-primary uppercase tracking-wider">
                 Gallery
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a]">
+            <h2 className="text-4xl md:text-5xl text-primary font-bold leading-tight">
               Our Full Stories
             </h2>
           </div>
@@ -53,62 +54,62 @@ const OurFullStories = () => {
           
           {/* Row 1 */}
           {images[0] && (
-            <div className="md:col-span-5 h-[300px] md:h-[350px]">
+            <div className="md:col-span-5 h-[300px] md:h-[350px] overflow-hidden rounded-[40px] group">
               <img
                 src={images[0]}
                 alt="Story 1"
-                className="w-full h-full object-cover rounded-[40px]"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           )}
 
           {images[1] && (
-            <div className="md:col-span-4 h-[300px] md:h-[350px]">
+            <div className="md:col-span-4 h-[300px] md:h-[350px] overflow-hidden rounded-[40px] group">
               <img
                 src={images[1]}
                 alt="Story 2"
-                className="w-full h-full object-cover rounded-[40px]"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           )}
 
           {images[2] && (
-            <div className="md:col-span-3 h-[300px] md:h-[350px]">
+            <div className="md:col-span-3 h-[300px] md:h-[350px] overflow-hidden rounded-[40px] group">
               <img
                 src={images[2]}
                 alt="Story 3"
-                className="w-full h-full object-cover rounded-[40px]"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           )}
 
           {/* Row 2 */}
           {images[3] && (
-            <div className="md:col-span-3 h-[300px] md:h-[350px]">
+            <div className="md:col-span-3 h-[300px] md:h-[350px] overflow-hidden rounded-[40px] group">
               <img
                 src={images[3]}
                 alt="Story 4"
-                className="w-full h-full object-cover rounded-[40px]"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           )}
 
           {images[4] && (
-            <div className="md:col-span-4 h-[300px] md:h-[350px]">
+            <div className="md:col-span-4 h-[300px] md:h-[350px] overflow-hidden rounded-[40px] group">
               <img
                 src={images[4]}
                 alt="Story 5"
-                className="w-full h-full object-cover rounded-[40px]"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           )}
 
           {images[5] && (
-            <div className="md:col-span-5 h-[300px] md:h-[350px]">
+            <div className="md:col-span-5 h-[300px] md:h-[350px] overflow-hidden rounded-[40px] group">
               <img
                 src={images[5]}
                 alt="Story 6"
-                className="w-full h-full object-cover rounded-[40px]"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           )}

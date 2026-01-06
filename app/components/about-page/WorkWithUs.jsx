@@ -22,17 +22,17 @@ const WorkWithUs = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center ">
       <div className="container w-full rounded-[40px] overflow-hidden p-8 md:p-12">
         
         {/* Video/Image Section */}
-        <div className="relative w-full aspect-video rounded-[30px] overflow-hidden bg-black group cursor-pointer">
+        <div className="relative w-full aspect-video rounded-[30px] overflow-hidden bg-secondary group cursor-pointer shadow-2xl shadow-primary/10">
           <img
             src={
               data?.hero?.videoImage ||
               "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=2072"
             }
-            alt="Space Background"
+            alt="Work with us background"
             className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
           />
 
@@ -46,22 +46,26 @@ const WorkWithUs = () => {
 
         {/* Content */}
         <div className="mt-8 text-center md:text-left">
-          <h1 className="text-white text-2xl md:text-4xl font-semibold leading-snug tracking-tight text-gray-900">
-            {data?.workWithUs?.headline?.split(" And ")[0] || "HS+ Is A Global Partner For Localization,"}
-            <span className="text-white">
-              {" "}
+          {/* Replaced text-gray-900 with foreground and styled headline with primary accents */}
+          <h2 className="text-foreground text-2xl md:text-4xl font-bold leading-snug tracking-tight">
+            <span className="text-primary">
+              {data?.workWithUs?.headline?.split(" And ")[0] || "HS+ Is A Global Partner For Localization,"}
+            </span>
+            {" "}
+            <span>
               {data?.workWithUs?.headline?.split(" And ")[1] ||
                 "Multilingual Voice-Over, And Cross-Border Marketing. Since 2010, We’ve Helped Leading Game Studios, Anime Creators, And Tech Innovators Connect With In 40 Languages."}
             </span>
-          </h1>
+          </h2>
         </div>
 
-        {/* Button */}
+        {/* Button Section */}
         <div className="mt-10 flex justify-center">
-          <button className="flex items-center gap-3 bg-[#0066b2] hover:bg-[#005596] text-white px-6 py-3 rounded-full font-medium transition-all shadow-lg active:scale-95">
+          {/* Replaced #0066b2 with primary/accent colors */}
+          <button className="flex items-center gap-3 bg-primary hover:bg-accent text-white px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-primary/20 active:scale-95 group">
             {data?.workWithUs?.buttonText || "Work with us?"}
-            <span className="bg-white rounded-full p-1">
-              <ArrowUpRight size={18} className="text-[#0066b2]" />
+            <span className="bg-white rounded-full p-1.5 transition-transform group-hover:rotate-45">
+              <ArrowUpRight size={18} className="text-primary" />
             </span>
           </button>
         </div>

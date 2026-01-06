@@ -29,7 +29,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-16 max-w-7xl mx-auto">
           
@@ -39,7 +39,7 @@ const FAQ = () => {
               <Sparkles className="w-4 h-4 text-gray-400" />
               FAQ
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight mb-8 uppercase">
               Frequently Asked Questions
             </h2>
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
@@ -56,12 +56,13 @@ const FAQ = () => {
                     onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
                     className="w-full flex items-center justify-between text-left group"
                   >
-                    <span className={`text-xl md:text-2xl font-bold transition-colors ${openIndex === index ? 'text-[#0070c0]' : 'text-gray-900 group-hover:text-[#0070c0]'}`}>
+                    {/* Replaced [#0070c0] with primary */}
+                    <span className={`text-xl md:text-2xl font-bold transition-colors ${openIndex === index ? 'text-primary' : 'text-foreground group-hover:text-primary'}`}>
                       {faq.question}
                     </span>
                     <div className="ml-4 shrink-0">
                       {openIndex === index ? (
-                        <Minus className="w-6 h-6 text-[#0070c0]" />
+                        <Minus className="w-6 h-6 text-primary" />
                       ) : (
                         <Plus className="w-6 h-6 text-gray-400" />
                       )}
@@ -71,7 +72,7 @@ const FAQ = () => {
                   {/* Answer with Animation */}
                   <div 
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      openIndex === index ? 'max-height-40 opacity-100 mt-4' : 'max-h-0 opacity-0'
+                      openIndex === index ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl">

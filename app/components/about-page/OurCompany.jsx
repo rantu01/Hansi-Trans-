@@ -21,13 +21,12 @@ const OurCompany = () => {
     fetchData();
   }, []);
 
-  // 🔑 image mapping (design unchanged)
   const images = company?.images || [];
   const missionImages = images.slice(0, 3);
   const visionImages = images.slice(3, 6);
 
   return (
-    <div className="bg-white py-20 px-6 md:px-12 font-sans text-[#1a1a1a]">
+    <div className="bg-background py-20 px-6 md:px-12 font-sans text-foreground">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}
@@ -39,7 +38,8 @@ const OurCompany = () => {
                 Mission & Vision
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-[#0066b2]">
+            {/* Replaced [#0066b2] with primary */}
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-primary uppercase">
               {company?.missionTitle || "Our Company Main Mission"}
             </h1>
           </div>
@@ -61,21 +61,21 @@ const OurCompany = () => {
               <img
                 src={missionImages[0]}
                 alt="Mission"
-                className="w-full h-64 object-cover rounded-[30px]"
+                className="w-full h-64 object-cover rounded-[30px] border border-gray-50"
               />
             </div>
             <div className="col-span-1">
               <img
                 src={missionImages[1]}
                 alt="Mission"
-                className="w-full h-48 object-cover rounded-[30px]"
+                className="w-full h-48 object-cover rounded-[30px] border border-gray-50"
               />
             </div>
             <div className="col-span-1">
               <img
                 src={missionImages[2]}
                 alt="Mission"
-                className="w-full h-48 object-cover rounded-[30px]"
+                className="w-full h-48 object-cover rounded-[30px] border border-gray-50"
               />
             </div>
           </div>
@@ -83,7 +83,7 @@ const OurCompany = () => {
           {/* Text Content Right */}
           <div>
             <h2 className="text-2xl md:text-3xl font-bold mb-6">
-              <span className="text-[#0066b2]">Mission Statement:</span>{" "}
+              <span className="text-primary">Mission Statement:</span>{" "}
               {company?.missionTitle}
             </h2>
 
@@ -91,10 +91,11 @@ const OurCompany = () => {
               {company?.missionDescription}
             </p>
 
-            <button className="flex items-center gap-3 bg-[#0066b2] hover:bg-[#005596] text-white px-6 py-3 rounded-full font-medium transition-all group">
+            {/* Button using primary and accent for hover */}
+            <button className="flex items-center gap-3 bg-primary hover:bg-accent text-white px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-primary/10 active:scale-95 group">
               Work with us?
               <span className="bg-white rounded-full p-1 group-hover:rotate-45 transition-transform">
-                <ArrowUpRight size={18} className="text-[#0066b2]" />
+                <ArrowUpRight size={18} className="text-primary" />
               </span>
             </button>
           </div>
@@ -106,7 +107,7 @@ const OurCompany = () => {
           {/* Text Content Left */}
           <div className="order-2 lg:order-1">
             <h2 className="text-2xl md:text-3xl font-bold mb-6">
-              <span className="text-[#0066b2]">Vision Statement:</span>{" "}
+              <span className="text-primary">Vision Statement:</span>{" "}
               "{company?.visionTitle}"
             </h2>
 
@@ -114,10 +115,10 @@ const OurCompany = () => {
               {company?.visionDescription}
             </p>
 
-            <button className="flex items-center gap-3 bg-[#0066b2] hover:bg-[#005596] text-white px-6 py-3 rounded-full font-medium transition-all group">
+            <button className="flex items-center gap-3 bg-primary hover:bg-accent text-white px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-primary/10 active:scale-95 group">
               Work with us?
-              <span className="bg-white rounded-full p-1 group-hover:rotate-45 transition-transform">
-                <ArrowRight size={18} className="text-[#0066b2]" />
+              <span className="bg-white rounded-full p-1 group-hover:translate-x-1 transition-transform">
+                <ArrowRight size={18} className="text-primary" />
               </span>
             </button>
           </div>
@@ -128,21 +129,21 @@ const OurCompany = () => {
               <img
                 src={visionImages[0]}
                 alt="Vision"
-                className="w-full h-64 object-cover rounded-[30px]"
+                className="w-full h-64 object-cover rounded-[30px] border border-gray-50"
               />
             </div>
             <div className="col-span-1">
               <img
                 src={visionImages[1]}
                 alt="Vision"
-                className="w-full h-48 object-cover rounded-[30px]"
+                className="w-full h-48 object-cover rounded-[30px] border border-gray-50"
               />
             </div>
             <div className="col-span-1">
               <img
                 src={visionImages[2]}
                 alt="Vision"
-                className="w-full h-48 object-cover rounded-[30px]"
+                className="w-full h-48 object-cover rounded-[30px] border border-gray-50"
               />
             </div>
           </div>

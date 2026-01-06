@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FaUser, FaStar, FaGlobe, FaBriefcase } from "react-icons/fa";
-import Marquee from "react-fast-marquee"; // প্যাকেজ ইমপোর্ট
+import Marquee from "react-fast-marquee"; // Package Import
 import Stats from "../common/stats";
 import { API } from "@/app/config/api";
 
@@ -48,13 +48,15 @@ const Achievement = () => {
   const firstRow = partners.slice(0, Math.ceil(partners.length / 2));
   const secondRow = partners.slice(Math.ceil(partners.length / 2));
 
-  if (loading) return null; // লোডিং অবস্থায় সাদা স্ক্রিন বা স্পিনার রাখতে পারেন
+  if (loading) return null; 
 
   return (
-    <section className="min-h-screen flex items-center bg-white overflow-hidden py-16">
+    /* Used background variable */
+    <section className="min-h-screen flex items-center bg-background overflow-hidden py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0066b2]">
+          {/* Replaced [#0066b2] with primary variable */}
+          <h2 className="text-3xl md:text-4xl font-bold text-primary">
             Our Big Achievement
           </h2>
         </div>
@@ -62,17 +64,19 @@ const Achievement = () => {
         <Stats stats={statsData} />
 
         <div className="text-center mt-10">
-          <h3 className="text-xl md:text-2xl font-semibold mb-10">
+          {/* Used foreground variable for text */}
+          <h3 className="text-xl md:text-2xl font-semibold mb-10 text-foreground">
             Trusted By Teams In Games, Anime, And Tech
           </h3>
 
           <div className="flex flex-col gap-6">
-            {/* প্রথম রো: বাম দিকে যাবে */}
+            {/* First Row: Marquee */}
             <Marquee gradient={false} speed={50} pauseOnHover={true}>
               {firstRow.map((partner, i) => (
                 <div
                   key={`row1-${i}`}
-                  className="bg-white border px-8 py-3 mx-3 rounded-full shadow-sm flex items-center justify-center"
+                  /* Used background and foreground colors */
+                  className="bg-background border border-gray-100 px-8 py-3 mx-3 rounded-full shadow-sm flex items-center justify-center"
                 >
                   <img
                     src={partner.logo}
@@ -83,12 +87,13 @@ const Achievement = () => {
               ))}
             </Marquee>
 
-            {/* দ্বিতীয় রো: ডান দিকে যাবে (direction="right") */}
+            {/* Second Row: Marquee */}
             <Marquee gradient={false} speed={50} pauseOnHover={true} direction="right">
               {secondRow.map((partner, i) => (
                 <div
                   key={`row2-${i}`}
-                  className="bg-white border px-8 py-3 mx-3 rounded-full shadow-sm flex items-center justify-center"
+                  /* Used background and foreground colors */
+                  className="bg-background border border-gray-100 px-8 py-3 mx-3 rounded-full shadow-sm flex items-center justify-center"
                 >
                   <img
                     src={partner.logo}

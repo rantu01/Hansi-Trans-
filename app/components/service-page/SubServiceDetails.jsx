@@ -5,20 +5,19 @@ const SubServiceDetails = ({ subService }) => {
   const features = subService.features || [];
 
   return (
-    <section className="py-16 px-6 md:px-12 font-sans overflow-hidden">
+    <section className="py-16 px-6 md:px-12 font-sans overflow-hidden ">
       <div className="mx-auto max-w-7xl">
         
-        {/* Main Hero Image */}
+        {/* Main Hero Image with Brand Shadow */}
         {subService.image && (
-          <div className="w-full h-[350px] md:h-[600px] mb-16 overflow-hidden rounded-[32px] md:rounded-[48px] shadow-2xl shadow-blue-100/50 group relative bg-gray-100">
+          <div className="w-full h-[350px] md:h-[600px] mb-16 overflow-hidden rounded-[32px] md:rounded-[48px] shadow-2xl shadow-primary/10 group relative bg-primary/5">
             <img
               src={subService.image}
               className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105" 
-              /* object-top ব্যবহার করা হয়েছে যাতে মাথার অংশ না কাটে */
               alt={subService.title}
             />
-            {/* Overlay for better depth */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
+            {/* Brand-aligned overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none"></div>
           </div>
         )}
 
@@ -28,12 +27,17 @@ const SubServiceDetails = ({ subService }) => {
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="p-8 bg-gray-50 rounded-[30px] border border-gray-100 hover:bg-white hover:border-blue-100 hover:shadow-xl hover:shadow-blue-50/50 transition-all duration-300 group"
+                className="p-8 bg-background rounded-[30px] border border-primary/5 hover:bg-background hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group"
               >
-                <span className="text-[#0066b2] font-bold text-xl mb-4 block group-hover:scale-110 transition-transform origin-left">
+                {/* Feature Number using Brand Primary Color */}
+                <span className="text-primary font-bold text-xl mb-4 block group-hover:scale-110 transition-transform origin-left">
                   {index + 1 < 10 ? `0${index + 1}` : index + 1}
                 </span>
-                <p className="text-gray-700 font-medium leading-relaxed">{feature}</p>
+                
+                {/* Feature Text using Foreground for clarity */}
+                <p className="text-foreground/80 font-medium leading-relaxed group-hover:text-foreground transition-colors">
+                  {feature}
+                </p>
               </div>
             ))}
           </div>

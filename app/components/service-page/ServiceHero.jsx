@@ -7,7 +7,6 @@ import { API } from "@/app/config/api";
 const ServiceHero = () => {
   const [services, setServices] = useState([]);
 
-  // পজিশনগুলো আপনার দেওয়া কোড অনুযায়ী হুবহু রাখা হলো
   const positions = [
     "top-12 left-[6%]",
     "top-28 left-[22%]",
@@ -21,12 +20,9 @@ const ServiceHero = () => {
       try {
         const response = await axios.get(API.services.main);
         if (response.data.success) {
-          // 🔹 ফ্রন্টএন্ড ফিল্টারিং: নিশ্চিত করা হচ্ছে শুধু মেইন সার্ভিস (যাদের parent নেই) আসবে
           const mainServicesOnly = response.data.data.filter(
             (service) => !service.parentService
           );
-          
-          // পজিশন অনুযায়ী প্রথম ৫টি সার্ভিস নেওয়া হলো
           setServices(mainServicesOnly.slice(0, 5));
         }
       } catch (error) {
@@ -38,29 +34,30 @@ const ServiceHero = () => {
 
   return (
     <section className="relative w-full h-[400px] md:h-[300px] overflow-hidden flex items-center justify-center">
+      {/* Subtle background texture or overlay could go here */}
       <div className="absolute inset-0 pointer-events-none"></div>
 
       <div className="relative w-full h-full max-w-7xl mx-auto">
-        {/* Floating Service Pills - ডিজাইন সম্পূর্ণ অপরিবর্তিত */}
+        {/* Floating Service Pills */}
         {services.map((service, index) => (
           <div
             key={service._id}
             className={`absolute ${
               positions[index % positions.length]
-            } flex items-center gap-3 bg-black text-white px-6 py-4 rounded-full shadow-2xl transition-transform hover:scale-105 cursor-default group z-10 whitespace-nowrap`}
+            } flex items-center gap-3 bg-secondary text-white px-6 py-4 rounded-full shadow-xl shadow-secondary/20 transition-all hover:scale-105 hover:bg-primary cursor-default group z-10 whitespace-nowrap border border-white/10`}
           >
-            <span className="text-sm md:text-base font-medium tracking-wide">
+            <span className="text-sm md:text-base font-semibold tracking-wide uppercase">
               {service.title}
             </span>
             <Layers
               size={18}
-              className="text-white opacity-80 group-hover:rotate-12 transition-transform"
+              className="text-cta-text opacity-80 group-hover:rotate-12 group-hover:scale-110 transition-transform"
             />
           </div>
         ))}
 
-        {/* Central Subtle Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-white/20 blur-[100px] rounded-full"></div>
+        {/* Central Subtle Glow - Uses Brand Gradient Color */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-base/10 blur-[100px] rounded-full pointer-events-none"></div>
       </div>
     </section>
   );

@@ -9,7 +9,7 @@ const Service = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const isAnimating = useRef(false);
   
-  // কার্ড কন্টেইনারের জন্য আলাদা রেফারেন্স
+  // Reference for the card container
   const cardContainerRef = useRef(null);
 
   useEffect(() => {
@@ -29,10 +29,8 @@ const Service = () => {
 
   useEffect(() => {
     const onWheel = (e) => {
-      // কার্ড কন্টেইনার না থাকলে বা সার্ভিস না থাকলে রিটার্ন
       if (!cardContainerRef.current || services.length === 0) return;
 
-      // মাউস কি শুধুমাত্র কার্ড কন্টেইনারের ওপরে আছে?
       const rect = cardContainerRef.current.getBoundingClientRect();
       const isMouseOverCards = 
         e.clientX >= rect.left && 
@@ -40,7 +38,6 @@ const Service = () => {
         e.clientY >= rect.top && 
         e.clientY <= rect.bottom;
 
-      // মাউস কার্ডের ওপরে না থাকলে স্বাভাবিক স্ক্রল হতে দাও
       if (!isMouseOverCards) return;
 
       if (isAnimating.current) {
@@ -48,14 +45,12 @@ const Service = () => {
         return;
       }
 
-      // নিচের দিকে স্ক্রল (Next Card)
       if (e.deltaY > 0 && activeIndex < services.length - 1) {
         if (e.cancelable) e.preventDefault();
         isAnimating.current = true;
         setActiveIndex((prev) => prev + 1);
         setTimeout(() => (isAnimating.current = false), 800);
       } 
-      // উপরের দিকে স্ক্রল (Previous Card)
       else if (e.deltaY < 0 && activeIndex > 0) {
         if (e.cancelable) e.preventDefault();
         isAnimating.current = true;
@@ -69,20 +64,21 @@ const Service = () => {
   }, [activeIndex, services.length]);
 
   if (loading)
-    return <div className="py-20 text-center">Loading Services...</div>;
+    return <div className="py-20 text-center text-primary">Loading Services...</div>;
 
   return (
-    <section className="py-20 bg-white min-h-screen overflow-hidden">
+    <section className="py-20 bg-background min-h-screen overflow-hidden">
       <div className="container mx-auto px-4">
         
-        {/* Header Section - এখানে মাউস থাকলে এখন নরমাল স্ক্রল হবে */}
+        {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-24 gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 text-sm font-medium text-gray-600 mb-6 bg-white shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 text-sm font-medium text-gray-600 mb-6 bg-background shadow-sm">
               <Sparkles className="w-4 h-4 text-gray-400" />
               Service
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold text-[#0066b2] leading-[1.1]">
+            {/* Replaced [#0066b2] with primary variable */}
+            <h2 className="text-4xl md:text-6xl font-bold text-primary leading-[1.1]">
               Our Best Valuable <br /> Service For You
             </h2>
           </div>
@@ -93,7 +89,7 @@ const Service = () => {
           </div>
         </div>
 
-        {/* Stacked Cards Container - শুধুমাত্র এই এরিয়াতে মাউস থাকলে স্ক্রল লক হবে */}
+        {/* Stacked Cards Container */}
         <div 
           ref={cardContainerRef}
           className="relative max-w-7xl mx-auto mt-20 h-[600px] md:h-[700px]"
@@ -108,6 +104,13 @@ const Service = () => {
             const scale = position === 0 ? "scale-100" : position === 1 ? "scale-[0.94]" : "scale-[0.88]";
             const isExiting = index < activeIndex;
 
+            // Logic to handle different card colors using your variables
+            const cardBg = position === 0 
+              ? "bg-gradient-to-b from-gradient-base to-background" 
+              : position === 1 
+                ? "bg-accent" 
+                : "bg-secondary";
+
             return (
               <div
                 key={service._id}
@@ -115,29 +118,30 @@ const Service = () => {
                 ${isExiting ? "opacity-0 -translate-y-20 scale-95" : "opacity-100"}`}
               >
                 <div className={`
-                  ${position === 0 ? "bg-gradient-to-b from-[#abdbff] to-white" : position === 1 ? "bg-[#91c9f0]" : "bg-[#6db3e6]"} 
+                  ${cardBg} 
                   rounded-[40px] md:rounded-[60px] shadow-md border border-white/50 overflow-hidden
                 `}>
                   
                   <div className={`p-8 md:p-16 flex flex-col lg:flex-row items-center gap-12 transition-opacity duration-500 ${position === 0 ? "opacity-100" : "opacity-0 h-[500px]"}`}>
                     
                     <div className="w-full lg:w-1/2">
-                      <h3 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">{service.title}</h3>
+                      <h3 className="text-4xl md:text-6xl font-bold text-foreground mb-6">{service.title}</h3>
                       <p className="text-gray-600 text-lg mb-8">{service.description}</p>
                       <div className="space-y-4 mb-10">
-                        <h4 className="font-bold text-gray-900 text-lg">Key Features:</h4>
+                        <h4 className="font-bold text-foreground text-lg">Key Features:</h4>
                         <ul className="space-y-3">
                           {service.features?.map((f, idx) => (
                             <li key={idx} className="flex items-start gap-3 text-gray-700">
-                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black shrink-0" />
+                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground shrink-0" />
                               <span className="text-sm md:text-base font-medium">{f}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-                      <button className="inline-flex items-center gap-3 bg-[#0070c0] text-white pl-8 pr-2 py-2 rounded-full font-semibold hover:bg-blue-700 transition shadow-lg group">
+                      {/* Replaced [#0070c0] with primary variable */}
+                      <button className="inline-flex items-center gap-3 bg-primary text-white pl-8 pr-2 py-2 rounded-full font-semibold hover:opacity-90 transition shadow-lg group">
                         Explore Services
-                        <span className="bg-white text-[#0070c0] rounded-full p-2 transition-transform group-hover:rotate-45">
+                        <span className="bg-white text-primary rounded-full p-2 transition-transform group-hover:rotate-45">
                           <ArrowUpRight className="w-5 h-5" />
                         </span>
                       </button>

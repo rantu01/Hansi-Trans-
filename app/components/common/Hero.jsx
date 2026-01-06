@@ -16,10 +16,9 @@ const Hero = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  // 🔹 State for dynamic site configuration
   const [siteConfig, setSiteConfig] = useState({
     logo: null,
-    brandText: "Hansi", // Default text
+    brandText: "Hansi",
   });
 
   const navLinks = [
@@ -31,7 +30,6 @@ const Hero = ({
     { name: "Others", path: "/others" },
   ];
 
-  // 🔹 Fetch dynamic logo and brand text
   useEffect(() => {
     const fetchSiteData = async () => {
       try {
@@ -51,7 +49,7 @@ const Hero = ({
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-black">
+    <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-secondary">
       
       {/* 🔹 VIDEO BACKGROUND */}
       <video
@@ -65,14 +63,14 @@ const Hero = ({
         <source src="/upper-cloud.webm" type="video/webm" />
       </video>
 
-      {/* overlay */}
-      <div className="absolute inset-0 bg-black/40 z-0"></div>
+      {/* overlay - Using secondary color with opacity for depth */}
+      <div className="absolute inset-0 bg-secondary/40 z-0"></div>
 
       <div className="container mx-auto px-6 md:px-12 relative z-10 pt-6 flex-grow flex flex-col">
         {/* ================= NAVBAR ================= */}
         <nav className="relative z-50 mb-16">
           <div className="flex justify-between items-center">
-            {/* Logo & Brand Text (Dynamic) */}
+            {/* Logo & Brand Text */}
             <Link href="/" className="flex items-center space-x-2 flex-1">
               <img
                 src={siteConfig.logo || "/Hansi-Logo1.png"}
@@ -82,7 +80,7 @@ const Hero = ({
                 alt="hansi logo"
                 className="w-8 h-8 md:w-10 md:h-10 object-contain"
               />
-              <span className="text-xl md:text-2xl font-bold tracking-wider">
+              <span className="text-xl md:text-2xl font-bold tracking-wider text-white">
                 {siteConfig.brandText}
               </span>
             </Link>
@@ -98,11 +96,12 @@ const Hero = ({
                   <Link
                     key={item.name}
                     href={item.path}
-                    className={`text-sm lg:text-base rounded-3xl transition-colors px-4 py-2 whitespace-nowrap
+                    /* Replaced blue-400 with primary and custom bg with secondary/20 */
+                    className={`text-sm lg:text-base rounded-3xl transition-all px-4 py-2 whitespace-nowrap
                       ${
                         isActive
-                          ? "bg-blue-400 text-white"
-                          : "text-white bg-[#4e728e] bg-opacity-20 hover:bg-blue-400"
+                          ? "bg-primary text-white shadow-lg shadow-primary/20"
+                          : "text-white bg-secondary/20 backdrop-blur-md border border-white/10 hover:bg-primary"
                       }`}
                   >
                     {item.name}
@@ -116,7 +115,7 @@ const Hero = ({
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent border border-gray-500 rounded px-2 py-1 text-white outline-none cursor-pointer"
+                className="bg-transparent border border-white/30 rounded px-2 py-1 text-white outline-none cursor-pointer text-sm"
               >
                 <option className="text-black" value="EN">EN</option>
                 <option className="text-black" value="BN">BN</option>
@@ -124,7 +123,7 @@ const Hero = ({
 
               <Link
                 href="/contact"
-                className="border border-gray-500 px-5 py-2 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition"
+                className="border border-white/40 px-5 py-2 rounded-full text-sm font-semibold hover:bg-white hover:text-secondary transition-all"
               >
                 Let's connect
               </Link>
@@ -141,7 +140,7 @@ const Hero = ({
 
           {/* Mobile Menu */}
           {menuOpen && (
-            <div className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-8 z-50 p-6 overflow-y-auto">
+            <div className="md:hidden fixed inset-0 bg-secondary/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 z-50 p-6 overflow-y-auto">
               {navLinks.map((item) => {
                 const isActive =
                   pathname === item.path ||
@@ -155,8 +154,8 @@ const Hero = ({
                     className={`text-2xl font-medium transition-colors
                       ${
                         isActive
-                          ? "text-blue-400"
-                          : "text-white hover:text-blue-400"
+                          ? "text-primary"
+                          : "text-white hover:text-primary"
                       }`}
                   >
                     {item.name}
@@ -167,7 +166,8 @@ const Hero = ({
               <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="bg-[#347fb9] text-center w-full max-w-xs py-4 rounded-full font-semibold text-lg"
+                /* Replaced #347fb9 with accent color */
+                className="bg-accent text-white text-center w-full max-w-xs py-4 rounded-full font-semibold text-lg shadow-xl shadow-accent/20"
               >
                 Let's connect
               </Link>
@@ -180,22 +180,22 @@ const Hero = ({
           <div className="flex flex-col md:flex-row justify-between items-end pb-4">
             {/* Left */}
             <div className="w-full md:w-1/2 mb-10 md:-mb-30">
-              <p className="text-xs md:text-sm tracking-widest opacity-80 mb-4 uppercase">
+              <p className="text-xs md:text-sm tracking-widest text-cta-text opacity-90 mb-4 uppercase">
                 {breadcrumb}
               </p>
-              <h1 className="text-5xl md:text-5xl font-medium">{title}</h1>
+              <h1 className="text-5xl md:text-6xl font-bold text-white">{title}</h1>
             </div>
 
             {/* Right */}
             <div className="w-full md:w-[40%] mt-12 md:mt-14 md:relative md:top-8">
-              <p className="text-sm md:text-lg leading-relaxed opacity-90">
+              <p className="text-sm md:text-lg leading-relaxed text-cta-text opacity-90">
                 {description}
               </p>
             </div>
           </div>
 
           {/* Decorative Line */}
-          <div className="w-full h-[160px] md:h-[300px] relative mt-[-150px]">
+          <div className="w-full h-[160px] md:h-[300px] relative mt-[-150px] opacity-50">
             <Image
               src="/Vector Line.svg"
               alt="decorative line"
