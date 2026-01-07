@@ -16,7 +16,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
-    --foreground: #ffffff;
+    --foreground: #000000;
     /* ডার্ক মোডে চাইলে কালার একটু চেঞ্জ করতে পারেন */
   }
 }
