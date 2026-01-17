@@ -71,19 +71,15 @@ const Hero = ({
         <nav className="relative z-50 mb-16">
           <div className="flex justify-between items-center">
             {/* Logo & Brand Text */}
-            <Link href="/" className="flex items-center space-x-2 flex-1">
-              <img
-                src={siteConfig.logo || "/Hansi-Logo1.png"}
-                onError={(e) => {
-                  e.currentTarget.src = "/Hansi-Logo1.png";
-                }}
-                alt="hansi logo"
-                className="w-8 h-8 md:w-10 md:h-10 object-contain"
-              />
-              <span className="text-xl md:text-2xl font-bold tracking-wider text-white">
-                {siteConfig.brandText}
-              </span>
-            </Link>
+            <Link href="/" className="flex flex-col items-center justify-center space-y-1 flex-1 text-center">
+            <img
+              src={siteConfig.logo || "/Hansi-Logo1.png"}
+              onError={(e) => { e.currentTarget.src = "/Hansi-Logo1.png"; }}
+              alt="hansi logo"
+              className="w-8 h-8 md:w-10 md:h-10 object-contain"
+            />
+            <span className="text-xl md:text-2xl font-bold tracking-wider">{siteConfig.brandText}</span>
+          </Link>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-8 flex-[2]">

@@ -8,11 +8,11 @@ const ServiceHero = () => {
   const [services, setServices] = useState([]);
 
   const positions = [
-    "top-12 left-[6%]",
-    "top-28 left-[22%]",
+    "top-12 left-[0%]",
+    "top-28 left-[15%]",
     "top-48 left-1/2 -translate-x-1/2",
-    "top-28 right-[22%]",
-    "top-12 right-[6%]",
+    "top-28 right-[15%]",
+    "top-12 right-[0%]",
   ];
 
   useEffect(() => {

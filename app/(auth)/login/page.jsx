@@ -129,7 +129,7 @@ export default function LoginPage() {
 
         {loading && (
           <p className="text-xs text-gray-400 text-center mt-3">
-            Render server may be waking up, please wait...
+            server may be waking up, please wait...
           </p>
         )}
       </form>

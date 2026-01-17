@@ -47,11 +47,14 @@ const HansiTrans = () => {
   }, []);
 
   return (
-    <div className="min-h-screen text-white overflow-x-hidden relative">
+    // md screen theke min-h-screen ensure kora hoyeche
+    <div className="min-h-[auto] md:min-h-screen text-white overflow-x-hidden relative">
+      {/* Background Video */}
       <video autoPlay loop muted playsInline preload="metadata" className="absolute inset-0 w-full h-full object-cover z-0">
         <source src="/Gif-latest-dev.webm" type="video/webm" />
       </video>
 
+      {/* Navigation */}
       <nav className="container mx-auto px-4 md:px-6 py-4 md:py-6 relative z-50">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex flex-col items-center justify-center space-y-1 flex-1 text-center">
@@ -66,7 +69,6 @@ const HansiTrans = () => {
 
           <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-8 flex-[2]">
             {navLinks.map((item) => (
-              /* Replaced [#4e728e] with accent variable with opacity */
               <Link key={item.name} href={item.path} className="hover:bg-gradient-base text-sm lg:text-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2">
                 {item.name}
               </Link>
@@ -92,12 +94,10 @@ const HansiTrans = () => {
         {menuOpen && (
           <div className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6">
             {navLinks.map((item) => (
-              /* Replaced blue-400 with gradient-base */
               <Link key={item.name} href={item.path} className="text-xl hover:text-gradient-base transition-colors" onClick={() => setMenuOpen(false)}>
                 {item.name}
               </Link>
             ))}
-            {/* Replaced [#347fb9] with accent variable */}
             <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-accent text-center w-full max-w-xs py-3 rounded-full font-semibold">
               Let's connect
             </Link>
@@ -105,78 +105,95 @@ const HansiTrans = () => {
         )}
       </nav>
 
-      <section className="container mx-auto px-4 py-12 md:py-20 flex flex-col items-center text-center relative z-10">
-        <div className="max-w-5xl">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl leading-tight mb-6 font-bold">
-            {/* Replaced text-blue-400 with gradient-base */}
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-6 md:py-12 flex flex-col items-center text-center relative z-10">
+        <div className="max-w-5xl w-full">
+          <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl leading-tight mb-4 font-bold">
             Global Localization, Voice-Over & <span className="text-gradient-base">Cross-Border</span> Marketing
           </h1>
-          <p className="text-base md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto px-2">
-            From websites to memorable brand identities, we turn your vision into a digital experience. Let's build something unforgettable—together!
+          <p className="text-base md:text-lg text-gray-200 mb-8 max-w-2xl mx-auto px-2">
+            Make it once, bring it to take it worldwide—with Hansi Trans.
           </p>
 
-          <div className="relative w-full mt-10">
-            <div className="relative md:absolute md:inset-0 flex flex-col items-center justify-center md:justify-start md:pt-10 z-0 mb-10 md:mb-0 order-1">
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
-                {/* Replaced bg-[#0066b2] with primary variable */}
-                <Link href="/contact" className="bg-primary text-white pl-6 pr-2 py-2 rounded-full flex items-center gap-3 font-medium hover:opacity-90 transition shadow-lg">
-                  Let's Work Together?
-                  <span className="bg-white text-primary rounded-full p-2"><ArrowRight className="w-4 h-4" /></span>
-                </Link>
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3].map((i) => (
-                      <img key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white" src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
-                    ))}
-                  </div>
-                  <div className="text-left text-sm leading-tight">
-                    <p className="font-bold text-white">120K+</p>
-                    <p className="text-gray-300 text-xs">Happy Customers</p>
-                  </div>
+          <div className="relative w-full min-h-[450px] md:min-h-[600px] flex items-center justify-center mt-4">
+            
+            {/* CTA & Customer Info Section */}
+            <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 z-30">
+              <Link href="/contact" className="bg-primary text-white pl-6 pr-2 py-2 rounded-full flex items-center gap-3 font-medium hover:opacity-90 transition shadow-lg text-sm md:text-base">
+                Let's Work Together?
+                <span className="bg-white text-primary rounded-full p-2"><ArrowRight className="w-4 h-4" /></span>
+              </Link>
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3].map((i) => (
+                    <img key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white" src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                  ))}
                 </div>
-              </div>
-              <div className="flex items-center gap-3 bg-black/20 p-3 rounded-xl backdrop-blur-sm">
-                {/* Replaced text-blue-400 with gradient-base */}
-                <div className="flex text-gradient-base text-lg md:text-xl">★★★★<span className="text-gray-400">★</span></div>
-                <div className="text-xs md:text-sm text-gray-200 font-medium leading-tight text-center sm:text-left">
-                  Backed by 100,000+ successful <br className="hidden sm:block" /> companies worldwide
+                <div className="text-left text-sm leading-tight">
+                  <p className="font-bold text-white">120K+</p>
+                  <p className="text-gray-300 text-[10px] md:text-xs">Happy Customers</p>
                 </div>
               </div>
             </div>
 
-            <div className="relative z-10 flex flex-col gap-4 md:block px-4 sm:px-0">
-              <div className="flex flex-col md:flex-row justify-between w-full md:mb-16 md:px-8 gap-4">
+            {/* Middle Panda Video - Sizes increased */}
+            <div className="relative z-0 w-64 h-64 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] flex items-center justify-center">
+              <video autoPlay loop muted playsInline className="w-full h-full object-contain scale-110 md:scale-125">
+                <source src="/convertedPanda.webm" type="video/webm" />
+              </video>
+            </div>
+
+            {/* Desktop Surrounding Service Buttons (Absolute Positioned) */}
+            <div className="absolute inset-0 pointer-events-none hidden md:block">
+              {/* Left Side Buttons */}
+              <div className="absolute top-[35%] left-0 pointer-events-auto">
                 {services[0] && (
-                  /* Replaced hover:bg-blue-900 with secondary */
-                  <button className="bg-black/80 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-secondary transition shadow-xl md:-ml-10">
+                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[0].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
+              </div>
+              <div className="absolute top-[55%] left-[10%] pointer-events-auto">
                 {services[1] && (
-                  <button className="bg-black/80 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-secondary transition shadow-xl md:-mr-10">
+                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[1].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
               </div>
-              <div className="flex flex-col md:flex-row justify-between w-full md:mb-16 md:px-20 gap-4">
+
+              {/* Right Side Buttons */}
+              <div className="absolute top-[35%] right-0 pointer-events-auto">
                 {services[2] && (
-                  <button className="bg-black/80 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-secondary transition shadow-xl">
+                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[2].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
+              </div>
+              <div className="absolute top-[55%] right-[10%] pointer-events-auto">
                 {services[3] && (
-                  <button className="bg-black/80 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-secondary transition shadow-xl">
+                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[3].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
               </div>
-              <div className="flex justify-center w-full mt-4 md:mt-0">
+
+              {/* Bottom Button */}
+              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto">
                 {services[4] && (
-                  <button className="bg-black/80 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-xl">
+                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[4].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
               </div>
+            </div>
+
+            {/* Mobile View Service Buttons (Visible only on small screens) */}
+            <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4">
+              {services.map((service, index) => (
+                <button key={index} className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-1 shadow-lg">
+                  {service.title} <span className="text-[8px]">📚</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
