@@ -4,6 +4,7 @@ import { Menu, ArrowRight, X } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
+import { ArrowUpRight } from "lucide-react";
 
 const HansiTrans = () => {
   const [language, setLanguage] = useState("EN");
@@ -47,12 +48,24 @@ const HansiTrans = () => {
   }, []);
 
   return (
-    // md screen theke min-h-screen ensure kora hoyeche
     <div className="min-h-[auto] md:min-h-screen text-white overflow-x-hidden relative">
       {/* Background Video */}
       <video autoPlay loop muted playsInline preload="metadata" className="absolute inset-0 w-full h-full object-cover z-0">
         <source src="/Gif-latest-dev.webm" type="video/webm" />
       </video>
+
+      {/* Hero Image Gradient Overlay */}
+      {/* এখনে ইমেজটি একদম নিচে (bottom-0) সেট করা হয়েছে। 
+          w-full এবং object-cover ব্যবহার করা হয়েছে যাতে ইমেজটি পুরো উইডথ জুড়ে থাকে।
+          z-[1] দেয়া হয়েছে যাতে এটি ভিডিওর উপরে এবং টেক্সটের নিচে থাকে।
+      */}
+      <div className="absolute inset-x-0 bottom-0 w-full z-[1] pointer-events-none">
+        <img
+          src="/hero gradient.png"
+          alt="gradient overlay"
+          className="w-full h-auto object-cover block"
+        />
+      </div>
 
       {/* Navigation */}
       <nav className="container mx-auto px-4 md:px-6 py-4 md:py-6 relative z-50">
@@ -75,14 +88,20 @@ const HansiTrans = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center justify-end space-x-4 flex-1">
-            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="bg-transparent border border-gray-500 rounded px-2 py-1 text-white outline-none cursor-pointer">
+          <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
+            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-transparent border border-white rounded px-4 py-4 text-white outline-none cursor-pointer">
               <option className="text-black" value="EN">EN</option>
               <option className="text-black" value="ES">ES</option>
               <option className="text-black" value="FR">FR</option>
             </select>
-            <Link href="/contact" className="bg-transparent border border-gray-500 px-4 lg:px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-black transition whitespace-nowrap text-sm lg:text-base">
+            <Link
+              href="/contact"
+              className="group flex items-center gap-3 bg-transparent border border-[#E0E4FF] pl-5 pr-1.5 py-1.5 rounded-full font-semibold text-white hover:bg-white hover:text-primary transition-all duration-300 whitespace-nowrap text-sm lg:text-base"
+            >
               Let's connect
+              <span className="bg-white rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                <ArrowUpRight className="w-7 h-7 text-primary" strokeWidth={2} />
+              </span>
             </Link>
           </div>
 
@@ -108,20 +127,25 @@ const HansiTrans = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-6 md:py-12 flex flex-col items-center text-center relative z-10">
         <div className="max-w-5xl w-full">
-          <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl leading-tight mb-4 font-bold">
-            Global Localization, Voice-Over & <span className="text-gradient-base">Cross-Border</span> Marketing
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-4 font-bold">
+            Global Localization, Voice-Over & Cross-Border Marketing
           </h1>
-          <p className="text-base md:text-lg text-gray-200 mb-8 max-w-2xl mx-auto px-2">
-            Make it once, bring it to take it worldwide—with Hansi Trans.
+          <p className="text-base md:text-md text-gray-200 mb-8 max-w-4xl mx-auto px-2">
+            From bold websites to memorable brand identities, we turn your vision into a digital experience. <br /> Let’s build something unforgettable—together.
           </p>
 
           <div className="relative w-full min-h-[450px] md:min-h-[600px] flex items-center justify-center mt-4">
-            
+
             {/* CTA & Customer Info Section */}
             <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 z-30">
-              <Link href="/contact" className="bg-primary text-white pl-6 pr-2 py-2 rounded-full flex items-center gap-3 font-medium hover:opacity-90 transition shadow-lg text-sm md:text-base">
+              <Link
+                href="/contact"
+                className="group bg-primary text-white pl-6 pr-1.5 py-1.5 rounded-full flex items-center gap-3 font-medium hover:bg-secondary transition-all duration-300 shadow-lg text-sm md:text-base w-fit"
+              >
                 Let's Work Together?
-                <span className="bg-white text-primary rounded-full p-2"><ArrowRight className="w-4 h-4" /></span>
+                <span className="bg-white rounded-full p-2 flex items-center justify-center transition-transform duration-300 group-hover:rotate-12">
+                  <ArrowUpRight className="w-4 h-4 text-primary" strokeWidth={2} />
+                </span>
               </Link>
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-3">
@@ -136,16 +160,15 @@ const HansiTrans = () => {
               </div>
             </div>
 
-            {/* Middle Panda Video - Sizes increased */}
+            {/* Middle Panda Video */}
             <div className="relative z-0 w-64 h-64 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] flex items-center justify-center">
               <video autoPlay loop muted playsInline className="w-full h-full object-contain scale-110 md:scale-125">
                 <source src="/convertedPanda.webm" type="video/webm" />
               </video>
             </div>
 
-            {/* Desktop Surrounding Service Buttons (Absolute Positioned) */}
+            {/* Desktop Surrounding Service Buttons */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
-              {/* Left Side Buttons */}
               <div className="absolute top-[35%] left-0 pointer-events-auto">
                 {services[0] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
@@ -161,7 +184,6 @@ const HansiTrans = () => {
                 )}
               </div>
 
-              {/* Right Side Buttons */}
               <div className="absolute top-[35%] right-0 pointer-events-auto">
                 {services[2] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
@@ -177,7 +199,6 @@ const HansiTrans = () => {
                 )}
               </div>
 
-              {/* Bottom Button */}
               <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto">
                 {services[4] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
@@ -187,7 +208,7 @@ const HansiTrans = () => {
               </div>
             </div>
 
-            {/* Mobile View Service Buttons (Visible only on small screens) */}
+            {/* Mobile View Service Buttons */}
             <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4">
               {services.map((service, index) => (
                 <button key={index} className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-1 shadow-lg">

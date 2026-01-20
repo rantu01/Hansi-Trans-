@@ -108,16 +108,9 @@ const AdminStats = () => {
       <motion.div className="bg-white p-8 rounded-[2rem] shadow mb-10">
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-12 gap-6"
+          className="grid grid-cols-1 md:grid-cols-11 gap-8"
         >
-          <input
-            className="md:col-span-3 p-4 rounded-xl bg-slate-50"
-            name="icon"
-            placeholder="Icon"
-            value={formData.icon}
-            onChange={handleChange}
-            required
-          />
+        
           <input
             className="md:col-span-2 p-4 rounded-xl bg-slate-50"
             name="value"

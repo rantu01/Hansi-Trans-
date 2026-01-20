@@ -3,7 +3,10 @@ import { API } from "@/app/config/api";
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-import { FaUser, FaStar, FaGlobe, FaBriefcase } from "react-icons/fa";
+import { HiOutlineTranslate } from "react-icons/hi";
+import { RiAwardLine } from "react-icons/ri";
+import { MdOutlineMicNone } from "react-icons/md";
+import { GiWorld } from "react-icons/gi";
 
 const Stats = () => {
   const [stats, setStats] = useState([]);
@@ -14,12 +17,12 @@ const Stats = () => {
     threshold: 0.2,
   });
 
-  const iconMap = {
-    FaUser: <FaUser />,
-    FaStar: <FaStar />,
-    FaGlobe: <FaGlobe />,
-    FaBriefcase: <FaBriefcase />,
-  };
+  const hardCodedIcons = [
+    { icon: <HiOutlineTranslate />, color: "bg-[#0070c0]", textColor: "text-white" },
+    { icon: <RiAwardLine />, color: "bg-[#facc15]", textColor: "text-white" },
+    { icon: <MdOutlineMicNone />, color: "bg-[#22c55e]", textColor: "text-white" },
+    { icon: <GiWorld />, color: "bg-[#ef4444]", textColor: "text-white" },
+  ];
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -39,45 +42,58 @@ const Stats = () => {
   if (loading || stats.length === 0) return null;
 
   return (
-    <div className="max-w-6xl mx-auto mb-20" ref={ref}>
-      {/* Updated gradient to use brand variables: from gradient-base/30 to background */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-[80px] overflow-hidden shadow-xl shadow-primary/5 bg-gradient-to-b from-gradient-base to-background border border-primary/10">
-        {stats.map((stat, index) => {
-          const numericValue = parseInt(stat.value.replace(/\D/g, "")) || 0;
-          const suffix = stat.value.replace(/[0-9]/g, "");
+    <section className="py-16 px-4">
+      <div className="max-w-7xl mx-auto" ref={ref}>
+        {/* Height: 218px
+            Stroke/Border: #E0E4FF
+            Gradient: #A9DAFF to #F7F7F7
+        */}
+        <div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-[50px] md:rounded-full overflow-hidden   md:h-[218px] items-center"
+          style={{ 
+            background: "linear-gradient(to bottom, #A9DAFF 0%, #F7F7F7 100%)" 
+          }}
+        >
+          {stats.map((stat, index) => {
+            const numericValue = parseInt(stat.value.replace(/\D/g, "")) || 0;
+            const suffix = stat.value.replace(/[0-9]/g, "");
+            const iconData = hardCodedIcons[index % hardCodedIcons.length];
 
-          return (
-            <div
-              key={index}
-              /* Replaced blue-100 with primary/10 */
-              className="p-8 flex flex-col items-center text-center hover:bg-primary/5 transition duration-300"
-            >
-              {/* Replaced [#0066b2] with primary */}
-              <div className="text-3xl mb-4 text-primary">
-                {iconMap[stat.icon] || stat.icon}
+            return (
+              <div
+                key={index}
+                className={`flex flex-col items-center text-center px-6 py-10 md:py-0 h-full justify-center relative ${
+                  index !== stats.length - 1 ? "lg:border-r-2 border-[#E0E4FF]/60" : ""
+                }`}
+              >
+                {/* Icon Circle */}
+                <div className={`w-14 h-14 rounded-full ${iconData.color} ${iconData.textColor} flex items-center justify-center text-2xl mb-4 shadow-md`}>
+                  {iconData.icon}
+                </div>
+
+                {/* Counter Value */}
+                <h3 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] tracking-tight">
+                  {inView ? (
+                    <CountUp 
+                      end={numericValue} 
+                      duration={2.5} 
+                      suffix={suffix} 
+                    />
+                  ) : (
+                    "0"
+                  )}
+                </h3>
+
+                {/* Label */}
+                <p className="text-[#616161] text-sm md:text-base font-medium mt-2">
+                  {stat.label}
+                </p>
               </div>
-
-              {/* Counter Color using foreground (text-black/white) */}
-              <h3 className="text-3xl font-extrabold text-foreground">
-                {inView ? (
-                  <CountUp 
-                    end={numericValue} 
-                    duration={2.5} 
-                    suffix={suffix} 
-                  />
-                ) : (
-                  "0"
-                )}
-              </h3>
-
-              <p className="text-gray-500 text-sm font-medium mt-1 uppercase tracking-wider">
-                {stat.label}
-              </p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

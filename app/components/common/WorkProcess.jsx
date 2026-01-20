@@ -37,7 +37,6 @@ const WorkProcess = () => {
   }, []);
 
   return (
-    /* Replaced [#aadbff] with gradient-base variable with opacity */
     <section className="py-20 bg-gradient-to-b from-gradient-base to-background rounded-t-4xl">
       <div className="container mx-auto px-4">
         
@@ -84,7 +83,6 @@ const WorkProcess = () => {
                 <div>
                   {TopIcon && (
                     <div className="mb-6">
-                      {/* Replaced blue-600 with primary */}
                       <TopIcon className="w-10 h-10 text-primary" />
                     </div>
                   )}
@@ -93,7 +91,6 @@ const WorkProcess = () => {
                 </div>
                 {Icon && (
                   <div className="mt-6">
-                    {/* Replaced blue-600 with primary */}
                     <Icon className="w-10 h-10 text-primary" />
                   </div>
                 )}
@@ -102,38 +99,36 @@ const WorkProcess = () => {
           })}
         </div>
 
-        {/* Lower Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        {/* Lower Section - Partner Studios & Tools (Equal Height) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
           
           {/* Partner Studios */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col items-center text-center"
+            className="flex flex-col items-center text-center "
           >
-            <div className="flex items-center gap-4 mb-8">
-              {/* Replaced blue-600 with primary */}
+            <div className="flex items-center  gap-4 mb-8">
               <Handshake className="w-10 h-10 text-primary" />
-              <div>
-                <h3 className="text-2xl font-bold text-foreground">Partner Studios</h3>
+              <div className="text-left">
+                <h3 className="text-3xl font-bold text-foreground">Partner Studios</h3>
                 <p className="text-gray-500 text-xs">Professional recording facilities...</p>
               </div>
             </div>
 
-            <div className="space-y-4 flex flex-col items-center">
+            <div className="space-y-12 w-full flex flex-col items-center flex-grow">
               {studios.map((studio, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ x: 10, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-background rounded-full py-3 px-8 flex items-center gap-6 shadow-sm min-w-[300px] cursor-pointer border border-gray-50"
+                  className="bg-background rounded-full py-3 px-8 flex items-center h-[85] gap-6 shadow-sm w-full max-w-[400px] cursor-pointer border border-gray-50"
                 >
-                  {/* Replaced blue-600 with primary */}
                   <span className="text-primary font-bold text-xl">{studio.code}</span>
                   <div className="text-left">
                     <p className="text-foreground font-bold text-sm leading-none">{studio.name}</p>
-                    <p className="text-gray-400 text-[10px]">{studio.lang}</p>
+                    <p className="text-gray-400 text-[10px] mt-1">{studio.lang}</p>
                   </div>
                 </motion.div>
               ))}
@@ -145,9 +140,9 @@ const WorkProcess = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            className="flex flex-col  p-8 rounded-[40px] border-l border-gray-200"
           >
             <div className="flex items-center gap-4 mb-8">
-              {/* Replaced blue-600 with primary */}
               <Settings className="w-10 h-10 text-primary" />
               <div className="text-left">
                 <h3 className="text-2xl font-bold text-foreground">Tools & Technology</h3>
@@ -155,7 +150,7 @@ const WorkProcess = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-4 gap-4 mb-8 flex-grow">
               {tools.map((tool, i) => (
                 <motion.div
                   key={i}
@@ -174,15 +169,19 @@ const WorkProcess = () => {
               ))}
             </div>
 
+            {/* Huhu Secure File Transfer Card (Based on your image) */}
             <motion.div 
-              whileHover={{ scale: 1.01 }}
-              /* Replaced blue-100/50 with gradient-base/10 */
-              className="bg-gradient-base/30 rounded-2xl p-4 flex items-center gap-4 border border-gradient-base/40"
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-b from-[#A9DAFF] to-[#fff] rounded-[30px] p-6 flex items-center gap-5"
             >
-              <CheckCircle2 className="w-6 h-6 text-green-500 shrink-0" />
+              <div className="bg-[#00c800] rounded-full p-1.5 flex items-center justify-center shadow-lg">
+                <CheckCircle2 className="w-5 h-5 text-white stroke-[3px]" />
+              </div>
               <div className="text-left">
-                <p className="text-foreground font-bold text-sm">Secure File Transfer</p>
-                <p className="text-gray-500 text-[10px]">Enterprise-grade security...</p>
+                <p className="text-foreground font-extrabold text-base mb-1">Secure File Transfer</p>
+                <p className="text-gray-500 text-xs font-medium leading-relaxed">
+                  Enterprise-grade security with encrypted file transfer and NDA compliance for all projects.
+                </p>
               </div>
             </motion.div>
           </motion.div>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f7f7f7;
   --foreground: #000000;
   
   /* Brand Colors */
@@ -15,7 +15,7 @@
 /* Dark Mode (If needed) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
+    --background: #f7f7f7;
     --foreground: #000000;
     /* ডার্ক মোডে চাইলে কালার একটু চেঞ্জ করতে পারেন */
   }

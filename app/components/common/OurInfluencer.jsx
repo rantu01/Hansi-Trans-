@@ -50,7 +50,6 @@ const OurInfluencer = () => {
                 Influencer
               </span>
             </div>
-            {/* Replaced [#0066b2] with primary brand color */}
             <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight">
               What Our Influencer Say <br /> About Us!
             </h2>
@@ -65,7 +64,7 @@ const OurInfluencer = () => {
         {/* Marquee Area */}
         <div className="w-full mt-10">
           <Marquee 
-            speed={40} 
+            speed={50} 
             pauseOnHover={true} 
             gradient={false}
           >
@@ -73,10 +72,11 @@ const OurInfluencer = () => {
               <motion.div 
                 key={person._id}
                 whileHover={{ y: -5 }} 
-                className="flex flex-col items-center text-center group mx-6 w-[250px]"
+                // mx-10 যোগ করা হয়েছে যাতে একটি কার্ড থেকে আরেকটির দূরত্ব বজায় থাকে
+                className="flex flex-col items-center text-center group mx-4" 
               >
-                {/* Image Card */}
-                <div className="w-full aspect-square mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-50">
+                {/* Image Card - w-[304px] fixed রাখা হয়েছে */}
+                <div className="w-[304px] h-[353px] mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-50 bg-gray-50">
                   <img
                     src={person.image}
                     alt={person.name}
@@ -85,14 +85,14 @@ const OurInfluencer = () => {
                 </div>
 
                 {/* Info */}
-                <h3 className="text-xl font-bold text-foreground mb-1">
+                <h3 className="text-2xl font-bold text-foreground mb-1">
                   {person.name}
                 </h3>
-                <p className="text-gray-500 text-sm mb-4">
+                <p className="text-gray-500 mb-4">
                   {person.role}
                 </p>
 
-                {/* Social Icons - Using primary and accent for hover states */}
+                {/* Social Icons */}
                 <div className="flex items-center gap-4">
                   <a href="#" className="text-gray-400 hover:text-primary transition-colors">
                     <Twitter size={18} fill="currentColor" stroke="none" />

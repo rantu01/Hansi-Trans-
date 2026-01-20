@@ -67,8 +67,7 @@ const WhyChooseUs = () => {
   };
 
   return (
-    /* Replaced [#020d1f] with secondary (Dark Blue) */
-    <section className="py-20 bg-secondary text-white rounded-t-4xl overflow-hidden">
+    <section className="py-20 bg-secondary lg:h-[979px] h-auto text-white rounded-t-4xl overflow-hidden flex flex-col justify-center">
       <div className="container mx-auto px-4">
         
         {/* Header Section */}
@@ -83,7 +82,7 @@ const WhyChooseUs = () => {
               <Sparkles className="w-4 h-4 text-gradient-base" />
               Why Choose Us
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight text-white">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight text-white uppercase tracking-tight">
               Why People Choose HS+?
             </h2>
           </div>
@@ -100,7 +99,7 @@ const WhyChooseUs = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
         >
           
           {/* Left Large Card */}
@@ -108,10 +107,9 @@ const WhyChooseUs = () => {
             variants={itemVariants}
             whileHover={{ y: -8, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className="bg-background rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl cursor-pointer"
+            className="bg-background rounded-[35px] p-10 flex flex-col justify-between h-[500px] lg:h-[600px] shadow-xl cursor-pointer"
           >
             <div className="text-left">
-              {/* Replaced [#0066b2] with primary */}
               <h3 className="text-primary text-3xl font-bold mb-6">
                 {left.title.split("<br />")[0]} <br />
                 {left.title.split("<br />")[1]}
@@ -126,14 +124,14 @@ const WhyChooseUs = () => {
           </motion.div>
 
           {/* Middle Section */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 h-[500px] lg:h-[600px]">
             <motion.div 
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="bg-background rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl cursor-pointer"
             >
-              <div className="mt-2">
+              <div className="mt-2 shrink-0">
                 {MidTopIcon && <MidTopIcon className="w-10 h-10 text-primary" />}
               </div>
               <div className="text-left">
@@ -148,7 +146,7 @@ const WhyChooseUs = () => {
               whileTap={{ scale: 0.98 }}
               className="bg-background rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl cursor-pointer"
             >
-              <div className="mt-2">
+              <div className="mt-2 shrink-0">
                 {MidBottomIcon && <MidBottomIcon className="w-10 h-10 text-primary" />}
               </div>
               <div className="text-left">
@@ -163,7 +161,7 @@ const WhyChooseUs = () => {
             variants={itemVariants}
             whileHover={{ y: -8, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className="bg-background rounded-[35px] p-10 flex flex-col justify-between h-[500px] md:h-auto shadow-xl cursor-pointer"
+            className="bg-background rounded-[35px] p-10 flex flex-col justify-between h-[500px] lg:h-[600px] shadow-xl cursor-pointer md:col-span-2 lg:col-span-1"
           >
             <div className="text-left">
               <h3 className="text-primary text-3xl font-bold mb-6">
@@ -178,8 +176,7 @@ const WhyChooseUs = () => {
               <div className="relative">
                 {RightIcon && <RightIcon className="w-14 h-14 text-primary" />}
                 {right.badge && (
-                  /* Replaced [#0066b2] badge with primary */
-                  <span className="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-background">
                     {right.badge}
                   </span>
                 )}

@@ -80,7 +80,7 @@ const Blogs = () => {
 
               {/* Title */}
               {/* Replaced blue-700 with primary on hover */}
-              <h3 className="text-xl md:text-2xl font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
                 {post.title}
               </h3>
             </div>
