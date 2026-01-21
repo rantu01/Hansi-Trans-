@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Sparkles,
   Settings,
   Globe2,
   Gamepad2,
@@ -11,7 +10,6 @@ import {
 import { motion } from "framer-motion";
 import { API } from "@/app/config/api";
 
-/* icon mapper */
 const ICONS = {
   Gamepad2: Gamepad2,
   Settings: Settings,
@@ -25,23 +23,19 @@ const WhyChooseUs = () => {
   useEffect(() => {
     const fetchWhyChoose = async () => {
       try {
-        const res = await fetch(API.WhyChooseUs, {
-          cache: "no-store",
-        });
+        const res = await fetch(API.WhyChooseUs, { cache: "no-store" });
         const json = await res.json();
         setData(json);
       } catch (err) {
         console.error("WhyChooseUs fetch failed");
       }
     };
-
     fetchWhyChoose();
   }, []);
 
   if (!data) return null;
 
   const getCard = (key) => data.cards.find((c) => c.key === key);
-
   const left = getCard("left");
   const middleTop = getCard("middleTop");
   const middleBottom = getCard("middleBottom");
@@ -52,139 +46,225 @@ const WhyChooseUs = () => {
   const MidBottomIcon = ICONS[middleBottom?.icon];
   const RightIcon = ICONS[right?.icon];
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
-
   return (
-    <section className="py-20 bg-secondary lg:h-[979px] h-auto text-white rounded-t-4xl overflow-hidden flex flex-col justify-center">
-      <div className="container mx-auto px-4">
-        
+    <section
+
+      className="w-full py-20 bg-secondary lg:h-[979px] h-auto text-white rounded-t-4xl overflow-hidden flex flex-col justify-center"
+    >
+      <div className="container mx-auto">
+
         {/* Header Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6"
-        >
+        <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 text-sm font-medium text-cta-text mb-6 bg-white/5 backdrop-blur-sm shadow-sm">
-              <Sparkles className="w-4 h-4 text-gradient-base" />
+            {/* Tag Update: Frame.svg and Specific Typography */}
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 mb-6 bg-white backdrop-blur-sm shadow-sm"
+              style={{
+                color: '#404040',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.16px'
+              }}
+            >
+              <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
               Why Choose Us
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight text-white uppercase tracking-tight">
-              Why People Choose HS+?
+            {/* H2 Update: Inter 48px, Capitalize */}
+            <h2
+              className="capitalize"
+              style={{
+                color: '#FFF',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '48px',
+                fontWeight: '500',
+                lineHeight: '120%'
+              }}
+            >
+              Why people choose HS+?
             </h2>
           </div>
-          <div className="md:max-w-xs pt-4 md:pt-14 text-left md:text-right">
-            <p className="text-cta-text/70 text-sm leading-relaxed">
+          <div className="md:max-w-xs pt-4 md:pt-14 text-left">
+            {/* Paragraph Update: Poppins 16px */}
+            <p
+              style={{
+                color: '#FFF',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontWeight: '400',
+                lineHeight: '150%'
+              }}
+            >
               Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
             </p>
           </div>
-        </motion.div>
+        </div>
 
         {/* Main Grid Layout */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
-        >
-          
+        {/* Main Grid Layout - Updated with specific dimensions */}
+        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-6 max-w-7xl mx-auto items-center">
+
           {/* Left Large Card */}
-          <motion.div 
-            variants={itemVariants}
-            whileHover={{ y: -8, scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-background rounded-[35px] p-10 flex flex-col justify-between h-[500px] lg:h-[600px] shadow-xl cursor-pointer"
+          <motion.div
+            whileHover={{ y: -8 }}
+            style={{
+              display: 'flex',
+              width: '346px',
+              height: '527px',
+              padding: '32px',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              borderRadius: '35px',
+              background: '#FFFFFF',
+            }}
+            className="shadow-2xl cursor-pointer"
           >
-            <div className="text-left">
-              <h3 className="text-primary text-3xl font-bold mb-6">
-                {left.title.split("<br />")[0]} <br />
-                {left.title.split("<br />")[1]}
+            <div className="text-left w-full">
+              <h3
+                className="capitalize mb-6"
+                style={{
+                  color: '#0168B4',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '32px',
+                  fontWeight: '500',
+                  lineHeight: '120%'
+                }}
+              >
+                {left?.title.replace("<br />", "\n")}
               </h3>
-              <p className="text-gray-500 text-sm leading-relaxed font-medium">
-                {left.description}
+              <p
+                style={{
+                  color: '#575757',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  lineHeight: '150%'
+                }}
+              >
+                {left?.description}
               </p>
             </div>
             <div className="mt-10">
-              {LeftIcon && <LeftIcon className="w-14 h-14 text-primary" />}
+              {LeftIcon && <LeftIcon className="w-14 h-14 text-[#0168B4]" />}
             </div>
           </motion.div>
 
-          {/* Middle Section */}
-          <div className="flex flex-col gap-6 h-[500px] lg:h-[600px]">
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-background rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl cursor-pointer"
+          {/* Middle Section - Two horizontal-style cards */}
+          <div className="flex flex-col gap-[32px] w-full lg:w-[450px]">
+            {/* Middle Top Card */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              style={{
+                display: 'flex',
+                height: '247.5px',
+                padding: '32px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '32px',
+                alignSelf: 'stretch',
+                borderRadius: '35px',
+                background: '#FFFFFF',
+              }}
+              className="shadow-xl cursor-pointer"
             >
-              <div className="mt-2 shrink-0">
-                {MidTopIcon && <MidTopIcon className="w-10 h-10 text-primary" />}
+              <div className="shrink-0">
+                {MidTopIcon && <MidTopIcon className="w-12 h-12 text-[#0168B4]" />}
               </div>
               <div className="text-left">
-                <h3 className="text-primary text-xl font-bold mb-3">{middleTop.title}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed font-medium">{middleTop.description}</p>
+                <h3 className="capitalize mb-2" style={{ color: '#0168B4', fontFamily: 'Inter, sans-serif', fontSize: '24px', fontWeight: '500' }}>
+                  {middleTop?.title}
+                </h3>
+                <p style={{ color: '#575757', fontFamily: 'Poppins, sans-serif', fontSize: '14px', lineHeight: '150%' }}>
+                  {middleTop?.description}
+                </p>
               </div>
             </motion.div>
 
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-background rounded-[35px] p-8 flex flex-row items-start gap-6 h-1/2 shadow-xl cursor-pointer"
+            {/* Middle Bottom Card */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              style={{
+                display: 'flex',
+                height: '247.5px',
+                padding: '32px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '32px',
+                alignSelf: 'stretch',
+                borderRadius: '35px',
+                background: '#FFFFFF',
+              }}
+              className="shadow-xl cursor-pointer"
             >
-              <div className="mt-2 shrink-0">
-                {MidBottomIcon && <MidBottomIcon className="w-10 h-10 text-primary" />}
+              <div className="shrink-0">
+                {MidBottomIcon && <MidBottomIcon className="w-12 h-12 text-[#0168B4]" />}
               </div>
               <div className="text-left">
-                <h3 className="text-primary text-xl font-bold mb-3">{middleBottom.title}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed font-medium">{middleBottom.description}</p>
+                <h3 className="capitalize mb-2" style={{ color: '#0168B4', fontFamily: 'Inter, sans-serif', fontSize: '24px', fontWeight: '500' }}>
+                  {middleBottom?.title}
+                </h3>
+                <p style={{ color: '#575757', fontFamily: 'Poppins, sans-serif', fontSize: '14px', lineHeight: '150%' }}>
+                  {middleBottom?.description}
+                </p>
               </div>
             </motion.div>
           </div>
 
           {/* Right Large Card */}
-          <motion.div 
-            variants={itemVariants}
-            whileHover={{ y: -8, scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-background rounded-[35px] p-10 flex flex-col justify-between h-[500px] lg:h-[600px] shadow-xl cursor-pointer md:col-span-2 lg:col-span-1"
+          <motion.div
+            whileHover={{ y: -8 }}
+            style={{
+              display: 'flex',
+              width: '346px',
+              height: '527px',
+              padding: '32px',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              borderRadius: '35px',
+              background: '#FFFFFF',
+            }}
+            className="shadow-2xl cursor-pointer"
           >
-            <div className="text-left">
-              <h3 className="text-primary text-3xl font-bold mb-6">
-                {right.title.split("<br />")[0]} <br />
-                {right.title.split("<br />")[1]}
+            <div className="text-left w-full">
+              <h3
+                className="capitalize mb-6"
+                style={{
+                  color: '#0168B4',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '32px',
+                  fontWeight: '500',
+                  lineHeight: '120%'
+                }}
+              >
+                {right?.title.replace("<br />", "\n")}
               </h3>
-              <p className="text-gray-500 text-sm leading-relaxed font-medium">
-                {right.description}
+              <p
+                style={{
+                  color: '#575757',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  lineHeight: '150%'
+                }}
+              >
+                {right?.description}
               </p>
             </div>
-            <div className="mt-10 flex justify-end">
+            <div className="mt-10 self-end">
               <div className="relative">
-                {RightIcon && <RightIcon className="w-14 h-14 text-primary" />}
-                {right.badge && (
-                  <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-background">
+                {RightIcon && <RightIcon className="w-14 h-14 text-[#0168B4]" />}
+                {right?.badge && (
+                  <span className="absolute -top-1 -right-2 bg-[#0168B4] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {right.badge}
                   </span>
                 )}
               </div>
             </div>
           </motion.div>
-
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaUser, FaStar, FaGlobe, FaBriefcase } from "react-icons/fa";
-import Marquee from "react-fast-marquee"; 
+import { FaUser, FaStar, FaGlobe, FaBriefcase, } from "react-icons/fa";
+import { Sparkles } from "lucide-react";
+import Marquee from "react-fast-marquee";
 import Stats from "../common/stats";
 import { API } from "@/app/config/api";
 
@@ -48,22 +49,44 @@ const Achievement = () => {
   const firstRow = partners.slice(0, Math.ceil(partners.length / 2));
   const secondRow = partners.slice(Math.ceil(partners.length / 2));
 
-  if (loading) return null; 
+  if (loading) return null;
 
   return (
     <section className="flex items-center bg-background overflow-hidden py-10">
       <div className="container mx-auto px-4">
         <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary flex items-center justify-center gap-2">
-            Our Big Achievement 
-            <span className="text-2xl">✨</span>
+          <h2
+            className="flex items-center justify-center gap-3 capitalize"
+            style={{
+              color: '#0168B4',
+              textAlign: 'center',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: 'clamp(30px, 4vw, 48px)', // রেসপনসিভ করার জন্য clamp ব্যবহার করা হয়েছে
+              fontStyle: 'normal',
+              fontWeight: '500',
+              lineHeight: '120%', // 57.6px
+            }}
+          >
+            Our Big Achievement
+            <Sparkles className="w-8 h-8 text-[#0168B4]" strokeWidth={2.5} />
           </h2>
         </div>
 
         <Stats stats={statsData} />
 
         <div className="text-center mt-12">
-          <h3 className="text-xl md:text-2xl font-semibold mb-10 text-foreground">
+          <h3
+            className="mb-10 capitalize"
+            style={{
+              color: '#0F0F0F',
+              textAlign: 'center',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '28px',
+              fontStyle: 'normal',
+              fontWeight: '500',
+              lineHeight: '120%', // 33.6px
+            }}
+          >
             Trusted By Teams In Games, Anime, And Tech
           </h3>
 

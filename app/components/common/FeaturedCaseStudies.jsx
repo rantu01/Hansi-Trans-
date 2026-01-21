@@ -4,7 +4,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowUpRight,
-  Sparkles,
   Youtube,
   BarChart3,
   PenLine,
@@ -17,7 +16,7 @@ import Link from "next/link";
 const Counter = ({ value }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  
+
   const numericValue = parseInt(value.replace(/[^0-9]/g, "")) || 0;
   const suffix = value.replace(/[0-9]/g, "");
 
@@ -85,22 +84,43 @@ const FeaturedCaseStudies = () => {
   if (loading) return null;
 
   return (
-    <section className="py-20 bg-gradient-base/5">
+    <section className="py-20 bg-[#f7f7f7]">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl">
+            {/* SVG Path used here */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 text-sm font-medium text-gray-600 mb-6 bg-background shadow-sm">
-              <Sparkles className="w-4 h-4 text-gray-400" />
+              <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
               Case studies
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary">
+            {/* Title Update: Inter 48px, #0168B4 */}
+            <h2
+              className="capitalize"
+              style={{
+                color: '#0168B4',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: 'clamp(32px, 5vw, 48px)',
+                fontWeight: '500',
+                lineHeight: '120%'
+              }}
+            >
               Featured Case Studies
             </h2>
           </div>
 
           <div className="md:max-w-xs pt-4 md:pt-14 text-right">
-            <p className="text-gray-500 text-sm leading-relaxed">
+            {/* Paragraph Update: Inter 16px, #616161 */}
+            <p
+              style={{
+                color: '#616161',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '16px',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.128px'
+              }}
+            >
               See how HS+ helps games, anime, and tech brands go global through
               localization, voice-over, and creator-led marketing.
             </p>
@@ -112,12 +132,11 @@ const FeaturedCaseStudies = () => {
           {cases.map((item) => (
             <div
               key={item._id}
-              className={`flex flex-col ${
-                item.isReverse ? "lg:flex-row-reverse" : "lg:flex-row"
-              } bg-background rounded-[40px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group`}
+              className={`flex flex-col ${item.isReverse ? "lg:flex-row-reverse" : "lg:flex-row"
+                } bg-background rounded-[40px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group`}
             >
-              {/* Image Section - Zoom on Image Hover Only */}
-              <div className="w-full lg:w-1/2 h-[350px] md:h-[530px] overflow-hidden">
+              {/* Image Section */}
+              <div className="w-full lg:w-1/2 h-[350px] md:h-[560px] overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -128,11 +147,22 @@ const FeaturedCaseStudies = () => {
               {/* Content Side */}
               <div className="w-full lg:w-1/2 p-8 md:p-14 flex flex-col justify-center">
                 <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-2xl md:text-3xl font-bold text-foreground pr-4">
+                  {/* Item Title Update: Inter 32px, #0A0A0A */}
+                  <h3
+                    className="pr-4 capitalize"
+                    style={{
+                      color: '#0A0A0A',
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '32px',
+                      fontWeight: '500',
+                      lineHeight: '120%'
+                    }}
+                  >
                     {item.title}
                   </h3>
+                  {/* Tag Update with SVG */}
                   <span className="bg-primary text-white text-xs px-4 py-2 rounded-full flex items-center gap-2 font-medium">
-                    <Sparkles className="w-3 h-3" />
+                    <img src="/Frame.svg" alt="icon" className="w-3 h-3 brightness-0 invert" />
                     {item.tag}
                   </span>
                 </div>
@@ -146,15 +176,32 @@ const FeaturedCaseStudies = () => {
                       key={i}
                       className="flex items-center gap-6 border-b border-[#D9D9D9] pb-4 last:border-0"
                     >
-                      {/* Stat Value */}
-                      <div className="text-3xl font-bold text-primary min-w-[100px]">
+                      <div
+                        className="min-w-[100px] capitalize"
+                        style={{
+                          color: '#0168B4',
+                          fontFamily: 'Inter, sans-serif',
+                          fontSize: '40px',
+                          fontStyle: 'normal',
+                          fontWeight: '500',
+                          lineHeight: '120%', // 48px
+                        }}
+                      >
                         <Counter value={stat.value} />
                       </div>
 
                       {iconMap[stat.icon]}
-                      
-                      {/* Icon and Label */}
-                      <div className="text-sm text-gray-500 font-medium flex items-center gap-2">
+
+                      {/* Stat Label Update: Poppins 16px, #616161 */}
+                      <div
+                        style={{
+                          color: '#616161',
+                          fontFamily: 'Poppins, sans-serif',
+                          fontSize: '16px',
+                          fontWeight: '400',
+                          lineHeight: '150%'
+                        }}
+                      >
                         {stat.label}
                       </div>
                     </div>
@@ -177,7 +224,7 @@ const FeaturedCaseStudies = () => {
 
         {/* View All Button */}
         <div className="mt-16 flex justify-center">
-          <Link href="/case-studies"  className="inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-bold hover:opacity-90 transition shadow-lg">
+          <Link href="/case-studies" className="inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-bold hover:opacity-90 transition shadow-lg">
             View All Case Studies
             <span className="bg-white text-primary rounded-full p-2">
               <ArrowUpRight className="w-5 h-5" />

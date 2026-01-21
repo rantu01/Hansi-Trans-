@@ -15,9 +15,7 @@ const OurInfluencer = () => {
         const res = await fetch(API.OurInfluencer.getInfluencers, {
           cache: "no-store",
         });
-
         if (!res.ok) throw new Error("Failed to fetch influencers");
-
         const data = await res.json();
         setInfluencers(data);
       } catch (error) {
@@ -26,14 +24,13 @@ const OurInfluencer = () => {
         setLoading(false);
       }
     };
-
     fetchInfluencers();
   }, []);
 
   if (loading) return null;
 
   return (
-    <section className="bg-background py-20 px-6 md:px-12 font-sans overflow-hidden w-full">
+    <section className="bg-[#F7F7F7] py-20 px-6 md:px-12 overflow-hidden w-full">
       <div className="mx-auto">
         
         {/* Header Section */}
@@ -44,18 +41,46 @@ const OurInfluencer = () => {
           className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto"
         >
           <div className="max-w-xl">
-            <div className="flex items-center gap-2 bg-gray-100 px-4 py-1.5 rounded-full mb-6 w-fit">
-              <span className="text-gray-600 text-sm">✦</span>
-              <span className="text-xs font-medium text-gray-600 uppercase tracking-widest">
-                Influencer
-              </span>
+            {/* Badge with Frame.svg */}
+            <div 
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 mb-6 bg-white shadow-sm"
+              style={{
+                color: '#616161',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontWeight: '500'
+              }}
+            >
+              <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
+              Influencer
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight">
+            
+            <h2 
+              style={{
+                color: '#0168B4',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '48px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '120%',
+                textTransform: 'capitalize'
+              }}
+            >
               What Our Influencer Say <br /> About Us!
             </h2>
           </div>
+          
           <div className="max-w-sm md:mt-12">
-            <p className="text-gray-500 text-sm md:text-base leading-relaxed">
+            <p 
+              style={{
+                color: '#616161',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                lineHeight: '150%'
+              }}
+            >
               Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
             </p>
           </div>
@@ -63,20 +88,15 @@ const OurInfluencer = () => {
 
         {/* Marquee Area */}
         <div className="w-full mt-10">
-          <Marquee 
-            speed={50} 
-            pauseOnHover={true} 
-            gradient={false}
-          >
+          <Marquee speed={50} pauseOnHover={true} gradient={false}>
             {influencers.map((person) => (
               <motion.div 
                 key={person._id}
                 whileHover={{ y: -5 }} 
-                // mx-10 যোগ করা হয়েছে যাতে একটি কার্ড থেকে আরেকটির দূরত্ব বজায় থাকে
-                className="flex flex-col items-center text-center group mx-4" 
+                className="flex flex-col items-center text-center group mx-6" 
               >
-                {/* Image Card - w-[304px] fixed রাখা হয়েছে */}
-                <div className="w-[304px] h-[353px] mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-50 bg-gray-50">
+                {/* Image Card */}
+                <div className="w-[304px] h-[353px] mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-100 bg-gray-50">
                   <img
                     src={person.image}
                     alt={person.name}
@@ -84,24 +104,60 @@ const OurInfluencer = () => {
                   />
                 </div>
 
-                {/* Info */}
-                <h3 className="text-2xl font-bold text-foreground mb-1">
+                {/* Influencer Name */}
+                <h3 
+                  style={{
+                    color: '#0F0F0F',
+                    textAlign: 'center',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '28px',
+                    fontStyle: 'normal',
+                    fontWeight: '500',
+                    lineHeight: '120%',
+                    textTransform: 'capitalize'
+                  }}
+                  className="mb-1"
+                >
                   {person.name}
                 </h3>
-                <p className="text-gray-500 mb-4">
+
+                {/* Influencer Role */}
+                <p 
+                  style={{
+                    color: '#575757',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: '18px',
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    lineHeight: '160%'
+                  }}
+                  className="mb-4"
+                >
                   {person.role}
                 </p>
 
-                {/* Social Icons */}
+                {/* Social Icons with updated specs */}
                 <div className="flex items-center gap-4">
-                  <a href="#" className="text-gray-400 hover:text-primary transition-colors">
-                    <Twitter size={18} fill="currentColor" stroke="none" />
+                  <a href="#" className="transition-opacity hover:opacity-70">
+                    <Twitter 
+                      style={{ width: '22.519px', height: '18.29px' }} 
+                      fill="#0F0F0F" 
+                      stroke="none" 
+                    />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-accent transition-colors">
-                    <Facebook size={18} fill="currentColor" stroke="none" />
+                  <a href="#" className="transition-opacity hover:opacity-70">
+                    <Facebook 
+                      style={{ width: '22px', height: '22px' }} 
+                      fill="#0F0F0F" 
+                      stroke="none" 
+                    />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-secondary transition-colors">
-                    <Linkedin size={18} fill="currentColor" stroke="none" />
+                  <a href="#" className="transition-opacity hover:opacity-70">
+                    <Linkedin 
+                      style={{ width: '22px', height: '22px' }} 
+                      fill="#0F0F0F" 
+                      stroke="none" 
+                    />
                   </a>
                 </div>
               </motion.div>

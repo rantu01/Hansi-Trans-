@@ -1,38 +1,27 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Menu, ArrowRight, X } from "lucide-react";
+import { Menu, X, ArrowUpRight, Globe, Mic, Languages, BarChart, Zap, Layers } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
-import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
-
-// আপনার দেওয়া লোডার কম্পোনেন্ট
-const FullPageLoader = () => (
-  <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
-    <div className="relative flex items-center justify-center">
-      <div className="w-24 h-24 border-4 border-gray-100 border-t-blue-600 rounded-full animate-spin"></div>
-      <img 
-        src="/Hansi-Logo1.png" 
-        alt="Logo" 
-        className="absolute w-12 h-12 animate-pulse"
-      />
-    </div>
-    <h2 className="mt-4 text-xl font-bold tracking-[0.2em] text-gray-800 animate-bounce">
-      HANSI TRANS
-    </h2>
-  </div>
-);
 
 const HansiTrans = () => {
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
   const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true); // লোডিং স্টেট যোগ করা হয়েছে
   const [siteConfig, setSiteConfig] = useState({
     logo: null,
     brandText: "Hansi Trans",
   });
+
+  // সার্ভিস অনুযায়ী আইকন ম্যাপ
+  const serviceIcons = [
+    <Layers className="w-4 h-4 text-white" />,
+    <Layers className="w-4 h-4 text-white" />,
+    <Layers className="w-4 h-4 text-white" />,
+    <Layers className="w-4 h-4 text-white" />,
+    <Layers className="w-4 h-4 text-white" />
+  ];
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -61,32 +50,10 @@ const HansiTrans = () => {
         }
       } catch (error) {
         console.error("Fetch failed", error);
-      } finally {
-        // ডাটা লোড শেষ হলে লোডার বন্ধ হবে
-        setTimeout(() => setLoading(false), 1000); 
       }
     };
     fetchData();
   }, []);
-
-  const dropIn = {
-    hidden: { y: -100, opacity: 0 },
-    visible: (i) => ({
-      y: 0,
-      opacity: 1,
-      transition: {
-        delay: i * 0.2,
-        type: "spring",
-        stiffness: 120,
-        damping: 12
-      }
-    })
-  };
-
-  // লোডিং অবস্থায় লোডার দেখাবে
-  if (loading) {
-    return <FullPageLoader />;
-  }
 
   return (
     <div className="min-h-[auto] md:min-h-screen text-white overflow-x-hidden relative">
@@ -98,7 +65,7 @@ const HansiTrans = () => {
       {/* Hero Image Gradient Overlay */}
       <div className="absolute inset-x-0 bottom-0 w-full z-[1] pointer-events-none">
         <img
-          src="/hero gradient.png"
+          src="/hero-gradient.png"
           alt="gradient overlay"
           className="w-full h-auto object-cover block"
         />
@@ -163,12 +130,35 @@ const HansiTrans = () => {
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-6 md:py-12 flex flex-col items-center text-center relative z-10">
-        <div className="max-w-5xl w-full">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-4 font-bold">
+        <div className="max-w-6xl w-full">
+          {/* Updated Headline with your specified CSS */}
+          <h1
+            className="mb-4 text-white capitalize"
+            style={{
+              fontFamily: 'Satoshi, sans-serif',
+              fontSize: 'clamp(32px, 5vw, 80px)', // Responsive size that reaches 80px
+              fontWeight: '500',
+              lineHeight: '110%',
+              letterSpacing: '-2.4px',
+              textAlign: 'center'
+            }}
+          >
             Global Localization, Voice-Over & Cross-Border Marketing
           </h1>
-          <p className="text-base md:text-md text-gray-200 mb-8 max-w-4xl mx-auto px-2">
-            From bold websites to memorable brand identities, we turn your vision into a digital experience. <br /> Let’s build something unforgettable—together.
+
+          <p
+            className="mx-auto mb-8 max-w-4xl px-2 capitalize"
+            style={{
+              color: '#0A0A0A',
+              textAlign: 'center',
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: '18px',
+              fontStyle: 'normal',
+              fontWeight: '500',
+              lineHeight: '150%', // 27px
+            }}
+          >
+            Make it once, bring it to life, and take it worldwide—with one team.
           </p>
 
           <div className="relative w-full min-h-[450px] md:min-h-[600px] flex items-center justify-center mt-4">
@@ -202,80 +192,64 @@ const HansiTrans = () => {
               <div className="absolute bottom-[5%] md:bottom-6 w-[80%] h-[20%] z-[-1] opacity-70">
                 <img src="/Ellipse.png" alt="shadow" className="w-full h-full object-contain" />
               </div>
-              
+
               <video autoPlay loop muted playsInline className="w-full h-full object-contain scale-110 md:scale-125">
                 <source src="/convertedPanda.webm" type="video/webm" />
               </video>
             </div>
 
-            {/* Desktop Surrounding Service Buttons */}
+            {/* Desktop Surrounding Service Buttons - With New Icons */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
-              <motion.div 
-                custom={0} initial="hidden" animate="visible" variants={dropIn}
-                className="absolute top-[35%] left-0 pointer-events-auto"
-              >
+              <div className="absolute top-[35%] left-0 pointer-events-auto">
                 {services[0] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[0].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
+                    {services[0].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[0]}</span>
                   </button>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div 
-                custom={1} initial="hidden" animate="visible" variants={dropIn}
-                className="absolute top-[55%] left-[10%] pointer-events-auto"
-              >
+              <div className="absolute top-[55%] left-[10%] pointer-events-auto">
                 {services[1] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[1].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
+                    {services[1].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[1]}</span>
                   </button>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div 
-                custom={2} initial="hidden" animate="visible" variants={dropIn}
-                className="absolute top-[35%] right-0 pointer-events-auto"
-              >
+              <div className="absolute top-[35%] right-0 pointer-events-auto">
                 {services[2] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[2].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
+                    {services[2].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[2]}</span>
                   </button>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div 
-                custom={3} initial="hidden" animate="visible" variants={dropIn}
-                className="absolute top-[55%] right-[10%] pointer-events-auto"
-              >
+              <div className="absolute top-[55%] right-[10%] pointer-events-auto">
                 {services[3] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[3].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
+                    {services[3].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[3]}</span>
                   </button>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div 
-                custom={4} initial="hidden" animate="visible" variants={dropIn}
-                className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto"
-              >
+              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto">
                 {services[4] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[4].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
+                    {services[4].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[4]}</span>
                   </button>
                 )}
-              </motion.div>
+              </div>
             </div>
 
-            {/* Mobile View Service Buttons */}
+            {/* Mobile View Service Buttons - With New Icons */}
             <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4">
               {services.map((service, index) => (
-                <motion.button 
+                <button
                   key={index}
-                  custom={index} initial="hidden" animate="visible" variants={dropIn}
-                  className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-1 shadow-lg"
+                  className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-2 shadow-lg"
                 >
-                  {service.title} <span className="text-[8px]">📚</span>
-                </motion.button>
+                  {service.title} <span className="scale-75">{serviceIcons[index]}</span>
+                </button>
               ))}
             </div>
           </div>

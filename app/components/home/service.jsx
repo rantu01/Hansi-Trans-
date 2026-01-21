@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { API } from "@/app/config/api";
 import Link from "next/link";
 
 const StackedCards = ({ services }) => {
   const containerRef = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -23,20 +23,42 @@ const StackedCards = ({ services }) => {
     <div ref={containerRef} className="relative" style={{ height: `${services.length * 100}vh` }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-[#F7F7F7]">
         <div className="container mx-auto px-4">
-          
+
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 text-sm font-medium text-gray-600 mb-6 bg-white shadow-sm">
-                <Sparkles className="w-4 h-4 text-blue-400" />
+                {/* Sparkles বদলে Frame.svg */}
+                <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
                 Service
               </div>
-              <h2 className="text-4xl md:text-6xl font-bold text-[#0066b2] leading-[1.1]">
-                Our Best Valuable <br /> Service For You
+              <h2
+                className="capitalize"
+                style={{
+                  color: '#0168B4',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: 'clamp(36px, 5vw, 60px)', // মোবাইলে রেসপনসিভ রাখার জন্য clamp ব্যবহার করা হয়েছে
+                  fontStyle: 'normal',
+                  fontWeight: '500',
+                  lineHeight: '120%', // 72px
+                  textAlign: 'left'
+                }}
+              >
+                Our Best Valuable <br className="hidden md:block" /> Service For You
               </h2>
             </div>
             <div className="md:max-w-xs pt-4 md:pt-14">
-              <p className="text-gray-500 text-sm md:text-base leading-relaxed">
+              {/* Paragraph Update: Poppins 16px */}
+              <p
+                style={{
+                  color: '#6B6B6B',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  lineHeight: '150%',
+                  textAlign: 'left'
+                }}
+              >
                 Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
               </p>
             </div>
@@ -47,50 +69,88 @@ const StackedCards = ({ services }) => {
             {services.map((service, index) => {
               const start = index / services.length;
               const end = (index + 1) / services.length;
-              
-              // কার্ডগুলো নিচ থেকে উপরে আসবে
-              // eslint-disable-next-line react-hooks/rules-of-hooks
+
               const y = useTransform(smoothProgress, [start, end], [index === 0 ? 0 : 550, 0]);
-              
-              /* নতুন লজিক (Reverse Scaling):
-                  আপনি যেমন চেয়েছেন - পেছনের কার্ড হবে চওড়া, সামনের কার্ড হবে কম চওড়া।
-                  তাই সামনের কার্ডটিকে আমরা ০.৯ স্কেলে নিয়ে আসছি, আর পেছনে যত যাবে তত ১-এর দিকে থাকবে।
-              */
-              // eslint-disable-next-line react-hooks/rules-of-hooks
               const scale = useTransform(smoothProgress, [start, end], [1.05, 0.9 + (index * 0.02)]);
 
               return (
                 <motion.div
                   key={service._id}
-                  style={{ 
+                  style={{
                     y: index === 0 ? 0 : y,
-                    scale: index === 0 ? 0.9 : scale, // প্রথম কার্ডটি ছোট থাকবে, পরের গুলো ওপর দিয়ে এসে আরও ছোট হবে
+                    scale: index === 0 ? 0.9 : scale,
                     zIndex: index + 10,
-                    top: index * 15, // ওপরের গ্যাপ বজায় রাখার জন্য
+                    top: index * 15,
                   }}
                   className="absolute inset-0 w-full origin-top"
                 >
-                  {/* Background Gradient Applied Here */}
-                  <div 
-                    style={{ 
-                      background: `linear-gradient(to bottom, #A9DAFF, #CCE7FB, #F7F7F7 )` 
+                  <div
+                    style={{
+                      background: `linear-gradient(to bottom, #A9DAFF, #CCE7FB, #F7F7F7 )`
                     }}
                     className={`rounded-[50px] md:rounded-[70px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 overflow-hidden h-full`}
                   >
                     <div className="p-8 md:p-14 flex flex-col lg:flex-row items-center gap-10 h-full">
-                      
+
                       {/* Left Side: Content */}
                       <div className="w-full lg:w-1/2">
-                        <h3 className="text-4xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{service.title}</h3>
-                        <p className="text-[#616161] text-lg mb-8 leading-snug">{service.description}</p>
-                        
+                        {/* Title Update: Inter 48px */}
+                        <h3
+                          className="mb-6 capitalize"
+                          style={{
+                            color: '#0A0A0A',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: '48px',
+                            fontWeight: '500',
+                            lineHeight: '120%'
+                          }}
+                        >
+                          {service.title}
+                        </h3>
+
+                        {/* Description Update: Poppins 18px */}
+                        <p
+                          className="mb-8"
+                          style={{
+                            color: '#616161',
+                            fontFamily: 'Poppins, sans-serif',
+                            fontSize: '18px',
+                            fontWeight: '500',
+                            lineHeight: '150%'
+                          }}
+                        >
+                          {service.description}
+                        </p>
+
                         <div className="space-y-4 mb-10">
-                          <h4 className="font-bold text-gray-900 text-lg">Key Features:</h4>
+                          {/* Key Features Heading Update: Poppins 18px */}
+                          <h4
+                            style={{
+                              color: '#090E2F',
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '18px',
+                              fontWeight: '500',
+                              lineHeight: '150%'
+                            }}
+                          >
+                            Key Features:
+                          </h4>
                           <ul className="space-y-2">
                             {service.features?.slice(0, 4).map((f, idx) => (
-                              <li key={idx} className="flex items-center gap-3 text-gray-800">
+                              <li key={idx} className="flex items-center gap-3">
                                 <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0" />
-                                <span className="text-sm md:text-base font-medium">{f}</span>
+                                {/* Feature List Item Update: Poppins 14px */}
+                                <span
+                                  style={{
+                                    color: '#0A0A0A',
+                                    fontFamily: 'Poppins, sans-serif',
+                                    fontSize: '14px',
+                                    fontWeight: '400',
+                                    lineHeight: '150%'
+                                  }}
+                                >
+                                  {f}
+                                </span>
                               </li>
                             ))}
                           </ul>
@@ -107,14 +167,14 @@ const StackedCards = ({ services }) => {
                       {/* Right Side: Image */}
                       <div className="w-full lg:w-1/2 h-full">
                         <div className="relative rounded-[40px] md:rounded-[55px] overflow-hidden shadow-2xl border-[6px] border-white/20 h-full">
-                          <img 
-                            src={service.image} 
-                            alt={service.title} 
-                            className="w-full h-full object-cover" 
+                          <img
+                            src={service.image}
+                            alt={service.title}
+                            className="w-full h-full object-cover"
                           />
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
                 </motion.div>

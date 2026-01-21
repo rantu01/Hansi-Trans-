@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Plus, Minus, Sparkles } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
@@ -29,20 +29,67 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-16 max-w-7xl mx-auto">
-          
+    <section 
+      style={{
+        display: 'inline-flex',
+        padding: '100px 72px',
+        alignItems: 'flex-start',
+        gap: '86px',
+        borderRadius: '32px 32px 0 0',
+        background: '#FFF',
+        width: '100%',
+        height: '786px'
+      }}
+    >
+      <div className="container mx-auto">
+        <div className="flex flex-col lg:flex-row gap-16 w-full">
+
           {/* Left Side - Header */}
           <div className="w-full lg:w-1/3">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-100 text-sm font-medium text-gray-500 mb-6 bg-gray-50/50">
-              <Sparkles className="w-4 h-4 text-gray-400" />
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 mb-6 bg-white shadow-sm"
+              style={{
+                color: '#616161',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontWeight: '500',
+                letterSpacing: '0.16px'
+              }}
+            >
+              <img
+                src="/Frame.svg"
+                alt="icon"
+                className="w-4 h-4"
+              />
               FAQ
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight mb-8 uppercase">
+            
+            <h2 
+              style={{
+                color: '#0A0A0A',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '48px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '120%',
+                textTransform: 'capitalize'
+              }}
+              className="mb-8"
+            >
               Frequently Asked Questions
             </h2>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+            
+            <p 
+              style={{
+                color: '#616161',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                lineHeight: '150%'
+              }}
+              className="max-w-sm"
+            >
               Explore tips, guides, and industry trends shaping global launches today.
             </p>
           </div>
@@ -56,26 +103,33 @@ const FAQ = () => {
                     onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
                     className="w-full flex items-center justify-between text-left group"
                   >
-                    {/* Replaced [#0070c0] with primary */}
-                    <span className={`text-xl md:text-2xl font-bold transition-colors ${openIndex === index ? 'text-primary' : 'text-foreground group-hover:text-primary'}`}>
+                    <span 
+                      className={`text-xl md:text-2xl font-bold transition-colors ${openIndex === index ? 'text-[#0168B4]' : 'text-[#0A0A0A] group-hover:text-[#0168B4]'}`}
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
                       {faq.question}
                     </span>
                     <div className="ml-4 shrink-0">
                       {openIndex === index ? (
-                        <Minus className="w-6 h-6 text-primary" />
+                        <Minus className="w-6 h-6 text-[#0168B4]" />
                       ) : (
                         <Plus className="w-6 h-6 text-gray-400" />
                       )}
                     </div>
                   </button>
 
-                  {/* Answer with Animation */}
-                  <div 
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      openIndex === index ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'
-                    }`}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}
                   >
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl">
+                    <p 
+                      style={{
+                        color: '#616161',
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '16px',
+                        lineHeight: '150%'
+                      }}
+                      className="max-w-2xl"
+                    >
                       {faq.answer}
                     </p>
                   </div>
