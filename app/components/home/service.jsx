@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { API } from "@/app/config/api";
+import Link from "next/link";
 
 const StackedCards = ({ services }) => {
   const containerRef = useRef(null);
@@ -47,31 +48,35 @@ const StackedCards = ({ services }) => {
               const start = index / services.length;
               const end = (index + 1) / services.length;
               
-              // কার্ডগুলো দ্রুত আসার জন্য y পজিশন
+              // কার্ডগুলো নিচ থেকে উপরে আসবে
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              const y = useTransform(smoothProgress, [start, end], [index === 0 ? 0 : 500, 0]);
+              const y = useTransform(smoothProgress, [start, end], [index === 0 ? 0 : 550, 0]);
               
-              // স্কেলিং ইফেক্ট যাতে নিচের কার্ডগুলো স্তরে স্তরে দেখা যায়
+              /* নতুন লজিক (Reverse Scaling):
+                  আপনি যেমন চেয়েছেন - পেছনের কার্ড হবে চওড়া, সামনের কার্ড হবে কম চওড়া।
+                  তাই সামনের কার্ডটিকে আমরা ০.৯ স্কেলে নিয়ে আসছি, আর পেছনে যত যাবে তত ১-এর দিকে থাকবে।
+              */
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              const scale = useTransform(smoothProgress, [start, end], [1 - (services.length - index) * 0.02, 1]);
-
-              // ইমেজ অনুযায়ী কালার লজিক (F7F7F7, CCE7FB, A9DAFF)
-              const colors = ["bg-[#CCE7FB]", "bg-[#A9DAFF]", "bg-[#E3F2FD]"];
-              const cardBg = colors[index % colors.length];
+              const scale = useTransform(smoothProgress, [start, end], [1.05, 0.9 + (index * 0.02)]);
 
               return (
                 <motion.div
                   key={service._id}
                   style={{ 
                     y: index === 0 ? 0 : y,
-                    scale,
+                    scale: index === 0 ? 0.9 : scale, // প্রথম কার্ডটি ছোট থাকবে, পরের গুলো ওপর দিয়ে এসে আরও ছোট হবে
                     zIndex: index + 10,
-                    // ডাইনামিক টপ যাতে স্ট্যাকিংটা ইমেজের মতো বোঝা যায়
-                    top: index * 12, 
+                    top: index * 15, // ওপরের গ্যাপ বজায় রাখার জন্য
                   }}
-                  className="absolute inset-0 w-full"
+                  className="absolute inset-0 w-full origin-top"
                 >
-                  <div className={`${cardBg} rounded-[50px] md:rounded-[70px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 overflow-hidden h-full`}>
+                  {/* Background Gradient Applied Here */}
+                  <div 
+                    style={{ 
+                      background: `linear-gradient(to bottom, #A9DAFF, #CCE7FB, #F7F7F7 )` 
+                    }}
+                    className={`rounded-[50px] md:rounded-[70px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 overflow-hidden h-full`}
+                  >
                     <div className="p-8 md:p-14 flex flex-col lg:flex-row items-center gap-10 h-full">
                       
                       {/* Left Side: Content */}
@@ -91,15 +96,15 @@ const StackedCards = ({ services }) => {
                           </ul>
                         </div>
 
-                        <button className="inline-flex items-center gap-3 bg-[#0070c0] text-white pl-8 pr-2 py-2.5 rounded-full font-semibold hover:bg-[#005fa3] transition-all shadow-lg group">
+                        <Link href="/services" className="inline-flex items-center gap-3 bg-[#0070c0] text-white pl-8 pr-2 py-2.5 rounded-full font-semibold hover:bg-[#005fa3] transition-all shadow-lg group">
                           Explore Services
                           <span className="bg-white text-[#0070c0] rounded-full p-2 transition-transform group-hover:rotate-45">
                             <ArrowUpRight className="w-5 h-5" />
                           </span>
-                        </button>
+                        </Link>
                       </div>
 
-                      {/* Right Side: Image (Rounded Like Example) */}
+                      {/* Right Side: Image */}
                       <div className="w-full lg:w-1/2 h-full">
                         <div className="relative rounded-[40px] md:rounded-[55px] overflow-hidden shadow-2xl border-[6px] border-white/20 h-full">
                           <img 

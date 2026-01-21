@@ -5,11 +5,30 @@ import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
 import { ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
+
+// আপনার দেওয়া লোডার কম্পোনেন্ট
+const FullPageLoader = () => (
+  <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
+    <div className="relative flex items-center justify-center">
+      <div className="w-24 h-24 border-4 border-gray-100 border-t-blue-600 rounded-full animate-spin"></div>
+      <img 
+        src="/Hansi-Logo1.png" 
+        alt="Logo" 
+        className="absolute w-12 h-12 animate-pulse"
+      />
+    </div>
+    <h2 className="mt-4 text-xl font-bold tracking-[0.2em] text-gray-800 animate-bounce">
+      HANSI TRANS
+    </h2>
+  </div>
+);
 
 const HansiTrans = () => {
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true); // লোডিং স্টেট যোগ করা হয়েছে
   const [siteConfig, setSiteConfig] = useState({
     logo: null,
     brandText: "Hansi Trans",
@@ -42,10 +61,32 @@ const HansiTrans = () => {
         }
       } catch (error) {
         console.error("Fetch failed", error);
+      } finally {
+        // ডাটা লোড শেষ হলে লোডার বন্ধ হবে
+        setTimeout(() => setLoading(false), 1000); 
       }
     };
     fetchData();
   }, []);
+
+  const dropIn = {
+    hidden: { y: -100, opacity: 0 },
+    visible: (i) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: i * 0.2,
+        type: "spring",
+        stiffness: 120,
+        damping: 12
+      }
+    })
+  };
+
+  // লোডিং অবস্থায় লোডার দেখাবে
+  if (loading) {
+    return <FullPageLoader />;
+  }
 
   return (
     <div className="min-h-[auto] md:min-h-screen text-white overflow-x-hidden relative">
@@ -55,10 +96,6 @@ const HansiTrans = () => {
       </video>
 
       {/* Hero Image Gradient Overlay */}
-      {/* এখনে ইমেজটি একদম নিচে (bottom-0) সেট করা হয়েছে। 
-          w-full এবং object-cover ব্যবহার করা হয়েছে যাতে ইমেজটি পুরো উইডথ জুড়ে থাকে।
-          z-[1] দেয়া হয়েছে যাতে এটি ভিডিওর উপরে এবং টেক্সটের নিচে থাকে।
-      */}
       <div className="absolute inset-x-0 bottom-0 w-full z-[1] pointer-events-none">
         <img
           src="/hero gradient.png"
@@ -160,8 +197,12 @@ const HansiTrans = () => {
               </div>
             </div>
 
-            {/* Middle Panda Video */}
+            {/* Middle Panda Video with Shadow Ellipse */}
             <div className="relative z-0 w-64 h-64 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] flex items-center justify-center">
+              <div className="absolute bottom-[5%] md:bottom-6 w-[80%] h-[20%] z-[-1] opacity-70">
+                <img src="/Ellipse.png" alt="shadow" className="w-full h-full object-contain" />
+              </div>
+              
               <video autoPlay loop muted playsInline className="w-full h-full object-contain scale-110 md:scale-125">
                 <source src="/convertedPanda.webm" type="video/webm" />
               </video>
@@ -169,51 +210,72 @@ const HansiTrans = () => {
 
             {/* Desktop Surrounding Service Buttons */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
-              <div className="absolute top-[35%] left-0 pointer-events-auto">
+              <motion.div 
+                custom={0} initial="hidden" animate="visible" variants={dropIn}
+                className="absolute top-[35%] left-0 pointer-events-auto"
+              >
                 {services[0] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[0].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
-              </div>
-              <div className="absolute top-[55%] left-[10%] pointer-events-auto">
+              </motion.div>
+
+              <motion.div 
+                custom={1} initial="hidden" animate="visible" variants={dropIn}
+                className="absolute top-[55%] left-[10%] pointer-events-auto"
+              >
                 {services[1] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[1].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="absolute top-[35%] right-0 pointer-events-auto">
+              <motion.div 
+                custom={2} initial="hidden" animate="visible" variants={dropIn}
+                className="absolute top-[35%] right-0 pointer-events-auto"
+              >
                 {services[2] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[2].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
-              </div>
-              <div className="absolute top-[55%] right-[10%] pointer-events-auto">
+              </motion.div>
+
+              <motion.div 
+                custom={3} initial="hidden" animate="visible" variants={dropIn}
+                className="absolute top-[55%] right-[10%] pointer-events-auto"
+              >
                 {services[3] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[3].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto">
+              <motion.div 
+                custom={4} initial="hidden" animate="visible" variants={dropIn}
+                className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto"
+              >
                 {services[4] && (
                   <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
                     {services[4].title} <span className="bg-gray-700 p-1 rounded text-[10px]">📚</span>
                   </button>
                 )}
-              </div>
+              </motion.div>
             </div>
 
             {/* Mobile View Service Buttons */}
             <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4">
               {services.map((service, index) => (
-                <button key={index} className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-1 shadow-lg">
+                <motion.button 
+                  key={index}
+                  custom={index} initial="hidden" animate="visible" variants={dropIn}
+                  className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-1 shadow-lg"
+                >
                   {service.title} <span className="text-[8px]">📚</span>
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import { API } from "@/app/config/api";
+import Link from "next/link";
 
 /* --- Counter Up Component --- */
 const Counter = ({ value }) => {
@@ -116,7 +117,7 @@ const FeaturedCaseStudies = () => {
               } bg-background rounded-[40px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group`}
             >
               {/* Image Section - Zoom on Image Hover Only */}
-              <div className="w-full lg:w-1/2 h-[350px] md:h-[500px] overflow-hidden">
+              <div className="w-full lg:w-1/2 h-[350px] md:h-[530px] overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -176,12 +177,12 @@ const FeaturedCaseStudies = () => {
 
         {/* View All Button */}
         <div className="mt-16 flex justify-center">
-          <button className="inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-bold hover:opacity-90 transition shadow-lg">
+          <Link href="/case-studies"  className="inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-bold hover:opacity-90 transition shadow-lg">
             View All Case Studies
             <span className="bg-white text-primary rounded-full p-2">
               <ArrowUpRight className="w-5 h-5" />
             </span>
-          </button>
+          </Link>
         </div>
       </div>
     </section>

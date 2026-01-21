@@ -2,7 +2,7 @@ import ThemeApplier from "./components/theme/ThemeApplier";
 import "./globals.css";
 
 export const metadata = {
-  title: "Hansi-Trans",
+  title: "Hansi Trans",
   description: "CMS powered website",
 };
 

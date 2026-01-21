@@ -152,13 +152,13 @@ const Testimonials = () => {
           <div className="flex items-center gap-3 ml-2 shrink-0">
             <button 
               onClick={prevSlide}
-              className="p-4 bg-gray-50 rounded-full hover:bg-gray-100 transition active:scale-95"
+              className="p-4 hover:bg-primary hover:text-white rounded-full hover:opacity-90 transition shadow-lg shadow-accent/20 active:scale-95"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-400" />
+              <ArrowLeft className="w-5 h-5" />
             </button>
             <button 
               onClick={nextSlide}
-              className="p-4 bg-primary text-white rounded-full hover:opacity-90 transition shadow-lg shadow-accent/20 active:scale-95"
+              className="p-4 hover:bg-primary hover:text-white rounded-full hover:opacity-90 transition shadow-lg shadow-accent/20 active:scale-95"
             >
               <ArrowRight className="w-5 h-5" />
             </button>
