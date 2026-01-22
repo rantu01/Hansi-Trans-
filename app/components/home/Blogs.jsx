@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import axios from 'axios';
 import { API } from '@/app/config/api';
+// Link ইমপোর্ট করা হয়েছে
+import Link from "next/link";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -15,7 +17,6 @@ const Blogs = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get(API.Blogs.getAll);
-        // API response array না হলে খালি array সেট করার সেফটি
         setBlogs(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -31,7 +32,6 @@ const Blogs = () => {
     setVisibleCount(blogs.length);
   };
 
-  // Hydration error এড়াতে মাউন্ট হওয়া নিশ্চিত করা
   if (!isMounted) return null;
 
   if (loading) {
@@ -68,7 +68,7 @@ const Blogs = () => {
               style={{
                 color: '#0A0A0A',
                 fontFamily: 'Inter, sans-serif',
-                fontSize: 'clamp(32px, 5vw, 48px)', // রেসপনসিভ ফন্ট সাইজ
+                fontSize: 'clamp(32px, 5vw, 48px)',
                 fontStyle: 'normal',
                 fontWeight: '500',
                 lineHeight: '120%',
@@ -98,11 +98,16 @@ const Blogs = () => {
         {/* Blog Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
           {blogs.slice(0, visibleCount).map((post) => (
-            <div key={post._id} className="group cursor-pointer flex flex-col">
+            // এখানে Link ট্যাগ যোগ করা হয়েছে যা স্লাগ ব্যবহার করবে
+            <Link 
+              key={post._id} 
+              href={`/blog/${post.slug}`} 
+              className="group cursor-pointer flex flex-col"
+            >
               {/* Image Container */}
               <div className="relative rounded-[30px] overflow-hidden mb-6 aspect-[4/3] border border-gray-100 bg-white">
                 <img 
-                  src={post.image || "/api/placeholder/400/300"} // ইমেজ না থাকলে প্লেসহোল্ডার
+                  src={post.image || "/api/placeholder/400/300"} 
                   alt={post.title} 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -146,7 +151,7 @@ const Blogs = () => {
               >
                 {post.title}
               </h3>
-            </div>
+            </Link>
           ))}
         </div>
 

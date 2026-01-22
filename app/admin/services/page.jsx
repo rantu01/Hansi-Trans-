@@ -2,15 +2,20 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { Plus, Trash2, Pencil, Loader2, Layers, Globe, Filter } from "lucide-react";
+import { Plus, Trash2, Pencil, Loader2, Layers, Globe, Filter, X, Save } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import Swal from "sweetalert2"; // SweetAlert2 ইমপোর্ট করা হয়েছে
+import Swal from "sweetalert2";
 
 export default function AdminServiceList() {
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState("all");
+
+  // Modal এর জন্য State
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingService, setEditingService] = useState(null);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const fetchAllServices = async () => {
     try {
@@ -28,7 +33,6 @@ export default function AdminServiceList() {
 
   useEffect(() => { fetchAllServices(); }, []);
 
-  // Filter logic...
   useEffect(() => {
     let result = [...services];
     if (filterType === "main") {
@@ -39,20 +43,40 @@ export default function AdminServiceList() {
     setFilteredServices(result);
   }, [filterType, services]);
 
-  // আপডেট করা deleteService ফাংশন
+  // Modal ওপেন করার ফাংশন
+  const openEditModal = (service) => {
+    setEditingService({ ...service });
+    setIsEditModalOpen(true);
+  };
+
+  // সার্ভিস আপডেট করার ফাংশন
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setUpdateLoading(true);
+    const loadingToast = toast.loading("Updating service...");
+    try {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/update/${editingService._id}`, editingService);
+      toast.success("Service updated successfully!", { id: loadingToast });
+      setIsEditModalOpen(false);
+      fetchAllServices();
+    } catch (err) {
+      toast.error("Update failed!", { id: loadingToast });
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
   const deleteService = async (id) => {
-    // SweetAlert2 কনফার্মেশন ডায়ালগ
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this service!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#ef4444", // Red-500
-      cancelButtonColor: "#64748b",  // Slate-500
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#64748b",
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "No, cancel",
       reverseButtons: true,
-      borderRadius: "1.5rem",
       customClass: {
         popup: 'rounded-[2rem] font-sans',
         confirmButton: 'rounded-xl px-6 py-3 font-bold',
@@ -64,38 +88,33 @@ export default function AdminServiceList() {
       const loadingToast = toast.loading("Deleting service...");
       try {
         await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/delete/${id}`);
-        
-        // ডিলিট সফল হলে SweetAlert দিয়ে জানানো (ঐচ্ছিক, চাইলে শুধু টোস্টও রাখতে পারেন)
         Swal.fire({
           title: "Deleted!",
           text: "The service has been removed.",
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
-          borderRadius: "1.5rem",
         });
-
         toast.success("Service deleted!", { id: loadingToast });
         fetchAllServices(); 
       } catch (err) {
-        toast.error("Delete failed. Please try again.", { id: loadingToast });
+        toast.error("Delete failed.", { id: loadingToast });
       }
     }
   };
 
   return (
     <div className="p-6 md:p-10 bg-[#f8fafc] min-h-screen font-sans">
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" />
       
       <div className="max-w-7xl mx-auto space-y-8">
-        
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">Service Directory</h1>
             <p className="text-slate-500 mt-1 font-medium">Manage your main offerings and specialized sub-services</p>
           </div>
-          <Link href="/admin/services/add" className="bg-slate-900 hover:bg-blue-600 text-white px-8 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl shadow-slate-200 active:scale-95 font-bold">
+          <Link href="/admin/services/add" className="bg-slate-900 hover:bg-blue-600 text-white px-8 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl active:scale-95 font-bold">
             <Plus size={20} /> Add New Service
           </Link>
         </div>
@@ -139,17 +158,12 @@ export default function AdminServiceList() {
                   <tr key={s._id} className="group hover:bg-blue-50/30 transition-colors">
                     <td className="py-5 px-8">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-inner bg-slate-100 border-2 border-white group-hover:border-blue-200 transition-all flex-shrink-0">
-                          <img 
-                             src={s.image || "https://via.placeholder.com/150"} 
-                             alt={s.title}
-                             className="w-full h-full object-cover" 
-                             onError={(e) => e.target.src = "https://via.placeholder.com/150"}
-                          />
+                        <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-inner bg-slate-100 border-2 border-white group-hover:border-blue-200 transition-all">
+                          <img src={s.image || "https://via.placeholder.com/150"} alt={s.title} className="w-full h-full object-cover" />
                         </div>
                         <div className="min-w-0">
-                          <span className="block font-bold text-slate-800 text-lg group-hover:text-blue-700 transition-colors truncate">{s.title}</span>
-                          <span className="text-xs font-medium text-slate-400 tracking-tight block truncate">{s.slug}</span>
+                          <span className="block font-bold text-slate-800 text-lg group-hover:text-blue-700 truncate">{s.title}</span>
+                          <span className="text-xs font-medium text-slate-400 block truncate">{s.slug}</span>
                         </div>
                       </div>
                     </td>
@@ -166,13 +180,11 @@ export default function AdminServiceList() {
                     </td>
                     <td className="py-5 px-8 text-right">
                       <div className="flex justify-end gap-3">
-                        <Link href={`/admin/services/edit/${s._id}`} className="p-3 text-slate-400 hover:text-blue-600 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100">
+                        {/* Edit Button - Now opens Modal */}
+                        <button onClick={() => openEditModal(s)} className="p-3 text-slate-400 hover:text-blue-600 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100">
                           <Pencil size={18} />
-                        </Link>
-                        <button 
-                          onClick={() => deleteService(s._id)} 
-                          className="p-3 text-slate-400 hover:text-red-500 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100"
-                        >
+                        </button>
+                        <button onClick={() => deleteService(s._id)} className="p-3 text-slate-400 hover:text-red-500 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100">
                           <Trash2 size={18} />
                         </button>
                       </div>
@@ -182,19 +194,63 @@ export default function AdminServiceList() {
               </tbody>
             </table>
           )}
-
-          {/* Empty State */}
-          {!loading && filteredServices.length === 0 && (
-            <div className="text-center py-32 animate-in fade-in zoom-in duration-300">
-              <div className="inline-flex p-6 bg-slate-50 rounded-full mb-4 text-slate-200">
-                 <Layers size={48} />
-              </div>
-              <p className="text-slate-400 font-bold text-lg">No services found.</p>
-              <p className="text-slate-300 text-sm">Try changing your filters or add a new service.</p>
-            </div>
-          )}
         </div>
       </div>
+
+      {/* --- EDIT MODAL --- */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h2 className="text-2xl font-black text-slate-900 tracking-tight">Quick Edit</h2>
+                <button onClick={() => setIsEditModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400">
+                  <X size={24} />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdate} className="space-y-5">
+                <div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Service Title</label>
+                  <input 
+                    required
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-slate-700"
+                    value={editingService?.title || ""}
+                    onChange={(e) => setEditingService({...editingService, title: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">URL Slug</label>
+                  <input 
+                    required
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-medium text-slate-500"
+                    value={editingService?.slug || ""}
+                    onChange={(e) => setEditingService({...editingService, slug: e.target.value})}
+                  />
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  <button 
+                    type="button" 
+                    onClick={() => setIsEditModalOpen(false)}
+                    className="flex-1 px-6 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-100 transition-all active:scale-95"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={updateLoading}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-100 transition-all active:scale-95"
+                  >
+                    {updateLoading ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

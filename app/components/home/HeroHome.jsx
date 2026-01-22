@@ -116,7 +116,7 @@ const HansiTrans = () => {
           </div>
 
           <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
-            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-black border border-white/20 px-4 py-2 text-white outline-none cursor-pointer text-sm">
+            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-black border border-white/20 p-5 text-white outline-none cursor-pointer text-sm">
               <option value="EN">EN</option>
               <option value="ES">ES</option>
               <option value="FR">FR</option>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -50,7 +50,7 @@ const Hero = ({
 
   return (
     <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-secondary">
-      
+
       {/* 🔹 VIDEO BACKGROUND */}
       <video
         autoPlay
@@ -72,14 +72,14 @@ const Hero = ({
           <div className="flex justify-between items-center">
             {/* Logo & Brand Text */}
             <Link href="/" className="flex flex-col items-center justify-center space-y-1 flex-1 text-center">
-            <img
-              src={siteConfig.logo || "/Hansi-Logo1.png"}
-              onError={(e) => { e.currentTarget.src = "/Hansi-Logo1.png"; }}
-              alt="hansi logo"
-              className="w-8 h-8 md:w-10 md:h-10 object-contain"
-            />
-            <span className="text-xl md:text-2xl font-bold tracking-wider">{siteConfig.brandText}</span>
-          </Link>
+              <img
+                src={siteConfig.logo || "/Hansi-Logo1.png"}
+                onError={(e) => { e.currentTarget.src = "/Hansi-Logo1.png"; }}
+                alt="hansi logo"
+                className="w-8 h-8 md:w-10 md:h-10 object-contain"
+              />
+              <span className="text-xl md:text-2xl font-bold tracking-wider">{siteConfig.brandText}</span>
+            </Link>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-8 flex-[2]">
@@ -94,10 +94,9 @@ const Hero = ({
                     href={item.path}
                     /* Replaced blue-400 with primary and custom bg with secondary/20 */
                     className={`text-sm lg:text-base rounded-3xl transition-all px-4 py-2 whitespace-nowrap
-                      ${
-                        isActive
-                          ? "bg-primary text-white shadow-lg shadow-primary/20"
-                          : "text-white bg-secondary/20 backdrop-blur-md border border-white/10 hover:bg-primary"
+                      ${isActive
+                        ? "bg-primary text-white shadow-lg shadow-primary/20"
+                        : "text-white bg-secondary/20 backdrop-blur-md border border-white/10 hover:bg-primary"
                       }`}
                   >
                     {item.name}
@@ -107,21 +106,20 @@ const Hero = ({
             </div>
 
             {/* Right Action */}
-            <div className="hidden md:flex items-center justify-end space-x-4 flex-1">
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent border border-white/30 rounded px-2 py-1 text-white outline-none cursor-pointer text-sm"
-              >
-                <option className="text-black" value="EN">EN</option>
-                <option className="text-black" value="BN">BN</option>
+            <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
+              <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-black border border-white/20 px-4 p-5 text-white outline-none cursor-pointer text-sm">
+                <option value="EN">EN</option>
+                <option value="ES">ES</option>
+                <option value="FR">FR</option>
               </select>
-
               <Link
                 href="/contact"
-                className="border border-white/40 px-5 py-2 rounded-full text-sm font-semibold hover:bg-white hover:text-secondary transition-all"
+                className="group flex items-center gap-3 bg-transparent border border-[#E0E4FF] pl-5 pr-1.5 py-1.5 rounded-full font-semibold text-white hover:bg-white hover:text-primary transition-all duration-300 whitespace-nowrap text-sm lg:text-base"
               >
                 Let's connect
+                <span className="bg-white rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                  <ArrowUpRight className="w-7 h-7 text-primary" strokeWidth={2} />
+                </span>
               </Link>
             </div>
 
@@ -148,10 +146,9 @@ const Hero = ({
                     href={item.path}
                     onClick={() => setMenuOpen(false)}
                     className={`text-2xl font-medium transition-colors
-                      ${
-                        isActive
-                          ? "text-primary"
-                          : "text-white hover:text-primary"
+                      ${isActive
+                        ? "text-primary"
+                        : "text-white hover:text-primary"
                       }`}
                   >
                     {item.name}
