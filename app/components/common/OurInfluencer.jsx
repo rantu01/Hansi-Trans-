@@ -7,9 +7,10 @@ import { API } from "@/app/config/api";
 
 const OurInfluencer = () => {
   const [influencers, setInfluencers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const fetchInfluencers = async () => {
       try {
         const res = await fetch(API.OurInfluencer.getInfluencers, {
@@ -20,25 +21,24 @@ const OurInfluencer = () => {
         setInfluencers(data);
       } catch (error) {
         console.error("Influencer fetch error:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchInfluencers();
   }, []);
 
-  if (loading) return null;
+  // হাইড্রেশন এরর এড়াতে এবং ডেটা না আসা পর্যন্ত রেন্ডার বন্ধ রাখতে
+  if (!isMounted || influencers.length === 0) return null;
 
   return (
-    <section className="bg-[#F7F7F7] py-20 px-6 md:px-12 overflow-hidden w-full">
-      <div className="mx-auto">
+    <section className="bg-[#F7F7F7] py-20 overflow-hidden w-full">
+      <div className="w-full">
         
         {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto"
+          className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto px-6 md:px-12"
         >
           <div className="max-w-xl">
             {/* Badge with Frame.svg */}
@@ -59,7 +59,7 @@ const OurInfluencer = () => {
               style={{
                 color: '#0168B4',
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '48px',
+                fontSize: 'clamp(32px, 5vw, 48px)', // রেসপনসিভ ফন্ট
                 fontStyle: 'normal',
                 fontWeight: '500',
                 lineHeight: '120%',
@@ -88,21 +88,28 @@ const OurInfluencer = () => {
 
         {/* Marquee Area */}
         <div className="w-full mt-10">
-          <Marquee speed={50} pauseOnHover={true} gradient={false}>
+          <Marquee 
+            speed={50} 
+            pauseOnHover={true} 
+            gradient={false}
+            className="flex items-center"
+          >
             {influencers.map((person) => (
-              <motion.div 
+              <div 
                 key={person._id}
-                whileHover={{ y: -5 }} 
-                className="flex flex-col items-center text-center group mx-6" 
+                className="flex flex-col items-center text-center group mx-8 md:mx-10" 
               >
                 {/* Image Card */}
-                <div className="w-[304px] h-[353px] mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-100 bg-gray-50">
+                <motion.div 
+                  whileHover={{ y: -10 }}
+                  className="w-[280px] md:w-[304px] h-[320px] md:h-[353px] mb-6 overflow-hidden rounded-[40px] shadow-sm border border-gray-100 bg-gray-50 relative"
+                >
                   <img
                     src={person.image}
                     alt={person.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                </div>
+                </motion.div>
 
                 {/* Influencer Name */}
                 <h3 
@@ -136,23 +143,23 @@ const OurInfluencer = () => {
                   {person.role}
                 </p>
 
-                {/* Social Icons with updated specs */}
-                <div className="flex items-center gap-4">
-                  <a href="#" className="transition-opacity hover:opacity-70">
+                {/* Social Icons */}
+                <div className="flex items-center gap-4 pb-2">
+                  <a href={person.twitter || "#"} className="transition-all duration-300 hover:scale-110 opacity-80 hover:opacity-100">
                     <Twitter 
-                      style={{ width: '22.519px', height: '18.29px' }} 
+                      style={{ width: '22px', height: '18px' }} 
                       fill="#0F0F0F" 
                       stroke="none" 
                     />
                   </a>
-                  <a href="#" className="transition-opacity hover:opacity-70">
+                  <a href={person.facebook || "#"} className="transition-all duration-300 hover:scale-110 opacity-80 hover:opacity-100">
                     <Facebook 
                       style={{ width: '22px', height: '22px' }} 
                       fill="#0F0F0F" 
                       stroke="none" 
                     />
                   </a>
-                  <a href="#" className="transition-opacity hover:opacity-70">
+                  <a href={person.linkedin || "#"} className="transition-all duration-300 hover:scale-110 opacity-80 hover:opacity-100">
                     <Linkedin 
                       style={{ width: '22px', height: '22px' }} 
                       fill="#0F0F0F" 
@@ -160,7 +167,7 @@ const OurInfluencer = () => {
                     />
                   </a>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </Marquee>
         </div>

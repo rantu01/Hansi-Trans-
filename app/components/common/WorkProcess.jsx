@@ -8,20 +8,27 @@ import {
   Rocket,
   Handshake,
   Settings,
-  CheckCircle2,
   Check,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { API } from "@/app/config/api";
 
-const iconMap = { Search, Users, Layers, Rocket };
+// আইকন ম্যাপার (সবগুলো ছোট হাতের অক্ষরে রাখা হয়েছে সেফটির জন্য)
+const iconMap = { 
+  search: Search, 
+  users: Users, 
+  layers: Layers, 
+  rocket: Rocket 
+};
 
 const WorkProcess = () => {
   const [steps, setSteps] = useState([]);
   const [studios, setStudios] = useState([]);
   const [tools, setTools] = useState([]);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const fetchData = async () => {
       try {
         const res = await fetch(API.WorkProcess, { cache: "no-store" });
@@ -36,13 +43,16 @@ const WorkProcess = () => {
     fetchData();
   }, []);
 
+  // হাইড্রেশন এরর এড়াতে মাউন্ট চেক
+  if (!isMounted) return null;
+
   return (
     <section
       style={{
         borderRadius: '32px 32px 0 0',
         background: 'linear-gradient(0deg, #F7F7F7 0%, #CCE7FB 55.48%, #A9DAFF 100%)'
       }}
-      className="py-20 "
+      className="py-12 md:py-20"
     >
       <div className="container mx-auto px-4">
 
@@ -51,7 +61,7 @@ const WorkProcess = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6"
+          className="flex flex-col md:flex-row justify-between items-start mb-12 md:mb-16 gap-6"
         >
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 text-sm font-medium text-gray-600 mb-6 bg-white shadow-sm backdrop-blur-sm">
@@ -63,15 +73,15 @@ const WorkProcess = () => {
               style={{
                 color: '#0A0A0A',
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '48px',
+                fontSize: 'clamp(32px, 5vw, 48px)',
                 fontWeight: '500',
                 lineHeight: '120%'
               }}
             >
-              Guiding Lights Of Our <br /> Works
+              Guiding Lights Of Our <br className="hidden md:block" /> Works
             </h2>
           </div>
-          <div className="md:max-w-xs pt-4 md:pt-14">
+          <div className="md:max-w-xs pt-0 md:pt-14">
             <p
               style={{
                 color: '#616161',
@@ -86,10 +96,11 @@ const WorkProcess = () => {
           </div>
         </motion.div>
 
-        {/* 4 Card Steps Grid - Specific W:306px, H:462px */}
-        <div className="flex flex-wrap justify-center gap-6 mb-20">
+        {/* 4 Card Steps Grid */}
+        <div className="flex flex-wrap justify-center gap-6 mb-12 md:mb-20">
           {steps.map((step, index) => {
-            const IconComponent = iconMap[step.icon];
+            // আইকন নামটিকে ছোট হাতের করে ম্যাপ থেকে খোঁজা হচ্ছে
+            const IconComponent = iconMap[step.icon?.toLowerCase()];
             const isEven = index % 2 === 0;
 
             return (
@@ -101,7 +112,8 @@ const WorkProcess = () => {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -10 }}
                 style={{
-                  width: '306px',
+                  width: '100%',
+                  maxWidth: '306px',
                   height: '462px',
                   padding: '40px 32px',
                   borderRadius: '40px',
@@ -140,12 +152,14 @@ const WorkProcess = () => {
                 </div>
 
                 <div className="flex items-center justify-center" style={{ height: '64px', width: '64px' }}>
-                  {IconComponent && (
+                  {IconComponent ? (
                     <IconComponent
                       size={48}
                       strokeWidth={2.5}
                       className="text-[#0168B4]"
                     />
+                  ) : (
+                    <Settings size={48} className="text-[#0168B4] opacity-20" /> // ফলব্যাক আইকন
                   )}
                 </div>
               </motion.div>
@@ -154,35 +168,28 @@ const WorkProcess = () => {
         </div>
 
         {/* Lower Section - Partner Studios & Tools */}
-        {/* Lower Section - Partner Studios & Tools */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-start">
 
           {/* Partner Studios */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col items-start"
+            className="flex flex-col items-center lg:items-start w-full"
           >
-          
-            {/* Partner Studios Container Update */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <div
               style={{
                 display: 'flex',
-                width: '636px',
-                height: '678px',
+                width: '100%',
+                maxWidth: '636px',
+                minHeight: '678px',
                 padding: '24px',
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '45px',
-                flexShrink: 0,
               }}
               className="text-center"
             >
-              {/* Header inside Partner Studios */}
               <div className="flex flex-col items-start w-full">
                 <div className="flex items-center gap-4 mb-2 self-start">
                   <Handshake className="w-10 h-10 text-[#0168B4]" />
@@ -192,7 +199,7 @@ const WorkProcess = () => {
                       style={{
                         color: '#0F0F0F',
                         fontFamily: 'Inter, sans-serif',
-                        fontSize: '40px',
+                        fontSize: 'clamp(30px, 4vw, 40px)',
                         fontWeight: '500',
                         lineHeight: '120%'
                       }}
@@ -215,11 +222,11 @@ const WorkProcess = () => {
                 </p>
               </div>
 
-              {/* Studios List - কার্ডগুলো এখন ৪৫px গ্যাপে থাকবে */}
+              {/* Studios List */}
               <div
-                className="w-full flex flex-col items-center overflow-y-auto pr-2 custom-scrollbar"
+                className="w-full flex flex-col items-center overflow-y-visible md:overflow-y-auto pr-0 md:pr-2 custom-scrollbar"
                 style={{
-                  gap: '45px', // আপনার দেওয়া নির্দিষ্ট গ্যাপ
+                  gap: '45px',
                   flexGrow: 1
                 }}
               >
@@ -228,14 +235,15 @@ const WorkProcess = () => {
                     key={i}
                     whileHover={{ x: 10, backgroundColor: "#fff" }}
                     style={{
-                      width: '306px',
+                      width: '100%',
+                      maxWidth: '306px',
                       padding: '16px 40px',
                       borderRadius: '100px',
                       background: '#FFFFFF',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      flexShrink: 0 // উচ্চতা ঠিক রাখতে এটি জরুরি
+                      flexShrink: 0
                     }}
                     className="shadow-sm cursor-pointer border border-gray-100"
                   >
@@ -268,7 +276,7 @@ const WorkProcess = () => {
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Tools & Technology */}
@@ -276,25 +284,23 @@ const WorkProcess = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col p-8 rounded-[40px] "
+            className="flex flex-col p-4 md:p-8 rounded-[40px] w-full"
           >
-            <div className="flex items-center gap-4 mb-8">
-              <Settings className="w-10 h-10 text-[#0168B4]" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
+              <Settings className="w-10 h-10 text-[#0168B4] flex-shrink-0" />
               <div className="text-left">
-                {/* Heading/H3: Inter 40px, #0F0F0F */}
                 <h3
                   className="capitalize"
                   style={{
                     color: '#0F0F0F',
                     fontFamily: 'Inter, sans-serif',
-                    fontSize: '40px',
+                    fontSize: 'clamp(30px, 4vw, 40px)',
                     fontWeight: '500',
                     lineHeight: '120%'
                   }}
                 >
                   Tools & Technology
                 </h3>
-                {/* Body/Regular: Poppins 16px, #616161 */}
                 <p
                   style={{
                     color: '#616161',
@@ -309,43 +315,42 @@ const WorkProcess = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mb-8 flex-grow">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 flex-grow">
               {tools.map((tool, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.1, rotate: 2 }}
-                  className="aspect-square bg-white rounded-2xl flex items-center justify-center shadow-sm p-2 cursor-pointer border border-white"
+                  className="aspect-square bg-white rounded-2xl flex items-center justify-center shadow-sm p-4 cursor-pointer border border-white"
                 >
                   <div className="w-full h-full flex items-center justify-center">
                     {tool.image ? (
                       <img src={tool.image} alt={tool.name} className="w-full h-full object-contain" />
                     ) : (
-                      <span className="text-[10px] text-gray-400 font-bold">{tool.name}</span>
+                      <span className="text-[10px] text-gray-400 font-bold text-center">{tool.name}</span>
                     )}
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Secure File Transfer Card - Updated Background and Padding */}
+            {/* Secure File Transfer Card */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               style={{
                 display: 'flex',
-                padding: '16px 24px',
+                padding: '20px 24px',
                 alignItems: 'center',
                 gap: '16px',
                 alignSelf: 'stretch',
                 borderRadius: '32px',
                 background: 'linear-gradient(0deg, #F7F7F7 0%, #CCE7FB 55.48%, #A9DAFF 100%)'
               }}
-             
+              className="flex-col md:flex-row text-center md:text-left"
             >
-              <div className="bg-[#00c800] rounded-full p-2 flex items-center justify-center">
+              <div className="bg-[#00c800] rounded-full p-2 flex items-center justify-center flex-shrink-0">
                 <Check className="w-5 h-5 text-white" strokeWidth={3} />
               </div>
               <div className="text-left">
-                {/* Paragraph/Medium: Poppins 18px, #0F0F0F */}
                 <p
                   style={{
                     color: '#0F0F0F',
@@ -357,7 +362,6 @@ const WorkProcess = () => {
                 >
                   Secure File Transfer
                 </p>
-                {/* Body/Regular: Poppins 14px, #616161 */}
                 <p
                   style={{
                     color: '#616161',

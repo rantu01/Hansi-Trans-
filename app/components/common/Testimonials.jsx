@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { ArrowLeft, ArrowRight, Play, Quote, X } from "lucide-react";
 import { API } from "@/app/config/api";
 
@@ -9,8 +9,10 @@ const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [activeVideo, setActiveVideo] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -38,17 +40,22 @@ const Testimonials = () => {
     return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
   };
 
-  const nextSlide = () => {
-    const maxIndex = isMobile ? testimonials.length - 1 : testimonials.length - 2;
+  const nextSlide = useCallback(() => {
+    const maxIndex = isMobile ? testimonials.length - 1 : Math.max(0, testimonials.length - 2);
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
-  };
+  }, [isMobile, testimonials.length]);
 
-  const prevSlide = () => {
-    const maxIndex = isMobile ? testimonials.length - 1 : testimonials.length - 2;
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : Math.max(0, maxIndex)));
-  };
+  const prevSlide = useCallback(() => {
+    const maxIndex = isMobile ? testimonials.length - 1 : Math.max(0, testimonials.length - 2);
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
+  }, [isMobile, testimonials.length]);
 
-  const translateValue = currentIndex * (isMobile ? 100 : 50);
+  if (!isMounted || testimonials.length === 0) return null;
+
+  // স্লাইডার গ্যাপ এবং উইডথ ক্যালকুলেশন ফিক্স
+  const translateValue = isMobile 
+    ? currentIndex * 100 
+    : currentIndex * 50;
 
   return (
     <section className="py-20 bg-[#F7F7F7] overflow-hidden">
@@ -71,17 +78,14 @@ const Testimonials = () => {
               Testimonials
             </div>
 
-            {/* Updated Heading Style */}
             <h2
               className="capitalize"
               style={{
-                color: '#0168B4', // Updated to Primary Blue
+                color: '#0168B4',
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '48px',
-                fontStyle: 'normal',
+                fontSize: 'clamp(32px, 5vw, 48px)',
                 fontWeight: '500',
                 lineHeight: '120%',
-                textTransform: 'capitalize'
               }}
             >
               What Our Clients Say <br /> About Us!
@@ -104,10 +108,13 @@ const Testimonials = () => {
         </div>
 
         {/* Testimonial Cards Slider */}
-        <div className="overflow-hidden mb-12">
+        <div className="relative overflow-visible mb-12">
           <div
-            className="flex transition-transform duration-500 ease-in-out gap-8"
-            style={{ transform: `translateX(-${translateValue}%)` }}
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ 
+              transform: `translateX(-${translateValue}%)`,
+              gap: isMobile ? '0px' : '32px' 
+            }}
           >
             {testimonials.map((item) => (
               <div
@@ -116,13 +123,13 @@ const Testimonials = () => {
               >
                 <div className="relative flex-grow overflow-hidden rounded-[35px] mb-6">
                   {/* Quote Text State */}
-                  <div className="absolute inset-0 bg-[#F7F7F7] p-10 flex flex-col justify-center items-start transition-opacity duration-500 group-hover:opacity-0 z-10">
-                    <Quote className="w-12 h-12 text-[#0168B4] opacity-20 mb-6" />
+                  <div className="absolute inset-0 bg-[#F7F7F7] p-6 md:p-10 flex flex-col justify-center items-start transition-opacity duration-500 group-hover:opacity-0 z-10">
+                    <Quote className="w-10 h-10 md:w-12 md:h-12 text-[#0168B4] opacity-20 mb-6" />
                     <p
                       style={{
                         color: '#0A0A0A',
                         fontFamily: 'Inter, sans-serif',
-                        fontSize: '32px',
+                        fontSize: 'clamp(20px, 3vw, 32px)',
                         fontWeight: '500',
                         lineHeight: '1.2'
                       }}
@@ -149,31 +156,10 @@ const Testimonials = () => {
                 <div className="flex items-center gap-4 px-6 pb-4 shrink-0">
                   <img src={item.avatar} alt={item.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md" />
                   <div className="text-left">
-                    {/* Client Name */}
-                    <h4
-                      style={{
-                        color: '#262626',
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '18px',
-                        fontStyle: 'normal',
-                        fontWeight: '500',
-                        lineHeight: '150%'
-                      }}
-                    >
+                    <h4 style={{ color: '#262626', fontFamily: 'Poppins, sans-serif', fontSize: '18px', fontWeight: '500' }}>
                       {item.name}
                     </h4>
-
-                    {/* Client Role */}
-                    <p
-                      style={{
-                        color: '#616161',
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '14px',
-                        fontStyle: 'normal',
-                        fontWeight: '400',
-                        lineHeight: '150%'
-                      }}
-                    >
+                    <p style={{ color: '#616161', fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '400' }}>
                       {item.role}
                     </p>
                   </div>
@@ -184,15 +170,10 @@ const Testimonials = () => {
         </div>
 
         {/* Custom Navigation Bar */}
-        {/* Custom Navigation Bar */}
         <div
-          className="max-w-6xl mx-auto flex items-center shadow-sm border border-gray-100"
+          className="max-w-6xl mx-auto flex items-center shadow-sm border border-gray-100 mt-10"
           style={{
-            display: 'flex',
-            padding: '16px 32px',
-            alignItems: 'center',
-            gap: '24px',
-            alignSelf: 'stretch',
+            padding: '16px 24px',
             borderRadius: '100px',
             background: '#FFFFFF'
           }}
@@ -201,66 +182,57 @@ const Testimonials = () => {
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={prevSlide}
-              className="p-4 bg-[#F7F7F7] text-[#0A0A0A] hover:bg-[#0168B4] hover:text-white rounded-full transition-all duration-300 active:scale-95"
+              className="p-3 md:p-4 bg-[#F7F7F7] text-[#0A0A0A] hover:bg-[#0168B4] hover:text-white rounded-full transition-all duration-300"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <button
               onClick={nextSlide}
-              className="p-4 bg-[#F7F7F7] text-[#0A0A0A] hover:bg-[#0168B4] hover:text-white rounded-full transition-all duration-300 active:scale-95"
+              className="p-3 md:p-4 bg-[#F7F7F7] text-[#0A0A0A] hover:bg-[#0168B4] hover:text-white rounded-full transition-all duration-300"
             >
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Navigation Items - Updated Style */}
+          {/* Navigation Items */}
           <div className="hidden md:flex flex-grow justify-around items-center overflow-hidden">
-            {bottomNav.map((nav, i) => (
-              <div
-                key={i}
-                className={`flex flex-col items-center border-r last:border-0 border-gray-100 px-8 transition-opacity duration-300 ${i >= currentIndex && i < currentIndex + 4 ? "opacity-100" : "opacity-40"
-                  }`}
-              >
-                <h5
-                  style={{
-                    color: '#015FA4', // Primary Blue 600
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '28px',
-                    fontStyle: 'normal',
-                    fontWeight: '500',
-                    lineHeight: '120%',
-                    textTransform: 'capitalize'
-                  }}
+            {bottomNav.map((nav, i) => {
+               const isActive = i >= currentIndex && i < currentIndex + 2;
+               return (
+                <div
+                  key={i}
+                  className={`flex flex-col items-center border-r last:border-0 border-gray-100 px-8 transition-all duration-500 ${isActive ? "opacity-100 scale-100" : "opacity-30 scale-90"}`}
                 >
-                  {nav.name}
-                </h5>
-                <p
-                  style={{
-                    color: '#7B7B7B',
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: '16px',
-                    fontStyle: 'normal',
-                    fontWeight: '400',
-                    lineHeight: '150%'
-                  }}
-                >
-                  {nav.company}
-                </p>
-              </div>
-            ))}
+                  <h5 style={{ color: '#015FA4', fontFamily: 'Inter, sans-serif', fontSize: '24px', fontWeight: '500' }}>
+                    {nav.name}
+                  </h5>
+                  <p style={{ color: '#7B7B7B', fontFamily: 'Poppins, sans-serif', fontSize: '14px' }}>
+                    {nav.company}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
       {/* Video Modal Overlay */}
       {activeVideo && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md">
           <div className="relative w-full max-w-4xl aspect-video">
-            <button onClick={() => setActiveVideo(null)} className="absolute -top-12 right-0 p-2 text-white hover:text-[#0168B4]">
-              <X className="w-8 h-8" />
+            <button 
+              onClick={() => setActiveVideo(null)} 
+              className="absolute -top-14 right-0 p-3 text-white hover:bg-white/10 rounded-full transition-colors"
+            >
+              <X className="w-10 h-10" />
             </button>
-            <div className="w-full h-full rounded-2xl overflow-hidden bg-black shadow-2xl">
-              <iframe src={getEmbedUrl(activeVideo)} className="w-full h-full" allow="autoplay; encrypted-media" allowFullScreen></iframe>
+            <div className="w-full h-full rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/10">
+              <iframe 
+                src={getEmbedUrl(activeVideo)} 
+                className="w-full h-full" 
+                allow="autoplay; encrypted-media" 
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
         </div>

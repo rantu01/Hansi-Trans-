@@ -15,7 +15,8 @@ import {
 import { API } from "@/app/config/api";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
 
   const [siteConfig, setSiteConfig] = useState({
     logo: "",
@@ -34,6 +35,9 @@ const Footer = () => {
   });
 
   useEffect(() => {
+    setIsMounted(true);
+    setCurrentYear(new Date().getFullYear().toString());
+
     const fetchSiteConfig = async () => {
       try {
         const res = await fetch(API.site.getConfig);
@@ -57,11 +61,14 @@ const Footer = () => {
     { Icon: Facebook, url: siteConfig.socialFacebook },
   ];
 
+  // Hydration Error এড়াতে মাউন্ট না হওয়া পর্যন্ত কিছু রেন্ডার হবে না
+  if (!isMounted) return null;
+
   return (
-    <footer className="relative bg-gradient-to-bl from-gradient-base via-white to-gradient-base pt-20">
+    <footer className="relative bg-gradient-to-bl from-[#c5e6fc] via-white to-[#c5e6fc] pt-20 overflow-hidden">
       <div className="container mx-auto px-4">
 
-        {/* CTA Banner Section (Unchanged as requested) */}
+        {/* CTA Banner Section */}
         <div className="relative overflow-hidden bg-[#003B5C] rounded-[60px] mb-20 min-h-[450px] flex items-center">
           <div className="absolute inset-y-0 left-0 w-full md:w-[40%] z-0">
             <img
@@ -81,12 +88,12 @@ const Footer = () => {
               <p className="text-white/80 mb-10 max-w-md" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', fontWeight: '400', lineHeight: '150%' }}>
                 {siteConfig.ctaDescription || "Expanding your game into Asian markets is an exciting opportunity but without proper localization, even the best game can fail to connect."}
               </p>
-              <button className="inline-flex items-center gap-3 bg-white text-[#0168B4] pl-6 pr-2 py-2 rounded-full font-semibold transition-all group shadow-xl hover:scale-105">
+              <Link href="/contact" className="inline-flex items-center gap-3 bg-white text-[#0168B4] pl-6 pr-2 py-2 rounded-full font-semibold transition-all group shadow-xl hover:scale-105">
                 Let's connect
                 <span className="bg-[#0168B4] text-white rounded-full p-2 transition-transform group-hover:rotate-45">
                   <ArrowUpRight className="w-5 h-5" />
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -97,14 +104,12 @@ const Footer = () => {
           {/* Brand and Contacts (Col 1-5) */}
           <div className="md:col-span-5 flex flex-col gap-6">
             <div className="flex flex-col gap-4">
-              {/* IMAGE — always center */}
               <img
                 src={siteConfig.logo || "/Hansi-Logo1.png"}
                 alt="HANSI Logo"
-                className="w-20 h-20 object-contain ml-0 md:ml-23"
+                className="w-20 h-20 object-contain"
               />
 
-              {/* TEXT — always left */}
               <h3
                 className="w-full text-left uppercase font-medium text-[#0A0A0A]"
                 style={{
@@ -116,9 +121,7 @@ const Footer = () => {
               </h3>
             </div>
 
-
-
-            <div className="max-w-xs text-center md:text-left">
+            <div className="max-w-xs text-left">
               <p
                 style={{
                   color: '#0A0A0A',
@@ -144,7 +147,6 @@ const Footer = () => {
               </p>
             </div>
 
-            {/* Phone numbers grid with updated styling */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2 mt-4">
               {[1, 2, 3].map((_, i) => (
                 <div
@@ -166,7 +168,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Navigation Links with updated styling */}
+          {/* Navigation Links */}
           <div className="md:col-span-2">
             <h4
               style={{
@@ -182,12 +184,12 @@ const Footer = () => {
               Company
             </h4>
             <ul className="space-y-5 text-[#262626] text-[15px] font-medium">
-              <li className="hover:text-[#0168B4]"><Link href="/">Home</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/about">About us</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/case-studies">Work</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/blog">Blog</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/shop">Shop</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/contact">Contact Us</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/">Home</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/about">About us</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/case-studies">Work</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/blog">Blog</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/shop">Shop</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/contact">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -206,15 +208,15 @@ const Footer = () => {
               Utilities
             </h4>
             <ul className="space-y-5 text-[#262626] text-[15px] font-medium">
-              <li className="hover:text-[#0168B4]"><Link href="/privacy">Privacy & policy</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/style-guide">Style guide</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/changelog">Changelog</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/license">License</Link></li>
-              <li className="hover:text-[#0168B4]"><Link href="/404">404 page</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/privacy">Privacy & policy</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/style-guide">Style guide</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/changelog">Changelog</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/license">License</Link></li>
+              <li className="hover:text-[#0168B4] transition-colors"><Link href="/404">404 page</Link></li>
             </ul>
           </div>
 
-          {/* Social and Location with updated styling */}
+          {/* Social and Location */}
           <div className="md:col-span-3">
             <h4
               style={{
@@ -231,7 +233,7 @@ const Footer = () => {
             </h4>
             <div className="flex gap-2 mb-12">
               {socialLinks.map((item, i) => (
-                <a key={i} href={item.url || "#"} className="w-9 h-9 bg-[#0168B4] rounded-full flex items-center justify-center text-white hover:opacity-80 transition">
+                <a key={i} href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-[#0168B4] rounded-full flex items-center justify-center text-white hover:opacity-80 transition">
                   <item.Icon size={18} fill="currentColor" strokeWidth={0} />
                 </a>
               ))}

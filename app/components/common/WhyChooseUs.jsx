@@ -19,8 +19,10 @@ const ICONS = {
 
 const WhyChooseUs = () => {
   const [data, setData] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const fetchWhyChoose = async () => {
       try {
         const res = await fetch(API.WhyChooseUs, { cache: "no-store" });
@@ -33,9 +35,10 @@ const WhyChooseUs = () => {
     fetchWhyChoose();
   }, []);
 
-  if (!data) return null;
+  // ক্লায়েন্ট সাইড রেন্ডারিং নিশ্চিত করা
+  if (!isMounted || !data) return null;
 
-  const getCard = (key) => data.cards.find((c) => c.key === key);
+  const getCard = (key) => data.cards?.find((c) => c.key === key);
   const left = getCard("left");
   const middleTop = getCard("middleTop");
   const middleBottom = getCard("middleBottom");
@@ -48,17 +51,15 @@ const WhyChooseUs = () => {
 
   return (
     <section
-
-      className="w-full py-20 bg-secondary lg:h-[979px] h-auto text-white rounded-t-4xl overflow-hidden flex flex-col justify-center"
+      className="w-full py-20 bg-secondary lg:h-[979px] h-auto text-white rounded-t-[32px] md:rounded-t-[64px] overflow-hidden flex flex-col justify-center"
     >
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
 
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl text-left">
-            {/* Tag Update: Frame.svg and Specific Typography */}
             <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 mb-6 bg-white backdrop-blur-sm shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 mb-6 bg-white shadow-sm"
               style={{
                 color: '#404040',
                 fontFamily: 'Poppins, sans-serif',
@@ -71,13 +72,12 @@ const WhyChooseUs = () => {
               <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
               Why Choose Us
             </div>
-            {/* H2 Update: Inter 48px, Capitalize */}
             <h2
               className="capitalize"
               style={{
                 color: '#FFF',
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '48px',
+                fontSize: 'clamp(32px, 5vw, 48px)',
                 fontWeight: '500',
                 lineHeight: '120%'
               }}
@@ -86,7 +86,6 @@ const WhyChooseUs = () => {
             </h2>
           </div>
           <div className="md:max-w-xs pt-4 md:pt-14 text-left">
-            {/* Paragraph Update: Poppins 16px */}
             <p
               style={{
                 color: '#FFF',
@@ -102,16 +101,16 @@ const WhyChooseUs = () => {
         </div>
 
         {/* Main Grid Layout */}
-        {/* Main Grid Layout - Updated with specific dimensions */}
-        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-6 max-w-7xl mx-auto items-center">
+        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-8 max-w-7xl mx-auto items-center">
 
           {/* Left Large Card */}
           <motion.div
             whileHover={{ y: -8 }}
             style={{
               display: 'flex',
-              width: '346px',
-              height: '527px',
+              width: '100%',
+              maxWidth: '346px',
+              minHeight: '527px',
               padding: '32px',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -129,10 +128,11 @@ const WhyChooseUs = () => {
                   fontFamily: 'Inter, sans-serif',
                   fontSize: '32px',
                   fontWeight: '500',
-                  lineHeight: '120%'
+                  lineHeight: '120%',
+                  whiteSpace: 'pre-line'
                 }}
               >
-                {left?.title.replace("<br />", "\n")}
+                {left?.title?.replace(/<br\s*\/?>/gi, '\n')}
               </h3>
               <p
                 style={{
@@ -151,14 +151,14 @@ const WhyChooseUs = () => {
             </div>
           </motion.div>
 
-          {/* Middle Section - Two horizontal-style cards */}
+          {/* Middle Section */}
           <div className="flex flex-col gap-[32px] w-full lg:w-[450px]">
             {/* Middle Top Card */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               style={{
                 display: 'flex',
-                height: '247.5px',
+                minHeight: '247.5px',
                 padding: '32px',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -167,7 +167,7 @@ const WhyChooseUs = () => {
                 borderRadius: '35px',
                 background: '#FFFFFF',
               }}
-              className="shadow-xl cursor-pointer"
+              className="shadow-xl cursor-pointer flex-col sm:flex-row"
             >
               <div className="shrink-0">
                 {MidTopIcon && <MidTopIcon className="w-12 h-12 text-[#0168B4]" />}
@@ -187,7 +187,7 @@ const WhyChooseUs = () => {
               whileHover={{ scale: 1.02 }}
               style={{
                 display: 'flex',
-                height: '247.5px',
+                minHeight: '247.5px',
                 padding: '32px',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -196,7 +196,7 @@ const WhyChooseUs = () => {
                 borderRadius: '35px',
                 background: '#FFFFFF',
               }}
-              className="shadow-xl cursor-pointer"
+              className="shadow-xl cursor-pointer flex-col sm:flex-row"
             >
               <div className="shrink-0">
                 {MidBottomIcon && <MidBottomIcon className="w-12 h-12 text-[#0168B4]" />}
@@ -217,8 +217,9 @@ const WhyChooseUs = () => {
             whileHover={{ y: -8 }}
             style={{
               display: 'flex',
-              width: '346px',
-              height: '527px',
+              width: '100%',
+              maxWidth: '346px',
+              minHeight: '527px',
               padding: '32px',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -236,10 +237,11 @@ const WhyChooseUs = () => {
                   fontFamily: 'Inter, sans-serif',
                   fontSize: '32px',
                   fontWeight: '500',
-                  lineHeight: '120%'
+                  lineHeight: '120%',
+                  whiteSpace: 'pre-line'
                 }}
               >
-                {right?.title.replace("<br />", "\n")}
+                {right?.title?.replace(/<br\s*\/?>/gi, '\n')}
               </h3>
               <p
                 style={{

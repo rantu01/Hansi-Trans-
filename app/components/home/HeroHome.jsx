@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight, Globe, Mic, Languages, BarChart, Zap, Layers } from "lucide-react";
+import { Menu, X, ArrowUpRight, Layers } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HansiTrans = () => {
+  const [mounted, setMounted] = useState(false);
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
   const [services, setServices] = useState([]);
@@ -14,13 +16,13 @@ const HansiTrans = () => {
     brandText: "Hansi Trans",
   });
 
-  // সার্ভিস অনুযায়ী আইকন ম্যাপ
+  // সার্ভিস অনুযায়ী আইকন ম্যাপ
   const serviceIcons = [
-    <Layers className="w-4 h-4 text-white" />,
-    <Layers className="w-4 h-4 text-white" />,
-    <Layers className="w-4 h-4 text-white" />,
-    <Layers className="w-4 h-4 text-white" />,
-    <Layers className="w-4 h-4 text-white" />
+    <Layers key="1" className="w-4 h-4 text-white" />,
+    <Layers key="2" className="w-4 h-4 text-white" />,
+    <Layers key="3" className="w-4 h-4 text-white" />,
+    <Layers key="4" className="w-4 h-4 text-white" />,
+    <Layers key="5" className="w-4 h-4 text-white" />
   ];
 
   const navLinks = [
@@ -32,9 +34,25 @@ const HansiTrans = () => {
     { name: "Others", path: "/others" },
   ];
 
+  const dropIn = {
+    hidden: { y: -100, opacity: 0 },
+    visible: (i) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: i * 0.2,
+        type: "spring",
+        stiffness: 120,
+        damping: 12
+      }
+    })
+  };
+
   useEffect(() => {
+    setMounted(true); // Hydration mismatch রক্ষা করবে
     const fetchData = async () => {
       try {
+        // Config fetch
         const res = await fetch(API.site.getConfig);
         const data = await res.json();
         if (data?.success && data?.data) {
@@ -43,6 +61,8 @@ const HansiTrans = () => {
             brandText: data.data.brandText || "Hansi Trans",
           });
         }
+        
+        // Services fetch
         const serviceRes = await axios.get(API.services.main);
         if (serviceRes.data.success) {
           const mainServices = serviceRes.data.data.filter((s) => !s.parentService);
@@ -55,10 +75,13 @@ const HansiTrans = () => {
     fetchData();
   }, []);
 
+  // সার্ভার সাইড রেন্ডারিং এর সময় খালি রিটার্ন করবে যাতে লেআউট না ভাঙে
+  if (!mounted) return <div className="min-h-screen bg-black" />;
+
   return (
     <div className="min-h-[auto] md:min-h-screen text-white overflow-x-hidden relative">
       {/* Background Video */}
-      <video autoPlay loop muted playsInline preload="metadata" className="absolute inset-0 w-full h-full object-cover z-0">
+      <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover z-0">
         <source src="/Gif-latest-dev.webm" type="video/webm" />
       </video>
 
@@ -93,10 +116,10 @@ const HansiTrans = () => {
           </div>
 
           <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
-            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-transparent border border-white rounded px-4 py-4 text-white outline-none cursor-pointer">
-              <option className="text-black" value="EN">EN</option>
-              <option className="text-black" value="ES">ES</option>
-              <option className="text-black" value="FR">FR</option>
+            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-black border border-white/20 px-4 py-2 text-white outline-none cursor-pointer text-sm">
+              <option value="EN">EN</option>
+              <option value="ES">ES</option>
+              <option value="FR">FR</option>
             </select>
             <Link
               href="/contact"
@@ -114,29 +137,36 @@ const HansiTrans = () => {
           </button>
         </div>
 
-        {menuOpen && (
-          <div className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6">
-            {navLinks.map((item) => (
-              <Link key={item.name} href={item.path} className="text-xl hover:text-gradient-base transition-colors" onClick={() => setMenuOpen(false)}>
-                {item.name}
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 100 }}
+              className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
+            >
+              {navLinks.map((item) => (
+                <Link key={item.name} href={item.path} className="text-xl hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+                  {item.name}
+                </Link>
+              ))}
+              <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-primary text-center w-full max-w-xs py-3 rounded-full font-semibold text-white">
+                Let's connect
               </Link>
-            ))}
-            <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-accent text-center w-full max-w-xs py-3 rounded-full font-semibold">
-              Let's connect
-            </Link>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-6 md:py-12 flex flex-col items-center text-center relative z-10">
         <div className="max-w-6xl w-full">
-          {/* Updated Headline with your specified CSS */}
           <h1
             className="mb-4 text-white capitalize"
             style={{
               fontFamily: 'Satoshi, sans-serif',
-              fontSize: 'clamp(32px, 5vw, 80px)', // Responsive size that reaches 80px
+              fontSize: 'clamp(32px, 5vw, 80px)',
               fontWeight: '500',
               lineHeight: '110%',
               letterSpacing: '-2.4px',
@@ -153,9 +183,8 @@ const HansiTrans = () => {
               textAlign: 'center',
               fontFamily: 'Poppins, sans-serif',
               fontSize: '18px',
-              fontStyle: 'normal',
               fontWeight: '500',
-              lineHeight: '150%', // 27px
+              lineHeight: '150%',
             }}
           >
             Make it once, bring it to life, and take it worldwide—with one team.
@@ -187,69 +216,50 @@ const HansiTrans = () => {
               </div>
             </div>
 
-            {/* Middle Panda Video with Shadow Ellipse */}
+            {/* Middle Panda Video */}
             <div className="relative z-0 w-64 h-64 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] flex items-center justify-center">
               <div className="absolute bottom-[5%] md:bottom-6 w-[80%] h-[20%] z-[-1] opacity-70">
                 <img src="/Ellipse.png" alt="shadow" className="w-full h-full object-contain" />
               </div>
-
               <video autoPlay loop muted playsInline className="w-full h-full object-contain scale-110 md:scale-125">
                 <source src="/convertedPanda.webm" type="video/webm" />
               </video>
             </div>
 
-            {/* Desktop Surrounding Service Buttons - With New Icons */}
+            {/* Desktop Service Buttons */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
-              <div className="absolute top-[35%] left-0 pointer-events-auto">
-                {services[0] && (
-                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[0].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[0]}</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="absolute top-[55%] left-[10%] pointer-events-auto">
-                {services[1] && (
-                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[1].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[1]}</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="absolute top-[35%] right-0 pointer-events-auto">
-                {services[2] && (
-                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[2].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[2]}</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="absolute top-[55%] right-[10%] pointer-events-auto">
-                {services[3] && (
-                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[3].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[3]}</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 pointer-events-auto">
-                {services[4] && (
-                  <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                    {services[4].title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[4]}</span>
-                  </button>
-                )}
-              </div>
+              {services.map((service, index) => {
+                const positions = [
+                  "top-[35%] left-0",
+                  "top-[55%] left-[10%]",
+                  "top-[35%] right-0",
+                  "top-[55%] right-[10%]",
+                  "bottom-[10%] left-1/2 -translate-x-1/2"
+                ];
+                return (
+                  <motion.div 
+                    key={service._id || index}
+                    custom={index} initial="hidden" animate="visible" variants={dropIn}
+                    className={`absolute ${positions[index]} pointer-events-auto`}
+                  >
+                    <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
+                      {service.title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[index]}</span>
+                    </button>
+                  </motion.div>
+                );
+              })}
             </div>
 
-            {/* Mobile View Service Buttons - With New Icons */}
+            {/* Mobile Service Buttons */}
             <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4">
               {services.map((service, index) => (
-                <button
+                <motion.button
                   key={index}
+                  custom={index} initial="hidden" animate="visible" variants={dropIn}
                   className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-2 shadow-lg"
                 >
                   {service.title} <span className="scale-75">{serviceIcons[index]}</span>
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
