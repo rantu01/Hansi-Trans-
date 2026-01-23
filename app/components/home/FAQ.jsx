@@ -8,28 +8,34 @@ const FAQ = () => {
   const faqs = [
     {
       question: "What Services Do You Offer?",
-      answer: "Blending creativity and functionality, I design user-focused digital products and responsive websites that not only look stunning but also deliver."
+      answer:
+        "We blend creativity and functionality to design user-focused digital products, modern websites, and scalable web applications tailored to your business goals."
     },
     {
       question: "Can You Update My Existing Website?",
-      answer: "Yes, we can analyze your current website and provide updates ranging from UI/UX improvements to full backend migrations."
+      answer:
+        "Yes. We can upgrade your existing website with UI/UX improvements, performance optimization, new features, or complete backend and design overhauls."
     },
     {
       question: "Will My Website Be Mobile-Friendly?",
-      answer: "Absolutely. Every project we deliver is fully responsive and optimized for all screen sizes, including mobile and tablets."
+      answer:
+        "Absolutely. Every website we build is fully responsive and optimized for mobile, tablet, and desktop devices."
     },
     {
       question: "How Much Does A New Website Cost?",
-      answer: "The cost depends on the complexity and features of the project. We offer customized quotes after an initial consultation."
+      answer:
+        "Pricing depends on the project scope, features, and complexity. After an initial discussion, we provide a clear and customized quote with no hidden costs."
     },
     {
       question: "How Fast Can You Deliver?",
-      answer: "A standard project typically takes 2-4 weeks, but this varies based on your specific requirements and feedback cycles."
+      answer:
+        "Most projects are completed within 2–4 weeks. Timelines may vary based on project size, revisions, and feedback cycles."
     }
   ];
 
+
   return (
-    <section 
+    <section
       style={{
         display: 'inline-flex',
         padding: '100px 72px',
@@ -47,24 +53,38 @@ const FAQ = () => {
           {/* Left Side - Header */}
           <div className="w-full lg:w-1/3">
             <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 mb-6 bg-white shadow-sm"
+              className="inline-flex items-center justify-center mb-6"
               style={{
-                color: '#616161',
-                fontFamily: 'Poppins, sans-serif',
-                fontSize: '16px',
-                fontWeight: '500',
-                letterSpacing: '0.16px'
+                display: 'flex',
+                height: '50px',
+                width: '100px',
+                padding: '8px 16px',
+                gap: '8px',
+                borderRadius: '49px',
+                background: '#F5F5F5',
               }}
             >
               <img
                 src="/Frame.svg"
                 alt="icon"
-                className="w-4 h-4"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
               />
-              FAQ
+              <span
+                style={{
+                  color: '#404040', // var(--dark-5)
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: '500',
+                  lineHeight: '160%',
+                  letterSpacing: '0.16px',
+                }}
+              >
+                FAQ
+              </span>
             </div>
-            
-            <h2 
+
+            <h2
               style={{
                 color: '#0A0A0A',
                 fontFamily: 'Inter, sans-serif',
@@ -78,8 +98,8 @@ const FAQ = () => {
             >
               Frequently Asked Questions
             </h2>
-            
-            <p 
+
+            <p
               style={{
                 color: '#616161',
                 fontFamily: 'Poppins, sans-serif',
@@ -103,9 +123,17 @@ const FAQ = () => {
                     onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
                     className="w-full flex items-center justify-between text-left group"
                   >
-                    <span 
-                      className={`text-xl md:text-2xl font-bold transition-colors ${openIndex === index ? 'text-[#0168B4]' : 'text-[#0A0A0A] group-hover:text-[#0168B4]'}`}
-                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    <span
+                      className={`transition-colors capitalize ${openIndex === index ? 'text-[#0168B4]' : 'text-[#0A0A0A] group-hover:text-[#0168B4]'
+                        }`}
+                      style={{
+                        fontFamily: 'var(--font-inter), sans-serif',
+                        fontSize: '24px', // Fixed H6 size
+                        fontStyle: 'normal',
+                        fontWeight: '500', // Medium weight from spec
+                        lineHeight: '120%', // 28.8px
+                        textTransform: 'capitalize',
+                      }}
                     >
                       {faq.question}
                     </span>
@@ -121,7 +149,7 @@ const FAQ = () => {
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}
                   >
-                    <p 
+                    <p
                       style={{
                         color: '#616161',
                         fontFamily: 'Poppins, sans-serif',

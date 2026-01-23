@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight, Layers } from "lucide-react";
+import { Menu, X, ArrowUpRight, Layers, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
@@ -61,7 +61,7 @@ const HansiTrans = () => {
             brandText: data.data.brandText || "Hansi Trans",
           });
         }
-        
+
         // Services fetch
         const serviceRes = await axios.get(API.services.main);
         if (serviceRes.data.success) {
@@ -82,7 +82,7 @@ const HansiTrans = () => {
     <div className="min-h-[auto] md:min-h-screen text-white overflow-x-hidden relative">
       {/* Background Video */}
       <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover z-0">
-        <source src="/Gif-latest-dev.webm" type="video/webm" />
+        <source src="/Gif-latest-dev2.webm" type="video/webm" />
       </video>
 
       {/* Hero Image Gradient Overlay */}
@@ -97,37 +97,106 @@ const HansiTrans = () => {
       {/* Navigation */}
       <nav className="container mx-auto px-4 md:px-6 py-4 md:py-6 relative z-50">
         <div className="flex justify-between items-center">
-          <Link href="/" className="flex flex-col items-center justify-center space-y-1 flex-1 text-center">
+          <Link href="/" className="flex items-center justify-center flex-1">
             <img
-              src={siteConfig.logo || "/Hansi-Logo1.png"}
-              onError={(e) => { e.currentTarget.src = "/Hansi-Logo1.png"; }}
+              src={siteConfig.logo || "/logoWithText.png"}
+              onError={(e) => {
+                e.currentTarget.src = "/logoWithText.png";
+              }}
               alt="hansi logo"
-              className="w-8 h-8 md:w-10 md:h-10 object-contain"
+              // Width: 183px, Height: 72px fix kora hoyeche
+              className="w-[183px] h-[72px] object-contain"
+              style={{
+                width: '183px',
+                height: '72px'
+              }}
             />
-            <span className="text-xl md:text-2xl font-bold tracking-wider">{siteConfig.brandText}</span>
           </Link>
 
-          <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-8 flex-[2]">
+          <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
             {navLinks.map((item) => (
-              <Link key={item.name} href={item.path} className="hover:bg-gradient-base text-sm lg:text-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2">
+              <Link
+                key={item.name}
+                href={item.path}
+                className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  lineHeight: '150%', // 24px
+                  fontStyle: 'normal',
+                  color: '#FFF'
+                }}
+              >
                 {item.name}
               </Link>
             ))}
           </div>
 
           <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
-            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-black border border-white/20 p-5 text-white outline-none cursor-pointer text-sm">
-              <option value="EN">EN</option>
-              <option value="ES">ES</option>
-              <option value="FR">FR</option>
-            </select>
+            <div className="relative">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="
+      appearance-none
+      flex
+      h-[52px]
+      w-full
+      px-[20px]
+      pr-[48px]
+      py-[4px]
+      justify-center
+      items-center
+      gap-3
+      rounded-full
+      bg-[#0A0A0A]
+      border
+      border-white/20
+      text-white
+      text-sm
+      outline-none
+      cursor-pointer
+    "
+              >
+                <option value="EN">EN</option>
+                <option value="ES">ES</option>
+                <option value="FR">FR</option>
+              </select>
+
+              {/* Custom Arrow */}
+              <ChevronDown
+                size={22} // 👈 arrow size (boro)
+                className="
+      absolute
+      right-5
+      top-1/2
+      -translate-y-1/2
+      text-white/70
+      pointer-events-none
+    "
+              />
+            </div>
+
             <Link
               href="/contact"
-              className="group flex items-center gap-3 bg-transparent border border-[#E0E4FF] pl-5 pr-1.5 py-1.5 rounded-full font-semibold text-white hover:bg-white hover:text-primary transition-all duration-300 whitespace-nowrap text-sm lg:text-base"
+              className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap bg-white border border-[#E0E4FF] rounded-full"
+              style={{
+                height: '52px',                // Exact height set kora hoyeche
+                padding: '4px 4px 4px 12px',   // padding: Top Right Bottom Left
+                gap: '8px',                    // gap: 8px as per instruction
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.16px',
+                color: '#0168B4',
+                fontStyle: 'normal'
+              }}
             >
               Let's connect
-              <span className="bg-white rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                <ArrowUpRight className="w-7 h-7 text-primary" strokeWidth={2} />
+              <span className="bg-[#0168B4] rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                {/* Icon size ektu check korte paro, height 52px er sathe w-7 h-7 thik thakar kotha */}
+                <ArrowUpRight className="w-7 h-7 text-white" strokeWidth={2} />
               </span>
             </Link>
           </div>
@@ -140,7 +209,7 @@ const HansiTrans = () => {
         {/* Mobile Menu */}
         <AnimatePresence>
           {menuOpen && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 100 }}
@@ -163,14 +232,14 @@ const HansiTrans = () => {
       <section className="container mx-auto px-4 py-6 md:py-12 flex flex-col items-center text-center relative z-10">
         <div className="max-w-6xl w-full">
           <h1
-            className="mb-4 text-white capitalize"
+            className="mb-4 text-white text-center"
             style={{
-              fontFamily: 'Satoshi, sans-serif',
-              fontSize: 'clamp(32px, 5vw, 80px)',
+              fontFamily: 'Satoshi, sans-serif', // CSS er @font-face name
+              fontSize: 'clamp(32px, 8vw, 80px)',
               fontWeight: '500',
               lineHeight: '110%',
               letterSpacing: '-2.4px',
-              textAlign: 'center'
+              textTransform: 'capitalize',
             }}
           >
             Global Localization, Voice-Over & Cross-Border Marketing
@@ -181,10 +250,11 @@ const HansiTrans = () => {
             style={{
               color: '#0A0A0A',
               textAlign: 'center',
-              fontFamily: 'Poppins, sans-serif',
+              fontFamily: 'var(--font-poppins), sans-serif', // layout.js theke variable load hobe
               fontSize: '18px',
               fontWeight: '500',
-              lineHeight: '150%',
+              lineHeight: '150%', // equivalent to 27px
+              fontStyle: 'normal',
             }}
           >
             Make it once, bring it to life, and take it worldwide—with one team.
@@ -196,11 +266,39 @@ const HansiTrans = () => {
             <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 z-30">
               <Link
                 href="/contact"
-                className="group bg-primary text-white pl-6 pr-1.5 py-1.5 rounded-full flex items-center gap-3 font-medium hover:bg-secondary transition-all duration-300 shadow-lg text-sm md:text-base w-fit"
+                className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px]"
+                style={{
+                  height: '52px',
+                  padding: '4px 4px 4px 12px',
+                  gap: '8px',
+                  background: '#0168B4', // Background color update
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  lineHeight: '160%',
+                  letterSpacing: '0.16px',
+                  color: '#FFF', // Text color white shade
+                  fontStyle: 'normal'
+                }}
               >
                 Let's Work Together?
-                <span className="bg-white rounded-full p-2 flex items-center justify-center transition-transform duration-300 group-hover:rotate-12">
-                  <ArrowUpRight className="w-4 h-4 text-primary" strokeWidth={2} />
+                <span
+                  className="flex items-center justify-center transition-transform duration-300 group-hover:rotate-12"
+                  style={{
+                    display: 'flex',
+                    width: '42px',
+                    height: '42px',
+                    padding: '8px',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '10px',
+                    aspectRatio: '1/1',
+                    borderRadius: '24px', // spec onujayi 24px
+                    background: '#FFF'
+                  }}
+                >
+                  {/* Icon size ektu boro kora hoyeche jate 42px box-e bhalo lage */}
+                  <ArrowUpRight className="w-6 h-6 text-[#0168B4]" strokeWidth={2} />
                 </span>
               </Link>
               <div className="flex items-center gap-2">
@@ -237,13 +335,42 @@ const HansiTrans = () => {
                   "bottom-[10%] left-1/2 -translate-x-1/2"
                 ];
                 return (
-                  <motion.div 
+                  <motion.div
                     key={service._id || index}
                     custom={index} initial="hidden" animate="visible" variants={dropIn}
                     className={`absolute ${positions[index]} pointer-events-auto`}
                   >
-                    <button className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-secondary transition shadow-2xl">
-                      {service.title} <span className="bg-gray-800 p-1.5 rounded-full">{serviceIcons[index]}</span>
+                    <button
+                      className="flex items-center justify-center transition-all duration-300 hover:bg-secondary flex-shrink-0"
+                      style={{
+                        width: '250px',
+                        height: '61px',
+                        padding: '12px 16px',
+                        gap: '8px',
+                        borderRadius: '38px',
+                        border: '1px solid #F7F7F7', // Liner-2 color
+                        background: '#0A0A0A', // Dark-900
+                        backdropFilter: 'blur(186.9px)', // Spec onujayi exact blur
+                        color: '#FFFFFF'
+                      }}
+                    >
+                      <span
+                        className="text-white"
+                        style={{
+                          fontFamily: 'var(--font-poppins), sans-serif',
+                          fontSize: '16px',
+                          fontWeight: '500',
+                          lineHeight: '160%', // 25.6px
+                          letterSpacing: '0.16px',
+                          fontStyle: 'normal',
+                          color: '#FFF'
+                        }}
+                      >
+                        {service.title}
+                      </span>
+                      <span className="bg-gray-800 p-1.5 rounded-full flex items-center justify-center">
+                        {serviceIcons[index]}
+                      </span>
                     </button>
                   </motion.div>
                 );

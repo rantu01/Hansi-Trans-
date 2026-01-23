@@ -67,15 +67,21 @@ const Achievement = () => {
             style={{
               color: '#0168B4',
               textAlign: 'center',
-              fontFamily: 'Inter, sans-serif',
-              fontSize: 'clamp(30px, 4vw, 48px)',
+              fontFamily: 'var(--font-inter), sans-serif', // layout.js theke Inter variable
+              fontSize: 'clamp(30px, 5vw, 48px)', // Mobile-e 30px theke Desktop-e 48px
               fontStyle: 'normal',
               fontWeight: '500',
-              lineHeight: '120%',
+              lineHeight: '120%', // 57.6px
+              textTransform: 'capitalize',
             }}
           >
             Our Big Achievement
-            <Sparkles className="w-8 h-8 text-[#0168B4]" strokeWidth={2.5} />
+            <img
+              src="/Frame2.svg"
+              alt="Achievement Frame"
+              className="w-10 h-10 object-contain "
+              style={{ display: 'inline-block' }}
+            />
           </h2>
         </div>
 

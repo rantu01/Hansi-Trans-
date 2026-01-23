@@ -61,36 +61,106 @@ const Footer = () => {
     { Icon: Facebook, url: siteConfig.socialFacebook },
   ];
 
-  // Hydration Error এড়াতে মাউন্ট না হওয়া পর্যন্ত কিছু রেন্ডার হবে না
   if (!isMounted) return null;
 
   return (
-    <footer className="relative bg-gradient-to-bl from-[#c5e6fc] via-white to-[#c5e6fc] pt-20 overflow-hidden">
-      <div className="container mx-auto px-4">
+    <footer className="relative w-full overflow-hidden pt-20" style={{ minHeight: '1313px' }}>
+      {/* --- Background Image Section --- */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <img
+          src="/footerBg.png"
+          alt="footer background"
+          className="w-full h-[1313px] object-cover object-top"
+        />
+      </div>
+
+      <div className="container relative z-10 mx-auto px-4">
 
         {/* CTA Banner Section */}
-        <div className="relative overflow-hidden bg-[#003B5C] rounded-[60px] mb-20 min-h-[450px] flex items-center">
-          <div className="absolute inset-y-0 left-0 w-full md:w-[40%] z-0">
+        {/* CTA Banner Section */}
+        <div
+          className="relative overflow-hidden mb-20 flex items-center"
+          style={{
+            height: '550px', // Exact height from spec
+            alignSelf: 'stretch',
+            borderRadius: '60px', // Exact radius
+            background: '#013963', // Primary-blue-800
+          }}
+        >
+          {/* Background Image/Overlay Section */}
+          <div className="absolute inset-y-0 left-0 w-full md:w-[45%] z-0">
             <img
               src={siteConfig.ctaImage || "https://i.ibb.co.com/0jtd7Mtr/lets-contact.png"}
               alt="Background"
               className="w-full h-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#003B5C]/20 to-[#003B5C]"></div>
+            {/* Gradient Overlay for smooth blending with #013963 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#013963]/40 to-[#013963]"></div>
           </div>
 
+          {/* Content Section */}
           <div className="relative z-10 w-full flex flex-col md:flex-row items-center">
-            <div className="hidden md:block md:w-[50%]"></div>
-            <div className="w-full md:w-[50%] p-10 md:p-16 text-left">
-              <h2 className="text-white mb-6" style={{ fontFamily: 'Inter, sans-serif', fontSize: '56px', fontWeight: '500', lineHeight: '120%' }}>
+            <div className="hidden md:block md:w-[45%]"></div>
+            <div className="w-full md:w-[55%] p-10 md:p-16 text-left">
+              <h2
+                className="text-white mb-6"
+                style={{
+                  fontFamily: 'var(--font-inter), sans-serif',
+                  fontSize: '56px',
+                  fontWeight: '500',
+                  lineHeight: '120%'
+                }}
+              >
                 {siteConfig.ctaTitle || "Ready To Go Global?"}
               </h2>
-              <p className="text-white/80 mb-10 max-w-md" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', fontWeight: '400', lineHeight: '150%' }}>
+              <p
+                className="text-white/80 mb-10 max-w-md"
+                style={{
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '18px',
+                  fontWeight: '400',
+                  lineHeight: '150%'
+                }}
+              >
                 {siteConfig.ctaDescription || "Expanding your game into Asian markets is an exciting opportunity but without proper localization, even the best game can fail to connect."}
               </p>
-              <Link href="/contact" className="inline-flex items-center gap-3 bg-white text-[#0168B4] pl-6 pr-2 py-2 rounded-full font-semibold transition-all group shadow-xl hover:scale-105">
+
+              <Link
+                href="/contact"
+                className="inline-flex transition-all group hover:scale-105 active:scale-95 shadow-xl"
+                style={{
+                  display: 'flex',
+                  height: '52px',
+                  width: '175px',           // Fixed width as per your previous requirement
+                  padding: '4px 4px 4px 12px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '8px',
+                  borderRadius: '100px',
+                  background: '#FFFFFF',
+
+                  // --- Updated Typography Specs ---
+                  color: '#0168B4',
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',         // Exact spec
+                  fontStyle: 'normal',
+                  fontWeight: '500',         // Medium weight
+                  lineHeight: '160%',       // 25.6px
+                  letterSpacing: '0.16px',   // Added letter spacing
+                }}
+              >
                 Let's connect
-                <span className="bg-[#0168B4] text-white rounded-full p-2 transition-transform group-hover:rotate-45">
+                <span
+                  className="bg-[#0168B4] text-white rounded-full transition-transform duration-300 group-hover:rotate-45"
+                  style={{
+                    display: 'flex',
+                    width: '44px',
+                    height: '44px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0            // Prevents circle from shrinking
+                  }}
+                >
                   <ArrowUpRight className="w-5 h-5" />
                 </span>
               </Link>
@@ -98,16 +168,16 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Updated Main Footer Content */}
+        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-16">
 
           {/* Brand and Contacts (Col 1-5) */}
           <div className="md:col-span-5 flex flex-col gap-6">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 ">
               <img
-                src={siteConfig.logo || "/Hansi-Logo1.png"}
+                src={siteConfig.log || "/Hansi-Logo1.png"}
                 alt="HANSI Logo"
-                className="w-20 h-20 object-contain"
+                className="w-20 h-20 object-contain ml-20"
               />
 
               <h3
@@ -148,21 +218,39 @@ const Footer = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2 mt-4">
-              {[1, 2, 3].map((_, i) => (
+              {[
+                { icon: "/Frame (4).png", text: "+1 800 778 884" },   // 1st Icon
+                { icon: "/Frame (5).png ", text: "+1 800 778 884" }, // 2nd Icon
+                { icon: "/active-call.png", text: "+1 800 778 884" },   // 3rd Icon
+              ].map((item, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-2"
                   style={{
                     color: '#0F0F0F',
-                    fontFamily: 'Poppins, sans-serif',
+                    fontFamily: 'var(--font-poppins), sans-serif',
                     fontSize: '16px',
                     fontWeight: '500',
                     lineHeight: '160%',
                     letterSpacing: '0.16px'
                   }}
                 >
-                  <div className="bg-[#0168B4] p-1.5 rounded-full text-white"><Phone size={14} fill="currentColor" /></div>
-                  +1 800 778 884
+                  {/* Container for Custom Icon Image - Updated to 32px */}
+                  <div
+                    className="flex-shrink-0 flex items-center justify-center rounded-full overflow-hidden"
+                    style={{
+                      width: '38px',  // Exact width spec
+                      height: '38px', // Exact height spec
+                      padding: '6px'  // Icon scaling balance
+                    }}
+                  >
+                    <img
+                      src={item.icon}
+                      alt={`contact-icon-${i}`}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {item.text}
                 </div>
               ))}
             </div>
@@ -171,48 +259,86 @@ const Footer = () => {
           {/* Navigation Links */}
           <div className="md:col-span-2">
             <h4
+              className="mb-8"
               style={{
                 color: '#0A0A0A',
-                fontFamily: '"Sequel Sans", sans-serif',
-                fontSize: '16px',
-                fontWeight: '310',
-                lineHeight: '160%',
-                letterSpacing: '0.128px'
+                fontFamily: 'var(--font-poppins), sans-serif', // Updated to Poppins
+                fontSize: '18px',                             // Updated to 18px
+                fontStyle: 'normal',
+                fontWeight: '500',                             // Updated to 500 (Medium)
+                lineHeight: '150%',                           // 27px
               }}
-              className="mb-8"
             >
               Company
             </h4>
-            <ul className="space-y-5 text-[#262626] text-[15px] font-medium">
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/">Home</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/about">About us</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/case-studies">Work</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/blog">Blog</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/shop">Shop</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/contact">Contact Us</Link></li>
+            <ul className="space-y-5">
+              {[
+                { name: "Home", href: "/" },
+                { name: "About us", href: "/about" },
+                { name: "Work", href: "/case-studies" },
+                { name: "Blog", href: "/blog" },
+                { name: "Shop", href: "/shop" },
+                { name: "Contact Us", href: "/contact" },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="transition-colors hover:text-[#0168B4]"
+                    style={{
+                      color: '#0A0A0A',                         // Exact spec color
+                      fontFamily: 'var(--font-poppins), sans-serif',
+                      fontSize: '16px',                        // Exact spec size
+                      fontStyle: 'normal',
+                      fontWeight: '400',                        // Regular weight
+                      lineHeight: '160%',                      // 25.6px
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="md:col-span-2">
             <h4
+              className="mb-8"
               style={{
                 color: '#0A0A0A',
-                fontFamily: '"Sequel Sans", sans-serif',
-                fontSize: '16px',
-                fontWeight: '310',
-                lineHeight: '160%',
-                letterSpacing: '0.128px'
+                fontFamily: 'var(--font-poppins), sans-serif', // Updated to Poppins
+                fontSize: '18px',                             // Updated to 18px
+                fontStyle: 'normal',
+                fontWeight: '500',                             // Medium weight
+                lineHeight: '150%',                           // 27px
               }}
-              className="mb-8"
             >
               Utilities
             </h4>
-            <ul className="space-y-5 text-[#262626] text-[15px] font-medium">
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/privacy">Privacy & policy</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/style-guide">Style guide</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/changelog">Changelog</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/license">License</Link></li>
-              <li className="hover:text-[#0168B4] transition-colors"><Link href="/404">404 page</Link></li>
+            <ul className="space-y-5">
+              {[
+                { name: "Privacy & policy", href: "/privacy" },
+                { name: "Style guide", href: "/style-guide" },
+                { name: "Changelog", href: "/changelog" },
+                { name: "License", href: "/license" },
+                { name: "404 page", href: "/404" },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="transition-colors hover:text-[#0168B4]"
+                    style={{
+                      color: '#0A0A0A',                         // Exact spec color
+                      fontFamily: 'var(--font-poppins), sans-serif',
+                      fontSize: '16px',                        // Exact spec size
+                      fontStyle: 'normal',
+                      fontWeight: '400',                        // Regular weight
+                      lineHeight: '160%',                      // 25.6px
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -232,67 +358,149 @@ const Footer = () => {
               Stay in the know
             </h4>
             <div className="flex gap-2 mb-12">
-              {socialLinks.map((item, i) => (
-                <a key={i} href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-[#0168B4] rounded-full flex items-center justify-center text-white hover:opacity-80 transition">
-                  <item.Icon size={18} fill="currentColor" strokeWidth={0} />
+              {[
+                { img: "/Link.png", url: siteConfig.socialTwitter },    // 1st Icon
+                { img: "/Link (1).png", url: siteConfig.socialLinkedin }, // 2nd Icon
+                { img: "/Link (2).png", url: siteConfig.socialYoutube },  // 3rd Icon
+                { img: "/Link (3).png", url: siteConfig.socialGlobe },    // 4th Icon (WhatsApp/Globe)
+                { img: "/Link (4).png", url: siteConfig.socialFacebook }, // 5th Icon
+              ].map((item, i) => (
+                <a
+                  key={i}
+                  href={item.url || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all hover:scale-110 active:scale-95 flex-shrink-0"
+                  style={{
+                    width: '34px',  // Exact width spec
+                    height: '34px', // Exact height spec
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={`social-icon-${i}`}
+                    className="w-full h-full object-contain"
+                  />
                 </a>
               ))}
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="w-14 h-14 bg-[#E6F0F7] rounded-full flex items-center justify-center text-[#0168B4]">
-                <MapPin size={24} fill="currentColor" strokeWidth={1} />
+              <div className="flex flex-col gap-4">
+                <div
+                  className="relative flex items-center justify-center overflow-visible"
+                  style={{
+                    width: '76px',   // Background image width
+                    height: '76px',  // Background image height
+                  }}
+                >
+                  {/* Background Circle Image (Ellipse) */}
+                  <img
+                    src="/Ellipse (1).png"
+                    alt="bg-circle"
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
+
+                  {/* Marker Icon Image */}
+                  <img
+                    src="/marker-1.png"
+                    alt="location-marker"
+                    className="relative z-10"
+                    style={{
+                      width: '40px', // Exact icon width
+                      height: '40px', // Exact icon height
+                      objectFit: 'contain'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <p
+                    className="mb-2"
+                    style={{
+                      color: '#6B6B6B',                         // Exact spec color
+                      fontFamily: 'var(--font-poppins), sans-serif',
+                      fontSize: '18px',                        // Updated to 18px
+                      fontStyle: 'normal',
+                      fontWeight: '500',                        // Medium weight
+                      lineHeight: '150%',                      // 27px
+                    }}
+                  >
+                    Drop in us
+                  </p>
+                  <Link
+                    href="#"
+                    className="flex items-center gap-2 hover:text-[#0168B4] group transition-colors mt-6"
+                    style={{
+                      color: '#0F0F0F',                         // Exact spec color
+                      fontFamily: 'var(--font-inter), sans-serif', // Heading/H6 Font Family
+                      fontSize: '24px',                        // Exact spec size
+                      fontStyle: 'normal',                     // Normal style
+                      fontWeight: '500',                        // Medium weight
+                      lineHeight: '120%',                      // 28.8px
+                      textTransform: 'capitalize'               // Capitalize
+                    }}
+                  >
+                    Get Directions
+                    {/* Arrow icon with a slight hover animation */}
+                    <ArrowRight
+                      className="transition-transform group-hover:translate-x-1"
+                      style={{
+                        width: '25px',         // Exact width spec
+                        height: '25px',        // Exact height spec
+                        aspectRatio: '19/20',  // Maintain aspect ratio
+                        color: '#6B6B6B',        // Fill color as per spec
+                      }}
+                    />
+                  </Link>
+                </div>
               </div>
               <div>
-                <p className="text-[#616161] text-sm mb-2">Drop in us</p>
-                <Link
-                  href="#"
-                  style={{
-                    color: '#0F0F0F',
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '24px',
-                    fontWeight: '500',
-                    lineHeight: '120%',
-                    textTransform: 'capitalize'
-                  }}
-                  className="flex items-center gap-2 hover:text-[#0168B4] group"
-                >
-                  Get Directions
-                  <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
-                </Link>
+
               </div>
             </div>
           </div>
         </div>
 
         {/* Footer Bottom */}
-        <div className="py-8  flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div
-              className="flex flex-col gap-1 text-center md:text-left"
-              style={{
-                color: '#0A0A0A',
-                fontFamily: 'Poppins, sans-serif',
-                fontSize: '16px',
-                fontStyle: 'normal',
-                fontWeight: '400',
-                lineHeight: '150%'
-              }}
-            >
-              <p>All Rights Reserved.</p>
-              <p>
-                Designed by <span className="font-medium">HANSI TRANS+</span> | Powered by
-              </p>
-            </div>
+        <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col gap-1 text-center md:text-left"
+            style={{
+              color: '#0A0A0A',
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '400',
+              lineHeight: '150%'
+            }}
+          >
+            <p>All Rights Reserved.</p>
+            <p>
+              Designed by <span className="font-medium">HANSI TRANS+</span> | Powered by
+            </p>
           </div>
 
-          <div className="flex gap-8 text-[14px] text-[#262626] font-medium">
-            <Link href="/privacy" className="hover:text-[#0168B4] transition-colors">
-              Privacy policy
-            </Link>
-            <Link href="/terms" className="hover:text-[#0168B4] transition-colors">
-              Terms of service
-            </Link>
+          <div className="flex gap-8">
+            {[
+              { name: "Privacy policy", href: "/privacy" },
+              { name: "Terms of service", href: "/terms" },
+            ].map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="hover:text-[#0168B4] transition-colors"
+                style={{
+                  color: '#0A0A0A',                         // Exact spec color
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',                        // Updated to 16px
+                  fontStyle: 'normal',                     // Normal style
+                  fontWeight: '400',                        // Regular weight
+                  lineHeight: '150%',                      // 24px
+                }}
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
         </div>
 

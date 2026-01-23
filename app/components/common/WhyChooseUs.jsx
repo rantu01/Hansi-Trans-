@@ -35,7 +35,6 @@ const WhyChooseUs = () => {
     fetchWhyChoose();
   }, []);
 
-  // ক্লায়েন্ট সাইড রেন্ডারিং নিশ্চিত করা
   if (!isMounted || !data) return null;
 
   const getCard = (key) => data.cards?.find((c) => c.key === key);
@@ -51,7 +50,13 @@ const WhyChooseUs = () => {
 
   return (
     <section
-      className="w-full py-20 bg-secondary lg:h-[979px] h-auto text-white rounded-t-[32px] md:rounded-t-[64px] overflow-hidden flex flex-col justify-center"
+      className="w-full py-20 lg:h-[979px] h-auto text-white rounded-t-[32px] md:rounded-t-[64px] overflow-hidden flex flex-col justify-center"
+      style={{
+        backgroundImage: 'url("/Frame2147207920.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
     >
       <div className="container mx-auto px-4">
 
@@ -59,18 +64,35 @@ const WhyChooseUs = () => {
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl text-left">
             <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 mb-6 bg-white shadow-sm"
+              className="inline-flex items-center justify-center mb-6"
               style={{
-                color: '#404040',
-                fontFamily: 'Poppins, sans-serif',
-                fontSize: '16px',
-                fontWeight: '500',
-                lineHeight: '160%',
-                letterSpacing: '0.16px'
+                display: 'flex',
+                height: '50px',
+                width: '200px',
+                padding: '8px 16px',
+                gap: '8px',
+                borderRadius: '49px',
+                background: '#FFF',
               }}
             >
-              <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
-              Why Choose Us
+              <img
+                src="/Frame.svg"
+                alt="icon"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
+              <span
+                style={{
+                  color: '#404040', // var(--dark-5)
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: '500',
+                  lineHeight: '160%',
+                  letterSpacing: '0.16px',
+                }}
+              >
+                Why Choose Us
+              </span>
             </div>
             <h2
               className="capitalize"
@@ -85,7 +107,7 @@ const WhyChooseUs = () => {
               Why people choose HS+?
             </h2>
           </div>
-          <div className="md:max-w-xs pt-4 md:pt-14 text-left">
+          <div className="md:max-w-lg pt-4 md:pt-14 text-left">
             <p
               style={{
                 color: '#FFF',
@@ -101,7 +123,7 @@ const WhyChooseUs = () => {
         </div>
 
         {/* Main Grid Layout */}
-        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-8 max-w-7xl mx-auto items-center">
+        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-8  mx-auto items-center">
 
           {/* Left Large Card */}
           <motion.div
@@ -146,37 +168,62 @@ const WhyChooseUs = () => {
                 {left?.description}
               </p>
             </div>
+
             <div className="mt-10">
-              {LeftIcon && <LeftIcon className="w-14 h-14 text-[#0168B4]" />}
+              {/* LeftIcon er poriborrte Vector.png */}
+              <img
+                src="/Vector.png"
+                alt="icon"
+                style={{
+                  width: '60px',  // w-14 equivalent
+                  height: '60px', // h-14 equivalent
+                  objectFit: 'contain'
+                }}
+              />
             </div>
           </motion.div>
 
           {/* Middle Section */}
-          <div className="flex flex-col gap-[32px] w-full lg:w-[450px]">
+          <div className="flex flex-col gap-[32px] w-full lg:w-[500px]">
             {/* Middle Top Card */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               style={{
                 display: 'flex',
-                minHeight: '247.5px',
+                height: '247.5px',
                 padding: '32px',
                 justifyContent: 'center',
                 alignItems: 'center',
                 gap: '32px',
                 alignSelf: 'stretch',
-                borderRadius: '35px',
+                borderRadius: '32px',
                 background: '#FFFFFF',
               }}
               className="shadow-xl cursor-pointer flex-col sm:flex-row"
             >
               <div className="shrink-0">
-                {MidTopIcon && <MidTopIcon className="w-12 h-12 text-[#0168B4]" />}
+                {/* MidTopIcon er poriborrte Frame (1).png */}
+                <img
+                  src="/Frame (1).png"
+                  alt="icon-top"
+                  style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+                />
               </div>
               <div className="text-left">
-                <h3 className="capitalize mb-2" style={{ color: '#0168B4', fontFamily: 'Inter, sans-serif', fontSize: '24px', fontWeight: '500' }}>
+                <h3
+                  style={{
+                    color: '#0168B4',
+                    fontFamily: 'var(--font-inter), sans-serif',
+                    fontSize: '32px',
+                    fontWeight: '500',
+                    lineHeight: '120%',
+                    textTransform: 'capitalize',
+                    marginBottom: '8px'
+                  }}
+                >
                   {middleTop?.title}
                 </h3>
-                <p style={{ color: '#575757', fontFamily: 'Poppins, sans-serif', fontSize: '14px', lineHeight: '150%' }}>
+                <p style={{ color: '#575757', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', lineHeight: '150%' }}>
                   {middleTop?.description}
                 </p>
               </div>
@@ -187,25 +234,40 @@ const WhyChooseUs = () => {
               whileHover={{ scale: 1.02 }}
               style={{
                 display: 'flex',
-                minHeight: '247.5px',
+                height: '247.5px',
                 padding: '32px',
                 justifyContent: 'center',
                 alignItems: 'center',
                 gap: '32px',
                 alignSelf: 'stretch',
-                borderRadius: '35px',
+                borderRadius: '32px',
                 background: '#FFFFFF',
               }}
               className="shadow-xl cursor-pointer flex-col sm:flex-row"
             >
               <div className="shrink-0">
-                {MidBottomIcon && <MidBottomIcon className="w-12 h-12 text-[#0168B4]" />}
+                {/* MidBottomIcon er poriborrte Frame (2).png */}
+                <img
+                  src="/Frame (2).png"
+                  alt="icon-bottom"
+                  style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+                />
               </div>
               <div className="text-left">
-                <h3 className="capitalize mb-2" style={{ color: '#0168B4', fontFamily: 'Inter, sans-serif', fontSize: '24px', fontWeight: '500' }}>
+                <h3
+                  style={{
+                    color: '#0168B4',
+                    fontFamily: 'var(--font-inter), sans-serif',
+                    fontSize: '32px',
+                    fontWeight: '500',
+                    lineHeight: '120%',
+                    textTransform: 'capitalize',
+                    marginBottom: '8px'
+                  }}
+                >
                   {middleBottom?.title}
                 </h3>
-                <p style={{ color: '#575757', fontFamily: 'Poppins, sans-serif', fontSize: '14px', lineHeight: '150%' }}>
+                <p style={{ color: '#575757', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', lineHeight: '150%' }}>
                   {middleBottom?.description}
                 </p>
               </div>
@@ -234,7 +296,7 @@ const WhyChooseUs = () => {
                 className="capitalize mb-6"
                 style={{
                   color: '#0168B4',
-                  fontFamily: 'Inter, sans-serif',
+                  fontFamily: 'var(--font-inter), sans-serif',
                   fontSize: '32px',
                   fontWeight: '500',
                   lineHeight: '120%',
@@ -246,7 +308,7 @@ const WhyChooseUs = () => {
               <p
                 style={{
                   color: '#575757',
-                  fontFamily: 'Poppins, sans-serif',
+                  fontFamily: 'var(--font-poppins), sans-serif',
                   fontSize: '16px',
                   fontWeight: '400',
                   lineHeight: '150%'
@@ -255,9 +317,21 @@ const WhyChooseUs = () => {
                 {right?.description}
               </p>
             </div>
-            <div className="mt-10 self-end">
+
+            <div className="mt-10">
               <div className="relative">
-                {RightIcon && <RightIcon className="w-14 h-14 text-[#0168B4]" />}
+                {/* RightIcon er poriborrte Frame (3).png */}
+                <img
+                  src="/Frame (3).png"
+                  alt="right-icon"
+                  style={{
+                    width: '60px', // w-14 equivalent
+                    height: '60px',
+                    objectFit: 'contain'
+                  }}
+                />
+
+                {/* Badge thik image er uporei thakbe */}
                 {right?.badge && (
                   <span className="absolute -top-1 -right-2 bg-[#0168B4] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {right.badge}

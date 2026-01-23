@@ -46,25 +46,43 @@ const Blogs = () => {
   return (
     <section className="py-20 bg-[#F7F7F7] overflow-hidden">
       <div className="container mx-auto px-4">
-        
+
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl text-left">
-            <div 
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-100 mb-6 bg-white shadow-sm"
+            <div
+              className="inline-flex items-center justify-center mb-6"
               style={{
-                color: '#616161',
-                fontFamily: 'Poppins, sans-serif',
-                fontSize: '16px',
-                fontWeight: '500',
-                letterSpacing: '0.16px'
+                display: 'flex',
+                height: '50px',
+                width: '120px',
+                padding: '8px 16px',
+                gap: '8px',
+                borderRadius: '49px',
+                background: '#FFF',
               }}
             >
-              <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
-              Blogs
+              <img
+                src="/Frame.svg"
+                alt="icon"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
+              <span
+                style={{
+                  color: '#404040', // var(--dark-5)
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: '500',
+                  lineHeight: '160%',
+                  letterSpacing: '0.16px',
+                }}
+              >
+                Blogs
+              </span>
             </div>
-            
-            <h2 
+
+            <h2
               style={{
                 color: '#0A0A0A',
                 fontFamily: 'Inter, sans-serif',
@@ -78,9 +96,9 @@ const Blogs = () => {
               Insights And <br /> Resources
             </h2>
           </div>
-          
-          <div className="md:max-w-xs pt-4 md:pt-14 text-left">
-            <p 
+
+          <div className="md:max-w-lg pt-4 md:pt-14 text-left">
+            <p
               style={{
                 color: '#616161',
                 fontFamily: 'Poppins, sans-serif',
@@ -98,37 +116,45 @@ const Blogs = () => {
         {/* Blog Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
           {blogs.slice(0, visibleCount).map((post) => (
-            // এখানে Link ট্যাগ যোগ করা হয়েছে যা স্লাগ ব্যবহার করবে
-            <Link 
-              key={post._id} 
-              href={`/blog/${post.slug}`} 
+            <Link
+              key={post._id}
+              href={`/blog/${post.slug}`}
               className="group cursor-pointer flex flex-col"
             >
               {/* Image Container */}
-              <div className="relative rounded-[30px] overflow-hidden mb-6 aspect-[4/3] border border-gray-100 bg-white">
-                <img 
-                  src={post.image || "/api/placeholder/400/300"} 
-                  alt={post.title} 
+              <div
+                className="relative overflow-hidden mb-6 group"
+                style={{
+                  height: '350px',
+                  alignSelf: 'stretch',
+                  borderRadius: '12px',
+                  background: '#D9D9D9',
+                }}
+              >
+                <img
+                  src={post.image || "/api/placeholder/400/350"}
+                  alt={post.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  style={{ objectPosition: '50% 50%' }}
                 />
               </div>
-              
+
               {/* Meta Data */}
               <div className="flex justify-between items-center mb-4 px-1">
-                <span 
+                <span
                   style={{
                     color: '#616161',
-                    fontFamily: 'Poppins, sans-serif',
+                    fontFamily: 'var(--font-poppins), sans-serif',
                     fontSize: '14px',
                     fontWeight: '400',
                   }}
                 >
                   {post.date}
                 </span>
-                <span 
+                <span
                   style={{
                     color: '#0168B4',
-                    fontFamily: 'Poppins, sans-serif',
+                    fontFamily: 'var(--font-poppins), sans-serif',
                     fontSize: '14px',
                     fontWeight: '500',
                   }}
@@ -137,12 +163,22 @@ const Blogs = () => {
                 </span>
               </div>
 
+              {/* --- Soja Dag (Divider Image) --- */}
+              <div className="px-1 mb-4">
+                <img
+                  src="/Rectangle 34625767.png"
+                  alt="divider"
+                  className="w-full h-auto"
+                  style={{ display: 'block' }}
+                />
+              </div>
+
               {/* Title */}
-              <h3 
+              <h3
                 className="group-hover:text-[#0168B4] transition-colors line-clamp-2 px-1"
                 style={{
                   color: '#262626',
-                  fontFamily: 'Inter, sans-serif',
+                  fontFamily: 'var(--font-inter), sans-serif',
                   fontSize: '24px',
                   fontWeight: '500',
                   lineHeight: '130%',
@@ -157,20 +193,38 @@ const Blogs = () => {
 
         {/* Bottom Button */}
         {blogs.length > 3 && visibleCount < blogs.length && (
-          <div className="flex justify-center">
-            <button 
+          <div className="flex justify-center mt-12">
+            <button
               onClick={handleSeeAll}
-              className="inline-flex items-center gap-4 border border-[#0168B4]/30 pl-8 pr-2 py-2 rounded-full transition-all group shadow-sm hover:bg-[#0168B4]/5 active:scale-95"
+              className="inline-flex transition-all group active:scale-95"
               style={{
+                display: 'flex',
+                height: '52px', // Exact height from spec
+                padding: '4px 4px 4px 12px', // Adjusted left padding for balance with 12px spec
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px', // Exact gap spec
+                borderRadius: '100px', // Perfect capsule
+                border: '1px solid #0168B4', // Primary-blue-500
+                backgroundColor: 'transparent',
                 color: '#0168B4',
-                fontFamily: 'Poppins, sans-serif',
+                fontFamily: 'var(--font-poppins), sans-serif',
                 fontSize: '16px',
                 fontWeight: '500',
                 lineHeight: '160%',
+                cursor: 'pointer'
               }}
             >
               See All Blog
-              <span className="bg-[#0168B4] text-white rounded-full p-2.5 transition-transform duration-300 group-hover:rotate-45">
+              <span
+                className="bg-[#0168B4] text-white rounded-full transition-transform duration-300 group-hover:rotate-45"
+                style={{
+                  display: 'flex',
+                  padding: '10px', // Spec-er balance rakhar jonno padding
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
                 <ArrowUpRight className="w-5 h-5" />
               </span>
             </button>

@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+
+/* OTF format load korar upay */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #f7f7f7;
   --foreground: #000000;

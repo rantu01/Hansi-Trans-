@@ -42,17 +42,36 @@ const OurInfluencer = () => {
         >
           <div className="max-w-xl">
             {/* Badge with Frame.svg */}
-            <div 
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 mb-6 bg-white shadow-sm"
+            <div
+              className="inline-flex items-center justify-center mb-6"
               style={{
-                color: '#616161',
-                fontFamily: 'Poppins, sans-serif',
-                fontSize: '16px',
-                fontWeight: '500'
+                display: 'flex',
+                height: '50px',
+                width: '150px',
+                padding: '8px 16px',
+                gap: '8px',
+                borderRadius: '49px',
+                background: '#FFF',
               }}
             >
-              <img src="/Frame.svg" alt="icon" className="w-4 h-4" />
-              Influencer
+              <img
+                src="/Frame.svg"
+                alt="icon"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
+              <span
+                style={{
+                  color: '#404040', // var(--dark-5)
+                  fontFamily: 'var(--font-poppins), sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: '500',
+                  lineHeight: '160%',
+                  letterSpacing: '0.16px',
+                }}
+              >
+                Influencer
+              </span>
             </div>
             
             <h2 
@@ -70,7 +89,7 @@ const OurInfluencer = () => {
             </h2>
           </div>
           
-          <div className="max-w-sm md:mt-12">
+          <div className="max-w-lg md:mt-12">
             <p 
               style={{
                 color: '#616161',
@@ -147,7 +166,7 @@ const OurInfluencer = () => {
                 <div className="flex items-center gap-4 pb-2">
                   <a href={person.twitter || "#"} className="transition-all duration-300 hover:scale-110 opacity-80 hover:opacity-100">
                     <Twitter 
-                      style={{ width: '22px', height: '18px' }} 
+                      style={{ width: '22.519px', height: '18.29px' }} 
                       fill="#0F0F0F" 
                       stroke="none" 
                     />
