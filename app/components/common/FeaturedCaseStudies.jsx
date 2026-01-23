@@ -167,7 +167,7 @@ const FeaturedCaseStudies = () => {
                 } bg-background rounded-[40px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group`}
             >
               {/* Image Section */}
-              <div className="w-full lg:w-1/2 h-[350px] md:h-[700px] overflow-hidden">
+              <div className="w-full lg:w-1/2 h-[350px] md:h-[700px]  lg:h-[720] overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
