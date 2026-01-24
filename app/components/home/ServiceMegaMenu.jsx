@@ -112,7 +112,7 @@ const ServiceMegaMenu = ({ isOpen, onClose }) => {
                                         fontFamily: 'var(--font-poppins), sans-serif', // Poppins font
                                         fontSize: '16px',                          // 16px size
                                         fontStyle: 'normal',                       // Normal style
-                                        fontWeight: '500',                          // Regular weight
+                                        fontWeight: '400',                          // Regular weight
                                         lineHeight: '150%',                        // 24px line height
                                         textAlign: 'left'
                                     }}
