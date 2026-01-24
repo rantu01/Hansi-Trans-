@@ -35,7 +35,7 @@ const HansiTrans = () => {
     { name: "Service", path: "/services" },
     { name: "Case Studies", path: "/case-studies" },
     { name: "Blog", path: "/blog" },
-    { name: "Others", path: "/others" },
+    { name: "Others", path: "#", isOthers: true }, // Others trigger korbe
   ];
 
   const dropIn = {
@@ -52,25 +52,26 @@ const HansiTrans = () => {
     })
   };
 
+  // সার্ভিস বা 'Others' এ ক্লিক করলে এই ফাংশনটি রান হবে
   const handleServiceClick = async (service) => {
     setSelectedService(service);
     setIsModalOpen(true);
-    try {
-      const res = await axios.get(API.services.details(service.slug));
-      if (res.data.success) {
-        // আপনার API স্ট্রাকচার অনুযায়ী subServices বা child services ফিল্টার করুন
-        setSubServices(res.data.data.childServices || []);
-      }
-    } catch (error) {
-      console.error("Error fetching sub-services", error);
+    if (service?.slug) {
+        try {
+          const res = await axios.get(API.services.details(service.slug));
+          if (res.data.success) {
+            setSubServices(res.data.data.childServices || []);
+          }
+        } catch (error) {
+          console.error("Error fetching sub-services", error);
+        }
     }
   };
 
   useEffect(() => {
-    setMounted(true); // Hydration mismatch রক্ষা করবে
+    setMounted(true);
     const fetchData = async () => {
       try {
-        // Config fetch
         const res = await fetch(API.site.getConfig);
         const data = await res.json();
         if (data?.success && data?.data) {
@@ -80,7 +81,6 @@ const HansiTrans = () => {
           });
         }
 
-        // Services fetch
         const serviceRes = await axios.get(API.services.main);
         if (serviceRes.data.success) {
           const mainServices = serviceRes.data.data.filter((s) => !s.parentService);
@@ -93,7 +93,6 @@ const HansiTrans = () => {
     fetchData();
   }, []);
 
-  // সার্ভার সাইড রেন্ডারিং এর সময় খালি রিটার্ন করবে যাতে লেআউট না ভাঙে
   if (!mounted) return <div className="min-h-screen bg-black" />;
 
   return (
@@ -122,31 +121,44 @@ const HansiTrans = () => {
                 e.currentTarget.src = "/logoWithText.png";
               }}
               alt="hansi logo"
-              // Width: 183px, Height: 72px fix kora hoyeche
               className="w-[183px] h-[72px] object-contain"
-              style={{
-                width: '183px',
-                height: '72px'
-              }}
+              style={{ width: '183px', height: '72px' }}
             />
           </Link>
 
           <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
             {navLinks.map((item) => (
-              <Link
-                key={item.name}
-                href={item.path}
-                className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
-                style={{
-                  fontSize: '16px',
-                  fontWeight: '400',
-                  lineHeight: '150%', // 24px
-                  fontStyle: 'normal',
-                  color: '#FFF'
-                }}
-              >
-                {item.name}
-              </Link>
+              item.isOthers ? (
+                <button
+                  key={item.name}
+                  onClick={() => setIsModalOpen(true)}
+                  className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '400',
+                    lineHeight: '150%',
+                    fontStyle: 'normal',
+                    color: '#FFF'
+                  }}
+                >
+                  {item.name}
+                </button>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '400',
+                    lineHeight: '150%',
+                    fontStyle: 'normal',
+                    color: '#FFF'
+                  }}
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </div>
 
@@ -155,53 +167,22 @@ const HansiTrans = () => {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="
-      appearance-none
-      flex
-      h-[52px]
-      w-full
-      px-[20px]
-      pr-[48px]
-      py-[4px]
-      justify-center
-      items-center
-      gap-3
-      rounded-full
-      bg-[#0A0A0A]
-      border
-      border-white/20
-      text-white
-      text-sm
-      outline-none
-      cursor-pointer
-    "
+                className="appearance-none flex h-[52px] w-full px-[20px] pr-[48px] py-[4px] justify-center items-center gap-3 rounded-full bg-[#0A0A0A] border border-white/20 text-white text-sm outline-none cursor-pointer"
               >
                 <option value="EN">EN</option>
                 <option value="ES">ES</option>
                 <option value="FR">FR</option>
               </select>
-
-              {/* Custom Arrow */}
-              <ChevronDown
-                size={22} // 👈 arrow size (boro)
-                className="
-      absolute
-      right-5
-      top-1/2
-      -translate-y-1/2
-      text-white/70
-      pointer-events-none
-    "
-              />
+              <ChevronDown size={22} className="absolute right-5 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none" />
             </div>
 
             <Link
               href="/contact"
               className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap bg-white border border-[#E0E4FF] rounded-full"
               style={{
-                height: '52px',                // Exact height set kora hoyeche
-                padding: '4px 4px 4px 12px',   // padding: Top Right Bottom Left
-                gap: '8px',                    // gap: 8px as per instruction
+                height: '52px',
+                padding: '4px 4px 4px 12px',
+                gap: '8px',
                 fontFamily: 'Poppins, sans-serif',
                 fontSize: '16px',
                 fontWeight: '500',
@@ -213,7 +194,6 @@ const HansiTrans = () => {
             >
               Let's connect
               <span className="bg-[#0168B4] rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                {/* Icon size ektu check korte paro, height 52px er sathe w-7 h-7 thik thakar kotha */}
                 <ArrowUpRight className="w-7 h-7 text-white" strokeWidth={2} />
               </span>
             </Link>
@@ -234,9 +214,16 @@ const HansiTrans = () => {
               className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
             >
               {navLinks.map((item) => (
-                <Link key={item.name} href={item.path} className="text-xl hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
-                  {item.name}
-                </Link>
+                <button 
+                  key={item.name} 
+                  className="text-xl hover:text-primary transition-colors text-white" 
+                  onClick={() => {
+                    setMenuOpen(false);
+                    if(item.isOthers) setIsModalOpen(true);
+                  }}
+                >
+                  {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
+                </button>
               ))}
               <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-primary text-center w-full max-w-xs py-3 rounded-full font-semibold text-white">
                 Let's connect
@@ -252,7 +239,7 @@ const HansiTrans = () => {
           <h1
             className="mb-4 text-white text-center"
             style={{
-              fontFamily: 'Satoshi, sans-serif', // CSS er @font-face name
+              fontFamily: 'Satoshi, sans-serif',
               fontSize: 'clamp(32px, 8vw, 80px)',
               fontWeight: '500',
               lineHeight: '110%',
@@ -268,10 +255,10 @@ const HansiTrans = () => {
             style={{
               color: '#0A0A0A',
               textAlign: 'center',
-              fontFamily: 'var(--font-poppins), sans-serif', // layout.js theke variable load hobe
+              fontFamily: 'var(--font-poppins), sans-serif',
               fontSize: '18px',
               fontWeight: '500',
-              lineHeight: '150%', // equivalent to 27px
+              lineHeight: '150%',
               fontStyle: 'normal',
             }}
           >
@@ -279,8 +266,6 @@ const HansiTrans = () => {
           </p>
 
           <div className="relative w-full min-h-[450px] md:min-h-[600px] flex items-center justify-center mt-4">
-
-            {/* CTA & Customer Info Section */}
             <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 z-30">
               <Link
                 href="/contact"
@@ -289,13 +274,13 @@ const HansiTrans = () => {
                   height: '52px',
                   padding: '4px 4px 4px 12px',
                   gap: '8px',
-                  background: '#0168B4', // Background color update
+                  background: '#0168B4',
                   fontFamily: 'var(--font-poppins), sans-serif',
                   fontSize: '16px',
                   fontWeight: '500',
                   lineHeight: '160%',
                   letterSpacing: '0.16px',
-                  color: '#FFF', // Text color white shade
+                  color: '#FFF',
                   fontStyle: 'normal'
                 }}
               >
@@ -311,11 +296,10 @@ const HansiTrans = () => {
                     alignItems: 'center',
                     gap: '10px',
                     aspectRatio: '1/1',
-                    borderRadius: '24px', // spec onujayi 24px
+                    borderRadius: '24px',
                     background: '#FFF'
                   }}
                 >
-                  {/* Icon size ektu boro kora hoyeche jate 42px box-e bhalo lage */}
                   <ArrowUpRight className="w-6 h-6 text-[#0168B4]" strokeWidth={2} />
                 </span>
               </Link>
@@ -343,7 +327,6 @@ const HansiTrans = () => {
             </div>
 
             {/* Desktop Service Buttons */}
-            {/* Desktop Service Buttons */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
               {services.map((service, index) => {
                 const positions = [
@@ -363,18 +346,17 @@ const HansiTrans = () => {
                     className={`absolute ${positions[index]} pointer-events-auto`}
                   >
                     <button
-                      onClick={() => handleServiceClick(service)}
                       className="flex transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
                       style={{
-                        width: 'auto',               // Exact width spec
-                        height: '61px',              // Exact height spec
-                        padding: '12px 16px',        // Exact padding
-                        justifyContent: 'center',    // Center content
-                        alignItems: 'center',        // Align items center
-                        gap: '8px',                  // Gap spec
-                        borderRadius: '38px',        // Border radius
-                        background: '#0A0A0A',       // Dark-900 color
-                        backdropFilter: 'blur(186.9px)', // Exact blur spec
+                        width: 'auto',
+                        height: '61px',
+                        padding: '12px 16px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '8px',
+                        borderRadius: '38px',
+                        background: '#0A0A0A',
+                        backdropFilter: 'blur(186.9px)',
                         color: '#FFFFFF'
                       }}
                     >
@@ -413,11 +395,11 @@ const HansiTrans = () => {
             </div>
           </div>
         </div>
-        {/* ৪. সবার শেষে (Nav এর নিচে বা Hero এর ভেতরে) Modal টি কল করুন */}
+
+        {/* Modal/Mega Menu */}
         <AnimatePresence>
           {isModalOpen && (
             <>
-              {/* Background Overlay */}
               <div
                 className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
                 onClick={() => setIsModalOpen(false)}
