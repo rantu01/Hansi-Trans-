@@ -71,14 +71,20 @@ const Hero = ({
         <nav className="relative z-50 mb-16">
           <div className="flex justify-between items-center">
             {/* Logo & Brand Text */}
-            <Link href="/" className="flex flex-col items-center justify-center space-y-1 flex-1 text-center">
+            <Link href="/" className="flex items-center justify-center flex-1">
               <img
-                src={siteConfig.logo || "/Hansi-Logo1.png"}
-                onError={(e) => { e.currentTarget.src = "/Hansi-Logo1.png"; }}
+                src={siteConfig.logo || "/logoWithText.png"}
+                onError={(e) => {
+                  e.currentTarget.src = "/logoWithText.png";
+                }}
                 alt="hansi logo"
-                className="w-8 h-8 md:w-10 md:h-10 object-contain"
+                // Width: 183px, Height: 72px fix kora hoyeche
+                className="w-[183px] h-[72px] object-contain"
+                style={{
+                  width: '183px',
+                  height: '72px'
+                }}
               />
-              <span className="text-xl md:text-2xl font-bold tracking-wider">{siteConfig.brandText}</span>
             </Link>
 
             {/* Desktop Menu */}

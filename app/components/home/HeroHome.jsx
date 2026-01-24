@@ -356,21 +356,25 @@ const HansiTrans = () => {
                 return (
                   <motion.div
                     key={service._id || index}
-                    custom={index} initial="hidden" animate="visible" variants={dropIn}
+                    custom={index}
+                    initial="hidden"
+                    animate="visible"
+                    variants={dropIn}
                     className={`absolute ${positions[index]} pointer-events-auto`}
                   >
                     <button
-                      onClick={() => handleServiceClick(service)} // ক্লিক ইভেন্ট যোগ করা হয়েছে
-                      className="flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
+                      onClick={() => handleServiceClick(service)}
+                      className="flex transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
                       style={{
-                        width: '250px',
-                        height: '61px',
-                        padding: '12px 16px',
-                        gap: '8px',
-                        borderRadius: '38px',
-                        border: '1px solid #F7F7F7',
-                        background: '#0A0A0A',
-                        backdropFilter: 'blur(186.9px)',
+                        width: 'auto',               // Exact width spec
+                        height: '61px',              // Exact height spec
+                        padding: '12px 16px',        // Exact padding
+                        justifyContent: 'center',    // Center content
+                        alignItems: 'center',        // Align items center
+                        gap: '8px',                  // Gap spec
+                        borderRadius: '38px',        // Border radius
+                        background: '#0A0A0A',       // Dark-900 color
+                        backdropFilter: 'blur(186.9px)', // Exact blur spec
                         color: '#FFFFFF'
                       }}
                     >
@@ -386,7 +390,7 @@ const HansiTrans = () => {
                       >
                         {service.title}
                       </span>
-                      <span className="bg-gray-800 p-1.5 rounded-full flex items-center justify-center">
+                      <span className="bg-gray-800 p-1.5 rounded-full flex items-center justify-center flex-shrink-0">
                         {serviceIcons[index]}
                       </span>
                     </button>
