@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
 import { motion, AnimatePresence } from "framer-motion";
+import ServiceMegaMenu from "./ServiceMegaMenu";
 
 const HansiTrans = () => {
   const [mounted, setMounted] = useState(false);
@@ -15,6 +16,9 @@ const HansiTrans = () => {
     logo: null,
     brandText: "Hansi Trans",
   });
+  const [selectedService, setSelectedService] = useState(null);
+  const [subServices, setSubServices] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // সার্ভিস অনুযায়ী আইকন ম্যাপ
   const serviceIcons = [
@@ -46,6 +50,20 @@ const HansiTrans = () => {
         damping: 12
       }
     })
+  };
+
+  const handleServiceClick = async (service) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+    try {
+      const res = await axios.get(API.services.details(service.slug));
+      if (res.data.success) {
+        // আপনার API স্ট্রাকচার অনুযায়ী subServices বা child services ফিল্টার করুন
+        setSubServices(res.data.data.childServices || []);
+      }
+    } catch (error) {
+      console.error("Error fetching sub-services", error);
+    }
   };
 
   useEffect(() => {
@@ -325,6 +343,7 @@ const HansiTrans = () => {
             </div>
 
             {/* Desktop Service Buttons */}
+            {/* Desktop Service Buttons */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
               {services.map((service, index) => {
                 const positions = [
@@ -341,28 +360,27 @@ const HansiTrans = () => {
                     className={`absolute ${positions[index]} pointer-events-auto`}
                   >
                     <button
-                      className="flex items-center justify-center transition-all duration-300 hover:bg-secondary flex-shrink-0"
+                      onClick={() => handleServiceClick(service)} // ক্লিক ইভেন্ট যোগ করা হয়েছে
+                      className="flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
                       style={{
                         width: '250px',
                         height: '61px',
                         padding: '12px 16px',
                         gap: '8px',
                         borderRadius: '38px',
-                        border: '1px solid #F7F7F7', // Liner-2 color
-                        background: '#0A0A0A', // Dark-900
-                        backdropFilter: 'blur(186.9px)', // Spec onujayi exact blur
+                        border: '1px solid #F7F7F7',
+                        background: '#0A0A0A',
+                        backdropFilter: 'blur(186.9px)',
                         color: '#FFFFFF'
                       }}
                     >
                       <span
-                        className="text-white"
                         style={{
                           fontFamily: 'var(--font-poppins), sans-serif',
                           fontSize: '16px',
                           fontWeight: '500',
-                          lineHeight: '160%', // 25.6px
+                          lineHeight: '160%',
                           letterSpacing: '0.16px',
-                          fontStyle: 'normal',
                           color: '#FFF'
                         }}
                       >
@@ -391,6 +409,24 @@ const HansiTrans = () => {
             </div>
           </div>
         </div>
+        {/* ৪. সবার শেষে (Nav এর নিচে বা Hero এর ভেতরে) Modal টি কল করুন */}
+        <AnimatePresence>
+          {isModalOpen && (
+            <>
+              {/* Background Overlay */}
+              <div
+                className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
+                onClick={() => setIsModalOpen(false)}
+              />
+              <ServiceMegaMenu
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                mainService={selectedService}
+                subServices={subServices}
+              />
+            </>
+          )}
+        </AnimatePresence>
       </section>
     </div>
   );
