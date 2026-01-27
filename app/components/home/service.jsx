@@ -218,7 +218,7 @@ const StackedCards = ({ services }) => {
                         </Link>
                       </div>
                       <div className="w-full lg:w-1/2 h-full">
-                        <div className="relative rounded-[40px] md:rounded-[55px] overflow-hidden shadow-2xl border-[6px] border-white/20 h-full">
+                        <div className="relative rounded-[40px] md:rounded-[55px] overflow-hidden  h-full">
                           <img
                             src={service.image}
                             alt={service.title}

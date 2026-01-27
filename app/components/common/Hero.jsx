@@ -1,10 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X, ChevronDown } from "lucide-react"; // Added ChevronDown
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { API } from "@/app/config/api";
+import axios from "axios"; // Added axios
+import { motion, AnimatePresence } from "framer-motion"; // Added framer-motion
+import ServiceMegaMenu from "../home/ServiceMegaMenu";
 
 const Hero = ({
   title = "About HS+",
@@ -21,13 +24,18 @@ const Hero = ({
     brandText: "Hansi",
   });
 
+  // Modal States from first code
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
+  const [subServices, setSubServices] = useState([]);
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
     { name: "Service", path: "/services" },
     { name: "Case Studies", path: "/case-studies" },
     { name: "Blog", path: "/blog" },
-    { name: "Others", path: "/others" },
+    { name: "Others", path: "#", isOthers: true }, // Updated path and flag
   ];
 
   useEffect(() => {
@@ -78,7 +86,6 @@ const Hero = ({
                   e.currentTarget.src = "/logoWithText.png";
                 }}
                 alt="hansi logo"
-                // Width: 183px, Height: 72px fix kora hoyeche
                 className="w-[183px] h-[72px] object-contain"
                 style={{
                   width: '183px',
@@ -94,11 +101,19 @@ const Hero = ({
                   pathname === item.path ||
                   (item.path !== "/" && pathname.startsWith(item.path));
 
-                return (
+                // Conditional rendering for "Others" button or Link
+                return item.isOthers ? (
+                  <button
+                    key={item.name}
+                    onClick={() => setIsModalOpen(true)}
+                    className="text-sm lg:text-base rounded-3xl transition-all px-4 py-2 whitespace-nowrap text-white bg-secondary/20 backdrop-blur-md border border-white/10 hover:bg-primary"
+                  >
+                    {item.name}
+                  </button>
+                ) : (
                   <Link
                     key={item.name}
                     href={item.path}
-                    /* Replaced blue-400 with primary and custom bg with secondary/20 */
                     className={`text-sm lg:text-base rounded-3xl transition-all px-4 py-2 whitespace-nowrap
                       ${isActive
                         ? "bg-primary text-white shadow-lg shadow-primary/20"
@@ -113,11 +128,19 @@ const Hero = ({
 
             {/* Right Action */}
             <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
-              <select value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-3xl bg-black border border-white/20 px-4 p-5 text-white outline-none cursor-pointer text-sm">
-                <option value="EN">EN</option>
-                <option value="ES">ES</option>
-                <option value="FR">FR</option>
-              </select>
+              <div className="relative">
+                <select 
+                  value={language} 
+                  onChange={(e) => setLanguage(e.target.value)} 
+                  className="appearance-none rounded-3xl bg-black border border-white/20 pl-4 pr-10 py-3 text-white outline-none cursor-pointer text-sm"
+                >
+                  <option value="EN">EN</option>
+                  <option value="ES">ES</option>
+                  <option value="FR">FR</option>
+                </select>
+                <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+              
               <Link
                 href="/contact"
                 className="group flex items-center gap-3 bg-transparent border border-[#E0E4FF] pl-5 pr-1.5 py-1.5 rounded-full font-semibold text-white hover:bg-white hover:text-primary transition-all duration-300 whitespace-nowrap text-sm lg:text-base"
@@ -139,40 +162,63 @@ const Hero = ({
           </div>
 
           {/* Mobile Menu */}
-          {menuOpen && (
-            <div className="md:hidden fixed inset-0 bg-secondary/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 z-50 p-6 overflow-y-auto">
-              {navLinks.map((item) => {
-                const isActive =
-                  pathname === item.path ||
-                  (item.path !== "/" && pathname.startsWith(item.path));
-
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.path}
-                    onClick={() => setMenuOpen(false)}
-                    className={`text-2xl font-medium transition-colors
-                      ${isActive
-                        ? "text-primary"
-                        : "text-white hover:text-primary"
-                      }`}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
-
-              <Link
-                href="/contact"
-                onClick={() => setMenuOpen(false)}
-                /* Replaced #347fb9 with accent color */
-                className="bg-accent text-white text-center w-full max-w-xs py-4 rounded-full font-semibold text-lg shadow-xl shadow-accent/20"
+          <AnimatePresence>
+            {menuOpen && (
+              <motion.div 
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 100 }}
+                className="md:hidden fixed inset-0 bg-secondary/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 z-50 p-6 overflow-y-auto"
               >
-                Let's connect
-              </Link>
-            </div>
-          )}
+                {navLinks.map((item) => {
+                  const isActive =
+                    pathname === item.path ||
+                    (item.path !== "/" && pathname.startsWith(item.path));
+
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        setMenuOpen(false);
+                        if (item.isOthers) setIsModalOpen(true);
+                      }}
+                      className={`text-2xl font-medium transition-colors
+                        ${isActive ? "text-primary" : "text-white hover:text-primary"}`}
+                    >
+                      {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
+                    </button>
+                  );
+                })}
+
+                <Link
+                  href="/contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="bg-accent text-white text-center w-full max-w-xs py-4 rounded-full font-semibold text-lg shadow-xl shadow-accent/20"
+                >
+                  Let's connect
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
+
+        {/* Modal/Mega Menu - Added the logic from first file */}
+        <AnimatePresence>
+          {isModalOpen && (
+            <>
+              <div
+                className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
+                onClick={() => setIsModalOpen(false)}
+              />
+              <ServiceMegaMenu
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                mainService={selectedService}
+                subServices={subServices}
+              />
+            </>
+          )}
+        </AnimatePresence>
 
         {/* ================= HERO CONTENT ================= */}
         <div className="relative mt-auto mb-40 md:mb-60">
