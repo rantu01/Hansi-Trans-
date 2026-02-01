@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { API } from "@/app/config/api";
-import toast, { Toaster } from "react-hot-toast"; // টোস্ট ইমপোর্ট করা হয়েছে
+import toast, { Toaster } from "react-hot-toast"; // টোস্ট ইমপোর্ট করা হয়েছে
 import { 
   Trash2, Upload, Plus, X, Save, 
   Target, Eye, User, Image as ImageIcon, 
@@ -190,9 +190,9 @@ export default function AboutUsAdmin() {
             <Input label="Mission Title" value={data.company.missionTitle} onChange={(v) => updateField("company.missionTitle", v)} />
             <Textarea label="Mission Description" value={data.company.missionDescription} onChange={(v) => updateField("company.missionDescription", v)} />
             <div className="pt-4">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-[2px] mb-4 block">Mission Media (3 Slots)</label>
-              <div className="grid grid-cols-3 gap-3">
-                {[0, 1, 2].map((idx) => (
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-[2px] mb-4 block">Mission Media (4 Slots)</label>
+              <div className="grid grid-cols-4 gap-3">
+                {[0, 1, 2, 3].map((idx) => (
                   <ThumbnailUpload key={idx} image={data.company.images[idx]} onUpload={(f) => uploadImage(f, null, "company", idx)} onRemove={() => {
                     const newImgs = [...data.company.images];
                     newImgs[idx] = "";
@@ -210,9 +210,9 @@ export default function AboutUsAdmin() {
             <Input label="Vision Title" value={data.company.visionTitle} onChange={(v) => updateField("company.visionTitle", v)} />
             <Textarea label="Vision Description" value={data.company.visionDescription} onChange={(v) => updateField("company.visionDescription", v)} />
             <div className="pt-4">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-[2px] mb-4 block">Vision Media (3 Slots)</label>
-              <div className="grid grid-cols-3 gap-3">
-                {[3, 4, 5].map((idx) => (
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-[2px] mb-4 block">Vision Media (4 Slots)</label>
+              <div className="grid grid-cols-4 gap-3">
+                {[4, 5, 6, 7].map((idx) => (
                   <ThumbnailUpload key={idx} image={data.company.images[idx]} onUpload={(f) => uploadImage(f, null, "company", idx)} onRemove={() => {
                     const newImgs = [...data.company.images];
                     newImgs[idx] = "";

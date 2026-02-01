@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning={true}
         className={`${inter.variable} ${poppins.variable} bg-[#f7f7f7] text-gray-900`}
       >
         <ThemeApplier />

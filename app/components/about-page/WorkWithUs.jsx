@@ -24,9 +24,18 @@ const WorkWithUs = () => {
   return (
     <div className="flex items-center justify-center ">
       <div className="container w-full rounded-[40px] overflow-hidden p-8 md:p-12">
-        
+
         {/* Video/Image Section */}
-        <div className="relative w-full aspect-video rounded-[30px] overflow-hidden bg-secondary group cursor-pointer shadow-2xl shadow-primary/10">
+        <div
+          className="relative overflow-hidden bg-secondary group cursor-pointer shadow-2xl shadow-primary/10 mx-auto"
+          style={{
+            width: '1296px',
+            height: '592px',
+            opacity: '1',
+            borderRadius: '32px',
+            transform: 'rotate(0deg)', // Angle 0 deg
+          }}
+        >
           <img
             src={
               data?.hero?.videoImage ||
@@ -47,12 +56,40 @@ const WorkWithUs = () => {
         {/* Content */}
         <div className="mt-8 text-center md:text-left">
           {/* Replaced text-gray-900 with foreground and styled headline with primary accents */}
-          <h2 className="text-foreground text-2xl md:text-4xl font-bold leading-snug tracking-tight">
-            <span className="text-primary">
+          <h2
+            className="mx-auto max-w-[1296px] px-6" // Container width maintain korar jonno
+            style={{
+              textAlign: 'center',
+              margin: '0 auto',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: '500',
+                fontSize: '48px',
+                lineHeight: '120%',
+                letterSpacing: '0%',
+                textTransform: 'capitalize',
+                color: '#0A0A0A',
+                display: 'inline', // Block soriye inline kora hoyeche jeno line break na hoy
+              }}
+            >
               {data?.workWithUs?.headline?.split(" And ")[0] || "HS+ Is A Global Partner For Localization,"}
             </span>
             {" "}
-            <span>
+            <span
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: '500',
+                fontSize: '48px',
+                lineHeight: '120%',
+                letterSpacing: '0%',
+                textTransform: 'capitalize',
+                color: '#dbd2d2', // Apnar deya spec onujayi color (Footer pattern follow kore)
+                display: 'inline',
+              }}
+            >
               {data?.workWithUs?.headline?.split(" And ")[1] ||
                 "Multilingual Voice-Over, And Cross-Border Marketing. Since 2010, We’ve Helped Leading Game Studios, Anime Creators, And Tech Innovators Connect With In 40 Languages."}
             </span>
@@ -62,10 +99,50 @@ const WorkWithUs = () => {
         {/* Button Section */}
         <div className="mt-10 flex justify-center">
           {/* Replaced #0066b2 with primary/accent colors */}
-          <button className="flex items-center gap-3 bg-primary hover:bg-accent text-white px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-primary/20 active:scale-95 group">
-            {data?.workWithUs?.buttonText || "Work with us?"}
-            <span className="bg-white rounded-full p-1.5 transition-transform group-hover:rotate-45">
-              <ArrowUpRight size={18} className="text-primary" />
+          <button
+            className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
+            style={{
+              width: '185px',
+              height: '52px',
+              padding: '4px 4px 4px 12px',
+              gap: '8px',
+              borderRadius: '100px',
+              background: '#0168B4',
+              opacity: '1',
+              transform: 'rotate(0deg)',
+              border: 'none',
+              cursor: 'pointer',
+              // Typography
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '16px',
+              fontWeight: '500',
+              color: '#FFFFFF'
+            }}
+          >
+            <span
+              className="flex-grow text-left"
+              style={{
+                fontFamily: 'Poppins, sans-serif', // 'Family/Body' normally Poppins ba Inter ke bujhay
+                fontWeight: '500', // Medium
+                fontStyle: 'normal',
+                fontSize: '16px',
+                lineHeight: '160%', // Exact 25.6px
+                letterSpacing: '0.16px', // 1% of 16px is 0.16px
+                color: '#FFFFFF', // Spec-e background white deya mane text color white
+                display: 'inline-block'
+              }}
+            >
+              {data?.workWithUs?.buttonText || "Work with us?"}
+            </span>
+            <span
+              className="bg-white rounded-full transition-transform duration-300 group-hover:rotate-45 flex items-center justify-center"
+              style={{
+                width: '44px',
+                height: '44px',
+                flexShrink: 0
+              }}
+            >
+              <ArrowUpRight size={28} style={{ color: '#0168B4' }} />
             </span>
           </button>
         </div>

@@ -70,11 +70,17 @@ const Hero = ({
       >
         <source src="/upper-cloud.webm" type="video/webm" />
       </video>
-
+      <div className="absolute inset-x-0 bottom-0 w-full z-[1] pointer-events-none">
+        <img
+          src="/hero-gradient.png"
+          alt="gradient overlay"
+          className="w-full h-auto object-cover block"
+        />
+      </div>
       {/* overlay - Using secondary color with opacity for depth */}
       <div className="absolute inset-0 bg-secondary/40 z-0"></div>
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10 pt-6 flex-grow flex flex-col">
+      <div className="container mx-auto px-6 md:px-6 relative z-10 pt-2 flex-grow flex flex-col">
         {/* ================= NAVBAR ================= */}
         <nav className="relative z-50 mb-16">
           <div className="flex justify-between items-center">
@@ -95,43 +101,133 @@ const Hero = ({
             </Link>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-8 flex-[2]">
-              {navLinks.map((item) => {
-                const isActive =
-                  pathname === item.path ||
-                  (item.path !== "/" && pathname.startsWith(item.path));
+            <nav className="container mx-auto px-4 md:px-6 py-4 md:py-4 relative z-50">
+              <div className="flex justify-between items-center">
+                <Link href="/" className="flex items-center justify-center flex-1">
+                  <img
+                    src={siteConfig.logo || "/logoWithText.png"}
+                    onError={(e) => {
+                      e.currentTarget.src = "/logoWithText.png";
+                    }}
+                    alt="hansi logo"
+                    className="w-[183px] h-[72px] object-contain"
+                    style={{ width: '183px', height: '72px' }}
+                  />
+                </Link>
 
-                // Conditional rendering for "Others" button or Link
-                return item.isOthers ? (
-                  <button
-                    key={item.name}
-                    onClick={() => setIsModalOpen(true)}
-                    className="text-sm lg:text-base rounded-3xl transition-all px-4 py-2 whitespace-nowrap text-white bg-secondary/20 backdrop-blur-md border border-white/10 hover:bg-primary"
-                  >
-                    {item.name}
-                  </button>
-                ) : (
+                <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
+                  {navLinks.map((item) => (
+                    item.isOthers ? (
+                      <button
+                        key={item.name}
+                        onClick={() => setIsModalOpen(true)}
+                        className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: '400',
+                          lineHeight: '150%',
+                          fontStyle: 'normal',
+                          color: '#FFF'
+                        }}
+                      >
+                        {item.name}
+                      </button>
+                    ) : (
+                      <Link
+                        key={item.name}
+                        href={item.path}
+                        className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: '400',
+                          lineHeight: '150%',
+                          fontStyle: 'normal',
+                          color: '#FFF'
+                        }}
+                      >
+                        {item.name}
+                      </Link>
+                    )
+                  ))}
+                </div>
+
+                <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
+                  <div className="relative">
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                      className="appearance-none flex h-[52px] w-full px-[20px] pr-[48px] py-[4px] justify-center items-center gap-3 rounded-full bg-transparent border border-white text-white text-sm outline-none cursor-pointer"
+                    >
+                      <option value="EN">EN</option>
+                      <option value="ES">ES</option>
+                      <option value="FR">FR</option>
+                    </select>
+                    <ChevronDown size={22} className="absolute right-5 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none" />
+                  </div>
+
                   <Link
-                    key={item.name}
-                    href={item.path}
-                    className={`text-sm lg:text-base rounded-3xl transition-all px-4 py-2 whitespace-nowrap
-                      ${isActive
-                        ? "bg-primary text-white shadow-lg shadow-primary/20"
-                        : "text-white bg-secondary/20 backdrop-blur-md border border-white/10 hover:bg-primary"
-                      }`}
+                    href="/contact"
+                    className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap bg-white border border-[#E0E4FF] rounded-full"
+                    style={{
+                      height: '52px',
+                      padding: '4px 4px 4px 12px',
+                      gap: '8px',
+                      fontFamily: 'Poppins, sans-serif',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      lineHeight: '160%',
+                      letterSpacing: '0.16px',
+                      color: '#0168B4',
+                      fontStyle: 'normal'
+                    }}
                   >
-                    {item.name}
+                    Let's connect
+                    <span className="bg-[#0168B4] rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                      <ArrowUpRight className="w-7 h-7 text-white" strokeWidth={2} />
+                    </span>
                   </Link>
-                );
-              })}
-            </div>
+                </div>
+
+                <button className="md:hidden p-2 z-50" onClick={() => setMenuOpen(!menuOpen)}>
+                  {menuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+              </div>
+
+              {/* Mobile Menu */}
+              <AnimatePresence>
+                {menuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
+                  >
+                    {navLinks.map((item) => (
+                      <button
+                        key={item.name}
+                        className="text-xl hover:text-primary transition-colors text-white"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          if (item.isOthers) setIsModalOpen(true);
+                        }}
+                      >
+                        {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
+                      </button>
+                    ))}
+                    <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-primary text-center w-full max-w-xs py-3 rounded-full font-semibold text-white">
+                      Let's connect
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </nav>
 
             {/* Right Action */}
-            <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
+            {/* <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
               <div className="relative">
-                <select 
-                  value={language} 
-                  onChange={(e) => setLanguage(e.target.value)} 
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
                   className="appearance-none rounded-3xl bg-black border border-white/20 pl-4 pr-10 py-3 text-white outline-none cursor-pointer text-sm"
                 >
                   <option value="EN">EN</option>
@@ -140,7 +236,7 @@ const Hero = ({
                 </select>
                 <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
-              
+
               <Link
                 href="/contact"
                 className="group flex items-center gap-3 bg-transparent border border-[#E0E4FF] pl-5 pr-1.5 py-1.5 rounded-full font-semibold text-white hover:bg-white hover:text-primary transition-all duration-300 whitespace-nowrap text-sm lg:text-base"
@@ -150,7 +246,7 @@ const Hero = ({
                   <ArrowUpRight className="w-7 h-7 text-primary" strokeWidth={2} />
                 </span>
               </Link>
-            </div>
+            </div> */}
 
             {/* Mobile Toggle */}
             <button
@@ -164,7 +260,7 @@ const Hero = ({
           {/* Mobile Menu */}
           <AnimatePresence>
             {menuOpen && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 100 }}
@@ -225,10 +321,33 @@ const Hero = ({
           <div className="flex flex-col md:flex-row justify-between items-end pb-4">
             {/* Left */}
             <div className="w-full md:w-1/2 mb-10 md:-mb-30">
-              <p className="text-xs md:text-sm tracking-widest text-cta-text opacity-90 mb-4 uppercase">
+              <p
+                className="mb-4 text-cta-text opacity-90 text-start"
+                style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: '400',
+                  fontStyle: 'normal', // Regular style
+                  fontSize: '16px',
+                  lineHeight: '150%',
+                  letterSpacing: '0%',
+                }}
+              >
                 {breadcrumb}
               </p>
-              <h1 className="text-5xl md:text-6xl font-bold text-white">{title}</h1>
+              <h1
+                className="text-white"
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: '500', // Medium
+                  fontStyle: 'normal',
+                  fontSize: '60px',
+                  lineHeight: '120%',
+                  letterSpacing: '0%',
+                  textTransform: 'capitalize'
+                }}
+              >
+                {title}
+              </h1>
             </div>
 
             {/* Right */}

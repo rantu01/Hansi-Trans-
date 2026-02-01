@@ -64,7 +64,7 @@ const Schedule = () => {
 
   return (
     <section className="bg-background py-20 px-6 md:px-12 font-sans overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         
         {/* Left Side */}
         <div className="flex flex-col">
