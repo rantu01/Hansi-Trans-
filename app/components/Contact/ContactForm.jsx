@@ -4,18 +4,24 @@ import { Mail, MapPin, Phone, Upload, ArrowUpRight } from 'lucide-react';
 const ContactForm = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="bg-background rounded-[40px] shadow-2xl flex flex-col md:flex-row max-w-5xl w-full overflow-hidden min-h-[800px] border border-gray-100 relative">
-        
+      <div className="bg-background rounded-[40px] shadow-2xl flex flex-col md:flex-row container w-full overflow-hidden min-h-[800px] border border-gray-100 relative">
+
         {/* Left Sidebar */}
         <div className="md:w-1/3 bg-background p-12 flex flex-col gap-12 border-r border-gray-100 relative">
-          
+
           {/* Background Image Integration */}
-          <div 
-            className="absolute bottom-0 left-0 w-full h-[350px] bg-no-repeat bg-contain bg-left-bottom opacity-90 pointer-events-none"
-            style={{ 
+          <div
+            className="absolute bottom-0 left-0 pointer-events-none bg-no-repeat bg-left-bottom"
+            style={{
               backgroundImage: `url('/photo/About US/schedule-bg.png')`,
-              zIndex: 0 
-            }} 
+              width: '800.82px', // আপনার দেওয়া সুনির্দিষ্ট বড় সাইজ
+              height: '800.82px',
+              backgroundSize: 'contain',
+              opacity: 0.9,
+              zIndex: 0,
+              maxWidth: '80vw', // যাতে স্ক্রিনের বাইরে গিয়ে আনুভূমিক স্ক্রলবার না আসে
+              maxHeight: '100%',
+            }}
           />
 
           <div className="relative z-10 flex flex-col gap-12">
