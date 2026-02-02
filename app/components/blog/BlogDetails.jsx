@@ -1,50 +1,103 @@
 "use client";
-import React from "react";
-import { Facebook as FbIcon, Twitter as TwIcon, Linkedin as LiIcon } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Facebook as FbIcon, Twitter as TwIcon, Linkedin as LiIcon, Youtube } from "lucide-react";
 
 const BlogDetails = ({ blogPost }) => {
+  // Hydration mismatch এড়ানোর জন্য মাউন্ট স্টেট চেক
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!blogPost) return null;
 
   const { title, author, date, image, content } = blogPost;
 
   return (
-    <section className="py-16 px-6 md:px-12 font-sans overflow-hidden bg-background">
-      <div className="max-w-4xl mx-auto">
-        
+    <section className="py-16 px-6 md:px-12 font-sans bg-background">
+      {/* ডিজাইন ঠিক রেখে উপরে তোলার জন্য relative z-10 এবং -mt-[200px] যোগ করা হয়েছে */}
+      <div className="container mx-auto px-4 md:px-20 relative z-10 -mt-[200px]">
+
         {/* Blog Meta Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6 border-b border-primary/10 pb-10">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-8 pb-12">
+
+          {/* Left Side: Title */}
           <div className="flex-1">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-primary leading-tight mb-6">
+            <h2
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: '500',
+                fontStyle: 'normal', // Medium weight
+                fontSize: '48px',
+                lineHeight: '120%',
+                letterSpacing: '0%',
+                textTransform: 'capitalize',
+                color: '#0A0A0A', // আপনার দেওয়া ব্যাকগ্রাউন্ড কোডটি কালার হিসেবে সেট করা হয়েছে
+                maxWidth: '700px'
+              }}
+            >
               {title}
             </h2>
-            <div className="flex items-center gap-4">
-              <img 
-                src={`https://ui-avatars.com/api/?name=${author || 'Hansi+Trans'}&background=0070c0&color=fff`} 
-                alt="Author" 
-                className="w-14 h-14 rounded-full object-cover border-2 border-primary/20 p-0.5" 
-              />
-              <div>
-                <p className="text-lg font-bold text-foreground">{author || "Hansi Trans Admin"}</p>
-                <p className="text-xs font-medium text-gray-400 uppercase tracking-widest">{date}</p>
-              </div>
-            </div>
           </div>
 
-          {/* Social Share - Using Primary Blue for interaction */}
-          <div className="flex flex-col items-start md:items-end gap-3">
-            <span className="text-[10px] font-black text-secondary/40 uppercase tracking-[0.2em]">Share Insights</span>
+          {/* Right Side: Author & Social Icons Group */}
+          <div className="flex flex-col items-start  gap-10">
+
+            {/* Author Info */}
+            <div className="flex items-center gap-3">
+              <img
+                src='/photo/avater.jpg'
+                alt="Author"
+                className="w-12 h-12 rounded-full object-cover shadow-sm"
+              />
+              <div className="flex flex-col">
+                <span
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: '500',
+                    fontStyle: 'normal', // Medium স্টাইল
+                    fontSize: '24px',
+                    lineHeight: '120%',
+                    letterSpacing: '0%',
+                    textTransform: 'capitalize',
+                    color: '#0F0F0F', // আপনার দেওয়া ব্যাকগ্রাউন্ড কোডটি এখানে কালার হিসেবে ব্যবহৃত
+                    display: 'block',
+                    marginBottom: '4px' // নিচের তারিখের সাথে সামঞ্জস্যপূর্ণ গ্যাপের জন্য
+                  }}
+                >
+                  {author || "Chung Hua"}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Poppins', sans-serif",
+                    fontWeight: '400',
+                    fontStyle: 'normal', // Regular style
+                    fontSize: '16px',
+                    lineHeight: '150%',
+                    letterSpacing: '0%',
+                    color: '#0A0A0A', // আপনার দেওয়া ব্যাকগ্রাউন্ড কোডটি কালার হিসেবে ব্যবহৃত
+                    display: 'block'
+                  }}
+                >
+                  Posted on {date || "12 Sep 2025"}
+                </span>
+              </div>
+            </div>
+
+            {/* Social Icons */}
             <div className="flex gap-2">
               {[
-                { Icon: FbIcon, label: "Facebook" },
-                { Icon: TwIcon, label: "Twitter" },
-                { Icon: LiIcon, label: "LinkedIn" }
-              ].map(({ Icon, label }, i) => (
-                <button 
+                { Icon: TwIcon, color: '#002C4C' },
+                { Icon: LiIcon, color: '#002C4C' },
+                { Icon: Youtube, color: '#002C4C' }
+              ].map((social, i) => (
+                <button
                   key={i}
-                  aria-label={label}
-                  className="p-3 bg-primary/5 text-primary rounded-xl hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"
+                  className="w-[34px] h-[34px] flex items-center justify-center rounded-full transition-transform hover:scale-110"
+                  style={{ backgroundColor: '#002C4C', color: 'white' }}
                 >
-                  <Icon size={18} />
+                  <social.Icon size={14} fill="currentColor" />
                 </button>
               ))}
             </div>
@@ -52,39 +105,413 @@ const BlogDetails = ({ blogPost }) => {
         </div>
 
         {/* Hero Banner Image */}
-        <div className="w-full aspect-video mb-12 rounded-[40px] overflow-hidden shadow-2xl shadow-primary/5 ring-1 ring-primary/10 bg-primary/5">
-          <img 
-            src={image} 
-            alt={title} 
-            className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000" 
+        <div
+          className="mb-12 overflow-hidden container mx-auto"
+          style={{
+            height: '620.84px', // আপনার দেওয়া সুনির্দিষ্ট ভ্যালু
+            borderRadius: '32px',
+            transform: 'rotate(0deg)',
+            maxWidth: '100%', // রেসপন্সিভনেস বজায় রাখার জন্য
+            marginInline: 'auto' // কন্টেইনারের মাঝখানে রাখার জন্য
+          }}
+        >
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000"
           />
         </div>
 
-        {/* Article Body - Styled with Brand Colors */}
-        <div 
-          className="prose prose-lg prose-blue max-w-none text-foreground/80 leading-relaxed 
-          prose-headings:text-secondary prose-headings:font-black 
-          prose-p:mb-8 prose-strong:text-secondary
-          prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-          prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-xl
-          prose-img:rounded-[32px] prose-img:shadow-lg"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-        
-        {/* Bottom Tag Section */}
-        <div className="mt-20 pt-10 border-t border-primary/10 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-               <span className="text-xs font-black text-secondary/40 uppercase tracking-widest">Category:</span>
-               <span className="px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full">
-                 {blogPost.category}
-               </span>
-            </div>
-            
-            {/* Branding Accent */}
-            <div className="text-xs font-medium text-gray-400">
-              © {new Date().getFullYear()} <span className="text-secondary font-bold">Hansi Trans</span> Localization.
-            </div>
+        {/* Article Body - suppressHydrationWarning যোগ করা হয়েছে mismatch এড়াতে */}
+        <h3
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal', // Medium
+            fontSize: '40px',
+            lineHeight: '120%',
+            letterSpacing: '0%',
+            textTransform: 'capitalize',
+            color: '#0F0F0F',// টেক্সটটি যাতে খুব বেশি ছড়িয়ে না যায়
+          }}
+        >
+          HS+ is a global partner for localization, multilingual voice-over, and cross-border marketing. Since 2010, we’ve helped leading game studios, anime creators, and tech innovators connect with audiences in over 40 languages.
+        </h3>
+        <p className="mt-6"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '400',
+            fontStyle: 'normal', // Regular
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#6B6B6B',
+            marginBottom: '24px', // প্যারাগ্রাফের মাঝে গ্যাপ রাখার জন্য
+          }}
+        >
+          When people hear the word “branding,” many immediately think of logos, colors, and fonts. While those are important, branding is much deeper—it’s about perception, emotion, and connection. Branding answers a vital question in every customer’s mind: “How does this make me feel?” When done right, branding shapes how customers experience your business—and how they remember it.
+        </p>
+
+        <h2
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal', // Medium
+            fontSize: '40px',
+            lineHeight: '120%',
+            letterSpacing: '0%',
+            textTransform: 'capitalize',
+            color: '#0F0F0F',
+            marginBottom: '20px', // নিচের প্যারাগ্রাফের সাথে গ্যাপের জন্য
+          }}
+        >
+          Introduction
+        </h2>
+        <p className="mt-6"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '400',
+            fontStyle: 'normal', // Regular
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#6B6B6B',
+            marginBottom: '24px', // প্যারাগ্রাফের মাঝে গ্যাপ রাখার জন্য
+          }}
+        >
+          When people hear the word “branding,” many immediately think of logos, colors, and fonts. While those are important, branding is much deeper—it’s about perception, emotion, and connection. Branding answers a vital question in every customer’s mind: “How does this make me feel?” When done right, branding shapes how customers experience your business—and how they remember it.
+        </p>
+        <h2
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal', // Medium
+            fontSize: '40px',
+            lineHeight: '120%',
+            letterSpacing: '0%',
+            textTransform: 'capitalize',
+            color: '#0F0F0F',
+            marginBottom: '20px', // নিচের প্যারাগ্রাফের সাথে গ্যাপের জন্য
+          }}
+        >
+          Understanding the Asian Gaming Market
+        </h2>
+        <p className="mt-6"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '400',
+            fontStyle: 'normal', // Regular
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#6B6B6B',
+            marginBottom: '24px', // প্যারাগ্রাফের মাঝে গ্যাপ রাখার জন্য
+          }}
+        >
+          Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.
+        </p>
+        <ol
+          className="space-y-4 list-decimal pl-5 "
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal',
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#0F0F0F' // background: #0F0F0F কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+          }}
+        >
+          <li>Mobile gaming dominates in China and SEA.</li>
+          <li>Japan has a strong console and anime-driven game culture.</li>
+          <li>Korea is a leader in esports and PC cafe gaming.</li>
+          <li>SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.</li>
+        </ol>
+        <p
+          className=""
+          style={{
+            fontFamily: "'Poppins', sans-serif", // 'Family/Paragraph' সাধারণত Poppins বা একই ধরণের ফন্টকে বোঝায়
+            fontWeight: '500',
+            fontStyle: 'normal',
+            fontSize: '18px',
+            lineHeight: '150%',
+            letterSpacing: '0%',
+            color: '#015FA4',
+          }}
+        >
+          👉 Key takeaway: One region ≠ one strategy. Treat each country uniquely.
+        </p>
+
+        <h2 className="mt-6"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal', // Medium
+            fontSize: '40px',
+            lineHeight: '120%',
+            letterSpacing: '0%',
+            textTransform: 'capitalize',
+            color: '#0F0F0F',
+            marginBottom: '20px', // নিচের প্যারাগ্রাফের সাথে গ্যাপের জন্য
+          }}
+        >
+          The Role of Localization Beyond Translation
+        </h2>
+        <p className="mt-6"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '400',
+            fontStyle: 'normal', // Regular
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#6B6B6B',
+            marginBottom: '24px', // প্যারাগ্রাফের মাঝে গ্যাপ রাখার জন্য
+          }}
+        >
+          Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.
+        </p>
+        <ol
+          className="space-y-4 list-decimal pl-5 "
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal',
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#0F0F0F' // background: #0F0F0F কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+          }}
+        >
+          <li>Mobile gaming dominates in China and SEA.</li>
+          <li>Japan has a strong console and anime-driven game culture.</li>
+          <li>Korea is a leader in esports and PC cafe gaming.</li>
+          <li>SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.</li>
+        </ol>
+        <p
+          className=""
+          style={{
+            fontFamily: "'Poppins', sans-serif", // 'Family/Paragraph' সাধারণত Poppins বা একই ধরণের ফন্টকে বোঝায়
+            fontWeight: '500',
+            fontStyle: 'normal',
+            fontSize: '18px',
+            lineHeight: '150%',
+            letterSpacing: '0%',
+            color: '#015FA4',
+          }}
+        >
+          👉 Key takeaway: One region ≠ one strategy. Treat each country uniquely.
+        </p>
+
+
+        {/* ============================================================================================================================================================= */}
+        <div
+          className="mb-12 mt-12 overflow-hidden container mx-auto"
+          style={{
+            height: '480px', // আপনার দেওয়া নতুন হাইট
+            borderRadius: '24px', // ৩২ থেকে কমিয়ে ২৪ করা হয়েছে
+            opacity: 1,
+            transform: 'rotate(0deg)',
+            maxWidth: '100%',
+            marginInline: 'auto'
+          }}
+        >
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000"
+          />
         </div>
+        <h2 className="mt-6"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal', // Medium
+            fontSize: '40px',
+            lineHeight: '120%',
+            letterSpacing: '0%',
+            textTransform: 'capitalize',
+            color: '#0F0F0F',
+            marginBottom: '20px', // নিচের প্যারাগ্রাফের সাথে গ্যাপের জন্য
+          }}
+        >
+          Multilingual Voice-Over: Bringing Characters to Life
+        </h2>
+        <p className="mt-6"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '400',
+            fontStyle: 'normal', // Regular
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#6B6B6B',
+            marginBottom: '24px', // প্যারাগ্রাফের মাঝে গ্যাপ রাখার জন্য
+          }}
+        >
+          Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.
+        </p>
+        <ol
+          className="space-y-4 list-decimal pl-5 "
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: '500',
+            fontStyle: 'normal',
+            fontSize: '18px',
+            lineHeight: '160%',
+            letterSpacing: '0%',
+            color: '#0F0F0F' // background: #0F0F0F কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+          }}
+        >
+          <li>Mobile gaming dominates in China and SEA.</li>
+          <li>Japan has a strong console and anime-driven game culture.</li>
+          <li>Korea is a leader in esports and PC cafe gaming.</li>
+          <li>SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.</li>
+        </ol>
+
+
+
+        {/* ============================================================================================================================================ */}
+
+        <div className="container mx-auto py-10 font-sans">
+
+          {/* Content Section */}
+          <div className="mb-12">
+            <h3 style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: '500',
+              fontStyle: 'normal', // Medium
+              fontSize: '40px',
+              lineHeight: '120%',
+              letterSpacing: '0%',
+              textTransform: 'capitalize',
+              color: '#0F0F0F',
+              marginBottom: '20px', // নিচের প্যারাগ্রাফের সাথে গ্যাপের জন্য
+            }}>
+              Influencer & KOL Marketing For Games
+            </h3>
+
+            <div className="space-y-6">
+              {[
+                { title: "1. Brand Identity (Visuals)", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." },
+                { title: "2. Tone of Voice", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." },
+                { title: "3. Brand Story", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." },
+                { title: "4. User Experience (UX)", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." }
+              ].map((item, index) => (
+                <div key={index}>
+                  <h4
+                    style={{
+                      fontFamily: "'Poppins', sans-serif", // Paragraph font family (Poppins)
+                      fontWeight: '500',
+                      fontStyle: 'normal', // Medium weight
+                      fontSize: '18px',
+                      lineHeight: '150%',
+                      letterSpacing: '0%',
+                      color: '#0F0F0F', // আপনার দেওয়া ব্যাকগ্রাউন্ড কোডটি কালার হিসেবে সেট করা হয়েছে
+                      marginBottom: '4px',
+                      display: 'block'
+                    }}
+                  >
+                    {item.title}
+                  </h4>
+                  <p
+                    style={{
+                      fontFamily: "'Poppins', sans-serif", // Family/Body font
+                      fontWeight: '500',
+                      fontStyle: 'normal', // Medium style
+                      fontSize: '16px',
+                      lineHeight: '160%',
+                      letterSpacing: '0.01em', // 1% letter spacing
+                      color: '#575757', // আপনার দেওয়া নতুন কালার কোড
+                      marginBottom: '16px'
+                    }}
+                  >
+                    {item.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="mb-12 mt-12 overflow-hidden container mx-auto"
+            style={{
+              height: '480px', // আপনার দেওয়া নতুন হাইট
+              borderRadius: '24px', // ৩২ থেকে কমিয়ে ২৪ করা হয়েছে
+              opacity: 1,
+              transform: 'rotate(0deg)',
+              maxWidth: '100%',
+              marginInline: 'auto'
+            }}
+          >
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000"
+            />
+          </div>
+
+          {/* The Quote Box - Exactly like the image */}
+          <div
+            className="my-12 p-8 text-center"
+            style={{
+              border: '2px dashed #0168B4', // ইমেজের মতো নীল ড্যাশড বর্ডার
+              borderRadius: '24px',
+              backgroundColor: 'transparent'
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: '500',
+                fontStyle: 'normal', // Medium
+                fontSize: '40px',
+                lineHeight: '120%',
+                letterSpacing: '0%',
+                textTransform: 'capitalize',
+                color: '#0168B4', // আপনার দেওয়া নীল কালার কোডটি টেক্সট কালার হিসেবে
+                textAlign: 'center',
+                verticalAlign: 'middle'
+              }}
+            >
+              "People Will Forget What You Said, But They'll Remember How Your Brand Made Them Feel."
+            </h2>
+          </div>
+
+          {/* Conclusion Section */}
+          <div className="mt-12">
+            <h3
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: '500',
+                fontStyle: 'normal', // Medium
+                fontSize: '40px',
+                lineHeight: '120%',
+                letterSpacing: '0%',
+                textTransform: 'capitalize',
+                color: '#0F0F0F',
+                marginBottom: '16px'
+              }}
+            >
+              Conclusion
+            </h3>
+            <p
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: '400',
+                fontStyle: 'normal', // Regular
+                fontSize: '18px',
+                lineHeight: '160%',
+                letterSpacing: '0%',
+                color: '#6B6B6B', // আপনার দেওয়া কালার কোড
+                marginTop: '16px'
+              }}
+            >
+              Expanding into Asian markets is more than just translation—it's about building authentic cultural connections. By combining localization, high-quality voice-over, and region-specific marketing, you can scale your game successfully.
+            </p>
+          </div>
+        </div>
+
       </div>
     </section>
   );

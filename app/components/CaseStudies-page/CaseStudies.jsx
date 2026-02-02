@@ -43,7 +43,7 @@ const CaseStudies = () => {
   };
 
   return (
-    <section className="overflow-hidden relative ">
+    <section className="overflow-hidden relative mt-[-200px]">
       <div className="relative w-full flex justify-center items-center">
         <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4">
           {slides.map((slide, index) => {
