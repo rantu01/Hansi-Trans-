@@ -45,7 +45,7 @@ const BlogPage = () => {
       {/* এখানে relative এবং z-10 যোগ করা হয়েছে যাতে নেগেটিভ মার্জিন দিলেও 
           কন্টেন্টটি উপরের সেকশনের নিচে না যায়। mt-[-200px] ব্যবহার করা হয়েছে।
       */}
-      <div className="container mx-auto px-20 relative z-10 -mt-[200px]">
+      <div className="container mx-auto px-20 relative z-1 -mt-[200px]">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
           <div className="space-y-4">

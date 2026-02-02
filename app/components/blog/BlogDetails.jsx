@@ -17,7 +17,7 @@ const BlogDetails = ({ blogPost }) => {
   return (
     <section className="py-16 px-6 md:px-12 font-sans bg-background">
       {/* ডিজাইন ঠিক রেখে উপরে তোলার জন্য relative z-10 এবং -mt-[200px] যোগ করা হয়েছে */}
-      <div className="container mx-auto px-4 md:px-20 relative z-10 -mt-[200px]">
+      <div className="container mx-auto px-4 md:px-20 relative z-1 -mt-[200px]">
 
         {/* Blog Meta Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-8 pb-12">
