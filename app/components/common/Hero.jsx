@@ -80,7 +80,7 @@ const Hero = ({
       {/* overlay - Using secondary color with opacity for depth */}
       <div className="absolute inset-0 bg-secondary/40 z-0"></div>
 
-      <div className="container mx-auto px-6 md:px-6 relative z-10 pt-2 flex-grow flex flex-col">
+      <div className="container mx-auto relative z-10 pt-2 flex-grow flex flex-col">
         {/* ================= NAVBAR ================= */}
         <nav className="relative z-50 mb-16">
           <div className="flex justify-between items-center">

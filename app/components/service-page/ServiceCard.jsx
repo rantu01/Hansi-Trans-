@@ -4,52 +4,112 @@ import { ArrowUpRight } from "lucide-react";
 
 const ServiceCard = ({ service }) => {
   return (
-    <section className="py-20 px-6 md:px-12 font-sans ">
+    <section className="py-10 px-6 md:px-12">
       <div className="container mx-auto">
         <div
-          /* Default to a very light version of primary (bg-primary/5) 
-             if no specific branded color is passed.
-          */
-          className={`${service.bgColor || "bg-primary/5"} rounded-[40px] p-8 md:p-12 flex flex-col md:flex-row items-center gap-12 shadow-xl shadow-primary/5 border border-primary/10`}
+          style={{
+            background: "linear-gradient(180deg, #A9DAFF 0%, #CCE7FB 45%, #F7F7F7 100%)",
+          }}
+          className="rounded-[45px] md:rounded-[60px] p-8 md:p-12 flex flex-col lg:flex-row items-center gap-10 border border-white/50 shadow-lg transition-all duration-500 hover:shadow-xl"
         >
           {/* Text Content */}
           <div className="flex-1 space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            <h3
+              style={{
+                color: "#0A0A0A",
+                fontFamily: "Inter, sans-serif",
+                fontSize: "clamp(26px, 3vw, 42px)",
+                fontWeight: "600",
+                lineHeight: "1.2",
+              }}
+            >
               {service.title}
-            </h2>
-            <p className="text-gray-500 text-sm md:text-base leading-relaxed">
+            </h3>
+            
+            <p
+              style={{
+                color: "#616161",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "16px",
+                lineHeight: "1.6",
+              }}
+            >
               {service.description}
             </p>
 
-            <div className="space-y-3">
-              <p className="font-bold text-secondary uppercase text-xs tracking-wider">
+            {/* Key Features Section */}
+            <div className="space-y-4 pt-2">
+              <h4
+                style={{
+                  color: "#090E2F",
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: "18px",
+                  fontWeight: "600",
+                }}
+              >
                 Key Features:
-              </p>
-              <ul className="grid grid-cols-1 gap-2">
-                {service.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-gray-600 text-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    {feat}
+              </h4>
+
+              <ul className="grid grid-cols-1 md:grid-cols-1 gap-x-4 gap-y-3">
+                {service.features?.slice(0, 4).map((feature, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 transition-all duration-300 hover:translate-x-1"
+                  >
+                    {/* Minimalist Black Bullet matching the design */}
+                    <span
+                      className="w-2 h-2 rounded-full bg-black shrink-0"
+                      style={{ opacity: 0.8 }}
+                    />
+
+                    <span
+                      style={{
+                        color: "#0A0A0A",
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <button className="inline-flex items-center gap-3 bg-primary hover:bg-accent text-white px-8 py-3 rounded-full text-sm font-bold transition-all group mt-4 shadow-lg shadow-primary/20">
-              Explore More
-              <span className="bg-white rounded-full p-1 group-hover:rotate-45 transition-transform duration-300">
-                <ArrowUpRight size={16} className="text-primary" />
+            {/* Premium Button Action */}
+            <button
+              className="group inline-flex items-center justify-center transition-all duration-300 rounded-full mt-4"
+              style={{
+                height: "52px",
+                padding: "4px 4px 4px 20px",
+                gap: "12px",
+                background: "#0168B4",
+                color: "#FFF",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "15px",
+                fontWeight: "500",
+              }}
+            >
+              Explore Services
+              <span
+                className="bg-white rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
+                style={{ width: "44px", height: "44px" }}
+              >
+                <ArrowUpRight className="w-6 h-6 text-[#0168B4]" strokeWidth={2.5} />
               </span>
             </button>
           </div>
 
-          {/* Image Content */}
-          <div className="flex-1 w-full h-[300px] md:h-[450px] overflow-hidden rounded-[30px] group/img">
-            <img
-              src={service.image}
-              alt={service.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
-            />
+          {/* Image Container with high-radius corners and subtle border */}
+          <div className="flex-1 w-full h-[320px] md:h-[420px]">
+            <div className="relative rounded-[35px] md:rounded-[50px] overflow-hidden h-full border-4 border-white/30 shadow-inner">
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              />
+            </div>
           </div>
         </div>
       </div>

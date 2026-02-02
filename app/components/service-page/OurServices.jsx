@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
@@ -14,6 +14,7 @@ const OurServices = () => {
       try {
         const response = await axios.get(API.services.main);
         if (response.data.success) {
+          // Filtering main services (excluding sub-services)
           const mainServices = response.data.data.filter(
             (service) => !service.parentService
           );
@@ -31,59 +32,172 @@ const OurServices = () => {
   if (loading) return null;
 
   return (
-    <section className="bg-background py-20 px-6 md:px-12 font-sans">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <section className="bg-[#F7F7F7] py-20 px-6 md:px-12">
+      <div className="container mx-auto">
+        {/* Header matching the provided image style */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
-          <div className="max-w-xl">
-            {/* Badge updated to use primary theme colors */}
-            <div className="flex items-center gap-2 bg-primary/5 px-4 py-1.5 rounded-full mb-6 w-fit border border-primary/10">
-              <Sparkles size={14} className="text-primary" />
-              <span className="text-xs font-semibold text-primary uppercase tracking-widest">
+          <div className="max-w-2xl">
+            <div
+              className="inline-flex items-center justify-center mb-6"
+              style={{
+                height: "50px",
+                padding: "8px 20px",
+                gap: "8px",
+                borderRadius: "49px",
+                background: "#FFF",
+              }}
+            >
+              <img
+                src="/Frame.svg"
+                alt="icon"
+                style={{ width: "20px", height: "20px", objectFit: "contain" }}
+              />
+              <span
+                style={{
+                  color: "#404040",
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                }}
+              >
                 Service
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-tight">
-              Our Best Valuable <br /> Service For You
+            <h2
+              style={{
+                color: "#0168B4",
+                fontFamily: "Inter, sans-serif",
+                fontSize: "clamp(32px, 5vw, 54px)",
+                fontWeight: "600",
+                lineHeight: "1.1",
+              }}
+            >
+              Our Best Valuable <br className="hidden md:block" /> Service For You
             </h2>
+          </div>
+          <div className="max-w-lg">
+            <p
+              style={{
+                color: "#6B6B6B",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "15px",
+                lineHeight: "1.6",
+              }}
+            >
+              Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
+            </p>
           </div>
         </div>
 
-        {/* Services List */}
-        <div className="space-y-12">
+        {/* Services List with Image-accurate styling */}
+        <div className="space-y-10">
           {serviceList.map((service, index) => (
             <div
-              key={service.slug}
-              className={`rounded-[40px] p-8 md:p-12 flex flex-col ${
-                index % 2 !== 0 ? "md:flex-row-reverse" : "md:flex-row"
-              } items-center gap-12 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 border border-primary/5 
-              ${index % 2 === 0 ? "bg-primary/30" : "bg-gradient-base/10"}`} // Alternates between primary blue and sky blue theme
+              key={service.slug || index}
+              style={{
+                background: "linear-gradient(180deg, #A9DAFF 0%, #CCE7FB 45%, #F7F7F7 100%)",
+              }}
+              className={`rounded-[45px] md:rounded-[60px] p-8 md:p-12 flex flex-col ${index % 2 !== 0 ? "lg:flex-row-reverse" : "lg:flex-row"
+                } items-center gap-10 border border-white/50 shadow-lg`}
             >
               {/* Text Content */}
               <div className="flex-1 space-y-6">
-                <h3 className="text-3xl font-bold text-foreground">{service.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed md:text-base">
+                <h3
+                  style={{
+                    color: "#0A0A0A",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "clamp(26px, 3vw, 42px)",
+                    fontWeight: "600",
+                  }}
+                >
+                  {service.title}
+                </h3>
+                <p
+                  style={{
+                    color: "#616161",
+                    fontFamily: "Poppins, sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.6",
+                  }}
+                >
                   {service.description}
                 </p>
 
+                {/* Features list based on image design */}
+                {/* Key Features Section */}
+                <div className="space-y-4 mb-10">
+                  <h4
+                    style={{
+                      color: "#090E2F",
+                      fontFamily: "Poppins, sans-serif",
+                      fontSize: "18px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Key Features:
+                  </h4>
+
+                  <ul className="grid grid-cols-1 md:grid-cols-1 gap-x-4 gap-y-3">
+                    {service.features?.slice(0, 4).map((feature, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-3 transition-all duration-300 hover:translate-x-1"
+                      >
+                        {/* Custom Dot/Bullet */}
+                        <span
+                          className="w-2 h-2 rounded-full bg-black shrink-0"
+                          style={{ opacity: 0.8 }}
+                        />
+
+                        <span
+                          style={{
+                            color: "#0A0A0A",
+                            fontFamily: "Poppins, sans-serif",
+                            fontSize: "15px",
+                            fontWeight: "400",
+                            lineHeight: "1.4"
+                          }}
+                        >
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 <Link
                   href={`/services/${service.slug}`}
-                  className="inline-flex items-center gap-3 bg-primary hover:bg-accent text-white px-8 py-3 rounded-full text-sm font-bold transition-all group"
+                  className="group inline-flex items-center justify-center transition-all duration-300 rounded-full"
+                  style={{
+                    height: "52px",
+                    padding: "4px 4px 4px 20px",
+                    gap: "12px",
+                    background: "#0168B4",
+                    color: "#FFF",
+                    fontFamily: "Poppins, sans-serif",
+                    fontSize: "15px",
+                    fontWeight: "500",
+                  }}
                 >
                   Explore Services
-                  <span className="bg-white rounded-full p-1 group-hover:rotate-45 transition-transform duration-300">
-                    <ArrowUpRight size={16} className="text-primary" />
+                  <span
+                    className="bg-white rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
+                    style={{ width: "44px", height: "44px" }}
+                  >
+                    <ArrowUpRight className="w-7 h-7 text-[#0168B4]" />
                   </span>
                 </Link>
               </div>
 
-              {/* Image Content */}
-              <div className="flex-1 w-full h-[300px] md:h-[450px] overflow-hidden rounded-[30px] group/img">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
-                />
+              {/* Image Container matching rounded borders in screenshot */}
+              <div className="flex-1 w-full h-[320px] md:h-[420px]">
+                <div className="relative rounded-[35px] md:rounded-[50px] overflow-hidden h-full border-4 border-white/20">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
           ))}
