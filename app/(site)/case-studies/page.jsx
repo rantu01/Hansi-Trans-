@@ -11,8 +11,9 @@ export default function ContactPage() {
         breadcrumb="Home › Case Studies"
         description="Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."
       >
-        <CaseStudies></CaseStudies>
+        
       </Hero>
+      <CaseStudies></CaseStudies>
       <FeaturedCaseStudies></FeaturedCaseStudies>
       
     </PublicLayout>

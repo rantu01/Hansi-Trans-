@@ -57,7 +57,7 @@ const Hero = ({
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden text-white flex flex-col bg-secondary">
+    <section className="relative  w-full overflow-hidden text-white flex flex-col bg-secondary">
 
       {/* 🔹 VIDEO BACKGROUND */}
       <video
@@ -187,39 +187,9 @@ const Hero = ({
                     </span>
                   </Link>
                 </div>
-
-                <button className="md:hidden p-2 z-50" onClick={() => setMenuOpen(!menuOpen)}>
-                  {menuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
               </div>
 
-              {/* Mobile Menu */}
-              <AnimatePresence>
-                {menuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
-                  >
-                    {navLinks.map((item) => (
-                      <button
-                        key={item.name}
-                        className="text-xl hover:text-primary transition-colors text-white"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          if (item.isOthers) setIsModalOpen(true);
-                        }}
-                      >
-                        {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
-                      </button>
-                    ))}
-                    <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-primary text-center w-full max-w-xs py-3 rounded-full font-semibold text-white">
-                      Let's connect
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              
             </nav>
 
             {/* Right Action */}
@@ -317,7 +287,7 @@ const Hero = ({
         </AnimatePresence>
 
         {/* ================= HERO CONTENT ================= */}
-        <div className="relative mt-auto mb-40 md:mb-60">
+        <div className="relative mt-auto mb-20 md:mb-60 mx-25">
           <div className="flex flex-col md:flex-row justify-between items-end pb-4">
             {/* Left */}
             <div className="w-full md:w-1/2 mb-10 md:-mb-30">

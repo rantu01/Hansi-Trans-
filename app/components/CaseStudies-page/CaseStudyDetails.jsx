@@ -37,7 +37,7 @@ const CaseStudiesDetails = () => {
 
   return (
     <section className="py-16 px-6 md:px-12 font-sans">
-      <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto">
         {/* Main Case Study Image Container */}
         <div 
           className="w-full h-[300px] md:h-[500px] mb-12 overflow-hidden rounded-[40px] 
@@ -55,12 +55,12 @@ const CaseStudiesDetails = () => {
         </div>
 
         {/* Content Section (Optional: for title and description if needed) */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <h1 className="text-3xl md:text-5xl font-bold text-fourground leading-tight">
             {caseStudy.title}
           </h1>
           <div className="w-20 h-1.5 bg-primary rounded-full" />
-        </div>
+        </div> */}
       </div>
     </section>
   );

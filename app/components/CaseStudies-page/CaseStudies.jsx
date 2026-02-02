@@ -43,7 +43,7 @@ const CaseStudies = () => {
   };
 
   return (
-    <section className="py-20 overflow-hidden relative ">
+    <section className="overflow-hidden relative ">
       <div className="relative w-full flex justify-center items-center">
         <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4">
           {slides.map((slide, index) => {
@@ -82,7 +82,7 @@ const CaseStudies = () => {
         </div>
 
         {/* Navigation Buttons - Styled with Brand Colors */}
-        <button
+        {/* <button
           onClick={prevSlide}
           className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-background border border-primary/10 text-primary rounded-full shadow-xl hover:bg-primary hover:text-white transition-all z-30 group"
         >
@@ -93,7 +93,7 @@ const CaseStudies = () => {
           className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-background border border-primary/10 text-primary rounded-full shadow-xl hover:bg-primary hover:text-white transition-all z-30 group"
         >
           <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
-        </button>
+        </button> */}
       </div>
 
       {/* Pagination Dots - Brand Synchronized */}
