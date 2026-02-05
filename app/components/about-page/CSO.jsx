@@ -220,7 +220,7 @@ const CEO = () => {
             <img
               src={ceo?.image || "/photo/About US/portrait-successful-business-woman 1.png"}
               alt="CEO"
-              className="relative z-10 w-full max-w-[550px] object-contain"
+              className="relative z-10 w-full max-w-[600px] object-contain"
               style={{ display: 'block' }}
             />
           </div>
