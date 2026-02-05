@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import * as Icons from "lucide-react";
 import { ChevronDown } from "lucide-react";
 import { API } from "@/app/config/api";
 
@@ -24,9 +23,19 @@ const Domains = () => {
     fetchDomains();
   }, []);
 
-  const renderIcon = (iconName) => {
-    const IconComponent = Icons[iconName];
-    return IconComponent ? <IconComponent className="text-primary w-6 h-6" /> : <Icons.HelpCircle className="text-primary w-6 h-6" />;
+  const renderIcon = (title) => {
+    const name = title?.toLowerCase().trim();
+    let src = "/icon/HelpCircle.svg"; 
+
+    if (name.includes("anime")) src = "/icon/Anime.svg";
+    else if (name.includes("saas") || name.includes("app")) src = "/icon/app & saas.svg";
+    else if (name.includes("comic") || name.includes("manga")) src = "/icon/Comic & Manga.svg";
+    else if (name.includes("entertainment")) src = "/icon/Entertainment IP.svg";
+    else if (name.includes("game")) src = "/icon/game.svg";
+    else if (name.includes("life science")) src = "/icon/Life Sciences.svg";
+    else if (name.includes("marketing") || name.includes("adtech") || name.includes("retail") || name.includes("ecom")) src = "/icon/Marketing & AdTech.svg";
+
+    return <img src={src} alt={title} className="w-[40px] h-[40px] object-contain" />;
   };
 
   if (loading) return <div className="py-20 text-center text-primary font-medium">Loading Domains...</div>;
@@ -34,13 +43,12 @@ const Domains = () => {
   return (
     <section
       style={{
-        // Updated Linear Gradient
         background: 'linear-gradient(0deg, #F7F7F7 0%, #CCE7FB 55.48%, #A9DAFF 100%)'
       }}
       className="bg-primary/10 py-20 px-6 md:px-12 font-sans relative overflow-hidden">
       <div className="container mx-auto">
 
-        {/* Header Section - Unchanged */}
+        {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
           <div className="max-w-xl">
             <div className="inline-flex items-center justify-center mb-6" style={{ display: 'flex', height: '50px', width: '150px', padding: '8px 16px', gap: '8px', borderRadius: '49px', background: '#F5f5f5' }}>
@@ -58,13 +66,14 @@ const Domains = () => {
           </div>
         </div>
 
-        {/* Dynamic Grid - Ekhane showAll toggle kaj korbe */}
+        {/* Dynamic Grid - Smoothly Expanding */}
         <div
-          className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-700 ease-in-out"
+          className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           style={{
-            // 1050px (2 rows) + pray 200px (3rd row er half) = 1250px
+            // maxHeight animation logic
             maxHeight: showAll ? '4000px' : '1250px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            transition: 'max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
         >
           {domainsData.map((domain, index) => (
@@ -77,7 +86,7 @@ const Domains = () => {
               }}
             >
               <div className="w-[60px] h-[60px] bg-white rounded-full flex items-center justify-center mb-6 transition-colors duration-300">
-                {renderIcon(domain.icon)}
+                {renderIcon(domain.title)}
               </div>
 
               <h3 className="mb-3" style={{ fontFamily: 'Inter, sans-serif', fontWeight: '500', fontSize: '28px', color: '#0A0A0A', textTransform: 'capitalize' }}>
@@ -98,17 +107,16 @@ const Domains = () => {
             </div>
           ))}
 
-          {/* Glass Overlay - Jeta nicher card guloke blurred rakhbe */}
-          {!showAll && (
-            <div
-              className="absolute bottom-0 left-0 w-full z-10 pointer-events-none transition-opacity duration-500 rounded-2xl"
-              style={{
-                height: '282px', // 3rd row er half theke shuru hoye niche porjonto
-                background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1))',
-                backdropFilter: 'blur(3px)'
-              }}
-            />
-          )}
+          {/* Glass Overlay with Opacity transition */}
+          <div
+            className="absolute bottom-0 left-0 w-full z-10 pointer-events-none rounded-2xl transition-opacity duration-700"
+            style={{
+              height: '282px',
+              background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1))',
+              backdropFilter: 'blur(3px)',
+              opacity: showAll ? 0 : 1
+            }}
+          />
         </div>
 
         {/* Smooth Expand Button */}
