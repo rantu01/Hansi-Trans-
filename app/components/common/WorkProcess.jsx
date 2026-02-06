@@ -468,7 +468,6 @@ const WorkProcess = () => {
                   gap: '16px',
                   alignSelf: 'stretch',
                   borderRadius: '32px',
-                  background: 'linear-gradient(0deg, #F7F7F7 0%, #CCE7FB 55.48%, #A9DAFF 100%)',
                 }}
               >
                 <div className="text-left">

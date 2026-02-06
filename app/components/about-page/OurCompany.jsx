@@ -65,8 +65,8 @@ const OurCompany = () => {
   );
 
   return (
-    <div className="bg-white py-20 px-6 md:px-12 font-sans text-foreground">
-      <div className="container mx-auto">
+    <div className="bg-white py-20 px-6 mx-7 md:px-12 font-sans text-foreground rounded-[32px]">
+      <div className="container mx-auto ">
 
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-8">

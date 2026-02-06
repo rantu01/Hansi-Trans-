@@ -216,7 +216,9 @@ const CEO = () => {
         {/* Right Image Section */}
         <div className="relative flex justify-end items-end h-full">
           <div className="relative">
-            <div className="absolute inset-0 bg-black/20 blur-2xl rounded-full translate-y-10 scale-90"></div>
+            {/* Shadow only on the right side */}
+            <div className="absolute inset-0 bg-black/20 blur-3xl rounded-full translate-y-6 translate-x-12 scale-60"></div>
+
             <img
               src={ceo?.image || "/photo/About US/portrait-successful-business-woman 1.png"}
               alt="CEO"

@@ -3,8 +3,8 @@ import { Mail, MapPin, Phone, Upload, ArrowUpRight } from 'lucide-react';
 
 const ContactForm = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="bg-background rounded-[40px] shadow-2xl flex flex-col md:flex-row container w-full overflow-hidden min-h-[800px] border border-gray-100 relative">
+    <div className="min-h-screen flex items-center justify-center p-4 my-20">
+      <div className="bg-background rounded-[40px]  flex flex-col md:flex-row container w-full overflow-hidden min-h-[800px]  relative">
 
         {/* Left Sidebar */}
         <div className="md:w-1/3 bg-background p-12 flex flex-col gap-12 border-r border-gray-100 relative">

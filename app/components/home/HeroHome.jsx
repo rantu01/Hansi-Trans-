@@ -167,7 +167,7 @@ const HansiTrans = () => {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="appearance-none flex h-[52px] w-full px-[20px] pr-[48px] py-[4px] justify-center items-center gap-3 rounded-full bg-[#0A0A0A] border border-white/20 text-white text-sm outline-none cursor-pointer"
+                className="appearance-none flex h-[56px] w-full px-[20px] pr-[48px] py-[4px] justify-center items-center gap-3 rounded-full bg-[#0A0A0A] border border-white/20 text-white text-sm outline-none cursor-pointer"
               >
                 <option value="EN">EN</option>
                 <option value="ES">ES</option>
@@ -253,7 +253,7 @@ const HansiTrans = () => {
           <p
             className="mx-auto mb-8 max-w-4xl px-2 capitalize"
             style={{
-              color: '#0A0A0A',
+              color: '#ffff',
               textAlign: 'center',
               fontFamily: 'var(--font-poppins), sans-serif',
               fontSize: '18px',

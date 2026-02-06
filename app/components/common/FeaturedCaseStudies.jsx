@@ -164,7 +164,7 @@ const FeaturedCaseStudies = () => {
             <div
               key={item._id || index}
               className={`flex flex-col ${item.isReverse ? "lg:flex-row-reverse" : "lg:flex-row"
-                } bg-background rounded-[40px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group`}
+                } bg-white rounded-[40px] overflow-hidden group`}
             >
               {/* Image Section */}
               <div className="w-full lg:w-1/2 h-[350px] md:h-[700px]  lg:h-[720] overflow-hidden">

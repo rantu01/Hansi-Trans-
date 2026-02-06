@@ -112,24 +112,28 @@ const Domains = () => {
             className="absolute bottom-0 left-0 w-full z-10 pointer-events-none rounded-2xl transition-opacity duration-700"
             style={{
               height: '282px',
-              background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1))',
-              backdropFilter: 'blur(3px)',
+              background: 'linear-gradient(to bottom, transparent, rgba(237, 243, 248, 0.8) 50%, #edf3f8)',
+              backdropFilter: 'blur(4px)',
               opacity: showAll ? 0 : 1
             }}
           />
         </div>
 
-        {/* Smooth Expand Button */}
-        {!showAll && (
-          <div className="flex justify-center mt-12 relative z-20">
-            <button
-              onClick={() => setShowAll(true)}
-              className="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all shadow-xl shadow-primary/30 border-4 border-white animate-bounce"
-            >
-              <ChevronDown size={32} />
-            </button>
-          </div>
-        )}
+        {/* Smooth Expand/Collapse Button */}
+        <div className="flex justify-center mt-12 relative z-20">
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className={`w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all shadow-xl shadow-primary/30 border-4 border-white ${!showAll ? "animate-bounce" : ""}`}
+          >
+            <ChevronDown 
+              size={32} 
+              style={{ 
+                transform: showAll ? 'rotate(180deg)' : 'rotate(0deg)', 
+                transition: 'transform 0.5s ease' 
+              }} 
+            />
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -9,7 +9,8 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("All");
 
-  const categories = ["All", "Games", "Voice", "Tech Innovations"];
+  // ইমেজ অনুযায়ী "Games" থেকে কমিয়ে "Game" করা হয়েছে যাতে ফিল্টার ট্যাগ ম্যাচ করে
+  const categories = ["All", "Game", "Voice", "Tech Innovations"];
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -27,6 +28,7 @@ const BlogPage = () => {
     fetchBlogs();
   }, []);
 
+  // ফিল্টার লজিক: activeFilter যদি "All" না হয় তবে post.filterTag এর সাথে চেক করবে
   const filteredPosts =
     activeFilter === "All"
       ? blogs
@@ -42,9 +44,6 @@ const BlogPage = () => {
 
   return (
     <section className="py-16 px-6 md:px-12 font-sans bg-background">
-      {/* এখানে relative এবং z-10 যোগ করা হয়েছে যাতে নেগেটিভ মার্জিন দিলেও 
-          কন্টেন্টটি উপরের সেকশনের নিচে না যায়। mt-[-200px] ব্যবহার করা হয়েছে।
-      */}
       <div className="container mx-auto px-20 relative z-1 -mt-[200px]">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
@@ -59,7 +58,7 @@ const BlogPage = () => {
                 gap: '8px',
                 borderRadius: '49px',
                 background: '#FFF',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.05)' // হালকা শ্যাডো যাতে সাদার ওপর সাদা বোঝা যায়
+                boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
               }}
             >
               <img
@@ -86,30 +85,28 @@ const BlogPage = () => {
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: '500',
-                fontStyle: 'normal', // 'Medium' weight 500 কে নির্দেশ করে
+                fontStyle: 'normal',
                 fontSize: '60px',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
-                color: '#0168B4', // আপনার দেওয়া ব্যাকগ্রাউন্ড কোডটি এখানে টেক্সট কালার হিসেবে ব্যবহৃত
+                color: '#0168B4',
               }}
             >
               Exploring ideas with <br /> the Hansi Trans
             </h2>
           </div>
 
-          {/* Filter Bar */}
+          {/* Filter Bar - হুবহু ইমেজ ডিজাইন */}
           <div
-            className="flex items-center  shadow-lg shadow-secondary/10"
+            className="flex items-center"
             style={{
               width: '526px',
               height: '85px',
               borderRadius: '100px',
               justifyContent: 'space-between',
-              opacity: 1,
-              padding: '24px 16px', // top/bottom 24px, left/right 16px
+              padding: '0 12px', // ডানে বামে ইনসেট স্পেসিং
               background: '#002C4C',
-              transform: 'rotate(0deg)',
             }}
           >
             {categories.map((cat) => (
@@ -117,18 +114,19 @@ const BlogPage = () => {
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
                 style={{
-                  fontFamily: "'Poppins', sans-serif", // Family/Body সাধারণত Poppins বা একই ধরণের ফন্ট বোঝায়
+                  fontFamily: "'Poppins', sans-serif",
                   fontWeight: '500',
-                  fontStyle: 'normal', // Medium weight
                   fontSize: '16px',
-                  lineHeight: '160%',
-                  letterSpacing: '1%',
                   transition: 'all 0.3s ease',
-                  padding: '20px 18px', // বাটন শেপ ঠিক রাখার জন্য প্যাডিং
+                  height: '65px', // বাটন হাইট ইমেজের মতো বড় করা হয়েছে
+                  minWidth: cat === 'All' ? '65px' : 'auto', // All বাটনটি গোল রাখার জন্য
+                  padding: cat === 'All' ? '0' : '0 28px', 
                   borderRadius: '100px',
-                  whiteSpace: 'nowrap',
-                  // Active এবং ইন-অ্যাক্টিভ কালার লজিক
-                  backgroundColor: activeFilter === cat ? '#FFFFFF' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // Active logic
+                  backgroundColor: activeFilter === cat ? '#FFFFFF' : 'rgba(255,255,255,0.05)',
                   color: activeFilter === cat ? '#0A0A0A' : '#FFFFFF',
                 }}
               >
@@ -148,9 +146,8 @@ const BlogPage = () => {
                   style={{
                     width: '416px',
                     height: '350px',
-                    borderRadius: '12px', // আপনার রিকোয়ারমেন্ট অনুযায়ী ৩২ থেকে কমিয়ে ১২ করা হয়েছে
+                    borderRadius: '12px',
                     opacity: 1,
-                    transform: 'rotate(0deg)',
                   }}
                 >
                   <img
@@ -163,33 +160,23 @@ const BlogPage = () => {
                 <div className="flex justify-between items-center mb-4 px-1">
                   <span
                     style={{
-                      fontFamily: "'Poppins', sans-serif", // Family/Body এর জন্য Poppins সাধারণত স্ট্যান্ডার্ড
+                      fontFamily: "'Poppins', sans-serif",
                       fontWeight: '400',
-                      fontStyle: 'normal', // Regular style
                       fontSize: '14px',
-                      lineHeight: '150%',
-                      letterSpacing: '0%',
-                      color: '#616161', // আপনার দেওয়া কালার কোডটি এখানে ব্যবহৃত
-                      display: 'block' // মার্জিন এবং এলাইনমেন্ট ঠিক রাখতে ব্লক এলিমেন্ট হিসেবে সেট করা হয়েছে
+                      color: '#616161',
                     }}
                   >
                     {post.date}
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Poppins', sans-serif", // Family/Body এর জন্য স্ট্যান্ডার্ড
+                      fontFamily: "'Poppins', sans-serif",
                       fontWeight: '500',
-                      fontStyle: 'normal', // Medium স্টাইল
                       fontSize: '14px',
-                      lineHeight: '150%',
-                      letterSpacing: '0%',
-                      color: '#0168B4', // নীল ব্যাকগ্রাউন্ডের ওপর সাদা টেক্সট (ভিজিবিলিটির জন্য)
-                      padding: '4px 12px', // ব্যাজ শেপ ঠিক রাখার জন্য প্যাডিং
-                      borderRadius: '100px', // রাউন্ডেড শেপ
+                      color: '#0168B4',
+                      padding: '4px 12px',
+                      borderRadius: '100px',
                       display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textTransform: 'none' // আগের uppercase টা রিমুভ করা হয়েছে আপনার গাইডলাইন অনুযায়ী
                     }}
                   >
                     {post.category}
@@ -201,13 +188,10 @@ const BlogPage = () => {
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: '500',
-                    fontStyle: 'normal', // Medium স্টাইল
                     fontSize: '24px',
                     lineHeight: '120%',
-                    letterSpacing: '0%',
-                    textTransform: 'capitalize',
-                    color: '#262626', // আপনার দেওয়া ব্যাকগ্রাউন্ড কোডটি কালার হিসেবে সেট করা হয়েছে
-                    marginTop: '12px' // ইমেজ এবং ক্যাটাগরির সাথে সামঞ্জস্য রাখতে সামান্য মার্জিন
+                    color: '#262626',
+                    marginTop: '12px'
                   }}
                 >
                   {post.title}
