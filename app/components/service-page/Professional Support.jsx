@@ -3,7 +3,8 @@ import React from "react";
 import { ArrowUpRight, Sparkles, Box } from "lucide-react";
 import Link from "next/link";
 
-const ProfessionalSupport = ({ data = [] }) => {
+// mainSlug প্রপস রিসিভ করা হচ্ছে লিঙ্কিং ঠিক করার জন্য
+const ProfessionalSupport = ({ data = [], mainSlug }) => {
   const supportFeatures = [
     { id: "01", title: "Native Speakers Only", desc: "no robotic or machine-generated voices" },
     { id: "02", title: "Studio-Grade Quality", desc: "with noise-free output" },
@@ -30,12 +31,11 @@ const ProfessionalSupport = ({ data = [] }) => {
             opacity: "1",
             display: "flex",
             alignItems: "center",
-            boxShadow: "0px 4px 20px rgba(0,0,0,0.05)", // Depth-er jonno
+            boxShadow: "0px 4px 20px rgba(0,0,0,0.05)", 
           }}
         >
-          {/* Icon Frame matching your first block style */}
           <img
-            src="/Frame2.svg" // Apni chaile Sparkles icon-er bodole ei frame-ti use korte paren consistency-r jonno
+            src="/Frame2.svg"
             alt="Icon Frame"
             style={{
               width: "36px",
@@ -65,7 +65,7 @@ const ProfessionalSupport = ({ data = [] }) => {
         {data && data.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             {data.map((card, index) => (
-              <div key={index} className="flex flex-col group">
+              <div key={card._id?.$oid || index} className="flex flex-col group">
                 <div
                   className="overflow-hidden mb-6"
                   style={{
@@ -73,7 +73,7 @@ const ProfessionalSupport = ({ data = [] }) => {
                     height: "262px",
                     borderRadius: "16px",
                     opacity: "1",
-                    background: "rgba(1, 104, 180, 0.05)", // bg-primary/5 matching
+                    background: "rgba(1, 104, 180, 0.05)",
                   }}
                 >
                   <img
@@ -81,7 +81,7 @@ const ProfessionalSupport = ({ data = [] }) => {
                     alt={card.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     style={{
-                      borderRadius: "16px", // Ensures the image corners align with the container
+                      borderRadius: "16px",
                     }}
                   />
                 </div>
@@ -90,12 +90,12 @@ const ProfessionalSupport = ({ data = [] }) => {
                   style={{
                     fontFamily: "Inter, sans-serif",
                     fontSize: "24px",
-                    fontWeight: "500", // Medium
+                    fontWeight: "500",
                     color: "#0F0F0F",
                     lineHeight: "120%",
                     letterSpacing: "0%",
                     textTransform: "capitalize",
-                    marginBottom: "8px", // mb-2 matching
+                    marginBottom: "8px",
                     fontStyle: "normal",
                   }}
                 >
@@ -104,13 +104,13 @@ const ProfessionalSupport = ({ data = [] }) => {
                 <p
                   className="line-clamp-3"
                   style={{
-                    fontFamily: "Poppins, sans-serif", // Family/Body refers to Poppins in your design system
+                    fontFamily: "Poppins, sans-serif",
                     fontSize: "14px",
-                    fontWeight: "400", // Regular
+                    fontWeight: "400",
                     color: "#6B6B6B",
                     lineHeight: "150%",
                     letterSpacing: "0%",
-                    marginBottom: "24px", // mb-6 matching
+                    marginBottom: "24px",
                     fontStyle: "normal",
                   }}
                 >
@@ -118,7 +118,7 @@ const ProfessionalSupport = ({ data = [] }) => {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href={`/services`}
+                    href={`/services/${mainSlug}/${card.slug || card._id?.$oid}`}
                     className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap"
                     style={{
                       width: "198px",
@@ -186,18 +186,17 @@ const ProfessionalSupport = ({ data = [] }) => {
                 background: "linear-gradient(180deg, #A9DAFF 0%, #CCE7FB 55.48%, #F7F7F7 100%)",
               }}
             >
-              {/* Number/ID - Keeping it subtle as per the previous style */}
               <span
                 style={{
                   fontFamily: "Inter, sans-serif",
                   fontSize: "48px",
-                  fontWeight: "500", // Medium
+                  fontWeight: "500",
                   color: "#B0D0E8",
                   lineHeight: "120%",
                   letterSpacing: "0%",
                   textTransform: "capitalize",
                   display: "inline-block",
-                  marginBottom: "8px", // Gap maintain korar jonno
+                  marginBottom: "8px",
                 }}
               >
                 {feature.id}
@@ -207,7 +206,7 @@ const ProfessionalSupport = ({ data = [] }) => {
                 style={{
                   fontFamily: "Inter, sans-serif",
                   fontSize: "28px",
-                  fontWeight: "500", // Medium
+                  fontWeight: "500",
                   color: "#0A0A0A",
                   lineHeight: "120%",
                   letterSpacing: "0%",
@@ -224,7 +223,7 @@ const ProfessionalSupport = ({ data = [] }) => {
                 style={{
                   fontFamily: "Poppins, sans-serif",
                   fontSize: "16px",
-                  fontWeight: "400", // Regular
+                  fontWeight: "400",
                   color: "#616161",
                   lineHeight: "150%",
                   letterSpacing: "0%",
@@ -257,7 +256,7 @@ const ProfessionalSupport = ({ data = [] }) => {
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "40px",
-              fontWeight: "500", // Medium
+              fontWeight: "500",
               color: "#0A0A0A",
               lineHeight: "120%",
               letterSpacing: "0%",
@@ -271,9 +270,9 @@ const ProfessionalSupport = ({ data = [] }) => {
             <span
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "48px", // Span er jonne spec onujayi boro size
-                fontWeight: "500", // Medium
-                color: "#0168B4", // Blue background spec color (text color hishebe)
+                fontSize: "48px",
+                fontWeight: "500",
+                color: "#0168B4",
                 lineHeight: "120%",
                 letterSpacing: "0%",
                 textTransform: "capitalize",
@@ -288,7 +287,7 @@ const ProfessionalSupport = ({ data = [] }) => {
             style={{
               fontFamily: "Poppins, sans-serif",
               fontSize: "18px",
-              fontWeight: "400", // Regular
+              fontWeight: "400",
               color: "#6B6B6B",
               lineHeight: "160%",
               letterSpacing: "0%",

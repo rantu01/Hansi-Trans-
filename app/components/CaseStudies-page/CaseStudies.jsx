@@ -45,7 +45,7 @@ const CaseStudies = () => {
   return (
     <section className="overflow-hidden relative mt-[-200px] z-1">
       <div className="relative w-full flex justify-center items-center">
-        <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4">
+        <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4 ">
           {slides.map((slide, index) => {
             const isCenter = index === currentIndex;
             const isLeft = index === currentIndex - 1;
@@ -60,7 +60,7 @@ const CaseStudies = () => {
             return (
               <div
                 key={slide._id || slide.id}
-                className={`relative transition-all duration-700 ease-in-out rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 ${transformClass} h-[300px] md:h-[550px]`}
+                className={`relative transition-all duration-700 ease-in-out rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 ${transformClass} h-[300px] md:h-[550px] lg:h-[492px]`}
                 style={{
                   width: isCenter ? "85%" : isLeft || isRight ? "15%" : "0%",
                   marginLeft: isLeft ? "-12%" : undefined,

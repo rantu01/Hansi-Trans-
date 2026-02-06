@@ -12,7 +12,7 @@ import { API } from "@/app/config/api";
 async function getServiceDetails(slug) {
   try {
     const res = await fetch(`${API.services.details(slug)}`, {
-      cache: 'no-store' // রিয়েল টাইম ডাটার জন্য
+      cache: 'no-store' 
     });
     const data = await res.json();
     return data.success ? data.data : null;
@@ -43,16 +43,21 @@ export default async function ServiceDetailsPage({ params }) {
         breadcrumb={`Home › Services › ${service.title}`}
         description={service.description}
       >
-        {/* ServiceCard-এ ডাটাবেজ থেকে আসা ভ্যালু pass করা হলো */}
         <ServiceCard service={service} />
       </Hero>
 
-      
+      {/* Core Voice Over সেকশন */}
       <CoreVoiceOver mainSlug={service.slug} />
-      <ProfessionalSupport data={service.professionalSupports} />
-      <OurServices></OurServices>
-      <WorkProcess></WorkProcess>
-      <Testimonials></Testimonials>
+
+      {/* Professional Support সেকশন - data ফিল্ডে অপশনাল চেইনিং ব্যবহার করা নিরাপদ */}
+      <ProfessionalSupport 
+        mainSlug={service.slug} 
+        data={service.professionalSupports || []} 
+      />
+
+      <OurServices />
+      <WorkProcess />
+      <Testimonials />
     </PublicLayout>
   );
 }

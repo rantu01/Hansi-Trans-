@@ -316,9 +316,10 @@ const Footer = () => {
             </h4>
             <ul className="space-y-5">
               {[
-                { name: "Privacy & policy", href: "/privacy" },
-                { name: "Style guide", href: "/style-guide" },
-                { name: "Changelog", href: "/changelog" },
+                { name: "Privacy & policy", href: "/privacy-policy" },
+                { name: "Terms Condition", href: "/terms-condition" },
+                { name: "Coming Soon", href: "/coming-soon" },
+                { name: "Coming-Soon 2", href: "/coming-soon2" },
                 { name: "License", href: "/license" },
                 { name: "404 page", href: "/404" },
               ].map((link) => (
