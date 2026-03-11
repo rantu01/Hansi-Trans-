@@ -9,7 +9,6 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("All");
 
-  // ইমেজ অনুযায়ী "Games" থেকে কমিয়ে "Game" করা হয়েছে যাতে ফিল্টার ট্যাগ ম্যাচ করে
   const categories = ["All", "Game", "Voice", "Tech Innovations"];
 
   useEffect(() => {
@@ -28,7 +27,6 @@ const BlogPage = () => {
     fetchBlogs();
   }, []);
 
-  // ফিল্টার লজিক: activeFilter যদি "All" না হয় তবে post.filterTag এর সাথে চেক করবে
   const filteredPosts =
     activeFilter === "All"
       ? blogs
@@ -43,13 +41,15 @@ const BlogPage = () => {
   }
 
   return (
-    <section className="py-16 px-6 md:px-12 font-sans bg-background">
-      <div className="container mx-auto px-20 relative z-1 -mt-[200px]">
+    <section className="py-10 md:py-16 px-4 sm:px-6 md:px-12 font-sans bg-background">
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 relative z-1 -mt-[80px] sm:-mt-[120px] md:-mt-[200px]">
+
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 md:mb-16 gap-6 md:gap-8">
           <div className="space-y-4">
+            {/* Badge */}
             <div
-              className="inline-flex items-center justify-center mb-6"
+              className="inline-flex items-center justify-center mb-4 md:mb-6"
               style={{
                 display: 'flex',
                 height: '50px',
@@ -80,33 +80,37 @@ const BlogPage = () => {
                 Blogs
               </span>
             </div>
+
+            {/* Heading */}
             <h2
               className="mb-2"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: '500',
                 fontStyle: 'normal',
-                fontSize: '60px',
+                fontSize: 'clamp(32px, 5vw, 60px)',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
                 color: '#0168B4',
               }}
             >
-              Exploring ideas with <br /> the Hansi Trans
+              Exploring ideas with <br className="hidden sm:block" /> the Hansi Trans
             </h2>
           </div>
 
-          {/* Filter Bar - হুবহু ইমেজ ডিজাইন */}
+          {/* Filter Bar */}
           <div
-            className="flex items-center"
+            className="flex items-center w-full md:w-auto overflow-x-auto"
             style={{
-              width: '526px',
-              height: '85px',
+              maxWidth: '526px',
+              minHeight: '65px',
               borderRadius: '100px',
               justifyContent: 'space-between',
-              padding: '0 12px', // ডানে বামে ইনসেট স্পেসিং
+              padding: '0 12px',
               background: '#002C4C',
+              gap: '4px',
+              flexShrink: 0,
             }}
           >
             {categories.map((cat) => (
@@ -116,16 +120,17 @@ const BlogPage = () => {
                 style={{
                   fontFamily: "'Poppins', sans-serif",
                   fontWeight: '500',
-                  fontSize: '16px',
+                  fontSize: 'clamp(13px, 1.5vw, 16px)',
                   transition: 'all 0.3s ease',
-                  height: '65px', // বাটন হাইট ইমেজের মতো বড় করা হয়েছে
-                  minWidth: cat === 'All' ? '65px' : 'auto', // All বাটনটি গোল রাখার জন্য
-                  padding: cat === 'All' ? '0' : '0 28px', 
+                  height: '53px',
+                  minWidth: cat === 'All' ? '53px' : 'auto',
+                  padding: cat === 'All' ? '0 16px' : '0 clamp(12px, 2vw, 28px)',
                   borderRadius: '100px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  // Active logic
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
                   backgroundColor: activeFilter === cat ? '#FFFFFF' : 'rgba(255,255,255,0.05)',
                   color: activeFilter === cat ? '#0A0A0A' : '#FFFFFF',
                 }}
@@ -138,14 +143,14 @@ const BlogPage = () => {
 
         {/* Blog Grid */}
         {filteredPosts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16 mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 lg:gap-x-10 gap-y-10 md:gap-y-16 mb-20">
             {filteredPosts.map((post) => (
               <Link key={post._id} href={`/blog/${post.slug}`} className="group cursor-pointer">
+                {/* Image */}
                 <div
-                  className="overflow-hidden mb-6 shadow-sm shadow-primary/5 bg-primary/5 border border-primary/5"
+                  className="overflow-hidden mb-6 shadow-sm shadow-primary/5 bg-primary/5 border border-primary/5 w-full"
                   style={{
-                    width: '416px',
-                    height: '350px',
+                    aspectRatio: '416 / 350',
                     borderRadius: '12px',
                     opacity: 1,
                   }}
@@ -157,6 +162,7 @@ const BlogPage = () => {
                   />
                 </div>
 
+                {/* Meta */}
                 <div className="flex justify-between items-center mb-4 px-1">
                   <span
                     style={{
@@ -183,12 +189,13 @@ const BlogPage = () => {
                   </span>
                 </div>
 
+                {/* Title */}
                 <h3
                   className="group-hover:text-primary transition-colors duration-300 px-1 border-t border-[#262626]/10 pt-4"
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: '500',
-                    fontSize: '24px',
+                    fontSize: 'clamp(18px, 2vw, 24px)',
                     lineHeight: '120%',
                     color: '#262626',
                     marginTop: '12px'
@@ -200,7 +207,7 @@ const BlogPage = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-32 border-2 border-dashed border-primary/10 rounded-[40px] bg-primary/5">
+          <div className="text-center py-20 md:py-32 border-2 border-dashed border-primary/10 rounded-[40px] bg-primary/5">
             <p className="text-secondary/50 font-bold uppercase tracking-widest text-sm">
               No blog posts found in this category.
             </p>

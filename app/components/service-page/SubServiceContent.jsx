@@ -2,10 +2,7 @@
 import React from "react";
 
 const SubServiceContent = ({ subService }) => {
-  // Extract features from database and format them
-  // Extract features from database and format them
   const dynamicFeatures = subService?.features?.map((feature, index) => {
-    // যদি ডাটাতে ":" না থাকে, তবে পুরো টেক্সট ডেসক্রিপশন হিসেবে থাকবে এবং টাইটেল ডিফল্ট হবে
     const hasSeparator = feature.includes(":");
     return {
       id: index + 1 < 10 ? `0${index + 1}` : `${index + 1}`,
@@ -43,16 +40,16 @@ const SubServiceContent = ({ subService }) => {
   ];
 
   return (
-    <div className="bg-background container mx-auto p-6 font-sans">
+    <div className="bg-background container mx-auto p-4 md:p-6 font-sans">
       <div className="container mx-auto">
 
         {/* Why Matters Section */}
-        <div className="flex flex-col md:flex-row justify-between gap-12 mb-20">
+        <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-12 mb-12 md:mb-20">
           <h2
             style={{
               fontFamily: "Inter, sans-serif",
-              fontSize: "48px",
-              fontWeight: "500", // Medium
+              fontSize: "clamp(28px, 4vw, 48px)",
+              fontWeight: "500",
               color: "#0A0A0A",
               lineHeight: "120%",
               letterSpacing: "0%",
@@ -63,37 +60,25 @@ const SubServiceContent = ({ subService }) => {
           >
             Why {subService?.title || "This Service"} <br /> Matters
           </h2>
-          <p className="text-gray-500 text-xs md:text-sm flex-1 leading-relaxed max-w-md">
-            {subService?.description || "In today’s global market, your voice is more than sound: it’s how you build brand trust, convey emotion, and connect with users in their native language. Poor translations or non-native voice talent can undermine credibility. With our service, you ensure every listener feels like you’re speaking to them."}
+          <p className="text-gray-500 text-xs md:text-sm flex-1 leading-relaxed md:max-w-md">
+            {subService?.description || "In today's global market, your voice is more than sound: it's how you build brand trust, convey emotion, and connect with users in their native language. Poor translations or non-native voice talent can undermine credibility. With our service, you ensure every listener feels like you're speaking to them."}
           </p>
         </div>
 
-        {/* Features Grid - Branded styling */}
-
-
-
-        <div className="container mx-auto px-6 mb-32">
-          <div className="flex flex-wrap justify-center gap-8">
+        {/* Features Grid */}
+        <div className="w-full mb-16 md:mb-32 px-0 md:px-6">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             {featuresData.map((item, index) => (
               <div
                 key={index}
-                className={`
-          flex flex-col bg-white p-10 rounded-[40px]
-           items-center text-center 
-          transition-all duration-300 hover:shadow-xl
-          /* Row 1 (3 items): Desktop e 30% width */
-          /* Row 2 (2 items): flex-grow hoye baki jayga nebe */
-          flex-grow flex-shrink-0 
-          w-full sm:w-[45%] lg:w-[30%]
-        `}
-                style={{ minHeight: "320px" }}
+                className="flex flex-col bg-white p-6 md:p-10 rounded-[24px] md:rounded-[40px] items-center text-center transition-all duration-300 hover:shadow-xl w-full sm:w-[calc(50%-16px)] lg:w-[calc(33%-22px)]"
+                style={{ minHeight: "260px" }}
               >
-                {/* 01 - Feature Number */}
                 <span
                   style={{
                     fontFamily: "Inter, sans-serif",
                     fontWeight: "500",
-                    fontSize: "48px",
+                    fontSize: "clamp(32px, 4vw, 48px)",
                     color: "#E6E6E6",
                     lineHeight: "120%",
                     marginBottom: "16px",
@@ -102,12 +87,11 @@ const SubServiceContent = ({ subService }) => {
                   {item.id}
                 </span>
 
-                {/* Title */}
                 <h4
                   style={{
                     fontFamily: "Inter, sans-serif",
                     fontWeight: "500",
-                    fontSize: "28px",
+                    fontSize: "clamp(18px, 2.5vw, 28px)",
                     color: "#0168B4",
                     lineHeight: "120%",
                     marginBottom: "12px",
@@ -117,7 +101,6 @@ const SubServiceContent = ({ subService }) => {
                   {item.title}
                 </h4>
 
-                {/* Description */}
                 <p
                   style={{
                     fontFamily: "Poppins, sans-serif",
@@ -135,41 +118,37 @@ const SubServiceContent = ({ subService }) => {
           </div>
         </div>
 
-
         {/* Alternating Content Sections */}
-        <div className="space-y-32 mb-20">
+        <div className="space-y-16 md:space-y-32 mb-12 md:mb-20">
 
           {/* Section 1 - Strategic Growth */}
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-1 relative group flex justify-center items-center">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <div className="flex-1 relative group flex justify-center items-center w-full">
               <div
-                className="relative overflow-hidden shadow-lg"
+                className="relative overflow-hidden shadow-lg w-full"
                 style={{
-                  width: "568px",  // Exact spec width
-                  height: "500px", // Exact spec height
-                  borderRadius: "36px", // Exact spec border-radius
-                  opacity: "1",    // Exact spec opacity
+                  maxWidth: "568px",
+                  aspectRatio: "568 / 500",
+                  borderRadius: "clamp(20px, 3vw, 36px)",
+                  opacity: "1",
                 }}
               >
-                {/* Background Decorative Layer */}
                 <div className="absolute inset-0 bg-primary/5 -rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
-
                 <img
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800"
                   className="w-full h-full object-cover relative z-10 transition-transform duration-700 group-hover:scale-105"
                   alt="Working"
-                  style={{
-                    borderRadius: "36px", // Image radius matching container
-                  }}
+                  style={{ borderRadius: "clamp(20px, 3vw, 36px)" }}
                 />
               </div>
             </div>
-            <div className="flex-1 space-y-20">
-              <h3 className=""
+
+            <div className="flex-1 space-y-8 md:space-y-20 w-full">
+              <h3
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "48px",
-                  fontWeight: "500", // Medium
+                  fontSize: "clamp(26px, 4vw, 48px)",
+                  fontWeight: "500",
                   color: "#0A0A0A",
                   lineHeight: "120%",
                   letterSpacing: "0%",
@@ -181,10 +160,10 @@ const SubServiceContent = ({ subService }) => {
               </h3>
               <p
                 style={{
-                  fontFamily: "Poppins, sans-serif", // Family/Body spec onujayi
+                  fontFamily: "Poppins, sans-serif",
                   fontSize: "16px",
-                  fontWeight: "500", // Medium spec onujayi
-                  color: "#616161",  // Background spec color
+                  fontWeight: "500",
+                  color: "#616161",
                   lineHeight: "160%",
                   letterSpacing: "1%",
                   margin: "0",
@@ -195,29 +174,26 @@ const SubServiceContent = ({ subService }) => {
                 you build trust and connect with users in their native language through professional {subService?.title}.
               </p>
 
-              <ul className="space-y-0 ">
+              <ul className="space-y-0">
                 {[
                   "Enhance engagement",
                   "Improve comprehension",
                   "Boost brand personality",
                   "Reduce time & cost",
                 ].map((list, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-2" // Number circle er sathe gap barhano hoyeche visual clarity-r jonno
-                  >
+                  <li key={i} className="flex items-center gap-2">
                     <span
                       style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        width: "48px", // Font size 24px er jonno container arektu boro kora hoyeche
+                        width: "48px",
                         height: "48px",
-                        borderRadius: "50%", // Spec Background Color
-                        color: "#B0D0E8", // Brand primary color for the number
+                        borderRadius: "50%",
+                        color: "#B0D0E8",
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "24px", // Spec Font Size
-                        fontWeight: "500", // Medium
+                        fontSize: "24px",
+                        fontWeight: "500",
                         lineHeight: "120%",
                         letterSpacing: "0%",
                         textTransform: "capitalize",
@@ -225,16 +201,15 @@ const SubServiceContent = ({ subService }) => {
                     >
                       0{i + 1}
                     </span>
-
                     <span
                       style={{
-                        fontFamily: "Poppins, sans-serif", // Poppins spec onujayi
-                        fontWeight: "400", // Regular spec onujayi
-                        fontSize: "18px", // 18px spec onujayi
-                        color: "#0168B4", // Background spec onujayi
-                        lineHeight: "160%", // 160% spec onujayi
-                        letterSpacing: "0%", // 0% spec onujayi
-                        textTransform: "none", // List text-er natural flow rakhar jonno
+                        fontFamily: "Poppins, sans-serif",
+                        fontWeight: "400",
+                        fontSize: "18px",
+                        color: "#0168B4",
+                        lineHeight: "160%",
+                        letterSpacing: "0%",
+                        textTransform: "none",
                       }}
                     >
                       {list}
@@ -250,9 +225,9 @@ const SubServiceContent = ({ subService }) => {
             <h3
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "48px",
-                fontWeight: "500", // Medium
-                color: "#0A0A0A",  //
+                fontSize: "clamp(26px, 4vw, 48px)",
+                fontWeight: "500",
+                color: "#0A0A0A",
                 lineHeight: "120%",
                 letterSpacing: "0%",
                 textTransform: "capitalize",
@@ -262,13 +237,12 @@ const SubServiceContent = ({ subService }) => {
               Ready for 40+ Languages
             </h3>
 
-            {/* Paragraph Specs Applied */}
             <p
               style={{
-                fontFamily: "Poppins, sans-serif", // Family/Body
+                fontFamily: "Poppins, sans-serif",
                 fontSize: "16px",
-                fontWeight: "500", // Medium
-                color: "#616161",  //
+                fontWeight: "500",
+                color: "#616161",
                 lineHeight: "160%",
                 letterSpacing: "1%",
                 marginTop: "20px",
@@ -283,117 +257,42 @@ const SubServiceContent = ({ subService }) => {
               Just ask — we can accommodate.
             </p>
             <div
-              className="mx-auto overflow-hidden relative group"
+              className="w-full mx-auto overflow-hidden relative group mt-6"
               style={{
-                width: "1296px",      // Exact spec width
-                height: "500px",     // Exact spec height
-                borderRadius: "36px", // Exact spec border-radius
-                opacity: "1",         // Exact spec opacity
+                maxWidth: "1296px",
+                aspectRatio: "1296 / 500",
+                borderRadius: "clamp(16px, 3vw, 36px)",
+                opacity: "1",
               }}
             >
               <img
                 src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1200"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 mt-6"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                 alt="Professional Setup"
-                style={{
-                  borderRadius: "36px",
-                }}
+                style={{ borderRadius: "clamp(16px, 3vw, 36px)" }}
               />
-
-
             </div>
           </div>
 
-          {/* Section 3 - Language Ready */}
-          <div
-            className="flex flex-col md:flex-row-reverse items-center mx-auto"
-            style={{
-              width: "1296px",      // Full div width
-              height: "500px",     // Full div height
-              gap: "56px",         // Full div gap
-              opacity: "1",        // Full div opacity
-            }}
-          >
-            {/* Image Section - Inheriting height from parent */}
-            <div className="flex-1 h-full relative group">
+          {/* Section 3 */}
+          <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-14 w-full mx-auto">
+            <div className="flex-1 w-full relative group" style={{ minHeight: "300px" }}>
               <div className="absolute inset-0 bg-primary/5 rounded-[40px] rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
               <img
                 src="https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800"
                 className="rounded-[40px] w-full h-full object-cover relative z-10 shadow-lg"
                 alt="Localization"
+                style={{ minHeight: "300px", maxHeight: "500px" }}
               />
             </div>
 
-            {/* Text Content Section */}
-            <div className="flex-1 space-y-6 text-start">
+            <div className="flex-1 space-y-6 text-start w-full">
               <h3
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "48px",        // H3 font size
-                  fontWeight: "500",       // Medium
-                  color: "#0A0A0A",        // H3 background color
-                  lineHeight: "120%",      // H3 line height
-                  letterSpacing: "0%",     // H3 letter spacing
-                  textTransform: "capitalize", // H3 text transform
-                  margin: "0",
-                }}
-              >
-                Ready for 40+ Languages
-              </h3>
-
-              <p
-                style={{
-                  fontFamily: "Poppins, sans-serif", // Family/Body
-                  fontSize: "16px",        // P font size
-                  fontWeight: "500",       // Medium
-                  color: "#616161",        // P background color
-                  lineHeight: "160%",      // P line height
-                  letterSpacing: "1%",     // P letter spacing
-                  marginTop: "20px",
-                }}
-              >
-                We currently support a broad range of languages — from widely spoken international
-                ones to regional variants. Each voice-talent is a native speaker with local accent
-                and cultural fluency. Example list (not exhaustive): English, Spanish, French,
-                German, Italian, Arabic, Mandarin (Simplified & Traditional), Japanese, Korean,
-                Portuguese, Hindi, Bengali, Turkish, Thai, Russian Microcopy: Need a specific
-                dialect (e.g., Latin American Spanish, Brazilian Portuguese, Indian English)?
-                Just ask — we can accommodate.
-              </p>
-            </div>
-          </div>
-          {/* Section 4 - Language Ready */}
-          <div
-            className="flex flex-col md:flex-row items-center mx-auto"
-            style={{
-              width: "1296px",      // Spec width
-              height: "500px",     // Spec height
-              gap: "56px",         // Spec gap
-              opacity: "1",
-            }}
-
-          >
-
-            {/* Image Section - Right Side */}
-            <div className="flex-1 h-full relative group">
-              <div className="absolute inset-0 bg-primary/5 rounded-[40px] rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
-              <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800"
-                className="rounded-[40px] w-full h-full object-cover relative z-10 shadow-lg shadow-primary/5"
-                alt="Localization"
-                style={{
-                  borderRadius: "36px", // Spec border-radius
-                }}
-              />
-            </div>
-            {/* Text Content - Left Side */}
-            <div className="flex-1 space-y-6">
-              <h3
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "48px",        // Spec size
-                  fontWeight: "500",       // Medium
-                  color: "#0A0A0A",        // Spec color
+                  fontSize: "clamp(26px, 4vw, 48px)",
+                  fontWeight: "500",
+                  color: "#0A0A0A",
                   lineHeight: "120%",
                   letterSpacing: "0%",
                   textTransform: "capitalize",
@@ -406,9 +305,9 @@ const SubServiceContent = ({ subService }) => {
               <p
                 style={{
                   fontFamily: "Poppins, sans-serif",
-                  fontSize: "16px",        // Spec size
-                  fontWeight: "500",       // Medium
-                  color: "#616161",        // Spec color
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  color: "#616161",
                   lineHeight: "160%",
                   letterSpacing: "1%",
                   marginTop: "20px",
@@ -423,19 +322,67 @@ const SubServiceContent = ({ subService }) => {
                 Just ask — we can accommodate.
               </p>
             </div>
+          </div>
 
+          {/* Section 4 */}
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14 w-full mx-auto">
+            <div className="flex-1 w-full relative group" style={{ minHeight: "300px" }}>
+              <div className="absolute inset-0 bg-primary/5 rounded-[40px] rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
+              <img
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800"
+                className="rounded-[40px] w-full h-full object-cover relative z-10 shadow-lg shadow-primary/5"
+                alt="Localization"
+                style={{ borderRadius: "36px", minHeight: "300px", maxHeight: "500px" }}
+              />
+            </div>
 
+            <div className="flex-1 space-y-6 w-full">
+              <h3
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "clamp(26px, 4vw, 48px)",
+                  fontWeight: "500",
+                  color: "#0A0A0A",
+                  lineHeight: "120%",
+                  letterSpacing: "0%",
+                  textTransform: "capitalize",
+                  margin: "0",
+                }}
+              >
+                Ready for 40+ Languages
+              </h3>
+
+              <p
+                style={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  color: "#616161",
+                  lineHeight: "160%",
+                  letterSpacing: "1%",
+                  marginTop: "20px",
+                }}
+              >
+                We currently support a broad range of languages — from widely spoken international
+                ones to regional variants. Each voice-talent is a native speaker with local accent
+                and cultural fluency. Example list (not exhaustive): English, Spanish, French,
+                German, Italian, Arabic, Mandarin (Simplified & Traditional), Japanese, Korean,
+                Portuguese, Hindi, Bengali, Turkish, Thai, Russian Microcopy: Need a specific
+                dialect (e.g., Latin American Spanish, Brazilian Portuguese, Indian English)?
+                Just ask — we can accommodate.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Final Footer Branded Section */}
-        <div className="text-center mt-32 max-w-7xl mx-auto py-16 px-8 ">
+        {/* Final Footer Section */}
+        <div className="text-center mt-16 md:mt-32 max-w-7xl mx-auto py-10 md:py-16 px-4 md:px-8">
           <h3
             style={{
               fontFamily: "Inter, sans-serif",
-              fontSize: "48px",        // Spec size
-              fontWeight: "500",       // Medium
-              color: "#0A0A0A",        // Spec color
+              fontSize: "clamp(26px, 4vw, 48px)",
+              fontWeight: "500",
+              color: "#0A0A0A",
               lineHeight: "120%",
               letterSpacing: "0%",
               textTransform: "capitalize",
@@ -447,9 +394,9 @@ const SubServiceContent = ({ subService }) => {
           <p
             style={{
               fontFamily: "Poppins, sans-serif",
-              fontSize: "16px",        // Spec size
-              fontWeight: "500",       // Medium
-              color: "#616161",        // Spec color
+              fontSize: "16px",
+              fontWeight: "500",
+              color: "#616161",
               lineHeight: "160%",
               letterSpacing: "1%",
               marginTop: "20px",

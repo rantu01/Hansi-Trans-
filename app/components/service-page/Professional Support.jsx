@@ -3,7 +3,6 @@ import React from "react";
 import { ArrowUpRight, Sparkles, Box } from "lucide-react";
 import Link from "next/link";
 
-// mainSlug প্রপস রিসিভ করা হচ্ছে লিঙ্কিং ঠিক করার জন্য
 const ProfessionalSupport = ({ data = [], mainSlug }) => {
   const supportFeatures = [
     { id: "01", title: "Native Speakers Only", desc: "no robotic or machine-generated voices" },
@@ -15,15 +14,15 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
   ];
 
   return (
-    <section className="bg-background py-16 px-6 md:px-12 font-sans">
+    <section className="bg-background py-16 px-4 sm:px-6 md:px-12 font-sans">
       <div className="container mx-auto">
 
         {/* Header Badge */}
         <div
-          className="flex items-center justify-center mb-12"
+          className="flex items-center justify-center mb-12 mx-auto w-full"
           style={{
-            width: "585px",
-            height: "94px",
+            maxWidth: "585px",
+            minHeight: "70px",
             padding: "8px 16px",
             gap: "8px",
             borderRadius: "49px",
@@ -31,25 +30,20 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
             opacity: "1",
             display: "flex",
             alignItems: "center",
-            boxShadow: "0px 4px 20px rgba(0,0,0,0.05)", 
+            boxShadow: "0px 4px 20px rgba(0,0,0,0.05)",
           }}
         >
           <img
             src="/Frame2.svg"
             alt="Icon Frame"
-            style={{
-              width: "36px",
-              height: "36px",
-              objectFit: 'contain'
-            }}
+            style={{ width: "36px", height: "36px", objectFit: 'contain', flexShrink: 0 }}
           />
-
           <h2
             className="capitalize"
             style={{
               color: "#0168B4",
               fontFamily: "Inter, sans-serif",
-              fontSize: "32px",
+              fontSize: "clamp(18px, 3vw, 32px)",
               fontWeight: "500",
               lineHeight: "120%",
               letterSpacing: "0%",
@@ -67,10 +61,9 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
             {data.map((card, index) => (
               <div key={card._id?.$oid || index} className="flex flex-col group">
                 <div
-                  className="overflow-hidden mb-6"
+                  className="overflow-hidden mb-6 w-full"
                   style={{
-                    width: "416px",
-                    height: "262px",
+                    aspectRatio: '416 / 262',
                     borderRadius: "16px",
                     opacity: "1",
                     background: "rgba(1, 104, 180, 0.05)",
@@ -80,16 +73,14 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
                     src={card.image || "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=800"}
                     alt={card.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    style={{
-                      borderRadius: "16px",
-                    }}
+                    style={{ borderRadius: "16px" }}
                   />
                 </div>
                 <h3
                   className="transition-colors duration-300 group-hover:text-[#0168B4]"
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "24px",
+                    fontSize: "clamp(18px, 2vw, 24px)",
                     fontWeight: "500",
                     color: "#0F0F0F",
                     lineHeight: "120%",
@@ -138,20 +129,11 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
                     }}
                   >
                     <span>Explore Services</span>
-
                     <div
                       className="bg-[#0168B4] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
-                      style={{
-                        width: "42px",
-                        height: "42px",
-                        flexShrink: 0,
-                      }}
+                      style={{ width: "42px", height: "42px", flexShrink: 0 }}
                     >
-                      <ArrowUpRight
-                        size={25}
-                        className="text-[#fff]"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowUpRight size={25} className="text-[#fff]" strokeWidth={2.5} />
                     </div>
                   </Link>
                 </div>
@@ -175,12 +157,11 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
           {supportFeatures.map((feature, index) => (
             <div
               key={index}
-              className="flex flex-col items-start transition-all duration-300 hover:shadow-md"
+              className="flex flex-col items-start transition-all duration-300 hover:shadow-md w-full"
               style={{
-                width: "424px",
-                height: "204px",
+                minHeight: "180px",
                 borderRadius: "32px",
-                padding: "32px",
+                padding: "clamp(20px, 3vw, 32px)",
                 gap: "12px",
                 opacity: "1",
                 background: "linear-gradient(180deg, #A9DAFF 0%, #CCE7FB 55.48%, #F7F7F7 100%)",
@@ -189,7 +170,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               <span
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "48px",
+                  fontSize: "clamp(32px, 4vw, 48px)",
                   fontWeight: "500",
                   color: "#B0D0E8",
                   lineHeight: "120%",
@@ -201,11 +182,10 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               >
                 {feature.id}
               </span>
-
               <h4
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "28px",
+                  fontSize: "clamp(18px, 2.5vw, 28px)",
                   fontWeight: "500",
                   color: "#0A0A0A",
                   lineHeight: "120%",
@@ -217,12 +197,11 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               >
                 {feature.title}
               </h4>
-
               <p
                 className="line-clamp-3"
                 style={{
                   fontFamily: "Poppins, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "clamp(13px, 1.5vw, 16px)",
                   fontWeight: "400",
                   color: "#616161",
                   lineHeight: "150%",
@@ -239,10 +218,10 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
 
         {/* Coverage Footer */}
         <div
-          className="mx-auto flex flex-col items-center justify-center"
+          className="mx-auto flex flex-col items-center justify-center w-full px-4 sm:px-8"
           style={{
-            width: "1232px",
-            height: "127px",
+            maxWidth: "1232px",
+            minHeight: "100px",
             borderRadius: "32px",
             paddingTop: "16px",
             paddingBottom: "16px",
@@ -255,7 +234,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
           <h3
             style={{
               fontFamily: "Inter, sans-serif",
-              fontSize: "40px",
+              fontSize: "clamp(22px, 3.5vw, 40px)",
               fontWeight: "500",
               color: "#0A0A0A",
               lineHeight: "120%",
@@ -270,7 +249,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
             <span
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "48px",
+                fontSize: "clamp(28px, 4vw, 48px)",
                 fontWeight: "500",
                 color: "#0168B4",
                 lineHeight: "120%",
@@ -282,11 +261,10 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
             </span>{" "}
             Languages
           </h3>
-
           <p
             style={{
               fontFamily: "Poppins, sans-serif",
-              fontSize: "18px",
+              fontSize: "clamp(13px, 1.5vw, 18px)",
               fontWeight: "400",
               color: "#6B6B6B",
               lineHeight: "160%",
@@ -296,7 +274,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               fontStyle: "normal",
             }}
           >
-            Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products.
+            Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products.
             They sell trust, identity, and belonging.
           </p>
         </div>

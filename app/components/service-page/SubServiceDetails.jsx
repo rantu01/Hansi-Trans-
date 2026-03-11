@@ -5,19 +5,19 @@ const SubServiceDetails = ({ subService }) => {
   const features = subService.features || [];
 
   return (
-    <section className="py-6 px-6 md:px-12 font-sans overflow-hidden ">
+    <section className="py-6 px-4 sm:px-6 md:px-12 font-sans overflow-hidden">
       <div className="mx-auto max-w-7xl">
 
         {/* Main Hero Image with Brand Shadow */}
         {subService.image && (
           <div
-            className="mx-auto mb-2 overflow-hidden group relative"
+            className="mx-auto mb-2 overflow-hidden group relative w-full"
             style={{
-              width: "1078px",
-              height: "539px",
-              borderRadius: "32px",
+              maxWidth: "1078px",
+              aspectRatio: "1078 / 539",
+              borderRadius: "clamp(16px, 2.5vw, 32px)",
               opacity: "1",
-              background: "rgba(1, 104, 180, 0.05)", // bg-primary/5
+              background: "rgba(1, 104, 180, 0.05)",
               boxShadow: "0px 20px 40px rgba(1, 104, 180, 0.1)",
             }}
           >
@@ -26,7 +26,7 @@ const SubServiceDetails = ({ subService }) => {
               alt={subService.title}
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               style={{
-                borderRadius: "32px",
+                borderRadius: "clamp(16px, 2.5vw, 32px)",
               }}
             />
 
@@ -35,14 +35,14 @@ const SubServiceDetails = ({ subService }) => {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background: "linear-gradient(to top, rgba(10, 10, 10, 0.2), transparent)",
-                borderRadius: "32px",
+                borderRadius: "clamp(16px, 2.5vw, 32px)",
               }}
             ></div>
           </div>
         )}
 
         {/* Features Section */}
-        
+
       </div>
     </section>
   );

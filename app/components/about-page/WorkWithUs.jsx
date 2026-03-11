@@ -39,7 +39,6 @@ const WorkWithUs = () => {
     const words = text.split(" ");
     
     return words.map((word, i) => {
-      // প্রতিটি শব্দের জন্য আলাদা আলাদা স্ক্রল রেঞ্জ ক্যালকুলেট করা
       const start = startRange + (i / words.length) * (endRange - startRange);
       const end = startRange + ((i + 1) / words.length) * (endRange - startRange);
       
@@ -52,13 +51,13 @@ const WorkWithUs = () => {
           style={{
             fontFamily: "Inter, sans-serif",
             fontWeight: "500",
-            fontSize: "48px",
+            fontSize: "clamp(20px, 3.5vw, 48px)",
             lineHeight: "120%",
             letterSpacing: "0%",
             textTransform: "capitalize",
             color: color,
             display: "inline-block",
-            marginRight: "12px", // শব্দের মাঝে গ্যাপ
+            marginRight: "clamp(5px, 1vw, 12px)",
           }}
         >
           {word}
@@ -68,20 +67,19 @@ const WorkWithUs = () => {
   };
 
   const fullHeadline = data?.workWithUs?.headline || 
-    "HS+ Is A Global Partner For Localization, Multilingual Voice-Over, And Cross-Border Marketing. Since 2010, We’ve Helped Leading Game Studios, Anime Creators, And Tech Innovators Connect With In 40 Languages.";
+    "HS+ Is A Global Partner For Localization, Multilingual Voice-Over, And Cross-Border Marketing. Since 2010, We've Helped Leading Game Studios, Anime Creators, And Tech Innovators Connect With In 40 Languages.";
 
   return (
     <div ref={containerRef} className="flex items-center justify-center">
-      <div className="container w-full rounded-[40px] overflow-hidden p-8 md:p-12">
+      <div className="container w-full rounded-[40px] overflow-hidden p-4 sm:p-8 md:p-12 mt-35 md:-mt-10">
         
         {/* Video/Image Section */}
         <div
-          className="relative overflow-hidden bg-secondary group cursor-pointer shadow-2xl shadow-primary/10 mx-auto"
+          className="relative overflow-hidden bg-secondary group cursor-pointer shadow-2xl shadow-primary/10 mx-auto w-full"
           style={{
-            width: "1296px",
-            height: "592px",
-            opacity: "1",
-            borderRadius: "32px",
+            maxWidth: "1296px",
+            aspectRatio: "1296 / 592",
+            borderRadius: "clamp(16px, 2.5vw, 32px)",
             transform: "rotate(0deg)",
           }}
         >
@@ -98,18 +96,24 @@ const WorkWithUs = () => {
         </div>
 
         {/* Content Section with Word-by-Word Animation */}
-        <div className="mt-8 text-center">
-          <h2 className="mx-auto max-w-[1296px] px-6" style={{ textAlign: "center", margin: "0 auto" }}>
+        <div className="mt-6 sm:mt-8 text-center">
+          <h2
+            className="mx-auto w-full px-2 sm:px-4 md:px-6"
+            style={{
+              maxWidth: "1296px",
+              textAlign: "center",
+              margin: "0 auto",
+            }}
+          >
             {renderAnimatedText(fullHeadline, 0.3, 0.7)}
           </h2>
         </div>
 
         {/* Button Section */}
-        <div className="mt-10 flex justify-center">
+        <div className="mt-8 sm:mt-10 flex justify-center">
           <button
             className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
             style={{
-              width: "185px",
               height: "52px",
               padding: "4px 4px 4px 12px",
               gap: "8px",
@@ -121,6 +125,8 @@ const WorkWithUs = () => {
               fontSize: "16px",
               fontWeight: "500",
               color: "#FFFFFF",
+              width: "auto",
+              minWidth: "185px",
             }}
           >
             <span
@@ -133,13 +139,14 @@ const WorkWithUs = () => {
                 letterSpacing: "0.16px",
                 color: "#FFFFFF",
                 display: "inline-block",
+                whiteSpace: "nowrap",
               }}
             >
               {data?.workWithUs?.buttonText || "Work with us?"}
             </span>
             <span
-              className="bg-white rounded-full transition-transform duration-300 group-hover:rotate-45 flex items-center justify-center"
-              style={{ width: "44px", height: "44px", flexShrink: 0 }}
+              className="bg-white rounded-full transition-transform duration-300 group-hover:rotate-45 flex items-center justify-center flex-shrink-0"
+              style={{ width: "44px", height: "44px" }}
             >
               <ArrowUpRight size={28} style={{ color: "#0168B4" }} />
             </span>

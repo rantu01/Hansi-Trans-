@@ -26,10 +26,10 @@ const CaseStudyContent = () => {
 
   return (
     <section className="bg-background font-sans">
-      <div className="container mx-auto px-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12">
 
-        {/* Stats Section (DYNAMIC) - Branded Colors */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 md:mb-20">
           {stats.slice(0, 2).map((stat, index) => {
             const numericValue = parseInt(stat.value.replace(/[^0-9]/g, "")) || 0;
             const suffix = stat.value.replace(/[0-9]/g, "");
@@ -45,7 +45,7 @@ const CaseStudyContent = () => {
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: "500",
                     fontStyle: "normal",
-                    fontSize: "48px",
+                    fontSize: "clamp(32px, 4vw, 48px)",
                     lineHeight: "120%",
                     letterSpacing: "0%",
                     textTransform: "capitalize",
@@ -61,7 +61,7 @@ const CaseStudyContent = () => {
                     scrollSpyOnce={true}
                   >
                     {({ countUpRef }) => (
-                      <span ref={countUpRef} /> // এই স্প্যানটি টার্গেট নাল হওয়ার এরর বন্ধ করবে
+                      <span ref={countUpRef} />
                     )}
                   </CountUp>
                 </h2>
@@ -85,18 +85,18 @@ const CaseStudyContent = () => {
         </div>
 
         {/* Introduction */}
-        <div className="mb-20">
+        <div className="mb-12 md:mb-20">
           <h3
             className="text-secondary mb-6"
             style={{
               fontFamily: 'Inter, sans-serif',
               fontWeight: '500',
-              fontStyle: 'normal', // 'Medium' মূলত weight 500 কে বোঝায়
-              fontSize: '40px',
+              fontStyle: 'normal',
+              fontSize: 'clamp(26px, 4vw, 40px)',
               lineHeight: '120%',
               letterSpacing: '0%',
               textTransform: 'capitalize',
-              color: '#0F0F0F' // আপনার দেওয়া ব্যাকগ্রাউন্ড কালারটি এখানে টেক্সট কালার হিসেবে দেওয়া হয়েছে
+              color: '#0F0F0F'
             }}
           >
             Introduction
@@ -106,7 +106,7 @@ const CaseStudyContent = () => {
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: '400',
-              fontStyle: 'normal', // 'Regular' মানে font-style: normal
+              fontStyle: 'normal',
               fontSize: '18px',
               lineHeight: '160%',
               letterSpacing: '0%',
@@ -119,15 +119,15 @@ const CaseStudyContent = () => {
         </div>
 
         {/* Market Analysis – Text Left */}
-        <div className="flex flex-col md:flex-row items-center gap-16 mb-24">
-          <div className="flex-1 space-y-6">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-16 md:mb-24">
+          <div className="flex-1 space-y-6 w-full">
             <h3
               className="text-secondary"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: '500',
                 fontStyle: 'normal',
-                fontSize: '32px',
+                fontSize: 'clamp(22px, 3vw, 32px)',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
@@ -137,21 +137,20 @@ const CaseStudyContent = () => {
               Understanding The Asian Gaming Market
             </h3>
             <p
-              className=""
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '400',
-                fontStyle: 'normal', // Regular style
+                fontStyle: 'normal',
                 fontSize: '16px',
                 lineHeight: '150%',
                 letterSpacing: '0%',
-                color: '#6B6B6B' // background: #6B6B6B কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+                color: '#6B6B6B'
               }}
             >
-              Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.
+              Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products. They sell trust, identity, and belonging.
             </p>
             <ol
-              className="space-y-4 list-decimal pl-5 "
+              className="space-y-4 list-decimal pl-5"
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '400',
@@ -159,7 +158,7 @@ const CaseStudyContent = () => {
                 fontSize: '18px',
                 lineHeight: '160%',
                 letterSpacing: '0%',
-                color: '#0F0F0F' // background: #0F0F0F কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+                color: '#0F0F0F'
               }}
             >
               <li>Mobile gaming dominates in China and SEA.</li>
@@ -167,11 +166,10 @@ const CaseStudyContent = () => {
               <li>Korea is a leader in esports and PC cafe gaming.</li>
               <li>SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.</li>
             </ol>
-            <div className=" w-fit">
+            <div className="w-fit">
               <p
-                className=""
                 style={{
-                  fontFamily: "'Poppins', sans-serif", // 'Family/Paragraph' সাধারণত Poppins বা একই ধরণের ফন্টকে বোঝায়
+                  fontFamily: "'Poppins', sans-serif",
                   fontWeight: '500',
                   fontStyle: 'normal',
                   fontSize: '18px',
@@ -185,52 +183,34 @@ const CaseStudyContent = () => {
             </div>
           </div>
 
-          <div
-            className="flex-1 relative"
-            style={{
-              width: '632px',
-              height: '444px',
-              opacity: 1,
-              transform: 'rotate(0deg)',
-            }}
-          >
+          <div className="flex-1 w-full" style={{ aspectRatio: '632 / 444' }}>
             <img
               src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800"
               className="w-full h-full object-cover shadow-xl shadow-primary/5"
-              style={{
-                borderRadius: '32px',
-              }}
+              style={{ borderRadius: '32px' }}
               alt="Studio Mic"
             />
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-center gap-16 mb-24">
-          <div
-            className="flex-1 relative"
-            style={{
-              width: '632px',
-              height: '444px',
-              opacity: 1,
-              transform: 'rotate(0deg)',
-            }}
-          >
+
+        {/* Market Analysis – Image Left */}
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-16 md:mb-24">
+          <div className="flex-1 w-full" style={{ aspectRatio: '632 / 444' }}>
             <img
               src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800"
               className="w-full h-full object-cover shadow-xl shadow-primary/5"
-              style={{
-                borderRadius: '32px',
-              }}
+              style={{ borderRadius: '32px' }}
               alt="Studio Mic"
             />
           </div>
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-6 w-full">
             <h3
               className="text-secondary"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: '500',
                 fontStyle: 'normal',
-                fontSize: '32px',
+                fontSize: 'clamp(22px, 3vw, 32px)',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
@@ -240,21 +220,20 @@ const CaseStudyContent = () => {
               Understanding The Asian Gaming Market
             </h3>
             <p
-              className=""
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '400',
-                fontStyle: 'normal', // Regular style
+                fontStyle: 'normal',
                 fontSize: '16px',
                 lineHeight: '150%',
                 letterSpacing: '0%',
-                color: '#6B6B6B' // background: #6B6B6B কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+                color: '#6B6B6B'
               }}
             >
-              Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.
+              Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products. They sell trust, identity, and belonging.
             </p>
             <ol
-              className="space-y-4 list-decimal pl-5 "
+              className="space-y-4 list-decimal pl-5"
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '400',
@@ -262,7 +241,7 @@ const CaseStudyContent = () => {
                 fontSize: '18px',
                 lineHeight: '160%',
                 letterSpacing: '0%',
-                color: '#0F0F0F' // background: #0F0F0F কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+                color: '#0F0F0F'
               }}
             >
               <li>Mobile gaming dominates in China and SEA.</li>
@@ -270,11 +249,10 @@ const CaseStudyContent = () => {
               <li>Korea is a leader in esports and PC cafe gaming.</li>
               <li>SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.</li>
             </ol>
-            <div className=" w-fit">
+            <div className="w-fit">
               <p
-                className=""
                 style={{
-                  fontFamily: "'Poppins', sans-serif", // 'Family/Paragraph' সাধারণত Poppins বা একই ধরণের ফন্টকে বোঝায়
+                  fontFamily: "'Poppins', sans-serif",
                   fontWeight: '500',
                   fontStyle: 'normal',
                   fontSize: '18px',
@@ -287,11 +265,10 @@ const CaseStudyContent = () => {
               </p>
             </div>
           </div>
-
-
         </div>
 
-        <div className="container mx-auto py-6 px-6 space-y-6 mb-12">
+        {/* Text Sections */}
+        <div className="container mx-auto py-6 px-2 sm:px-6 space-y-6 mb-8 md:mb-12">
 
           {/* Section 1: Multilingual Voice-Over */}
           <section className="space-y-6">
@@ -299,8 +276,8 @@ const CaseStudyContent = () => {
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: '500',
-                fontStyle: 'normal', // 'Medium' weight 500 কে নির্দেশ করে
-                fontSize: '40px',
+                fontStyle: 'normal',
+                fontSize: 'clamp(24px, 4vw, 40px)',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
@@ -309,31 +286,29 @@ const CaseStudyContent = () => {
             >
               Multilingual Voice-Over: Bringing Characters To Life
             </h2>
-
             <p
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '400',
-                fontStyle: 'normal', // 'Regular' মানে normal স্টাইল
+                fontStyle: 'normal',
                 fontSize: '18px',
                 lineHeight: '160%',
                 letterSpacing: '0%',
-                color: '#6B6B6B' // background কোডটি টেক্সট কালার হিসেবে সেট করা হয়েছে
+                color: '#6B6B6B'
               }}
             >
-              Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.
+              Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products. They sell trust, identity, and belonging.
             </p>
-
             <ol
               className="list-decimal pl-5 space-y-3"
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '400',
-                fontStyle: 'normal', // 'Regular' স্টাইলের জন্য
+                fontStyle: 'normal',
                 fontSize: '18px',
                 lineHeight: '160%',
                 letterSpacing: '0%',
-                color: '#0F0F0F' // background কালার কোডটি এখানে টেক্সট কালার হিসেবে ব্যবহৃত
+                color: '#0F0F0F'
               }}
             >
               <li>Mobile gaming dominates in China and SEA.</li>
@@ -349,8 +324,8 @@ const CaseStudyContent = () => {
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: '500',
-                fontStyle: 'normal', // 'Medium' weight 500 কে নির্দেশ করে
-                fontSize: '40px',
+                fontStyle: 'normal',
+                fontSize: 'clamp(24px, 4vw, 40px)',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
@@ -359,7 +334,6 @@ const CaseStudyContent = () => {
             >
               Influencer & KOL Marketing For Games
             </h2>
-
             <div className="space-y-6">
               {[
                 { title: "Brand Identity (Visuals)", desc: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." },
@@ -370,26 +344,26 @@ const CaseStudyContent = () => {
                 <div key={index} className="space-y-2">
                   <h4
                     style={{
-                      fontFamily: "'Poppins', sans-serif", // Family/Paragraph নির্দেশিকা অনুযায়ী
+                      fontFamily: "'Poppins', sans-serif",
                       fontWeight: '500',
-                      fontStyle: 'normal', // Medium style
+                      fontStyle: 'normal',
                       fontSize: '18px',
                       lineHeight: '150%',
                       letterSpacing: '0%',
-                      color: '#0F0F0F' // background: #0F0F0F কে টেক্সট কালার হিসেবে ব্যবহার করা হয়েছে
+                      color: '#0F0F0F'
                     }}
                   >
                     {index + 1}. {item.title}
                   </h4>
                   <p
                     style={{
-                      fontFamily: "'Poppins', sans-serif", // Family/Body গাইডলাইন অনুযায়ী
+                      fontFamily: "'Poppins', sans-serif",
                       fontWeight: '500',
-                      fontStyle: 'normal', // Medium স্টাইল
+                      fontStyle: 'normal',
                       fontSize: '16px',
                       lineHeight: '160%',
                       letterSpacing: '1%',
-                      color: '#616161' // background কালার কোডটি টেক্সট কালার হিসেবে ব্যবহৃত
+                      color: '#616161'
                     }}
                   >
                     {item.desc}
@@ -398,42 +372,39 @@ const CaseStudyContent = () => {
               ))}
             </div>
           </section>
-
         </div>
+
+        {/* Full Width Image */}
         <div
-          className="container px-6 relative w-full"
+          className="w-full relative mb-8 md:mb-12"
           style={{
-            height: '480px',
+            aspectRatio: '16 / 5',
             opacity: 1,
             transform: 'rotate(0deg)',
-            margin: '0 auto' // কন্টেইনারকে মাঝখানে রাখার জন্য
           }}
         >
           <img
             src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800"
             className="w-full h-full object-cover shadow-xl shadow-primary/5"
-            style={{
-              borderRadius: '24px', // আপনার রিকোয়ারমেন্ট অনুযায়ী ৩২px থেকে কমিয়ে ২৪px করা হয়েছে
-            }}
+            style={{ borderRadius: '24px' }}
             alt="Studio Mic"
           />
         </div>
 
-        {/* Quote Section - Branded */}
-        <div className="border-2 border-dashed border-primary rounded-[40px] p-16  my-24 relative overflow-hidden">
-
+        {/* Quote Section */}
+        <div className="border-2 border-dashed border-primary rounded-[40px] p-8 md:p-16 my-12 md:my-24 relative overflow-hidden">
           <h4
             className="relative z-10"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontWeight: '500',
-              fontStyle: 'normal', // 'Medium' weight 500 কে নির্দেশ করে
-              fontSize: '40px',
+              fontStyle: 'normal',
+              fontSize: 'clamp(22px, 3.5vw, 40px)',
               lineHeight: '120%',
               letterSpacing: '0%',
               textTransform: 'capitalize',
               verticalAlign: 'middle',
-              color: '#0168B4', // background কোডটি টেক্সট কালার হিসেবে ব্যবহৃত
+              color: '#0168B4',
             }}
           >
             "People will forget what you said, but they'll remember how your brand made them feel."
@@ -441,18 +412,18 @@ const CaseStudyContent = () => {
         </div>
 
         {/* Conclusion */}
-        <div className="mb-20 py-12 ">
+        <div className="mb-12 md:mb-20 py-8 md:py-12">
           <h3
             className="mb-6"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontWeight: '500',
-              fontStyle: 'normal', // 'Medium' weight 500 কে নির্দেশ করে
-              fontSize: '40px',
+              fontStyle: 'normal',
+              fontSize: 'clamp(26px, 4vw, 40px)',
               lineHeight: '120%',
               letterSpacing: '0%',
               textTransform: 'capitalize',
-              color: '#0F0F0F' // background কোডটি টেক্সট কালার হিসেবে ব্যবহৃত
+              color: '#0F0F0F'
             }}
           >
             Conclusion
@@ -462,14 +433,14 @@ const CaseStudyContent = () => {
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: '400',
-              fontStyle: 'normal', // 'Regular' স্টাইল
+              fontStyle: 'normal',
               fontSize: '18px',
               lineHeight: '160%',
               letterSpacing: '0%',
-              color: '#6B6B6B' // background কোডটি টেক্সট কালার হিসেবে ব্যবহৃত
+              color: '#6B6B6B'
             }}
           >
-            Expanding into Asian markets is more than just translation—it’s about building authentic cultural connections. By combining localization, high-quality voice-over, and region-specific marketing, you can scale your game successfully.
+            Expanding into Asian markets is more than just translation—it's about building authentic cultural connections. By combining localization, high-quality voice-over, and region-specific marketing, you can scale your game successfully.
           </p>
         </div>
 
