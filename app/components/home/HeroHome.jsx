@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Menu, X, ArrowUpRight, Layers, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
@@ -20,7 +20,11 @@ const HansiTrans = () => {
   const [subServices, setSubServices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // সার্ভিস অনুযায়ী আইকন ম্যাপ
+  // hover tracking
+  const closeTimerRef = useRef(null);
+  const isHoveringButtonRef = useRef(false);
+  const isHoveringMenuRef = useRef(false);
+
   const serviceIcons = [
     <Layers key="1" className="w-4 h-4 text-white" />,
     <Layers key="2" className="w-4 h-4 text-white" />,
@@ -35,7 +39,7 @@ const HansiTrans = () => {
     { name: "Service", path: "/services" },
     { name: "Case Studies", path: "/case-studies" },
     { name: "Blog", path: "/blog" },
-    { name: "Others", path: "#", isOthers: true }, // Others trigger korbe
+    { name: "Others", path: "#", isOthers: true },
   ];
 
   const dropIn = {
@@ -52,20 +56,76 @@ const HansiTrans = () => {
     })
   };
 
-  // সার্ভিস বা 'Others' এ ক্লিক করলে এই ফাংশনটি রান হবে
-  const handleServiceClick = async (service) => {
+  // close করার আগে check করে — button বা menu কোনোটায় hover আছে কিনা
+  const scheduleClose = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = setTimeout(() => {
+      if (!isHoveringButtonRef.current && !isHoveringMenuRef.current) {
+        setIsModalOpen(false);
+        setSelectedService(null);
+        setSubServices([]);
+      }
+    }, 1000);
+  };
+
+  const cancelClose = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const handleServiceHover = async (service) => {
+    isHoveringButtonRef.current = true;
+    cancelClose();
     setSelectedService(service);
     setIsModalOpen(true);
+
     if (service?.slug) {
-        try {
-          const res = await axios.get(API.services.details(service.slug));
-          if (res.data.success) {
-            setSubServices(res.data.data.childServices || []);
-          }
-        } catch (error) {
-          console.error("Error fetching sub-services", error);
+      try {
+        const res = await axios.get(API.services.details(service.slug));
+        if (res.data.success) {
+          setSubServices(res.data.data.childServices || []);
         }
+      } catch (error) {
+        console.error("Error fetching sub-services", error);
+        setSubServices([]);
+      }
+    } else {
+      setSubServices([]);
     }
+  };
+
+  const handleServiceMouseLeave = () => {
+    isHoveringButtonRef.current = false;
+    scheduleClose();
+  };
+
+  const handleMegaMenuMouseEnter = () => {
+    isHoveringMenuRef.current = true;
+    cancelClose();
+  };
+
+  const handleMegaMenuMouseLeave = () => {
+    isHoveringMenuRef.current = false;
+    scheduleClose();
+  };
+
+  const handleClose = () => {
+    isHoveringButtonRef.current = false;
+    isHoveringMenuRef.current = false;
+    cancelClose();
+    setIsModalOpen(false);
+    setSelectedService(null);
+    setSubServices([]);
+  };
+
+  const handleOthersClick = () => {
+    setSelectedService(null);
+    setSubServices([]);
+    setIsModalOpen(true);
   };
 
   useEffect(() => {
@@ -91,6 +151,10 @@ const HansiTrans = () => {
       }
     };
     fetchData();
+
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
   }, []);
 
   if (!mounted) return <div className="min-h-screen bg-black" />;
@@ -104,11 +168,7 @@ const HansiTrans = () => {
 
       {/* Hero Image Gradient Overlay */}
       <div className="absolute inset-x-0 bottom-0 w-full z-[1] pointer-events-none">
-        <img
-          src="/hero-gradient.png"
-          alt="gradient overlay"
-          className="w-full h-auto object-cover block"
-        />
+        <img src="/hero-gradient.png" alt="gradient overlay" className="w-full h-auto object-cover block" />
       </div>
 
       {/* Navigation */}
@@ -117,9 +177,7 @@ const HansiTrans = () => {
           <Link href="/" className="flex items-center justify-center flex-1">
             <img
               src={siteConfig.logo || "/logoWithText.png"}
-              onError={(e) => {
-                e.currentTarget.src = "/logoWithText.png";
-              }}
+              onError={(e) => { e.currentTarget.src = "/logoWithText.png"; }}
               alt="hansi logo"
               className="w-[183px] h-[72px] object-contain"
               style={{ width: '183px', height: '72px' }}
@@ -131,15 +189,9 @@ const HansiTrans = () => {
               item.isOthers ? (
                 <button
                   key={item.name}
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={handleOthersClick}
                   className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '150%',
-                    fontStyle: 'normal',
-                    color: '#FFF'
-                  }}
+                  style={{ fontSize: '16px', fontWeight: '400', lineHeight: '150%', fontStyle: 'normal', color: '#FFF' }}
                 >
                   {item.name}
                 </button>
@@ -148,13 +200,7 @@ const HansiTrans = () => {
                   key={item.name}
                   href={item.path}
                   className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '150%',
-                    fontStyle: 'normal',
-                    color: '#FFF'
-                  }}
+                  style={{ fontSize: '16px', fontWeight: '400', lineHeight: '150%', fontStyle: 'normal', color: '#FFF' }}
                 >
                   {item.name}
                 </Link>
@@ -162,7 +208,7 @@ const HansiTrans = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
+          <div className="hidden md:flex items-center justify-end space-x-4 flex-1">
             <div className="relative">
               <select
                 value={language}
@@ -179,18 +225,7 @@ const HansiTrans = () => {
             <Link
               href="/contact"
               className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap bg-white border border-[#E0E4FF] rounded-full"
-              style={{
-                height: '52px',
-                padding: '4px 4px 4px 12px',
-                gap: '8px',
-                fontFamily: 'Poppins, sans-serif',
-                fontSize: '16px',
-                fontWeight: '500',
-                lineHeight: '160%',
-                letterSpacing: '0.16px',
-                color: '#0168B4',
-                fontStyle: 'normal'
-              }}
+              style={{ height: '52px', padding: '4px 4px 4px 12px', gap: '8px', fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: '500', lineHeight: '160%', letterSpacing: '0.16px', color: '#0168B4', fontStyle: 'normal' }}
             >
               Let's connect
               <span className="bg-[#0168B4] rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
@@ -214,13 +249,10 @@ const HansiTrans = () => {
               className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
             >
               {navLinks.map((item) => (
-                <button 
-                  key={item.name} 
-                  className="text-xl hover:text-primary transition-colors text-white" 
-                  onClick={() => {
-                    setMenuOpen(false);
-                    if(item.isOthers) setIsModalOpen(true);
-                  }}
+                <button
+                  key={item.name}
+                  className="text-xl hover:text-primary transition-colors text-white"
+                  onClick={() => { setMenuOpen(false); if (item.isOthers) handleOthersClick(); }}
                 >
                   {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
                 </button>
@@ -238,68 +270,28 @@ const HansiTrans = () => {
         <div className="max-w-6xl w-full">
           <h1
             className="mb-4 text-white text-center"
-            style={{
-              fontFamily: 'Satoshi, sans-serif',
-              fontSize: 'clamp(32px, 8vw, 80px)',
-              fontWeight: '500',
-              lineHeight: '110%',
-              letterSpacing: '-2.4px',
-              textTransform: 'capitalize',
-            }}
+            style={{ fontFamily: 'Satoshi, sans-serif', fontSize: 'clamp(32px, 8vw, 80px)', fontWeight: '500', lineHeight: '110%', letterSpacing: '-2.4px', textTransform: 'capitalize' }}
           >
             Global Localization, Voice-Over & Cross-Border Marketing
           </h1>
 
           <p
             className="mx-auto mb-8 max-w-4xl px-2 capitalize"
-            style={{
-              color: '#ffff',
-              textAlign: 'center',
-              fontFamily: 'var(--font-poppins), sans-serif',
-              fontSize: '18px',
-              fontWeight: '500',
-              lineHeight: '150%',
-              fontStyle: 'normal',
-            }}
+            style={{ color: '#ffff', textAlign: 'center', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '18px', fontWeight: '500', lineHeight: '150%', fontStyle: 'normal' }}
           >
             Make it once, bring it to life, and take it worldwide—with one team.
           </p>
 
           <div className="relative w-full min-h-[450px] md:min-h-[600px] flex items-center justify-center mt-4">
+            {/* CTA + Avatars */}
             <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 z-30">
               <Link
                 href="/contact"
                 className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px]"
-                style={{
-                  height: '52px',
-                  padding: '4px 4px 4px 12px',
-                  gap: '8px',
-                  background: '#0168B4',
-                  fontFamily: 'var(--font-poppins), sans-serif',
-                  fontSize: '16px',
-                  fontWeight: '500',
-                  lineHeight: '160%',
-                  letterSpacing: '0.16px',
-                  color: '#FFF',
-                  fontStyle: 'normal'
-                }}
+                style={{ height: '52px', padding: '4px 4px 4px 12px', gap: '8px', background: '#0168B4', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', fontWeight: '500', lineHeight: '160%', letterSpacing: '0.16px', color: '#FFF', fontStyle: 'normal' }}
               >
                 Let's Work Together?
-                <span
-                  className="flex items-center justify-center transition-transform duration-300 group-hover:rotate-12"
-                  style={{
-                    display: 'flex',
-                    width: '42px',
-                    height: '42px',
-                    padding: '8px',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '10px',
-                    aspectRatio: '1/1',
-                    borderRadius: '24px',
-                    background: '#FFF'
-                  }}
-                >
+                <span className="flex items-center justify-center transition-transform duration-300 group-hover:rotate-12" style={{ display: 'flex', width: '42px', height: '42px', padding: '8px', justifyContent: 'center', alignItems: 'center', gap: '10px', aspectRatio: '1/1', borderRadius: '24px', background: '#FFF' }}>
                   <ArrowUpRight className="w-6 h-6 text-[#0168B4]" strokeWidth={2} />
                 </span>
               </Link>
@@ -344,32 +336,14 @@ const HansiTrans = () => {
                     animate="visible"
                     variants={dropIn}
                     className={`absolute ${positions[index]} pointer-events-auto`}
+                    onMouseEnter={() => handleServiceHover(service)}
+                    onMouseLeave={handleServiceMouseLeave}
                   >
                     <button
                       className="flex transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
-                      style={{
-                        width: 'auto',
-                        height: '61px',
-                        padding: '12px 16px',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '8px',
-                        borderRadius: '38px',
-                        background: '#0A0A0A',
-                        backdropFilter: 'blur(186.9px)',
-                        color: '#FFFFFF'
-                      }}
+                      style={{ width: 'auto', height: '61px', padding: '12px 16px', justifyContent: 'center', alignItems: 'center', gap: '8px', borderRadius: '38px', background: '#0A0A0A', backdropFilter: 'blur(186.9px)', color: '#FFFFFF' }}
                     >
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-poppins), sans-serif',
-                          fontSize: '16px',
-                          fontWeight: '500',
-                          lineHeight: '160%',
-                          letterSpacing: '0.16px',
-                          color: '#FFF'
-                        }}
-                      >
+                      <span style={{ fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', fontWeight: '500', lineHeight: '160%', letterSpacing: '0.16px', color: '#FFF' }}>
                         {service.title}
                       </span>
                       <span className="bg-gray-800 p-1.5 rounded-full flex items-center justify-center flex-shrink-0">
@@ -388,6 +362,7 @@ const HansiTrans = () => {
                   key={index}
                   custom={index} initial="hidden" animate="visible" variants={dropIn}
                   className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-2 shadow-lg"
+                  onClick={() => handleServiceHover(service)}
                 >
                   {service.title} <span className="scale-75">{serviceIcons[index]}</span>
                 </motion.button>
@@ -396,20 +371,30 @@ const HansiTrans = () => {
           </div>
         </div>
 
-        {/* Modal/Mega Menu */}
+        {/* Mega Menu — backdrop click বা X এ close হবে, hover chain দিয়ে open থাকবে */}
         <AnimatePresence>
           {isModalOpen && (
             <>
+              {/* Backdrop — click করলে close */}
               <div
                 className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleClose}
               />
-              <ServiceMegaMenu
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                mainService={selectedService}
-                subServices={subServices}
-              />
+
+              {/* Mega Menu wrapper — hover এলে open, চলে গেলে close */}
+              <div
+                className="fixed z-[100]"
+                style={{ pointerEvents: 'auto' }}
+                onMouseEnter={handleMegaMenuMouseEnter}
+                onMouseLeave={handleMegaMenuMouseLeave}
+              >
+                <ServiceMegaMenu
+                  isOpen={isModalOpen}
+                  onClose={handleClose}
+                  mainService={selectedService}
+                  subServices={subServices}
+                />
+              </div>
             </>
           )}
         </AnimatePresence>
