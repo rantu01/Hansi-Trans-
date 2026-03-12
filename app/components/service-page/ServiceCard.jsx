@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 const ServiceCard = ({ service }) => {
@@ -77,8 +78,8 @@ const ServiceCard = ({ service }) => {
               </ul>
             </div>
 
-            {/* Premium Button Action */}
-            <button
+            <Link
+              href="#service-sub-services"
               className="group inline-flex items-center justify-center transition-all duration-300 rounded-full mt-4"
               style={{
                 height: "52px",
@@ -98,7 +99,7 @@ const ServiceCard = ({ service }) => {
               >
                 <ArrowUpRight className="w-6 h-6 text-[#0168B4]" strokeWidth={2.5} />
               </span>
-            </button>
+            </Link>
           </div>
 
           {/* Image Container with high-radius corners and subtle border */}

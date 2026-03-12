@@ -6,6 +6,7 @@ import CoreVoiceOver from "@/app/components/service-page/CoreVoiceOver";
 import OurServices from "@/app/components/service-page/OurServices";
 import ProfessionalSupport from "@/app/components/service-page/Professional Support";
 import ServiceCard from "@/app/components/service-page/ServiceCard";
+import { getServicePageContent } from "@/app/components/service-page/serviceContentUtils";
 import { API } from "@/app/config/api";
 
 // ডাটা ফেচ করার ফাংশন
@@ -25,6 +26,7 @@ async function getServiceDetails(slug) {
 export default async function ServiceDetailsPage({ params }) {
   const { slug } = await params;
   const service = await getServiceDetails(slug);
+  const pageContent = getServicePageContent(service || {});
 
   if (!service) {
     return (
@@ -46,13 +48,12 @@ export default async function ServiceDetailsPage({ params }) {
         <ServiceCard service={service} />
       </Hero>
 
-      {/* Core Voice Over সেকশন */}
-      <CoreVoiceOver mainSlug={service.slug} />
+      <CoreVoiceOver mainSlug={service.slug} subServices={service.subServices || []} section={pageContent} />
 
-      {/* Professional Support সেকশন - data ফিল্ডে অপশনাল চেইনিং ব্যবহার করা নিরাপদ */}
       <ProfessionalSupport 
         mainSlug={service.slug} 
         data={service.professionalSupports || []} 
+        section={pageContent}
       />
 
       <OurServices />

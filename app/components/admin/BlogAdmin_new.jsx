@@ -231,7 +231,7 @@ const BlogAdmin = () => {
             </span>
             Blog Manager
           </h2>
-          <p className="text-gray-400 font-medium">Create blogs easily - No HTML knowledge required</p>
+          <p className="text-gray-400 font-medium">সহজে ব্লগ তৈরি করুন - HTML জানার দরকার নেই</p>
         </div>
         
         <div className="relative w-full md:w-80 group">
@@ -251,14 +251,14 @@ const BlogAdmin = () => {
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:col-span-5">
           <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-xl border border-gray-50 sticky top-8">
             <h3 className="font-black text-xl mb-8 flex justify-between items-center">
-              {editId ? "Edit Blog" : "Create New Blog"}
+              {editId ? "ব্লগ সম্পাদনা করুন" : "নতুন ব্লগ তৈরি করুন"}
               {editId && <X className="cursor-pointer text-red-500" onClick={clearForm} />}
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Image Upload */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Cover Image</label>
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">কভার ছবি</label>
                 <div className="relative group">
                   <input type="file" id="blog-upload" className="hidden" onChange={handleImageUpload} accept="image/*" />
                   <label htmlFor="blog-upload" className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-3xl cursor-pointer hover:bg-gray-50 transition-all overflow-hidden">
@@ -270,7 +270,7 @@ const BlogAdmin = () => {
               {/* Title */}
               <input 
                 className="w-full bg-gray-50 p-4 rounded-xl outline-none font-bold text-sm" 
-                placeholder="Blog Title" 
+                placeholder="ব্লগ শিরোনাম" 
                 value={formData.title} 
                 onChange={handleTitleChange} 
                 required 
@@ -279,7 +279,7 @@ const BlogAdmin = () => {
               {/* Slug */}
               <input 
                 className="w-full bg-gray-50 p-4 rounded-xl outline-none text-xs text-gray-400" 
-                placeholder="Slug (Auto-generated)" 
+                placeholder="Slug (স্বয়ংক্রিয়)" 
                 value={formData.slug} 
                 readOnly
               />
@@ -287,7 +287,7 @@ const BlogAdmin = () => {
               {/* Description */}
               <textarea 
                 className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm h-20" 
-                placeholder="Short Description (For Hero Section)" 
+                placeholder="সংক্ষিপ্ত বর্ণনা (Hero সেকশনের জন্য)" 
                 value={formData.description} 
                 onChange={(e) => setFormData({...formData, description: e.target.value})} 
               />
@@ -305,7 +305,7 @@ const BlogAdmin = () => {
                 </select>
                 <input 
                   className="w-1/2 bg-gray-50 p-4 rounded-xl outline-none text-sm" 
-                  placeholder="Author Name" 
+                  placeholder="লেখক নাম" 
                   value={formData.author} 
                   onChange={(e) => setFormData({...formData, author: e.target.value})} 
                 />
@@ -316,7 +316,7 @@ const BlogAdmin = () => {
                 disabled={uploading} 
                 className="w-full py-4 rounded-xl font-black text-white bg-[#0066b2] shadow-lg shadow-blue-200 hover:scale-[1.02] transition-transform disabled:bg-gray-300"
               >
-                {editId ? "Update" : "Publish"}
+                {editId ? "আপডেট করুন" : "প্রকাশ করুন"}
               </button>
             </form>
           </div>
@@ -326,35 +326,35 @@ const BlogAdmin = () => {
         <div className="lg:col-span-7 space-y-6">
           <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-xl border border-gray-50">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="font-black text-lg">Content Sections</h3>
+              <h3 className="font-black text-lg">কন্টেন্ট সেকশন</h3>
               <div className="flex gap-2 flex-wrap">
                 <button 
                   type="button"
                   onClick={() => addSection('heading')}
                   className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-200"
                 >
-                  + Heading
+                  + শিরোনাম
                 </button>
                 <button 
                   type="button"
                   onClick={() => addSection('paragraph')}
                   className="px-3 py-2 bg-green-100 text-green-700 rounded-lg text-xs font-bold hover:bg-green-200"
                 >
-                  + Paragraph
+                  + অনুচ্ছেদ
                 </button>
                 <button 
                   type="button"
                   onClick={() => addSection('list')}
                   className="px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold hover:bg-purple-200"
                 >
-                  + List
+                  + তালিকা
                 </button>
                 <button 
                   type="button"
                   onClick={() => addSection('quote')}
                   className="px-3 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold hover:bg-orange-200"
                 >
-                  + Quote
+                  + উদ্ধৃতি
                 </button>
               </div>
             </div>
@@ -362,7 +362,7 @@ const BlogAdmin = () => {
             {/* Sections List */}
             <div className="space-y-4">
               {formData.sections.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">Add a section →</p>
+                <p className="text-gray-400 text-center py-8">কোনো সেকশন যোগ করুন →</p>
               ) : (
                 formData.sections.map((section, index) => (
                   <motion.div 
@@ -373,11 +373,11 @@ const BlogAdmin = () => {
                   >
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-xs font-bold uppercase text-gray-500">
-                        {section.type === 'heading' && '📝 Heading'}
-                        {section.type === 'paragraph' && '📄 Paragraph'}
-                        {section.type === 'list' && '📋 List'}
-                        {section.type === 'quote' && '💬 Quote'}
-                        {section.type === 'image' && '🖼️ Image'}
+                        {section.type === 'heading' && '📝 শিরোনাম'}
+                        {section.type === 'paragraph' && '📄 অনুচ্ছেদ'}
+                        {section.type === 'list' && '📋 তালিকা'}
+                        {section.type === 'quote' && '💬 উদ্ধৃতি'}
+                        {section.type === 'image' && '🖼️ ছবি'}
                       </span>
                       <button 
                         type="button"
@@ -395,7 +395,7 @@ const BlogAdmin = () => {
                         value={section.text}
                         onChange={(e) => updateSection(index, 'text', e.target.value)}
                         className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm font-bold"
-                        placeholder="Write heading"
+                        placeholder="শিরোনাম লিখুন"
                       />
                     )}
 
@@ -405,7 +405,7 @@ const BlogAdmin = () => {
                         value={section.text}
                         onChange={(e) => updateSection(index, 'text', e.target.value)}
                         className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm h-20"
-                        placeholder="Write paragraph"
+                        placeholder="অনুচ্ছেদ লিখুন"
                       />
                     )}
 
@@ -419,7 +419,7 @@ const BlogAdmin = () => {
                               value={item}
                               onChange={(e) => updateListItem(index, itemIndex, e.target.value)}
                               className="flex-1 bg-white p-2 rounded-lg border border-gray-200 outline-none text-sm"
-                              placeholder={`Item ${itemIndex + 1}`}
+                              placeholder={`আইটেম ${itemIndex + 1}`}
                             />
                             <button 
                               type="button"
@@ -435,7 +435,7 @@ const BlogAdmin = () => {
                           onClick={() => addListItem(index)}
                           className="w-full py-2 border border-dashed border-gray-300 rounded-lg text-xs font-bold text-gray-500 hover:bg-white"
                         >
-                          + Add Item
+                          + আইটেম যোগ করুন
                         </button>
                       </div>
                     )}
@@ -446,7 +446,7 @@ const BlogAdmin = () => {
                         value={section.text}
                         onChange={(e) => updateSection(index, 'text', e.target.value)}
                         className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm h-16"
-                        placeholder="Write quote"
+                        placeholder="উদ্ধৃতি লিখুন"
                       />
                     )}
                   </motion.div>
@@ -459,7 +459,7 @@ const BlogAdmin = () => {
 
       {/* BLOGS LIST */}
       <div className="mt-16">
-        <h2 className="text-2xl font-black mb-8">Published Blogs</h2>
+        <h2 className="text-2xl font-black mb-8">প্রকাশিত ব্লগ</h2>
         <div className="grid gap-6">
           <AnimatePresence mode="popLayout">
             {filteredBlogs.map((blog) => (

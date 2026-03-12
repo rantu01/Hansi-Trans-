@@ -19,6 +19,7 @@ const HansiTrans = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [subServices, setSubServices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showOthersDropdown, setShowOthersDropdown] = useState(false);
 
   // hover tracking
   const closeTimerRef = useRef(null);
@@ -36,10 +37,15 @@ const HansiTrans = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Service", path: "/services" },
+    { name: "Service", path: "/services", isService: true },
     { name: "Case Studies", path: "/case-studies" },
     { name: "Blog", path: "/blog" },
     { name: "Others", path: "#", isOthers: true },
+  ];
+
+  const othersLinks = [
+    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Terms & Conditions", path: "/terms-condition" }
   ];
 
   const dropIn = {
@@ -123,6 +129,11 @@ const HansiTrans = () => {
   };
 
   const handleOthersClick = () => {
+    setShowOthersDropdown(!showOthersDropdown);
+  };
+
+  // Navbar Service Click Handler
+  const handleServiceNavClick = () => {
     setSelectedService(null);
     setSubServices([]);
     setIsModalOpen(true);
@@ -186,15 +197,49 @@ const HansiTrans = () => {
 
           <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
             {navLinks.map((item) => (
-              item.isOthers ? (
+              item.isService ? (
                 <button
                   key={item.name}
-                  onClick={handleOthersClick}
+                  onClick={handleServiceNavClick}
                   className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
                   style={{ fontSize: '16px', fontWeight: '400', lineHeight: '150%', fontStyle: 'normal', color: '#FFF' }}
                 >
                   {item.name}
                 </button>
+              ) : item.isOthers ? (
+                <div key={item.name} className="relative">
+                  <button
+                    onClick={handleOthersClick}
+                    className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                    style={{ fontSize: '16px', fontWeight: '400', lineHeight: '150%', fontStyle: 'normal', color: '#FFF' }}
+                  >
+                    {item.name}
+                  </button>
+                  
+                  {/* Others Dropdown */}
+                  <AnimatePresence>
+                    {showOthersDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl overflow-hidden min-w-[200px] z-50"
+                      >
+                        {othersLinks.map((link) => (
+                          <Link
+                            key={link.path}
+                            href={link.path}
+                            onClick={() => setShowOthersDropdown(false)}
+                            className="block px-6 py-3 text-gray-800 hover:bg-blue-50 transition-colors"
+                            style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '500' }}
+                          >
+                            {link.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ) : (
                 <Link
                   key={item.name}
@@ -249,13 +294,47 @@ const HansiTrans = () => {
               className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
             >
               {navLinks.map((item) => (
-                <button
-                  key={item.name}
-                  className="text-xl hover:text-primary transition-colors text-white"
-                  onClick={() => { setMenuOpen(false); if (item.isOthers) handleOthersClick(); }}
-                >
-                  {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
-                </button>
+                item.isService ? (
+                  <button
+                    key={item.name}
+                    onClick={() => { handleServiceNavClick(); setMenuOpen(false); }}
+                    className="text-xl hover:text-primary transition-colors text-white"
+                  >
+                    {item.name}
+                  </button>
+                ) : item.isOthers ? (
+                  <div key={item.name} className="flex flex-col items-center space-y-3">
+                    <button
+                      className="text-xl hover:text-primary transition-colors text-white"
+                      onClick={() => setShowOthersDropdown(!showOthersDropdown)}
+                    >
+                      {item.name}
+                    </button>
+                    {showOthersDropdown && (
+                      <div className="flex flex-col space-y-2">
+                        {othersLinks.map((link) => (
+                          <Link
+                            key={link.path}
+                            href={link.path}
+                            onClick={() => { setMenuOpen(false); setShowOthersDropdown(false); }}
+                            className="text-base text-gray-300 hover:text-white transition-colors"
+                          >
+                            {link.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    onClick={() => setMenuOpen(false)}
+                    className="text-xl hover:text-primary transition-colors text-white"
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
               <Link href="/contact" onClick={() => setMenuOpen(false)} className="bg-primary text-center w-full max-w-xs py-3 rounded-full font-semibold text-white">
                 Let's connect
@@ -318,7 +397,7 @@ const HansiTrans = () => {
               </video>
             </div>
 
-            {/* Desktop Service Buttons */}
+            {/* Desktop Service Buttons - Only Hover, No Click */}
             <div className="absolute inset-0 pointer-events-none hidden md:block">
               {services.map((service, index) => {
                 const positions = [
@@ -339,8 +418,8 @@ const HansiTrans = () => {
                     onMouseEnter={() => handleServiceHover(service)}
                     onMouseLeave={handleServiceMouseLeave}
                   >
-                    <button
-                      className="flex transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
+                    <div
+                      className="flex transition-all duration-300 hover:scale-105 cursor-pointer"
                       style={{ width: 'auto', height: '61px', padding: '12px 16px', justifyContent: 'center', alignItems: 'center', gap: '8px', borderRadius: '38px', background: '#0A0A0A', backdropFilter: 'blur(186.9px)', color: '#FFFFFF' }}
                     >
                       <span style={{ fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', fontWeight: '500', lineHeight: '160%', letterSpacing: '0.16px', color: '#FFF' }}>
@@ -349,23 +428,25 @@ const HansiTrans = () => {
                       <span className="bg-gray-800 p-1.5 rounded-full flex items-center justify-center flex-shrink-0">
                         {serviceIcons[index]}
                       </span>
-                    </button>
+                    </div>
                   </motion.div>
                 );
               })}
             </div>
 
-            {/* Mobile Service Buttons */}
-            <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4">
+            {/* Mobile Service Buttons - Only Hover Effect */}
+            <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4 pointer-events-none">
               {services.map((service, index) => (
-                <motion.button
+                <motion.div
                   key={index}
-                  custom={index} initial="hidden" animate="visible" variants={dropIn}
+                  custom={index} 
+                  initial="hidden" 
+                  animate="visible" 
+                  variants={dropIn}
                   className="bg-black/70 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full text-xs flex items-center gap-2 shadow-lg"
-                  onClick={() => handleServiceHover(service)}
                 >
                   {service.title} <span className="scale-75">{serviceIcons[index]}</span>
-                </motion.button>
+                </motion.div>
               ))}
             </div>
           </div>

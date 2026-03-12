@@ -206,7 +206,7 @@ const ServiceMegaMenu = ({ isOpen, onClose }) => {
                                     textDecoration: 'none'
                                 }}
                             >
-                                <span className="group-hover:underline">Book a Demo</span>
+                                <span className="group-hover:underline">Service Page</span>
                                 <ChevronRight
                                     size={22}
                                     className="transition-transform group-hover:translate-x-1"

@@ -1,50 +1,43 @@
 "use client";
 import React from "react";
+import { getSubServicePageContent } from "./serviceContentUtils";
+
+const getLayoutClass = (layout, index) => {
+  if (layout === "full-width") {
+    return "flex-col";
+  }
+
+  if (layout === "image-right") {
+    return "flex-col md:flex-row-reverse";
+  }
+
+  if (layout === "image-left") {
+    return "flex-col md:flex-row";
+  }
+
+  return index % 2 === 0 ? "flex-col md:flex-row" : "flex-col md:flex-row-reverse";
+};
+
+const SectionImage = ({ src, alt }) => (
+  <div className="flex-1 w-full relative group" style={{ minHeight: "300px" }}>
+    <div className="absolute inset-0 rounded-[40px] bg-primary/5 rotate-2 transition-transform duration-500 group-hover:rotate-0"></div>
+    <img
+      src={src}
+      alt={alt}
+      className="relative z-10 h-full w-full rounded-[40px] object-cover shadow-lg"
+      style={{ minHeight: "300px", maxHeight: "520px" }}
+    />
+  </div>
+);
 
 const SubServiceContent = ({ subService }) => {
-  const dynamicFeatures = subService?.features?.map((feature, index) => {
-    const hasSeparator = feature.includes(":");
-    return {
-      id: index + 1 < 10 ? `0${index + 1}` : `${index + 1}`,
-      title: hasSeparator ? feature.split(":")[0] : "Service Feature",
-      desc: hasSeparator ? feature.split(":")[1] : feature,
-    };
-  }) || [];
-
-  const featuresData = [
-    {
-      "id": "01",
-      "title": "Native Voice Talent",
-      "desc": "Choose from professional native speakers and voice actors across 40+ languages."
-    },
-    {
-      "id": "02",
-      "title": "Media Synchronisation",
-      "desc": "We integrate voice-overs into your videos, apps, IVR systems or animations."
-    },
-    {
-      "id": "03",
-      "title": "Studio-Grade Recording",
-      "desc": "Recordings done in professional studios, noise-free, mastered and delivered in your format."
-    },
-    {
-      "id": "04",
-      "title": "Cultural Consulting",
-      "desc": "Every language version passes through a QA process to ensure correct tone, pronunciation, and cultural appropriateness."
-    },
-    {
-      "id": "05",
-      "title": "Script Translation",
-      "desc": "Not just literal translation — we adapt the script to suit the phrasing, rhythm and cultural context of each language."
-    }
-  ];
+  const content = getSubServicePageContent(subService || {});
 
   return (
     <div className="bg-background container mx-auto p-4 md:p-6 font-sans">
       <div className="container mx-auto">
-
-        {/* Why Matters Section */}
-        <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-12 mb-12 md:mb-20">
+        {/* Why Matters Section - UPDATED to match static */}
+        <div className="mb-12 flex flex-col gap-6 md:mb-20 md:flex-row md:justify-between md:gap-12">
           <h2
             style={{
               fontFamily: "Inter, sans-serif",
@@ -52,331 +45,191 @@ const SubServiceContent = ({ subService }) => {
               fontWeight: "500",
               color: "#0A0A0A",
               lineHeight: "120%",
-              letterSpacing: "0%",
-              textTransform: "capitalize",
               margin: "0",
               flex: "1",
             }}
           >
-            Why {subService?.title || "This Service"} <br /> Matters
+            {content.introTitle}
           </h2>
-          <p className="text-gray-500 text-xs md:text-sm flex-1 leading-relaxed md:max-w-md">
-            {subService?.description || "In today's global market, your voice is more than sound: it's how you build brand trust, convey emotion, and connect with users in their native language. Poor translations or non-native voice talent can undermine credibility. With our service, you ensure every listener feels like you're speaking to them."}
+          {/* CHANGED: text-sm md:text-base → text-xs md:text-sm */}
+          <p className="flex-1 text-xs md:text-sm leading-relaxed text-gray-500 md:max-w-md">
+            {content.introDescription}
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="w-full mb-16 md:mb-32 px-0 md:px-6">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-            {featuresData.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col bg-white p-6 md:p-10 rounded-[24px] md:rounded-[40px] items-center text-center transition-all duration-300 hover:shadow-xl w-full sm:w-[calc(50%-16px)] lg:w-[calc(33%-22px)]"
-                style={{ minHeight: "260px" }}
-              >
-                <span
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontWeight: "500",
-                    fontSize: "clamp(32px, 4vw, 48px)",
-                    color: "#E6E6E6",
-                    lineHeight: "120%",
-                    marginBottom: "16px",
-                  }}
+        {/* Features Grid - Already matching */}
+        {content.featureCards.length > 0 ? (
+          <div className="mb-16 w-full px-0 md:mb-32 md:px-6">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+              {content.featureCards.map((item, index) => (
+                <div
+                  key={`${item.title}-${index}`}
+                  className="flex min-h-[260px] w-full flex-col items-center rounded-[24px] bg-white p-6 text-center transition-all duration-300 hover:shadow-xl sm:w-[calc(50%-16px)] md:rounded-[40px] md:p-10 lg:w-[calc(33%-22px)]"
                 >
-                  {item.id}
-                </span>
-
-                <h4
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontWeight: "500",
-                    fontSize: "clamp(18px, 2.5vw, 28px)",
-                    color: "#0168B4",
-                    lineHeight: "120%",
-                    marginBottom: "12px",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {item.title}
-                </h4>
-
-                <p
-                  style={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontWeight: "400",
-                    fontSize: "16px",
-                    color: "#616161",
-                    lineHeight: "150%",
-                    margin: "0",
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+                  <span
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontWeight: "500",
+                      fontSize: "clamp(32px, 4vw, 48px)",
+                      color: "#E6E6E6",
+                      lineHeight: "120%",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h4
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontWeight: "500",
+                      fontSize: "clamp(18px, 2.5vw, 28px)",
+                      color: "#0168B4",
+                      lineHeight: "120%",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {item.title}
+                  </h4>
+                  <p
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: "400",
+                      fontSize: "16px",
+                      color: "#616161",
+                      lineHeight: "150%",
+                      margin: "0",
+                    }}
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
+        ) : null}
+
+        {/* Detail Sections - UPDATED to match static */}
+        <div className="mb-12 space-y-16 md:mb-20 md:space-y-32">
+          {content.detailSections.map((section, index) => {
+            const layoutClass = getLayoutClass(section.layout, index);
+
+            if (section.layout === "full-width") {
+              return (
+                <div key={`${section.title}-${index}`} className="space-y-6 text-start">
+                  <h3
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "clamp(26px, 4vw, 48px)",
+                      fontWeight: "500",
+                      color: "#0A0A0A",
+                      lineHeight: "120%",
+                      margin: "0",
+                    }}
+                  >
+                    {section.title}
+                  </h3>
+                  {/* CHANGED: Tailwind → inline styles to match static */}
+                  <p
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "#616161",
+                      lineHeight: "160%",
+                      letterSpacing: "1%",
+                      marginTop: "20px",
+                    }}
+                  >
+                    {section.description}
+                  </p>
+                  {section.image ? <SectionImage src={section.image} alt={section.title} /> : null}
+                </div>
+              );
+            }
+
+            return (
+              <div key={`${section.title}-${index}`} className={`flex items-center gap-8 md:gap-14 ${layoutClass}`}>
+                {section.image ? <SectionImage src={section.image} alt={section.title} /> : null}
+                {/* CHANGED: space-y-6 → space-y-8 md:space-y-20 to match static Section 1 */}
+                <div className="flex-1 space-y-8 md:space-y-20 w-full">
+                  <h3
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "clamp(26px, 4vw, 48px)",
+                      fontWeight: "500",
+                      color: "#0A0A0A",
+                      lineHeight: "120%",
+                      margin: "0",
+                    }}
+                  >
+                    {section.title}
+                  </h3>
+                  {/* CHANGED: Tailwind → inline styles to match static */}
+                  <p
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "#616161",
+                      lineHeight: "160%",
+                      letterSpacing: "1%",
+                      margin: "0",
+                      fontStyle: "normal",
+                    }}
+                  >
+                    {section.description}
+                  </p>
+                  {section.items?.length > 0 ? (
+                    /* CHANGED: space-y-3 → space-y-0 to match static */
+                    <ul className="space-y-0">
+                      {section.items.map((item, itemIndex) => (
+                        <li key={`${item}-${itemIndex}`} className="flex items-center gap-2">
+                          {/* CHANGED: Complete redesign to match static styling */}
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "48px",
+                              height: "48px",
+                              borderRadius: "50%",
+                              color: "#B0D0E8",
+                              fontFamily: "Inter, sans-serif",
+                              fontSize: "24px",
+                              fontWeight: "500",
+                              lineHeight: "120%",
+                              letterSpacing: "0%",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            {String(itemIndex + 1).padStart(2, "0")}
+                          </span>
+                          {/* CHANGED: text-base → 18px Poppins to match static */}
+                          <span
+                            style={{
+                              fontFamily: "Poppins, sans-serif",
+                              fontWeight: "400",
+                              fontSize: "18px",
+                              color: "#0168B4",
+                              lineHeight: "160%",
+                              letterSpacing: "0%",
+                              textTransform: "none",
+                            }}
+                          >
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Alternating Content Sections */}
-        <div className="space-y-16 md:space-y-32 mb-12 md:mb-20">
-
-          {/* Section 1 - Strategic Growth */}
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div className="flex-1 relative group flex justify-center items-center w-full">
-              <div
-                className="relative overflow-hidden shadow-lg w-full"
-                style={{
-                  maxWidth: "568px",
-                  aspectRatio: "568 / 500",
-                  borderRadius: "clamp(20px, 3vw, 36px)",
-                  opacity: "1",
-                }}
-              >
-                <div className="absolute inset-0 bg-primary/5 -rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800"
-                  className="w-full h-full object-cover relative z-10 transition-transform duration-700 group-hover:scale-105"
-                  alt="Working"
-                  style={{ borderRadius: "clamp(20px, 3vw, 36px)" }}
-                />
-              </div>
-            </div>
-
-            <div className="flex-1 space-y-8 md:space-y-20 w-full">
-              <h3
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "clamp(26px, 4vw, 48px)",
-                  fontWeight: "500",
-                  color: "#0A0A0A",
-                  lineHeight: "120%",
-                  letterSpacing: "0%",
-                  textTransform: "capitalize",
-                  margin: "0",
-                }}
-              >
-                Why This Service <br /> Matters
-              </h3>
-              <p
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: "16px",
-                  fontWeight: "500",
-                  color: "#616161",
-                  lineHeight: "160%",
-                  letterSpacing: "1%",
-                  margin: "0",
-                  fontStyle: "normal",
-                }}
-              >
-                In today's global market, your product must feel local. We help
-                you build trust and connect with users in their native language through professional {subService?.title}.
-              </p>
-
-              <ul className="space-y-0">
-                {[
-                  "Enhance engagement",
-                  "Improve comprehension",
-                  "Boost brand personality",
-                  "Reduce time & cost",
-                ].map((list, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <span
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "48px",
-                        height: "48px",
-                        borderRadius: "50%",
-                        color: "#B0D0E8",
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "24px",
-                        fontWeight: "500",
-                        lineHeight: "120%",
-                        letterSpacing: "0%",
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      0{i + 1}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "Poppins, sans-serif",
-                        fontWeight: "400",
-                        fontSize: "18px",
-                        color: "#0168B4",
-                        lineHeight: "160%",
-                        letterSpacing: "0%",
-                        textTransform: "none",
-                      }}
-                    >
-                      {list}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Section 2 - Visual Banner */}
-          <div className="text-center text-start">
-            <h3
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "clamp(26px, 4vw, 48px)",
-                fontWeight: "500",
-                color: "#0A0A0A",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textTransform: "capitalize",
-                margin: "0",
-              }}
-            >
-              Ready for 40+ Languages
-            </h3>
-
-            <p
-              style={{
-                fontFamily: "Poppins, sans-serif",
-                fontSize: "16px",
-                fontWeight: "500",
-                color: "#616161",
-                lineHeight: "160%",
-                letterSpacing: "1%",
-                marginTop: "20px",
-              }}
-            >
-              We currently support a broad range of languages — from widely spoken international
-              ones to regional variants. Each voice-talent is a native speaker with local accent
-              and cultural fluency. Example list (not exhaustive): English, Spanish, French,
-              German, Italian, Arabic, Mandarin (Simplified & Traditional), Japanese, Korean,
-              Portuguese, Hindi, Bengali, Turkish, Thai, Russian Microcopy: Need a specific
-              dialect (e.g., Latin American Spanish, Brazilian Portuguese, Indian English)?
-              Just ask — we can accommodate.
-            </p>
-            <div
-              className="w-full mx-auto overflow-hidden relative group mt-6"
-              style={{
-                maxWidth: "1296px",
-                aspectRatio: "1296 / 500",
-                borderRadius: "clamp(16px, 3vw, 36px)",
-                opacity: "1",
-              }}
-            >
-              <img
-                src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1200"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                alt="Professional Setup"
-                style={{ borderRadius: "clamp(16px, 3vw, 36px)" }}
-              />
-            </div>
-          </div>
-
-          {/* Section 3 */}
-          <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-14 w-full mx-auto">
-            <div className="flex-1 w-full relative group" style={{ minHeight: "300px" }}>
-              <div className="absolute inset-0 bg-primary/5 rounded-[40px] rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
-              <img
-                src="https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800"
-                className="rounded-[40px] w-full h-full object-cover relative z-10 shadow-lg"
-                alt="Localization"
-                style={{ minHeight: "300px", maxHeight: "500px" }}
-              />
-            </div>
-
-            <div className="flex-1 space-y-6 text-start w-full">
-              <h3
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "clamp(26px, 4vw, 48px)",
-                  fontWeight: "500",
-                  color: "#0A0A0A",
-                  lineHeight: "120%",
-                  letterSpacing: "0%",
-                  textTransform: "capitalize",
-                  margin: "0",
-                }}
-              >
-                Ready for 40+ Languages
-              </h3>
-
-              <p
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: "16px",
-                  fontWeight: "500",
-                  color: "#616161",
-                  lineHeight: "160%",
-                  letterSpacing: "1%",
-                  marginTop: "20px",
-                }}
-              >
-                We currently support a broad range of languages — from widely spoken international
-                ones to regional variants. Each voice-talent is a native speaker with local accent
-                and cultural fluency. Example list (not exhaustive): English, Spanish, French,
-                German, Italian, Arabic, Mandarin (Simplified & Traditional), Japanese, Korean,
-                Portuguese, Hindi, Bengali, Turkish, Thai, Russian Microcopy: Need a specific
-                dialect (e.g., Latin American Spanish, Brazilian Portuguese, Indian English)?
-                Just ask — we can accommodate.
-              </p>
-            </div>
-          </div>
-
-          {/* Section 4 */}
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14 w-full mx-auto">
-            <div className="flex-1 w-full relative group" style={{ minHeight: "300px" }}>
-              <div className="absolute inset-0 bg-primary/5 rounded-[40px] rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
-              <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800"
-                className="rounded-[40px] w-full h-full object-cover relative z-10 shadow-lg shadow-primary/5"
-                alt="Localization"
-                style={{ borderRadius: "36px", minHeight: "300px", maxHeight: "500px" }}
-              />
-            </div>
-
-            <div className="flex-1 space-y-6 w-full">
-              <h3
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "clamp(26px, 4vw, 48px)",
-                  fontWeight: "500",
-                  color: "#0A0A0A",
-                  lineHeight: "120%",
-                  letterSpacing: "0%",
-                  textTransform: "capitalize",
-                  margin: "0",
-                }}
-              >
-                Ready for 40+ Languages
-              </h3>
-
-              <p
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: "16px",
-                  fontWeight: "500",
-                  color: "#616161",
-                  lineHeight: "160%",
-                  letterSpacing: "1%",
-                  marginTop: "20px",
-                }}
-              >
-                We currently support a broad range of languages — from widely spoken international
-                ones to regional variants. Each voice-talent is a native speaker with local accent
-                and cultural fluency. Example list (not exhaustive): English, Spanish, French,
-                German, Italian, Arabic, Mandarin (Simplified & Traditional), Japanese, Korean,
-                Portuguese, Hindi, Bengali, Turkish, Thai, Russian Microcopy: Need a specific
-                dialect (e.g., Latin American Spanish, Brazilian Portuguese, Indian English)?
-                Just ask — we can accommodate.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Final Footer Section */}
-        <div className="text-center mt-16 md:mt-32 max-w-7xl mx-auto py-10 md:py-16 px-4 md:px-8">
+        {/* Footer Section - UPDATED to match static */}
+        <div className="mx-auto mt-16 max-w-7xl px-4 py-10 text-center md:mt-32 md:px-8 md:py-16">
           <h3
             style={{
               fontFamily: "Inter, sans-serif",
@@ -384,13 +237,12 @@ const SubServiceContent = ({ subService }) => {
               fontWeight: "500",
               color: "#0A0A0A",
               lineHeight: "120%",
-              letterSpacing: "0%",
-              textTransform: "capitalize",
               margin: "0",
             }}
           >
-            Ready for 40+ Languages
+            {content.footerTitle}
           </h3>
+          {/* CHANGED: Tailwind → inline styles to match static */}
           <p
             style={{
               fontFamily: "Poppins, sans-serif",
@@ -402,13 +254,7 @@ const SubServiceContent = ({ subService }) => {
               marginTop: "20px",
             }}
           >
-            We currently support a broad range of languages — from widely spoken international
-            ones to regional variants. Each voice-talent is a native speaker with local accent
-            and cultural fluency. Example list (not exhaustive): English, Spanish, French,
-            German, Italian, Arabic, Mandarin (Simplified & Traditional), Japanese, Korean,
-            Portuguese, Hindi, Bengali, Turkish, Thai, Russian Microcopy: Need a specific
-            dialect (e.g., Latin American Spanish, Brazilian Portuguese, Indian English)?
-            Just ask — we can accommodate.
+            {content.footerDescription}
           </p>
         </div>
       </div>

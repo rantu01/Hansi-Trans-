@@ -6,7 +6,7 @@ const SubServiceDetails = ({ subService }) => {
 
   return (
     <section className="py-6 px-4 sm:px-6 md:px-12 font-sans overflow-hidden">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-6xl">
 
         {/* Main Hero Image with Brand Shadow */}
         {subService.image && (
@@ -40,8 +40,16 @@ const SubServiceDetails = ({ subService }) => {
             ></div>
           </div>
         )}
-
-        {/* Features Section */}
+{/* 
+        {features.length > 0 ? (
+          <div className="mx-auto mt-8 flex max-w-5xl flex-wrap gap-3 px-2">
+            {features.map((feature, index) => (
+              <span key={`${feature}-${index}`} className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
+                {feature}
+              </span>
+            ))}
+          </div>
+        ) : null} */}
 
       </div>
     </section>

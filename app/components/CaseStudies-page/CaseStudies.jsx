@@ -7,6 +7,7 @@ const CaseStudies = () => {
   const [slides, setSlides] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const fetchCaseStudies = async () => {
@@ -26,6 +27,17 @@ const CaseStudies = () => {
     fetchCaseStudies();
   }, []);
 
+  // Auto-play functionality
+  useEffect(() => {
+    if (slides.length === 0 || isPaused) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => (prev < slides.length - 1 ? prev + 1 : 0));
+    }, 3000); // 3 seconds - you can change this duration
+
+    return () => clearInterval(interval);
+  }, [slides.length, isPaused]);
+
   if (loading) return (
     <div className="py-20 text-center text-primary font-medium animate-pulse">
       Loading Case Studies...
@@ -44,8 +56,12 @@ const CaseStudies = () => {
 
   return (
     <section className="overflow-hidden relative mt-[-200px] z-1">
-      <div className="relative w-full flex justify-center items-center">
-        <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4 ">
+      <div 
+        className="relative w-full flex justify-center items-center"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4">
           {slides.map((slide, index) => {
             const isCenter = index === currentIndex;
             const isLeft = index === currentIndex - 1;
@@ -81,7 +97,7 @@ const CaseStudies = () => {
           })}
         </div>
 
-        {/* Navigation Buttons - Styled with Brand Colors */}
+        {/* Navigation Buttons - Uncomment if needed */}
         {/* <button
           onClick={prevSlide}
           className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-background border border-primary/10 text-primary rounded-full shadow-xl hover:bg-primary hover:text-white transition-all z-30 group"

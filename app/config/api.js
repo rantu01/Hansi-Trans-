@@ -35,6 +35,7 @@ export const API = {
   services: {
     main: `${API_BASE_URL}/api/services`, // সব মেইন সার্ভিস
     details: (slug) => `${API_BASE_URL}/api/services/${slug}`, // সিঙ্গেল সার্ভিস
+    pathDetails: (path) => `${API_BASE_URL}/api/services/path/${path}`, // nested service path
     subServices: (parentSlug) => `${API_BASE_URL}/api/services/sub/${parentSlug}`, // সাব-সার্ভিস
   },
 

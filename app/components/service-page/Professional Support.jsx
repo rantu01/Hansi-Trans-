@@ -1,17 +1,9 @@
 "use client";
 import React from "react";
-import { ArrowUpRight, Sparkles, Box } from "lucide-react";
-import Link from "next/link";
+import { Box } from "lucide-react";
 
-const ProfessionalSupport = ({ data = [], mainSlug }) => {
-  const supportFeatures = [
-    { id: "01", title: "Native Speakers Only", desc: "no robotic or machine-generated voices" },
-    { id: "02", title: "Studio-Grade Quality", desc: "with noise-free output" },
-    { id: "03", title: "Culturally Adapted", desc: "not just translated" },
-    { id: "04", title: "Fast Turnaround Times", desc: "24-72 hours typical" },
-    { id: "05", title: "Flexible Delivery Formats", desc: "Mp3, MP4, AVF, JPEG, whatever you want" },
-    { id: "06", title: "Confidential & Secure", desc: "NDA-protected processes" },
-  ];
+const ProfessionalSupport = ({ data = [], section = {} }) => {
+  const supportFeatures = section.supportHighlights || [];
 
   return (
     <section className="bg-background py-16 px-4 sm:px-6 md:px-12 font-sans">
@@ -19,9 +11,10 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
 
         {/* Header Badge */}
         <div
-          className="flex items-center justify-center mb-12 mx-auto w-full"
+          className="flex items-start justify-start mb-12"  // mx-auto removed, justify-center → justify-start, items-center → items-start
           style={{
-            maxWidth: "585px",
+            width: 'fit-content',     // auto width based on content
+            maxWidth: 'none',         // no width limit
             minHeight: "70px",
             padding: "8px 16px",
             gap: "8px",
@@ -29,7 +22,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
             background: "#FFFFFF",
             opacity: "1",
             display: "flex",
-            alignItems: "center",
+            alignItems: "center",      // center থেকে start করলাম
             boxShadow: "0px 4px 20px rgba(0,0,0,0.05)",
           }}
         >
@@ -47,13 +40,20 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               fontWeight: "500",
               lineHeight: "120%",
               letterSpacing: "0%",
-              textAlign: "center",
+              textAlign: "left",       // center থেকে left করলাম
               display: "inline-block",
+              whiteSpace: "nowrap",    // text একই লাইনে থাকবে
             }}
           >
-            Professional Support Services
+            {section.supportTitle || "Professional Support Services"}
           </h2>
         </div>
+
+        {section.supportDescription ? (
+          <p className="mx-auto mb-10 max-w-3xl text-center text-sm leading-7 text-slate-500 md:text-base">
+            {section.supportDescription}
+          </p>
+        ) : null}
 
         {/* Top Services Grid */}
         {data && data.length > 0 ? (
@@ -93,7 +93,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
                   {card.title}
                 </h3>
                 <p
-                  className="line-clamp-3"
+                  className="line-clamp-4"
                   style={{
                     fontFamily: "Poppins, sans-serif",
                     fontSize: "14px",
@@ -107,36 +107,6 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
                 >
                   {card.description}
                 </p>
-                <div className="mt-auto">
-                  <Link
-                    href={`/services/${mainSlug}/${card.slug || card._id?.$oid}`}
-                    className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap"
-                    style={{
-                      width: "198px",
-                      height: "52px",
-                      borderRadius: "100px",
-                      border: "1px solid #0168B4",
-                      padding: "4px 4px 4px 12px",
-                      gap: "8px",
-                      opacity: "1",
-                      fontFamily: "Poppins, sans-serif",
-                      fontSize: "16px",
-                      fontWeight: "500",
-                      lineHeight: "160%",
-                      letterSpacing: "0.16px",
-                      color: "#0168B4",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <span>Explore Services</span>
-                    <div
-                      className="bg-[#0168B4] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
-                      style={{ width: "42px", height: "42px", flexShrink: 0 }}
-                    >
-                      <ArrowUpRight size={25} className="text-[#fff]" strokeWidth={2.5} />
-                    </div>
-                  </Link>
-                </div>
               </div>
             ))}
           </div>
@@ -210,7 +180,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
                   fontStyle: "normal",
                 }}
               >
-                {feature.desc}
+                {feature.description || feature.desc}
               </p>
             </div>
           ))}
@@ -245,21 +215,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               fontStyle: "normal",
             }}
           >
-            Coverage Across{" "}
-            <span
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "clamp(28px, 4vw, 48px)",
-                fontWeight: "500",
-                color: "#0168B4",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textTransform: "capitalize",
-              }}
-            >
-              40+
-            </span>{" "}
-            Languages
+            {section.coverageTitle || "Coverage Across 40+ Languages"}
           </h3>
           <p
             style={{
@@ -274,8 +230,7 @@ const ProfessionalSupport = ({ data = [], mainSlug }) => {
               fontStyle: "normal",
             }}
           >
-            Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products.
-            They sell trust, identity, and belonging.
+            {section.coverageDescription || "We support a wide range of global and regional languages so your projects can ship with confidence across markets."}
           </p>
         </div>
       </div>

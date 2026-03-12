@@ -142,7 +142,7 @@ const BlogDetails = ({ blogPost }) => {
 
   return (
     <section className="py-16 px-6 md:px-12 font-sans bg-background">
-      <div className="container mx-auto px-4 md:px-2 relative z-1 -mt-[200px]">
+      <div className="container mx-auto px-4 md:px-20 relative z-1 -mt-[200px]">
 
         {/* Blog Meta Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-8 pb-12">
@@ -250,7 +250,7 @@ const BlogDetails = ({ blogPost }) => {
         </div>
 
         {/* Dynamic Sections Rendering */}
-        <div className="contsiner mx-auto" >
+        <div style={{ maxWidth: '900px', marginInline: 'auto' }}>
           {mounted && sections && sections.length > 0 ? (
             sections.map((section, index) => renderSection(section, index))
           ) : (
@@ -261,7 +261,7 @@ const BlogDetails = ({ blogPost }) => {
               lineHeight: '160%',
               color: '#6B6B6B'
             }}>
-              No Content
+              কোনো কন্টেন্ট নেই।
             </p>
           )}
         </div>

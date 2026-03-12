@@ -1,15 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
 
-const CoreVoiceOver = ({ mainSlug }) => {
+const CoreVoiceOver = ({ mainSlug, subServices: prefetchedSubServices, section = {} }) => {
   const [subServices, setSubServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (Array.isArray(prefetchedSubServices)) {
+      setSubServices(prefetchedSubServices);
+      setLoading(false);
+      return;
+    }
+
     const fetchSubServices = async () => {
       if (!mainSlug) return;
       try {
@@ -23,8 +29,9 @@ const CoreVoiceOver = ({ mainSlug }) => {
         setLoading(false);
       }
     };
+
     fetchSubServices();
-  }, [mainSlug]);
+  }, [mainSlug, prefetchedSubServices]);
 
   if (loading) return (
     <div className="text-center py-20 text-primary font-medium animate-pulse">
@@ -42,15 +49,14 @@ const CoreVoiceOver = ({ mainSlug }) => {
   }
 
   return (
-    <section className="bg-background py-10 md:py-16 px-4 sm:px-6 md:px-12 font-sans">
+    <section id="service-sub-services" className="bg-background py-10 md:py-16 px-4 sm:px-6 md:px-12 font-sans scroll-mt-24">
       <div className="container mx-auto">
 
-        {/* Section Header */}
         <div
-          className="flex items-center justify-center mb-10 md:mb-12 mx-auto"
+          className="flex items-start justify-start mb-10 md:mb-12"
           style={{
-            width: '100%',
-            maxWidth: '636px',
+            width: 'fit-content',  // '100%' থেকে 'fit-content' করলাম
+            maxWidth: 'none',      // '636px' থেকে 'none' করলাম - এখন যত বড় text হবে তত বাড়বে
             minHeight: '70px',
             padding: '8px 16px',
             gap: '8px',
@@ -85,11 +91,18 @@ const CoreVoiceOver = ({ mainSlug }) => {
               letterSpacing: '0%',
               textAlign: 'center',
               display: 'inline-block',
+              whiteSpace: 'nowrap',  // Text কে একই লাইনে রাখবে
             }}
           >
-            Core {mainSlug?.replace(/-/g, ' ')} Services
+            {section.subServicesTitle || `Core ${mainSlug?.replace(/-/g, ' ')} Services`}
           </h2>
         </div>
+
+        {section.subServicesDescription ? (
+          <p className="mx-auto mb-10 max-w-3xl text-center text-sm leading-7 text-slate-500 md:text-base">
+            {section.subServicesDescription}
+          </p>
+        ) : null}
 
         {/* Sub-services Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-stretch">

@@ -6,9 +6,9 @@ import SubServiceContent from "@/app/components/service-page/SubServiceContent";
 import { API } from "@/app/config/api";
 
 // সাব-সার্ভিস ডেটা ফেচ করার ফাংশন
-async function getSubServiceDetails(subslug) {
+async function getSubServiceDetails(path) {
   try {
-    const res = await fetch(`${API.services.details(subslug)}`, {
+    const res = await fetch(API.services.pathDetails(path), {
       cache: "no-store",
     });
     const data = await res.json();
@@ -22,8 +22,7 @@ async function getSubServiceDetails(subslug) {
 export default async function SubServiceDetailsPage({ params }) {
   const { slug, subslug } = await params;
 
-  // ব্যাকএন্ড থেকে সাব-সার্ভিসের ডেটা আনা হচ্ছে
-  const subService = await getSubServiceDetails(subslug);
+  const subService = await getSubServiceDetails(`${slug}/${subslug}`);
 
   if (!subService) {
     return (
@@ -46,9 +45,8 @@ export default async function SubServiceDetailsPage({ params }) {
         {/* Pass fetched subService as prop */}
         <SubServiceDetails subService={subService} />
       </Hero>
-      
-      {/* সাব-সার্ভিসের কন্টেন্ট যদি আলাদা হয়, তবে subService._id পাস করতে পারেন */}
-      <SubServiceContent subServiceId={subService._id} />
+
+      <SubServiceContent subService={subService} />
     </PublicLayout>
   );
 }
