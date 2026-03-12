@@ -176,7 +176,7 @@ const Footer = () => {
             <div className="flex flex-col gap-4 ">
               <img
                 src={siteConfig.log || "/Hansi-Logo1.png"}
-                alt="HANSI Logo"
+                alt="hansi TRANS+"
                 className="w-20 h-20 object-contain ml-20"
               />
 

@@ -1,79 +1,72 @@
 import React from "react";
 import PublicLayout from "@/app/components/layout/PublicLayout";
 import CaseStudyDetailsPage from "@/app/components/CaseStudies-page/CaseStudyDetails";
-import { Youtube, BarChart3, PenLine } from "lucide-react";
 import Hero from "@/app/components/common/Hero";
 import CaseStudyContent from "@/app/components/CaseStudies-page/CaseStudyContent";
+import { API } from "@/app/config/api";
 
-// এক জায়গায় ডেটা রাখা হলো যাতে বানান ভুল না হয়
-const cases = [
-  {
-    slug: "global-game-vo-launch",
-    title: "Global Game Title — Multilingual Voice-Over Launch",
-    description:
-      "A global RPG publisher needed cinematic trailers localized in Japanese, Korean, and English.",
-    stats: [
-      {
-        label: "Across YouTube & TikTok",
-        value: "10M",
-        icon: <Youtube className="w-5 h-5 text-blue-500" />,
-      },
-      {
-        label: "CTR increased vs non-localized trailers",
-        value: "32%",
-        icon: <BarChart3 className="w-5 h-5 text-blue-500" />,
-      },
-      {
-        label: "Higher pre-registration rates in Japan and Korea",
-        value: "✔",
-        icon: <PenLine className="w-5 h-5 text-blue-500" />,
-        isIcon: true,
-      },
-    ],
-    image:
-      "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=1000&auto=format&fit=crop",
-    tag: "Localization",
-  },
-  {
-    slug: "global-vo-launch-reverse",
-    title: "Global Game Title — Multilingual Voice-Over Launch (Reverse)",
-    description:
-      "A global RPG publisher needed cinematic trailers localized in Japanese, Korean, and English.",
-    stats: [
-      {
-        label: "Across YouTube & TikTok",
-        value: "10M",
-        icon: <Youtube className="w-5 h-5 text-blue-500" />,
-      },
-      {
-        label: "CTR increased vs non-localized trailers",
-        value: "32%",
-        icon: <BarChart3 className="w-5 h-5 text-blue-500" />,
-      },
-      {
-        label: "Higher pre-registration rates in Japan and Korea",
-        value: "✔",
-        icon: <PenLine className="w-5 h-5 text-blue-500" />,
-        isIcon: true,
-      },
-    ],
-    image:
-      "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?q=80&w=1000&auto=format&fit=crop",
-    tag: "Voice-Over",
-  },
-];
+async function getCaseStudyBySlug(slug) {
+  try {
+    console.log("🔍 Fetching from:", API.featuredCaseStudies);
+    
+    const res = await fetch(API.featuredCaseStudies, { 
+      cache: "no-store",
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    console.log("📡 Response Status:", res.status);
+    
+    if (!res.ok) {
+      console.error("❌ API Error:", res.status);
+      return null;
+    }
+    
+    const data = await res.json();
+    console.log("📦 Full API Response:", data);
+    
+    // Response structure check - adjust based on your API
+    let caseStudies = [];
+    
+    if (data.data && Array.isArray(data.data)) {
+      caseStudies = data.data;
+    } else if (Array.isArray(data)) {
+      caseStudies = data;
+    }
+    
+    console.log("📚 Total Case Studies:", caseStudies.length);
+    
+    // Slug match করা
+    const found = caseStudies.find((c) => c.slug === slug);
+    
+    console.log("🎯 Found Case Study:", found ? found.title : "Not found");
+    
+    return found || null;
+  } catch (error) {
+    console.error("❌ Fetch Error:", error);
+    return null;
+  }
+}
 
 export default async function CaseStudyPage({ params }) {
-  // Next.js 15+ এ params একটি Promise, তাই await করতে হয়
   const { slug } = await params;
+  
+  console.log("🔗 Current Slug:", slug);
 
-  const caseStudy = cases.find((c) => c.slug === slug);
+  const caseStudy = await getCaseStudyBySlug(slug);
 
   if (!caseStudy) {
     return (
       <PublicLayout>
-        <div className="p-20 text-center text-xl font-semibold">
-          Case Study Not Found: {slug}
+        <div className="p-20 text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Case Study Not Found
+          </h2>
+          <p className="text-gray-600">Slug: <span className="font-mono bg-gray-100 px-2 py-1 rounded">{slug}</span></p>
+          <p className="text-sm text-gray-500 mt-4">
+            Check browser console and terminal for API logs
+          </p>
         </div>
       </PublicLayout>
     );
@@ -82,13 +75,13 @@ export default async function CaseStudyPage({ params }) {
   return (
     <PublicLayout>
       <Hero
-        title="Case Study Details"
-        breadcrumb="Home › Case Studies"
-        description="this is the case study details page description."
+        title={caseStudy.title || "Case Study Details"}
+        breadcrumb={`Home › Case Studies › ${caseStudy.title || slug}`}
+        description={caseStudy.description || "Case study details"}
       >
         <CaseStudyDetailsPage caseStudy={caseStudy} />
       </Hero>
-      <CaseStudyContent></CaseStudyContent>
+      <CaseStudyContent caseStudy={caseStudy} />
     </PublicLayout>
   );
 }

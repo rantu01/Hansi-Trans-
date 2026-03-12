@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { API } from "@/app/config/api";
 
 const WorkWithUs = () => {
@@ -33,31 +33,63 @@ const WorkWithUs = () => {
     restDelta: 0.001,
   });
 
-  // টেক্সট প্রসেসিং এবং এনিমেশন ফাংশন
+  // subscribe to the motion value once and store numeric progress
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    let unsub = null;
+    try {
+      if (typeof smoothProgress.onChange === "function") {
+        unsub = smoothProgress.onChange((v) => setProgress(v));
+      } else if (typeof smoothProgress.on === "function") {
+        // older framer-motion
+        smoothProgress.on("change", (v) => setProgress(v));
+        unsub = () => smoothProgress.clearListeners && smoothProgress.clearListeners();
+      }
+    } catch (e) {
+      // ignore
+    }
+    return () => {
+      try {
+        if (typeof unsub === "function") unsub();
+      } catch (e) {}
+    };
+  }, [smoothProgress]);
+
+  // টেক্সট প্রসেসিং এবং এনিমেশন ফাংশন (no hooks inside renderer)
+  const hexToRgb = (hex) => {
+    const clean = hex.replace('#','');
+    const bigint = parseInt(clean.length===3?clean.split('').map(c=>c+c).join(''):clean, 16);
+    return [(bigint>>16)&255, (bigint>>8)&255, bigint&255];
+  };
+  const rgbToHex = (r,g,b) => '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+  const lerp = (a,b,t) => Math.round(a + (b-a)*t);
+
   const renderAnimatedText = (text, startRange, endRange) => {
     if (!text) return null;
-    const words = text.split(" ");
-    
+    const words = text.split(' ');
+    const fromRgb = hexToRgb('#dbd2d2');
+    const toRgb = hexToRgb('#0A0A0A');
+
     return words.map((word, i) => {
       const start = startRange + (i / words.length) * (endRange - startRange);
       const end = startRange + ((i + 1) / words.length) * (endRange - startRange);
-      
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const color = useTransform(smoothProgress, [start, end], ["#dbd2d2", "#0A0A0A"]);
+      const t = Math.max(0, Math.min(1, (progress - start) / (end - start || 1)));
+      const rgb = [0,1,2].map((k)=>lerp(fromRgb[k], toRgb[k], t));
+      const color = rgbToHex(rgb[0], rgb[1], rgb[2]);
 
       return (
         <motion.span
           key={i}
           style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: "500",
-            fontSize: "clamp(20px, 3.5vw, 48px)",
-            lineHeight: "120%",
-            letterSpacing: "0%",
-            textTransform: "capitalize",
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: '500',
+            fontSize: 'clamp(20px, 3.5vw, 48px)',
+            lineHeight: '120%',
+            letterSpacing: '0%',
+            textTransform: 'capitalize',
             color: color,
-            display: "inline-block",
-            marginRight: "clamp(5px, 1vw, 12px)",
+            display: 'inline-block',
+            marginRight: 'clamp(5px, 1vw, 12px)',
           }}
         >
           {word}

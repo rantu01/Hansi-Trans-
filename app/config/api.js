@@ -40,6 +40,7 @@ export const API = {
 
   CaseStudies: {
     getAll: `${API_BASE_URL}/api/case-studies`,
+    getSingle: (slug) => `${API_BASE_URL}/api/case-studies/${slug}`,
     add: `${API_BASE_URL}/api/case-studies/add`,
     update: (id) => `${API_BASE_URL}/api/case-studies/${id}`,
     delete: (id) => `${API_BASE_URL}/api/case-studies/${id}`,

@@ -178,7 +178,7 @@ const HansiTrans = () => {
             <img
               src={siteConfig.logo || "/logoWithText.png"}
               onError={(e) => { e.currentTarget.src = "/logoWithText.png"; }}
-              alt="hansi logo"
+              alt="hansi TRANS+"
               className="w-[183px] h-[72px] object-contain"
               style={{ width: '183px', height: '72px' }}
             />
@@ -302,7 +302,7 @@ const HansiTrans = () => {
                   ))}
                 </div>
                 <div className="text-left text-sm leading-tight">
-                  <p className="font-bold text-white">120K+</p>
+                  <p className="font-bold text-white">1000+</p>
                   <p className="text-gray-300 text-[10px] md:text-xs">Happy Customers</p>
                 </div>
               </div>

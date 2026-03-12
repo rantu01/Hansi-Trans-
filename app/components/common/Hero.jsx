@@ -87,7 +87,7 @@ const Hero = ({
                 onError={(e) => {
                   e.currentTarget.src = "/logoWithText.png";
                 }}
-                alt="hansi logo"
+                alt="hansi TRANS+"
                 className="w-[183px] h-[72px] object-contain"
                 style={{
                   width: "183px",
@@ -105,7 +105,7 @@ const Hero = ({
                     onError={(e) => {
                       e.currentTarget.src = "/logoWithText.png";
                     }}
-                    alt="hansi logo"
+                    alt="hansi TRANS+"
                     className="w-[183px] h-[72px] object-contain"
                     style={{ width: "183px", height: "72px" }}
                   />
