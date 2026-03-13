@@ -12,11 +12,13 @@ const CaseStudies = () => {
   useEffect(() => {
     const fetchCaseStudies = async () => {
       try {
-        const response = await fetch(API.CaseStudies.getAll);
+        const response = await fetch(API.featuredCaseStudies, { cache: "no-store" });
         const data = await response.json();
-        setSlides(data);
-        if (data.length > 0) {
-          setCurrentIndex(Math.floor(data.length / 2));
+        // API response structure safety - same as FeaturedCaseStudies
+        const caseData = Array.isArray(data.data) ? data.data : [];
+        setSlides(caseData);
+        if (caseData.length > 0) {
+          setCurrentIndex(Math.floor(caseData.length / 2));
         }
       } catch (error) {
         console.error("Error fetching case studies:", error);
@@ -75,7 +77,7 @@ const CaseStudies = () => {
 
             return (
               <div
-                key={slide._id || slide.id}
+                key={slide._id || index}
                 className={`relative transition-all duration-700 ease-in-out rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 ${transformClass} h-[300px] md:h-[550px] lg:h-[492px]`}
                 style={{
                   width: isCenter ? "85%" : isLeft || isRight ? "15%" : "0%",
@@ -85,8 +87,9 @@ const CaseStudies = () => {
               >
                 <img
                   src={slide.image}
-                  alt={slide.alt || "Case Study"}
+                  alt={slide.title || "Case Study"}
                   className="w-full h-full object-cover rounded-[40px]"
+                  onError={(e) => { e.currentTarget.src = "/fallback-case.png"; }}
                 />
                 {/* Subtle Brand Overlay for Center Image */}
                 {isCenter && (
