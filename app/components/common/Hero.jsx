@@ -13,7 +13,7 @@ const Hero = ({
   breadcrumb = "Home  ›  About Us",
   description = "Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.",
   children,
-  hideContent = false, // নতুন প্রপ: এটি true হলে টাইটেল ও লাইন হাইড হবে
+  hideContent = false,
 }) => {
   const [language, setLanguage] = useState("EN");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,15 +27,38 @@ const Hero = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [subServices, setSubServices] = useState([]);
+  const [showOthersDropdown, setShowOthersDropdown] = useState(false);
 
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Service", path: "/services" },
+    { name: "Service", path: "/services", isService: true },
     { name: "Case Studies", path: "/case-studies" },
     { name: "Blog", path: "/blog" },
     { name: "Others", path: "#", isOthers: true },
   ];
+
+  const othersLinks = [
+    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Terms & Conditions", path: "/terms-condition" }
+  ];
+
+  // Service Nav Click Handler
+  const handleServiceNavClick = () => {
+    setSelectedService(null);
+    setSubServices([]);
+    setIsModalOpen(true);
+  };
+
+  const handleOthersClick = () => {
+    setShowOthersDropdown(!showOthersDropdown);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setSelectedService(null);
+    setSubServices([]);
+  };
 
   useEffect(() => {
     const fetchSiteData = async () => {
@@ -56,7 +79,7 @@ const Hero = ({
   }, []);
 
   return (
-    <section className="relative  w-full overflow-hidden text-white flex flex-col bg-secondary">
+    <section className="relative w-full overflow-hidden text-white flex flex-col bg-secondary">
       {/* 🔹 VIDEO BACKGROUND */}
       <video
         autoPlay
@@ -79,7 +102,7 @@ const Hero = ({
 
       <div className="container mx-auto relative z-10 pt-2 flex-grow flex flex-col">
         {/* ================= NAVBAR ================= */}
-        <nav className="relative z-50 mb-16">
+        <nav className="container mx-auto px-4 md:px-6 py-4 md:py-6 relative z-50">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center justify-center flex-1">
               <img
@@ -89,112 +112,137 @@ const Hero = ({
                 }}
                 alt="hansi TRANS+"
                 className="w-[183px] h-[72px] object-contain"
-                style={{
-                  width: "183px",
-                  height: "72px",
-                }}
+                style={{ width: "183px", height: "72px" }}
               />
             </Link>
 
             {/* Desktop Menu */}
-            <nav className="container mx-auto px-4 md:px-6 py-4 md:py-4 relative z-50">
-              <div className="flex justify-between items-center">
-                <Link href="/" className="flex items-center justify-center flex-1">
-                  <img
-                    src={siteConfig.logo || "/logoWithText.png"}
-                    onError={(e) => {
-                      e.currentTarget.src = "/logoWithText.png";
-                    }}
-                    alt="hansi TRANS+"
-                    className="w-[183px] h-[72px] object-contain"
-                    style={{ width: "183px", height: "72px" }}
-                  />
-                </Link>
-
-                <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
-                  {navLinks.map((item) =>
-                    item.isOthers ? (
-                      <button
-                        key={item.name}
-                        onClick={() => setIsModalOpen(true)}
-                        className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "400",
-                          lineHeight: "150%",
-                          fontStyle: "normal",
-                          color: "#FFF",
-                        }}
-                      >
-                        {item.name}
-                      </button>
-                    ) : (
-                      <Link
-                        key={item.name}
-                        href={item.path}
-                        className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "400",
-                          lineHeight: "150%",
-                          fontStyle: "normal",
-                          color: "#FFF",
-                        }}
-                      >
-                        {item.name}
-                      </Link>
-                    )
-                  )}
-                </div>
-
-                <div className="hidden md:flex items-center justify-end space-x-4 flex-1 ">
-                  <div className="relative">
-                    <select
-                      value={language}
-                      onChange={(e) => setLanguage(e.target.value)}
-                      className="appearance-none flex h-[52px] w-full px-[20px] pr-[48px] py-[4px] justify-center items-center gap-3 rounded-full bg-transparent border border-white text-white text-sm outline-none cursor-pointer"
-                    >
-                      <option value="EN">EN</option>
-                      <option value="ES">ES</option>
-                      <option value="FR">FR</option>
-                    </select>
-                    <ChevronDown
-                      size={22}
-                      className="absolute right-5 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none"
-                    />
-                  </div>
-
-                  <Link
-                    href="/contact"
-                    className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap bg-white border border-[#E0E4FF] rounded-full"
+            <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
+              {navLinks.map((item) => (
+                item.isService ? (
+                  <button
+                    key={item.name}
+                    onClick={handleServiceNavClick}
+                    className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
                     style={{
-                      height: "52px",
-                      padding: "4px 4px 4px 12px",
-                      gap: "8px",
-                      fontFamily: "Poppins, sans-serif",
                       fontSize: "16px",
-                      fontWeight: "500",
-                      lineHeight: "160%",
-                      letterSpacing: "0.16px",
-                      color: "#0168B4",
+                      fontWeight: "400",
+                      lineHeight: "150%",
                       fontStyle: "normal",
+                      color: "#FFF",
                     }}
                   >
-                    Let's connect
-                    <span className="bg-[#0168B4] rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                      <ArrowUpRight className="w-7 h-7 text-white" strokeWidth={2} />
-                    </span>
+                    {item.name}
+                  </button>
+                ) : item.isOthers ? (
+                  <div key={item.name} className="relative">
+                    <button
+                      onClick={handleOthersClick}
+                      className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "400",
+                        lineHeight: "150%",
+                        fontStyle: "normal",
+                        color: "#FFF",
+                      }}
+                    >
+                      {item.name}
+                    </button>
+
+                    {/* Others Dropdown */}
+                    <AnimatePresence>
+                      {showOthersDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl overflow-hidden min-w-[200px] z-50"
+                        >
+                          {othersLinks.map((link) => (
+                            <Link
+                              key={link.path}
+                              href={link.path}
+                              onClick={() => setShowOthersDropdown(false)}
+                              className="block px-6 py-3 text-gray-800 hover:bg-blue-50 transition-colors"
+                              style={{
+                                fontFamily: "Poppins, sans-serif",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {link.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      lineHeight: "150%",
+                      fontStyle: "normal",
+                      color: "#FFF",
+                    }}
+                  >
+                    {item.name}
                   </Link>
-                </div>
+                )
+              ))}
+            </div>
+
+            <div className="hidden md:flex items-center justify-end space-x-4 flex-1">
+              <div className="relative">
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="appearance-none flex h-[56px] w-full px-[20px] pr-[48px] py-[4px] justify-center items-center gap-3 rounded-full bg-[#0A0A0A] border border-white/20 text-white text-sm outline-none cursor-pointer"
+                >
+                  <option value="EN">EN</option>
+                  <option value="ES">ES</option>
+                  <option value="FR">FR</option>
+                </select>
+                <ChevronDown
+                  size={22}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none"
+                />
               </div>
-            </nav>
+
+              <Link
+                href="/contact"
+                className="group flex items-center justify-center transition-all duration-300 whitespace-nowrap bg-white border border-[#E0E4FF] rounded-full"
+                style={{
+                  height: "52px",
+                  padding: "4px 4px 4px 12px",
+                  gap: "8px",
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  lineHeight: "160%",
+                  letterSpacing: "0.16px",
+                  color: "#0168B4",
+                  fontStyle: "normal",
+                }}
+              >
+                Let's connect
+                <span className="bg-[#0168B4] rounded-full p-1.5 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                  <ArrowUpRight className="w-7 h-7 text-white" strokeWidth={2} />
+                </span>
+              </Link>
+            </div>
 
             {/* Mobile Toggle */}
             <button
-              className="md:hidden p-2 z-[60]"
+              className="md:hidden p-2 z-50"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              {menuOpen ? <X size={28} /> : <Menu size={28} />}
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
 
@@ -205,32 +253,61 @@ const Hero = ({
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 100 }}
-                className="md:hidden fixed inset-0 bg-secondary/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 z-50 p-6 overflow-y-auto"
+                className="md:hidden fixed inset-0 bg-black/95 flex flex-col items-center justify-center space-y-6 z-40 p-6"
               >
-                {navLinks.map((item) => {
-                  const isActive =
-                    pathname === item.path ||
-                    (item.path !== "/" && pathname.startsWith(item.path));
-
-                  return (
+                {navLinks.map((item) => (
+                  item.isService ? (
                     <button
                       key={item.name}
                       onClick={() => {
+                        handleServiceNavClick();
                         setMenuOpen(false);
-                        if (item.isOthers) setIsModalOpen(true);
                       }}
-                      className={`text-2xl font-medium transition-colors
-                        ${isActive ? "text-primary" : "text-white hover:text-primary"}`}
+                      className="text-xl hover:text-primary transition-colors text-white"
                     >
-                      {item.isOthers ? item.name : <Link href={item.path}>{item.name}</Link>}
+                      {item.name}
                     </button>
-                  );
-                })}
-
+                  ) : item.isOthers ? (
+                    <div key={item.name} className="flex flex-col items-center space-y-3">
+                      <button
+                        className="text-xl hover:text-primary transition-colors text-white"
+                        onClick={() => setShowOthersDropdown(!showOthersDropdown)}
+                      >
+                        {item.name}
+                      </button>
+                      {showOthersDropdown && (
+                        <div className="flex flex-col space-y-2">
+                          {othersLinks.map((link) => (
+                            <Link
+                              key={link.path}
+                              href={link.path}
+                              onClick={() => {
+                                setMenuOpen(false);
+                                setShowOthersDropdown(false);
+                              }}
+                              className="text-base text-gray-300 hover:text-white transition-colors"
+                            >
+                              {link.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      href={item.path}
+                      onClick={() => setMenuOpen(false)}
+                      className="text-xl hover:text-primary transition-colors text-white"
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                ))}
                 <Link
                   href="/contact"
                   onClick={() => setMenuOpen(false)}
-                  className="bg-accent text-white text-center w-full max-w-xs py-4 rounded-full font-semibold text-lg shadow-xl shadow-accent/20"
+                  className="bg-primary text-center w-full max-w-xs py-3 rounded-full font-semibold text-white"
                 >
                   Let's connect
                 </Link>
@@ -239,20 +316,22 @@ const Hero = ({
           </AnimatePresence>
         </nav>
 
-        {/* Modal/Mega Menu */}
+        {/* Service Mega Menu */}
         <AnimatePresence>
           {isModalOpen && (
             <>
               <div
                 className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleClose}
               />
-              <ServiceMegaMenu
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                mainService={selectedService}
-                subServices={subServices}
-              />
+              <div className="fixed z-[100]" style={{ pointerEvents: "auto" }}>
+                <ServiceMegaMenu
+                  isOpen={isModalOpen}
+                  onClose={handleClose}
+                  mainService={selectedService}
+                  subServices={subServices}
+                />
+              </div>
             </>
           )}
         </AnimatePresence>
@@ -298,7 +377,7 @@ const Hero = ({
               </div>
             </div>
 
-            {/* Decorative Line - এটিও এখন hideContent এর সাথে শর্তাধীন */}
+            {/* Decorative Line */}
             <div className="w-full h-[160px] md:h-[300px] relative mt-[-150px] opacity-50">
               <Image
                 src="/Vector Line.svg"
