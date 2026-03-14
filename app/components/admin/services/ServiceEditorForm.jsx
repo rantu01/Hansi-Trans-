@@ -277,6 +277,54 @@ export default function ServiceEditorForm({
         <SectionCard title="Main Service Page Content" description="Controls the parent service detail page, including the sub-service section and support content.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Field
+              label="Feature Badge Text"
+              value={formData.servicePageContent.badgeText}
+              onChange={(event) => updateField("servicePageContent.badgeText", event.target.value)}
+              placeholder="Core promise"
+            />
+            <Field
+              label="Project Summary Text"
+              value={formData.servicePageContent.projectSummaryText}
+              onChange={(event) => updateField("servicePageContent.projectSummaryText", event.target.value)}
+              placeholder="over 5k+ project"
+            />
+          </div>
+
+          <TextArea
+            label="Feature Grid Main Description"
+            rows={4}
+            value={formData.servicePageContent.featureDescription}
+            onChange={(event) => updateField("servicePageContent.featureDescription", event.target.value)}
+            placeholder="Main paragraph under the feature grid header."
+          />
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-900">Feature Grid Cards</h3>
+              <button type="button" className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" onClick={() => addArrayItem("servicePageContent.supportFeatures", createFeatureCard)}>
+                <Plus size={16} /> Add Feature
+              </button>
+            </div>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              {formData.servicePageContent.supportFeatures.map((item, index) => (
+                <div key={`support-feature-${index}`} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold text-slate-800">Feature {index + 1}</h4>
+                    {formData.servicePageContent.supportFeatures.length > 1 ? (
+                      <button type="button" className="rounded-xl border border-red-200 p-2 text-red-500 hover:bg-red-50" onClick={() => removeArrayItem("servicePageContent.supportFeatures", index)}>
+                        <Trash2 size={16} />
+                      </button>
+                    ) : null}
+                  </div>
+                  <Field label="Title" value={item.title} onChange={(event) => replaceArrayItem("servicePageContent.supportFeatures", index, (current) => ({ ...current, title: event.target.value }))} placeholder="Global localization" />
+                  <TextArea label="Description" rows={3} value={item.description} onChange={(event) => replaceArrayItem("servicePageContent.supportFeatures", index, (current) => ({ ...current, description: event.target.value }))} placeholder="Feature summary text." />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Field
               label="Sub-service Section Title"
               value={formData.servicePageContent.subServicesTitle}
               onChange={(event) => updateField("servicePageContent.subServicesTitle", event.target.value)}

@@ -198,14 +198,16 @@ const HansiTrans = () => {
           <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
             {navLinks.map((item) => (
               item.isService ? (
-                <button
+                <Link
                   key={item.name}
-                  onClick={handleServiceNavClick}
+                  href="/services"
+                  onMouseEnter={() => handleServiceHover(null)}
+                  onMouseLeave={handleServiceMouseLeave}
                   className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
                   style={{ fontSize: '16px', fontWeight: '400', lineHeight: '150%', fontStyle: 'normal', color: '#FFF' }}
                 >
                   {item.name}
-                </button>
+                </Link>
               ) : item.isOthers ? (
                 <div key={item.name} className="relative">
                   <button
@@ -295,14 +297,15 @@ const HansiTrans = () => {
             >
               {navLinks.map((item) => (
                 item.isService ? (
-                  <button
-                    key={item.name}
-                    onClick={() => { handleServiceNavClick(); setMenuOpen(false); }}
-                    className="text-xl hover:text-primary transition-colors text-white"
-                  >
-                    {item.name}
-                  </button>
-                ) : item.isOthers ? (
+                    <Link
+                      key={item.name}
+                      href="/services"
+                      onClick={() => setMenuOpen(false)}
+                      className="text-xl hover:text-primary transition-colors text-white"
+                    >
+                      {item.name}
+                    </Link>
+                  ) : item.isOthers ? (
                   <div key={item.name} className="flex flex-col items-center space-y-3">
                     <button
                       className="text-xl hover:text-primary transition-colors text-white"
@@ -415,8 +418,6 @@ const HansiTrans = () => {
                     animate="visible"
                     variants={dropIn}
                     className={`absolute ${positions[index]} pointer-events-auto`}
-                    onMouseEnter={() => handleServiceHover(service)}
-                    onMouseLeave={handleServiceMouseLeave}
                   >
                     <div
                       className="flex transition-all duration-300 hover:scale-105 cursor-pointer"

@@ -128,7 +128,7 @@ const WorkWithUs = () => {
         </div>
 
         {/* Content Section with Word-by-Word Animation */}
-        <div className="mt-6 sm:mt-8 text-center">
+        {/* <div className="mt-6 sm:mt-8 text-center">
           <h2
             className="mx-auto w-full px-2 sm:px-4 md:px-6"
             style={{
@@ -139,10 +139,10 @@ const WorkWithUs = () => {
           >
             {renderAnimatedText(fullHeadline, 0.3, 0.7)}
           </h2>
-        </div>
+        </div> */}
 
         {/* Button Section */}
-        <div className="mt-8 sm:mt-10 flex justify-center">
+        {/* <div className="mt-8 sm:mt-10 flex justify-center">
           <button
             className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
             style={{
@@ -183,7 +183,7 @@ const WorkWithUs = () => {
               <ArrowUpRight size={28} style={{ color: "#0168B4" }} />
             </span>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

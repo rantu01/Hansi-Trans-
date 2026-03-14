@@ -58,7 +58,7 @@ const OurFullStories = () => {
                   letterSpacing: '0.16px',
                 }}
               >
-                Gallery
+                {gallery?.badge || "Gallery"}
               </span>
             </div>
             <h2
@@ -73,7 +73,7 @@ const OurFullStories = () => {
                 color: '#0A0A0A'
               }}
             >
-              Our Full Stories
+              {gallery?.title || "Our Full Stories"}
             </h2>
           </div>
 
@@ -89,7 +89,7 @@ const OurFullStories = () => {
                 color: '#616161',
               }}
             >
-              Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
+              {gallery?.description || "Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."}
             </p>
           </div>
         </div>

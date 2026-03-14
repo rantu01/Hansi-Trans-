@@ -14,15 +14,9 @@ import Testimonials from "@/app/components/common/Testimonials";
 import WhyChooseUs from "@/app/components/common/WhyChooseUs";
 import PublicLayout from "@/app/components/layout/PublicLayout";
 
-import { FaUser, FaStar, FaGlobe, FaBriefcase } from "react-icons/fa";
 import { API } from "@/app/config/api";
-
-const statsData = [
-  { icon: <FaUser />, value: "120K+", label: "Users" },
-  { icon: <FaStar />, value: "4.9", label: "Rating" },
-  { icon: <FaGlobe />, value: "50+", label: "Countries" },
-  { icon: <FaBriefcase />, value: "300+", label: "Projects" },
-];
+import WhoWeAre from "@/app/components/about-page/WhoWeAre";
+import CoreMission from "@/app/components/about-page/CoreMission";
 
 export default function AboutPage() {
   const [heroData, setHeroData] = useState(null);
@@ -52,9 +46,10 @@ export default function AboutPage() {
         }
       >
         <WorkWithUs />
-        <Stats stats={statsData} />
       </Hero>
-
+      <WhoWeAre />
+      <Stats />
+      <CoreMission />
       <OurCompany />
       <OurFullStories />
       <WhyChooseUs />

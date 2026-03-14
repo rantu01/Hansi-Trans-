@@ -32,6 +32,10 @@ export const createDetailSection = () => ({
 });
 
 const createServicePageContent = () => ({
+  badgeText: "Core promise",
+  projectSummaryText: "over 5k+ project",
+  featureDescription: "",
+  supportFeatures: [createFeatureCard(), createFeatureCard(), createFeatureCard()],
   subServicesTitle: "",
   subServicesDescription: "",
   supportTitle: "Professional Support Services",
@@ -112,6 +116,15 @@ export const mergeServiceIntoFormData = (service = {}) => {
     image: service.image || "",
     featuresText: joinCommaSeparated(service.features),
     parentService: service.parentService?._id || service.parentService || "",
+    supportFeatures: ensureArray(
+      service.supportFeatures?.map((item) => ({
+        title: item?.title || "",
+        description: item?.description || "",
+      })),
+      createFeatureCard,
+      1
+    ),
+    featureDescription: service.featureDescription || "",
     professionalSupports: ensureArray(
       service.professionalSupports?.map((item) => ({
         title: item?.title || "",
@@ -124,6 +137,14 @@ export const mergeServiceIntoFormData = (service = {}) => {
     servicePageContent: {
       ...baseData.servicePageContent,
       ...servicePageContent,
+      supportFeatures: ensureArray(
+        servicePageContent.supportFeatures?.map((item) => ({
+          title: item?.title || "",
+          description: item?.description || "",
+        })),
+        createFeatureCard,
+        1
+      ),
       supportHighlights: ensureArray(
         servicePageContent.supportHighlights?.map((item) => ({
           title: item?.title || "",
@@ -185,6 +206,10 @@ export const buildServicePayload = (formData) => {
     (item) => item.title.trim() || item.description.trim()
   );
 
+  const supportFeatures = (formData.servicePageContent.supportFeatures || []).filter(
+    (item) => item.title.trim() || item.description.trim()
+  );
+
   const featureCards = (formData.subServicePageContent.featureCards || []).filter(
     (item) => item.title.trim() || item.description.trim()
   );
@@ -208,9 +233,15 @@ export const buildServicePayload = (formData) => {
     content: formData.content.trim(),
     image: formData.image.trim(),
     features: splitCommaSeparated(formData.featuresText),
+    supportFeatures,
+    featureDescription: formData.servicePageContent.featureDescription.trim(),
     parentService: formData.parentService || null,
     professionalSupports,
     servicePageContent: {
+      badgeText: formData.servicePageContent.badgeText.trim(),
+      projectSummaryText: formData.servicePageContent.projectSummaryText.trim(),
+      featureDescription: formData.servicePageContent.featureDescription.trim(),
+      supportFeatures,
       subServicesTitle: formData.servicePageContent.subServicesTitle.trim(),
       subServicesDescription: formData.servicePageContent.subServicesDescription.trim(),
       supportTitle: formData.servicePageContent.supportTitle.trim(),

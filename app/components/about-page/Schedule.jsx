@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Upload, ArrowUpRight, ChevronDown } from "lucide-react";
 import { API } from "@/app/config/api";
 
 const Schedule = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [scheduleData, setScheduleData] = useState(null);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -26,6 +27,20 @@ const Schedule = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const res = await fetch(API.AboutUs.get);
+        const data = await res.json();
+        setScheduleData(data?.schedule || null);
+      } catch (err) {
+        console.error("Failed to fetch schedule content", err);
+      }
+    };
+
+    fetchSchedule();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,7 +105,7 @@ const Schedule = () => {
               color: '#0168B4'
             }}
           >
-            Let’s Talk And Create <br /> Schedule
+            {scheduleData?.title || "Let’s Talk And Create Schedule"}
           </h2>
           <p
             className="max-w-md mb-8"
@@ -104,8 +119,7 @@ const Schedule = () => {
               color: '#616161'
             }}
           >
-            Our services help you create digital products and solve your
-            problems objectively, strategy, technology and analysis.
+            {scheduleData?.description || "Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."}
           </p>
 
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ArrowUpRight, Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,6 +28,52 @@ const Hero = ({
   const [selectedService, setSelectedService] = useState(null);
   const [subServices, setSubServices] = useState([]);
   const [showOthersDropdown, setShowOthersDropdown] = useState(false);
+
+  // hover tracking for service mega menu
+  const closeTimerRef = useRef(null);
+  const isHoveringButtonRef = useRef(false);
+  const isHoveringMenuRef = useRef(false);
+
+  const scheduleClose = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => {
+      if (!isHoveringButtonRef.current && !isHoveringMenuRef.current) {
+        setIsModalOpen(false);
+        setSelectedService(null);
+        setSubServices([]);
+      }
+    }, 1000);
+  };
+
+  const cancelClose = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const handleServiceHover = (service) => {
+    isHoveringButtonRef.current = true;
+    cancelClose();
+    setSelectedService(service);
+    setIsModalOpen(true);
+    if (!service?.slug) setSubServices([]);
+  };
+
+  const handleServiceMouseLeave = () => {
+    isHoveringButtonRef.current = false;
+    scheduleClose();
+  };
+
+  const handleMegaMenuMouseEnter = () => {
+    isHoveringMenuRef.current = true;
+    cancelClose();
+  };
+
+  const handleMegaMenuMouseLeave = () => {
+    isHoveringMenuRef.current = false;
+    scheduleClose();
+  };
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -76,6 +122,9 @@ const Hero = ({
       }
     };
     fetchSiteData();
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
   }, []);
 
   return (
@@ -120,9 +169,11 @@ const Hero = ({
             <div className="hidden md:flex items-center justify-center space-x-4 lg:space-x-5 flex-[2]">
               {navLinks.map((item) => (
                 item.isService ? (
-                  <button
+                  <Link
                     key={item.name}
-                    onClick={handleServiceNavClick}
+                    href="/services"
+                    onMouseEnter={() => handleServiceHover(null)}
+                    onMouseLeave={handleServiceMouseLeave}
                     className="hover:bg-gradient-base text-white bg-accent/20 rounded-3xl transition-colors whitespace-nowrap px-4 py-2 font-['Poppins'] font-normal"
                     style={{
                       fontSize: "16px",
@@ -133,7 +184,7 @@ const Hero = ({
                     }}
                   >
                     {item.name}
-                  </button>
+                  </Link>
                 ) : item.isOthers ? (
                   <div key={item.name} className="relative">
                     <button
@@ -257,17 +308,15 @@ const Hero = ({
               >
                 {navLinks.map((item) => (
                   item.isService ? (
-                    <button
-                      key={item.name}
-                      onClick={() => {
-                        handleServiceNavClick();
-                        setMenuOpen(false);
-                      }}
-                      className="text-xl hover:text-primary transition-colors text-white"
-                    >
-                      {item.name}
-                    </button>
-                  ) : item.isOthers ? (
+                      <Link
+                        key={item.name}
+                        href="/services"
+                        onClick={() => setMenuOpen(false)}
+                        className="text-xl hover:text-primary transition-colors text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ) : item.isOthers ? (
                     <div key={item.name} className="flex flex-col items-center space-y-3">
                       <button
                         className="text-xl hover:text-primary transition-colors text-white"
@@ -324,7 +373,12 @@ const Hero = ({
                 className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
                 onClick={handleClose}
               />
-              <div className="fixed z-[100]" style={{ pointerEvents: "auto" }}>
+              <div
+                className="fixed z-[100]"
+                style={{ pointerEvents: "auto" }}
+                onMouseEnter={handleMegaMenuMouseEnter}
+                onMouseLeave={handleMegaMenuMouseLeave}
+              >
                 <ServiceMegaMenu
                   isOpen={isModalOpen}
                   onClose={handleClose}

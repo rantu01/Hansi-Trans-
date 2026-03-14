@@ -99,7 +99,7 @@ const OurCompany = () => {
                   letterSpacing: '0.16px',
                 }}
               >
-                Mission & Vision
+                {company?.badge || "Mission & Vision"}
               </span>
             </div>
             <h1
@@ -115,7 +115,7 @@ const OurCompany = () => {
                 color: '#0168B4', // Spec background/color onujayi
               }}
             >
-              Our Company Main Mission
+              {company?.sectionTitle || "Our Company Main Mission"}
             </h1>
           </div>
 
@@ -131,7 +131,7 @@ const OurCompany = () => {
                 color: '#616161',
               }}
             >
-              Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
+              {company?.sectionDescription || "Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."}
             </p>
           </div>
         </div>
@@ -158,7 +158,7 @@ const OurCompany = () => {
                     color: '#0168B4'
                   }}
                 >
-                  Mission Statement:
+                  {company?.missionLabel || "Mission Statement:"}
                 </span>{" "}
                 <span
                   style={{
@@ -214,7 +214,7 @@ const OurCompany = () => {
                   color: '#FFFFFF'
                 }}
               >
-                Work with us?
+                  {company?.ctaText || "Work with us?"}
               </span>
               <span
                 className="bg-white rounded-full transition-transform duration-300 group-hover:rotate-45 flex items-center justify-center"
@@ -249,7 +249,7 @@ const OurCompany = () => {
                     color: '#0168B4'
                   }}
                 >
-                  Vision Statement:
+                  {company?.visionLabel || "Vision Statement:"}
                 </span>{" "}
                 <span
                   style={{

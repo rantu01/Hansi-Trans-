@@ -10,13 +10,34 @@ import {
 
 const EMPTY_STATE = {
   hero: { title: "", description: "", videoImage: "" },
+  whoWeAre: {
+    badge: "",
+    description: "",
+    story: "",
+    statValue: "",
+    statLabel: "",
+    image: "",
+    avatars: [],
+  },
+  coreMission: {
+    badge: "",
+    title: "",
+    description: "",
+    decorativeImage: "",
+  },
   workWithUs: { headline: "", buttonText: "" },
   company: {
+    badge: "",
+    sectionTitle: "",
+    sectionDescription: "",
+    missionLabel: "",
+    visionLabel: "",
+    ctaText: "",
     missionTitle: "", missionDescription: "",
     visionTitle: "", visionDescription: "",
     images: [],
   },
-  gallery: { images: [] },
+  gallery: { badge: "", title: "", description: "", images: [] },
   ceo: {
     name: "", designation: "", description: "", image: "",
     socials: { twitter: "", facebook: "", linkedin: "" },
@@ -42,9 +63,11 @@ export default function AboutUsAdmin() {
             ...EMPTY_STATE,
             ...result,
             hero: { ...EMPTY_STATE.hero, ...result.hero },
+            whoWeAre: { ...EMPTY_STATE.whoWeAre, ...result.whoWeAre, avatars: result.whoWeAre?.avatars || [] },
+            coreMission: { ...EMPTY_STATE.coreMission, ...result.coreMission },
             workWithUs: { ...EMPTY_STATE.workWithUs, ...result.workWithUs },
             company: { ...EMPTY_STATE.company, ...result.company, images: result.company?.images || [] },
-            gallery: { images: result.gallery?.images || [] },
+            gallery: { ...EMPTY_STATE.gallery, ...result.gallery, images: result.gallery?.images || [] },
             ceo: {
               ...EMPTY_STATE.ceo,
               ...result.ceo,
@@ -123,6 +146,21 @@ export default function AboutUsAdmin() {
     toast.success("Image removed from gallery");
   };
 
+  const addCeoStat = () => {
+    updateField("ceo.stats", [...(data.ceo.stats || []), { label: "", value: "" }]);
+  };
+
+  const updateCeoStat = (index, key, value) => {
+    const nextStats = [...(data.ceo.stats || [])];
+    nextStats[index] = { ...nextStats[index], [key]: value };
+    updateField("ceo.stats", nextStats);
+  };
+
+  const removeCeoStat = (index) => {
+    const nextStats = (data.ceo.stats || []).filter((_, itemIndex) => itemIndex !== index);
+    updateField("ceo.stats", nextStats);
+  };
+
   const saveData = async () => {
     setLoading(true);
     const loadingToast = toast.loading("Publishing changes...");
@@ -183,6 +221,43 @@ export default function AboutUsAdmin() {
         </div>
       </Section>
 
+      <Section title="Who We Are" icon={ImageIcon}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Input label="Badge" value={data.whoWeAre.badge} onChange={(v) => updateField("whoWeAre.badge", v)} placeholder="About" />
+          <ImageUpload label="Main Image" image={data.whoWeAre.image} onUpload={(f) => uploadImage(f, "whoWeAre.image")} aspect="square" />
+          <Textarea label="Short Description" value={data.whoWeAre.description} onChange={(v) => updateField("whoWeAre.description", v)} rows={3} />
+          <Textarea label="Story Paragraph" value={data.whoWeAre.story} onChange={(v) => updateField("whoWeAre.story", v)} rows={4} />
+          <Input label="Stat Value" value={data.whoWeAre.statValue} onChange={(v) => updateField("whoWeAre.statValue", v)} placeholder="1k+" />
+          <Input label="Stat Label" value={data.whoWeAre.statLabel} onChange={(v) => updateField("whoWeAre.statLabel", v)} placeholder="Satisfied clients" />
+        </div>
+        <div className="pt-2">
+          <label className="text-xs font-bold text-slate-400 uppercase tracking-[2px] mb-4 block">Avatar Images (3 Slots)</label>
+          <div className="grid grid-cols-3 gap-3 max-w-sm">
+            {[0, 1, 2].map((idx) => (
+              <ThumbnailUpload
+                key={idx}
+                image={data.whoWeAre.avatars[idx]}
+                onUpload={(file) => uploadImage(file, `whoWeAre.avatars.${idx}`)}
+                onRemove={() => {
+                  const nextAvatars = [...(data.whoWeAre.avatars || [])];
+                  nextAvatars[idx] = "";
+                  updateField("whoWeAre.avatars", nextAvatars);
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Core Mission" icon={Target}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Input label="Badge" value={data.coreMission.badge} onChange={(v) => updateField("coreMission.badge", v)} placeholder="Core promise" />
+          <Input label="Title" value={data.coreMission.title} onChange={(v) => updateField("coreMission.title", v)} placeholder="Our Company Main Mission" />
+          <Textarea label="Description" value={data.coreMission.description} onChange={(v) => updateField("coreMission.description", v)} rows={4} />
+          <ImageUpload label="Decorative Image" image={data.coreMission.decorativeImage} onUpload={(f) => uploadImage(f, "coreMission.decorativeImage")} aspect="square" />
+        </div>
+      </Section>
+
       {/* MISSION & VISION */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Section title="Our Mission" icon={Target}>
@@ -226,6 +301,17 @@ export default function AboutUsAdmin() {
         </Section>
       </div>
 
+      <Section title="Company Section Labels" icon={Briefcase}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Input label="Badge Text" value={data.company.badge} onChange={(v) => updateField("company.badge", v)} placeholder="Mission & Vision" />
+          <Input label="Section Title" value={data.company.sectionTitle} onChange={(v) => updateField("company.sectionTitle", v)} placeholder="Our Company Main Mission" />
+          <Textarea label="Section Description" value={data.company.sectionDescription} onChange={(v) => updateField("company.sectionDescription", v)} rows={3} />
+          <Input label="CTA Button Text" value={data.company.ctaText} onChange={(v) => updateField("company.ctaText", v)} placeholder="Work with us?" />
+          <Input label="Mission Label" value={data.company.missionLabel} onChange={(v) => updateField("company.missionLabel", v)} placeholder="Mission Statement:" />
+          <Input label="Vision Label" value={data.company.visionLabel} onChange={(v) => updateField("company.visionLabel", v)} placeholder="Vision Statement:" />
+        </div>
+      </Section>
+
       {/* CEO SECTION */}
       <Section title="Executive Leadership" icon={User}>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
@@ -243,12 +329,36 @@ export default function AboutUsAdmin() {
                <Input label="Twitter (X)" value={data.ceo.socials.twitter} onChange={(v) => updateField("ceo.socials.twitter", v)} />
                <Input label="Facebook" value={data.ceo.socials.facebook} onChange={(v) => updateField("ceo.socials.facebook", v)} />
             </div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-800">CEO Stats</h3>
+                <button type="button" onClick={addCeoStat} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm font-semibold">
+                  <Plus size={16} /> Add Stat
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(data.ceo.stats || []).map((stat, idx) => (
+                  <div key={idx} className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-end bg-slate-50 border border-slate-100 rounded-2xl p-4">
+                    <Input label="Label" value={stat.label || ""} onChange={(v) => updateCeoStat(idx, "label", v)} placeholder="Project complete" />
+                    <Input label="Value" value={stat.value || ""} onChange={(v) => updateCeoStat(idx, "value", v)} placeholder="400+" />
+                    <button type="button" onClick={() => removeCeoStat(idx)} className="h-12 px-4 rounded-xl border border-red-200 text-red-500 hover:bg-red-50">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </Section>
 
       {/* GALLERY */}
       <Section title="Media Gallery" icon={ImageIcon}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Input label="Badge" value={data.gallery.badge} onChange={(v) => updateField("gallery.badge", v)} placeholder="Gallery" />
+          <Input label="Title" value={data.gallery.title} onChange={(v) => updateField("gallery.title", v)} placeholder="Our Full Stories" />
+          <Textarea label="Description" value={data.gallery.description} onChange={(v) => updateField("gallery.description", v)} rows={2} />
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {data.gallery.images.map((img, idx) => (
             <div key={idx} className="group relative aspect-square bg-slate-100 rounded-[1.5rem] overflow-hidden border border-slate-200">
