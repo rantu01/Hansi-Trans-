@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { API } from "@/app/config/api";
+import { useRouter } from "next/navigation";
 
 const CaseStudies = () => {
   const [slides, setSlides] = useState([]);
@@ -35,10 +36,16 @@ const CaseStudies = () => {
 
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev < slides.length - 1 ? prev + 1 : 0));
-    }, 3000); // 3 seconds - you can change this duration
+    }, 1000); // 3 seconds - you can change this duration
 
     return () => clearInterval(interval);
   }, [slides.length, isPaused]);
+
+  const router = useRouter();
+
+  const handleViewCaseStudy = (slug) => {
+    if (slug) router.push(`/case-studies/${slug}`);
+  };
 
   if (loading) return (
     <div className="py-20 text-center text-primary font-medium animate-pulse">
@@ -88,8 +95,11 @@ const CaseStudies = () => {
                 <img
                   src={slide.image}
                   alt={slide.title || "Case Study"}
-                  className="w-full h-full object-cover rounded-[40px]"
+                  className="w-full h-full object-cover rounded-[40px] cursor-pointer"
                   onError={(e) => { e.currentTarget.src = "/fallback-case.png"; }}
+                  onClick={() => handleViewCaseStudy(slide.slug)}
+                  role="button"
+                  tabIndex={0}
                 />
                 {/* Subtle Brand Overlay for Center Image */}
                 {isCenter && (
