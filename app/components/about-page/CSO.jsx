@@ -42,12 +42,12 @@ const CEO = () => {
   ];
 
   // Use API stats if available, otherwise use defaults
-  const stats = ceo?.stats?.length > 0 
+  const stats = ceo?.stats?.length > 0
     ? ceo.stats.map(stat => ({
-        label: stat.label,
-        value: stat.value,
-        targetValue: extractNumber(stat.value)
-      }))
+      label: stat.label,
+      value: stat.value,
+      targetValue: extractNumber(stat.value)
+    }))
     : defaultStats;
 
   return (
@@ -73,10 +73,10 @@ const CEO = () => {
         }}
       ></div>
 
-      <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-2 items-end relative z-10" style={{ gap: '60px' }}>
+      <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-2 items-center relative z-10" style={{ gap: '60px' }}>
 
         {/* Left Content */}
-        <div className="flex flex-col items-start text-left pb-20">
+        <div className="flex flex-col items-start text-left pb-0">
 
           {/* Badge CEO - Dynamic */}
           <div className="inline-flex items-center justify-center mb-6" style={{ display: 'flex', height: '50px', width: 'auto', padding: '8px 16px', gap: '8px', borderRadius: '49px', background: '#F5f5f5' }}>
@@ -162,9 +162,9 @@ const CEO = () => {
           {/* Socials - Dynamic Links */}
           <div className="flex items-center gap-5">
             {ceo?.socials?.twitter && ceo.socials.twitter !== "#" && (
-              <a 
-                href={ceo.socials.twitter} 
-                target="_blank" 
+              <a
+                href={ceo.socials.twitter}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-white cursor-pointer hover:opacity-70 transition-opacity"
               >
@@ -172,9 +172,9 @@ const CEO = () => {
               </a>
             )}
             {ceo?.socials?.facebook && ceo.socials.facebook !== "#" && (
-              <a 
-                href={ceo.socials.facebook} 
-                target="_blank" 
+              <a
+                href={ceo.socials.facebook}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-white cursor-pointer hover:opacity-70 transition-opacity"
               >
@@ -182,9 +182,9 @@ const CEO = () => {
               </a>
             )}
             {ceo?.socials?.linkedin && ceo.socials.linkedin !== "#" && (
-              <a 
-                href={ceo.socials.linkedin} 
-                target="_blank" 
+              <a
+                href={ceo.socials.linkedin}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-white cursor-pointer hover:opacity-70 transition-opacity"
               >
@@ -195,16 +195,19 @@ const CEO = () => {
         </div>
 
         {/* Right Image Section - Dynamic Image */}
-        <div className="relative flex justify-end items-end h-full">
-          <div className="relative">
+        <div className="relative flex justify-end items-center h-full min-h-0 mt-37 ">
+          <div className="relative flex items-center">
             {/* Shadow only on the right side */}
-            <div className="absolute inset-0 bg-black/20 blur-3xl rounded-full translate-y-6 translate-x-12 scale-60"></div>
+            <div className="absolute inset-0 bg-black/10 blur-3xl rounded-full translate-y-10 translate-x-12 scale-75 bottom-0"></div>
 
             <img
               src={ceo?.image || "/photo/About US/portrait-successful-business-woman 1.png"}
               alt={ceo?.name || "CEO"}
-              className="relative z-10 w-full max-w-[600px] object-contain"
-              style={{ display: 'block' }}
+              className="relative z-10 w-auto object-contain lg:scale-130 origin-bottom"
+              style={{
+                display: 'block',
+                marginBottom: '0px'
+              }}
             />
           </div>
         </div>
