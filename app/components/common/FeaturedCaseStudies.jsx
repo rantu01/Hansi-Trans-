@@ -92,6 +92,7 @@ const FeaturedCaseStudies = () => {
 
   return (
     <section className="py-20 bg-[#f7f7f7]">
+      
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">

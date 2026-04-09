@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { ArrowLeft, ArrowRight, Play, Quote, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Play, X } from "lucide-react";
 import { API } from "@/app/config/api";
 
 const Testimonials = () => {
@@ -10,8 +10,6 @@ const Testimonials = () => {
   const [activeVideo, setActiveVideo] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-
-  const marqueeRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -23,7 +21,12 @@ const Testimonials = () => {
       try {
         const res = await fetch(API.Testimonials.getTestimonials);
         const data = await res.json();
-        setTestimonials(data.testimonials || []);
+        const list = data.testimonials || [];
+        setTestimonials(list);
+        if (list.length > 0) {
+          // শুরুর দিকে মাঝখানের আইটেমটি ফোকাসে রাখার জন্য
+          setCurrentIndex(Math.floor(list.length / 2));
+        }
       } catch (err) {
         console.error("Failed to load testimonials", err);
       }
@@ -33,14 +36,13 @@ const Testimonials = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // অটো-প্লে লজিক (Marquee Effect)
   useEffect(() => {
     if (isPaused || testimonials.length === 0) return;
     const interval = setInterval(() => {
       nextSlide();
-    }, 1500); // ৪ সেকেন্ড পর পর স্লাইড হবে
+    }, 1500);
     return () => clearInterval(interval);
-  }, [isPaused, testimonials.length, currentIndex]);
+  }, [isPaused, testimonials.length]);
 
   const getEmbedUrl = (url) => {
     if (!url) return "";
@@ -51,67 +53,33 @@ const Testimonials = () => {
   };
 
   const nextSlide = () => {
-    const maxIndex = testimonials.length - (isMobile ? 1 : 2);
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const prevSlide = () => {
-    const maxIndex = testimonials.length - (isMobile ? 1 : 2);
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
   if (!isMounted || testimonials.length === 0) return null;
 
-  // স্লাইড ভ্যালু: প্রতিটি স্লাইড কার্ডের সাইজ অনুযায়ী (১০০% মোবাইলে, ৫০% ডেসকটপে)
-  const translateValue = isMobile ? currentIndex * 100 : currentIndex * 50;
-
   return (
     <section className="py-20 bg-[#F7F7F7] overflow-hidden">
-      <div className="container mx-auto px-4 container">
-
+      <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl text-left">
-            <div
-              className="inline-flex items-center justify-center mb-6"
-              style={{
-                display: 'flex',
-                height: '50px',
-                width: '180px',
-                padding: '8px 16px',
-                gap: '8px',
-                borderRadius: '49px',
-                background: '#FFF',
-              }}
-            >
-              <img
-                src="/Frame.svg"
-                alt="icon"
-                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-              />
-              <span
-                style={{
-                  color: '#404040', // var(--dark-5)
-                  fontFamily: 'var(--font-poppins), sans-serif',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: '500',
-                  lineHeight: '160%',
-                  letterSpacing: '0.16px',
-                }}
-              >
-                Testimonials
-              </span>
+            <div className="inline-flex items-center justify-center mb-6 px-4 py-2 bg-white rounded-full shadow-sm gap-2">
+              <img src="/Frame.svg" alt="icon" className="w-5 h-5" />
+              <span style={{ color: '#404040', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', fontWeight: '500' }}>Testimonials</span>
             </div>
             <h2
-              className="capitalize"
               style={{
-                color: '#0168B4', // Primary-blue-500
-                fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: 'clamp(32px, 5vw, 48px)', // Responsive scaling with 48px max
+                color: '#0168B4',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: 'clamp(32px, 5vw, 48px)', // রেসপনসিভ ফন্ট
                 fontStyle: 'normal',
                 fontWeight: '500',
-                lineHeight: '120%', // 57.6px
+                lineHeight: '120%',
                 textTransform: 'capitalize'
               }}
             >
@@ -119,235 +87,111 @@ const Testimonials = () => {
             </h2>
           </div>
           <div className="md:max-w-lg pt-4 md:pt-14 text-left">
-            <p
-              style={{
-                color: '#616161', // paragraph-color-900
-                fontFamily: 'var(--font-poppins), sans-serif',
-                fontSize: '16px',
-                fontStyle: 'normal',
-                fontWeight: '400',
-                lineHeight: '150%' // 24px
-              }}
-            >
+            <p className="text-[#616161] text-base leading-[1.5]">
               Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
             </p>
           </div>
         </div>
 
-        {/* Testimonial Cards Slider - Wrapper constrained to container */}
+        {/* Testimonial Slider Wrapper */}
         <div
-          className="relative mb-12 overflow-hidden"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          className="relative h-[750px] md:container md:mx-auto flex items-center justify-center"
         >
-          <div
-            className="flex transition-transform duration-200 ease-in-out"
-            style={{
-              transform: `translateX(-${translateValue}%)`,
-            }}
-          >
-            {testimonials.map((item) => (
-              <div
-                key={item._id}
-                className="w-full md:w-1/2 flex-shrink-0 px-2" // ২টা কার্ড ঠিকমতো দেখানোর জন্য width 1/2
-              >
-                <div className="group relative bg-white rounded-[40px] p-4 border border-gray-50 flex flex-col h-[450px] md:h-[534px] md:w[636px] transition-all duration-300">
-                  <div className="relative flex-grow overflow-hidden rounded-[35px] mb-6">
-                    {/* Quote Text */}
-                    <div className="absolute inset-0 bg-[#F7F7F7] p-6 md:p-10 flex flex-col justify-center items-start transition-opacity duration-500 group-hover:opacity-0 z-10">
-                      {/* Custom Quote Image Icon */}
-                      <img
-                        src="/qoute.png"
-                        alt="quote-icon"
-                        className="mb-6 flex-shrink-0 object-contain"
-                        style={{
-                          width: '83px',        // Exact width spec
-                          height: '64px',       // Exact height spec
-                          aspectRatio: '83/64', // Maintain aspect ratio
-                        }}
-                      />
+          <div className="flex items-center justify-center w-full relative">
+            {testimonials.map((item, index) => {
+              const isCenter = index === currentIndex;
+              const isLeft = index === (currentIndex - 1 + testimonials.length) % testimonials.length;
+              const isRight = index === (currentIndex + 1) % testimonials.length;
 
-                      <p
-                        className="capitalize"
-                        style={{
-                          color: '#262626', // dark-800
-                          fontFamily: 'var(--font-inter), sans-serif',
-                          fontSize: '32px',
-                          fontStyle: 'normal',
-                          fontWeight: '500',
-                          lineHeight: '120%', // 38.4px
-                          textTransform: 'capitalize',
-                          overflow: 'hidden',
-                          display: '-webkit-box',
-                          WebkitLineClamp: '3', // Beshi boro quote hole 3 line por ellipsis hobe
-                          WebkitBoxOrient: 'vertical',
-                          textOverflow: 'ellipsis'
-                        }}
-                      >
-                        {item.quote}
-                      </p>
-                    </div>
+              // Visibility Logic
+              if (!isCenter && !isLeft && !isRight) return null;
 
-                    {/* Image/Video Overlay */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
-                      <img src={item.thumbnail || item.avatar} alt="Client" className="w-full h-full object-cover rounded-[35px]" />
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                        <button
-                          onClick={() => item.type === "video" && setActiveVideo(item.videoUrl)}
-                          className="bg-[#0168B4] text-white p-6 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300"
-                        >
-                          <Play className="w-8 h-8 fill-white" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* User Info */}
-                  <div
-                    className="shrink-0 text-left"
-                    style={{
-                      display: 'flex',
-                      padding: '16px 32px', // Exact padding
-                      alignItems: 'center',
-                      gap: '24px', // Exact gap
-                      alignSelf: 'stretch',
-                      borderRadius: '100px', // Full rounded pill shape
-                      background: '#FFFFFF', // White Shade 900
-                      marginTop: 'auto' // Card-er niche thakar jonno
-                    }}
-                  >
-                    <img
-                      src={item.avatar}
-                      alt={item.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-[#F7F7F7] shadow-sm"
-                    />
-                    <div>
-                      <h4
-                        className="capitalize"
-                        style={{
-                          color: '#262626', // dark-800
-                          fontFamily: 'var(--font-poppins), sans-serif', // Updated to Poppins
-                          fontSize: '18px',
-                          fontStyle: 'normal',
-                          fontWeight: '500', // Medium
-                          lineHeight: '150%', // 27px
-                          textTransform: 'capitalize'
-                        }}
-                      >
-                        {item.name}
-                      </h4>
-                      <p
-                        style={{
-                          color: '#616161',
-                          fontFamily: 'var(--font-poppins), sans-serif',
-                          fontSize: '14px',
-                          fontWeight: '400',
-                          lineHeight: '150%'
-                        }}
-                      >
-                        {item.role}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Updated Navigation Bar */}
-        <div className="mx-auto flex items-center shadow-md border border-gray-100 mt-10 px-[16px] py-[32px] md:px-8 bg-white rounded-full">
-          {/* Navigation Buttons */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={prevSlide}
-              className="flex items-center justify-center transition-all duration-300 hover:opacity-90 active:scale-95"
-              style={{
-                width: '80px',
-                height: '80px',
-                aspectRatio: '1/1',
-                backgroundColor: '#0168B4', // Primary-blue-500
-                borderRadius: '50%', // Rounded-full
-                border: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <ArrowLeft
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  color: '#FFFFFF' // Arrow color white for contrast on blue
-                }}
-              />
-            </button>
-            <button
-              onClick={prevSlide}
-              className="flex items-center justify-center transition-all duration-300 hover:opacity-90 active:scale-95"
-              style={{
-                width: '80px',
-                height: '80px',
-                aspectRatio: '1/1',
-                backgroundColor: '#0168B4', // Primary-blue-500
-                borderRadius: '50%', // Rounded-full
-                border: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <ArrowRight
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  color: '#FFFFFF' // Arrow color white for contrast on blue
-                }}
-              />
-            </button>
-          </div>
-
-          {/* Active Client Info - Displaying 3 names, highlighting the leftmost one in view */}
-          <div className="hidden md:flex flex-grow justify-around items-center">
-            {testimonials.slice(0, 3).map((nav, i) => {
-              // currentIndex বাম পাশের কার্ডটিকে রিপ্রেজেন্ট করে, তাই সেটিই একটিভ
-              const isActive = i === currentIndex % 3;
               return (
                 <div
-                  key={i}
-                  className={`flex flex-col items-center border-r last:border-0 border-gray-100 px-10 transition-all duration-500 ${isActive ? "opacity-100 scale-100" : "opacity-30 scale-90"
+                  key={item._id}
+                  className={`absolute transition-all duration-700 ease-in-out flex flex-col items-center ${isCenter
+                      ? "z-30 w-[90%] md:w-full md:max-w-5xl opacity-100 scale-100"
+                      : "z-10 w-[70%] md:w-[80%] md:max-w-4xl opacity-40 scale-90 blur-[1px]"
                     }`}
+                  style={{
+                    transform: isLeft
+                      ? "translateX(-65%)"
+                      : isRight
+                        ? "translateX(65%)"
+                        : "translateX(0)",
+                  }}
                 >
-                  <h5
-                    className="capitalize mb-1"
-                    style={{
-                      color: '#015FA4', // Primary-blue-600
-                      fontFamily: 'var(--font-inter), sans-serif',
-                      fontSize: '28px', // Updated from 20px to 28px
-                      fontStyle: 'normal',
-                      fontWeight: '500', // Medium
-                      lineHeight: '120%', // 33.6px
-                      textTransform: 'capitalize'
-                    }}
+                  {/* Image/Video Card */}
+                  <div
+                    className="group relative w-full aspect-video md:h-[520px] bg-white rounded-[40px] p-0 overflow-hidden shadow-xl border border-white"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
                   >
-                    {nav.name}
-                  </h5>
-                  <p
-                    style={{
-                      color: '#7B7B7B', // paragraph-color-900
-                      fontFamily: 'var(--font-poppins), sans-serif',
-                      fontSize: '16px', // Updated to 16px
-                      fontStyle: 'normal',
-                      fontWeight: '400', // Regular
-                      lineHeight: '150%' // 24px
-                    }}
-                  >
-                    {nav.company || "Client"}
-                  </p>
+                    <img
+                      src={item.thumbnail || item.avatar}
+                      alt={item.name}
+                      className="w-full h-full object-cover rounded-[40px]"
+                    />
+
+                    {/* Play Button on Hover */}
+                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <button
+                        onClick={() => setActiveVideo(item.videoUrl)}
+                        className="bg-white/20 backdrop-blur-md p-6 rounded-full hover:bg-[#0168B4] hover:text-white transition-all transform scale-90 group-hover:scale-100"
+                      >
+                        <Play className="w-8 h-8 fill-current" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Quote and User Details (Only for center card) */}
+                  <div className={`mt-10 text-start transition-opacity duration-500 ${isCenter ? "opacity-100" : "opacity-0"}`}>
+                    <div className="flex justify-start mb-6">
+                      <img src="/qoute.png" alt="quote" className="w-[60px] md:w-[83px] object-contain" />
+                    </div>
+                    <p className="text-[#262626] text-xl md:text-[32px] font-medium leading-[1.2] mb-8 max-w-[800px]">
+                      "{item.quote}"
+                    </p>
+                    <div className="flex flex-col items-start gap-2">
+                      <h4 className="text-[#0168B4] text-lg md:text-[24px] font-medium">{item.name}</h4>
+                      <p className="text-[#7B7B7B] text-sm md:text-base">{item.role || item.company || "Audio Producer, RPG Studio"}</p>
+                    </div>
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
+
+        {/* Updated Navigation Bar */}
+        {/* <div className="mx-auto max-w-5xl flex items-center justify-between shadow-sm border border-gray-100 mt-10 px-6 py-4 bg-white rounded-full">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={prevSlide}
+              className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-[#0168B4] rounded-full text-white hover:bg-[#015FA4] transition-all active:scale-95"
+            >
+              <ArrowLeft className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-[#0168B4] rounded-full text-white hover:bg-[#015FA4] transition-all active:scale-95"
+            >
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+          </div>
+
+          <div className="hidden md:flex flex-1 justify-around items-center px-10">
+            {testimonials.slice(0, 3).map((item, i) => (
+              <div key={i} className="text-center px-4 border-r last:border-0 border-gray-100 flex-1">
+                <h5 className="text-[#015FA4] text-xl font-medium truncate">{item.name}</h5>
+                <p className="text-[#7B7B7B] text-sm truncate">{item.company || "Client"}</p>
+              </div>
+            ))}
+          </div>
+        </div> */}
       </div>
 
-      {/* Video Modal Overlay */}
+      {/* Video Modal */}
       {activeVideo && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md">
           <div className="relative w-full max-w-4xl aspect-video">

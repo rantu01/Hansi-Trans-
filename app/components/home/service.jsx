@@ -273,7 +273,7 @@ const Service = () => {
   }
 
   return (
-    <section className="bg-[#F7F7F7]">
+    <section className="bg-[#F7F7F7] mb-40">
       {services.length > 0 && <StackedCards services={services} />}
     </section>
   );

@@ -10,6 +10,7 @@ import Blogs from "../components/home/Blogs";
 import FAQ from "../components/home/FAQ";
 import Footer from "../components/layout/Footer";
 import Testimonials from "../components/common/Testimonials";
+import CaseStudies from "../components/CaseStudies-page/CaseStudies";
 
 export default function Home() {
 
@@ -18,6 +19,7 @@ export default function Home() {
       <Hero />
       <Achievement />
       <Service />
+      <CaseStudies></CaseStudies>
       <FeaturedCaseStudies />
       <WorkProcess />
       <WhyChooseUs />

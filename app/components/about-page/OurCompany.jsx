@@ -189,7 +189,7 @@ const OurCompany = () => {
             </div>
 
             {/* --- Exact Spec Button --- */}
-            <button
+            {/* <button
               className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 mt-auto"
               style={{
                 width: '185px',
@@ -226,7 +226,7 @@ const OurCompany = () => {
               >
                 <ArrowUpRight size={28} style={{ color: '#0168B4' }} />
               </span>
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -281,7 +281,7 @@ const OurCompany = () => {
             </div>
 
             {/* Exact Spec Button - mt-auto ensures it stays at the bottom */}
-            <button
+            {/* <button
               className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 mt-auto"
               style={{
                 width: '185px',
@@ -318,7 +318,7 @@ const OurCompany = () => {
               >
                 <ArrowRight size={20} style={{ color: '#0168B4' }} />
               </span>
-            </button>
+            </button> */}
           </div>
 
           {/* Image Grid Right (4 Images) */}

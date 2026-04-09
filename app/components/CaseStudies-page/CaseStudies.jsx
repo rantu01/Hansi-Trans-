@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { API } from "@/app/config/api";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +15,6 @@ const CaseStudies = () => {
       try {
         const response = await fetch(API.featuredCaseStudies, { cache: "no-store" });
         const data = await response.json();
-        // API response structure safety - same as FeaturedCaseStudies
         const caseData = Array.isArray(data.data) ? data.data : [];
         setSlides(caseData);
         if (caseData.length > 0) {
@@ -30,14 +29,11 @@ const CaseStudies = () => {
     fetchCaseStudies();
   }, []);
 
-  // Auto-play functionality
   useEffect(() => {
     if (slides.length === 0 || isPaused) return;
-
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev < slides.length - 1 ? prev + 1 : 0));
-    }, 1000); // 3 seconds - you can change this duration
-
+    }, 1500);
     return () => clearInterval(interval);
   }, [slides.length, isPaused]);
 
@@ -52,25 +48,17 @@ const CaseStudies = () => {
       Loading Case Studies...
     </div>
   );
-  
+
   if (slides.length === 0) return null;
-
-  const nextSlide = () => {
-    setCurrentIndex(prev => (prev < slides.length - 1 ? prev + 1 : 0));
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex(prev => (prev > 0 ? prev - 1 : slides.length - 1));
-  };
 
   return (
     <section className="overflow-hidden relative mt-[-200px] z-1">
-      <div 
+      <div
         className="relative w-full flex justify-center items-center"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="flex justify-center items-center w-full overflow-hidden relative gap-4 md:gap-6 px-4">
+        <div className="flex justify-center items-start w-full overflow-hidden relative gap-4 md:gap-6 px-4 min-h-[750px]">
           {slides.map((slide, index) => {
             const isCenter = index === currentIndex;
             const isLeft = index === currentIndex - 1;
@@ -85,57 +73,71 @@ const CaseStudies = () => {
             return (
               <div
                 key={slide._id || index}
-                className={`relative transition-all duration-700 ease-in-out rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 ${transformClass} h-[300px] md:h-[550px] lg:h-[492px]`}
+                className={`relative group transition-all duration-700 ease-in-out ${transformClass} flex flex-col`}
                 style={{
                   width: isCenter ? "85%" : isLeft || isRight ? "15%" : "0%",
                   marginLeft: isLeft ? "-12%" : undefined,
                   marginRight: isRight ? "-12%" : undefined,
                 }}
               >
-                <img
-                  src={slide.image}
-                  alt={slide.title || "Case Study"}
-                  className="w-full h-full object-cover rounded-[40px] cursor-pointer"
-                  onError={(e) => { e.currentTarget.src = "/fallback-case.png"; }}
-                  onClick={() => handleViewCaseStudy(slide.slug)}
-                  role="button"
-                  tabIndex={0}
-                />
-                {/* Subtle Brand Overlay for Center Image */}
+                {/* Image Container */}
+                <div className="relative overflow-hidden rounded-[40px] h-[300px] md:h-[590px] lg:h-[600px] shadow-2xl shadow-primary/10">
+                  <img
+                    src={slide.image}
+                    alt={slide.title || "Case Study"}
+                    className="w-full h-full object-cover cursor-pointer"
+                    onError={(e) => { e.currentTarget.src = "/fallback-case.png"; }}
+                    onClick={() => handleViewCaseStudy(slide.slug)}
+                    role="button"
+                    tabIndex={0}
+                  />
+                  {/* Image Overlay */}
+                  {isCenter && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none group-hover:bg-black/5 transition-colors duration-500"></div>
+                  )}
+                </div>
+
+                {/* --- INFO BOX (Downwards transition outside image) --- */}
                 {isCenter && (
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none"></div>
+                  <div className="w-full pt-6 opacity-0 translate-y-[-20px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                          {slide.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm md:text-base max-w-3xl">
+                          {slide.description}
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0 self-start md:self-center">
+                        <div className="inline-flex items-center gap-2 bg-[#0070f3] text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/30">
+                          <img
+                            src="/Frame.svg"
+                            alt="icon"
+                            style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+                          />
+                          <span>{slide.tag || "Accent-Matched Voice-Over"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             );
           })}
         </div>
-
-        {/* Navigation Buttons - Uncomment if needed */}
-        {/* <button
-          onClick={prevSlide}
-          className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-background border border-primary/10 text-primary rounded-full shadow-xl hover:bg-primary hover:text-white transition-all z-30 group"
-        >
-          <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-background border border-primary/10 text-primary rounded-full shadow-xl hover:bg-primary hover:text-white transition-all z-30 group"
-        >
-          <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
-        </button> */}
       </div>
 
-      {/* Pagination Dots - Brand Synchronized */}
-      <div className="flex justify-center items-center gap-3 mt-12">
+      {/* Pagination Dots */}
+      <div className="flex justify-center items-center gap-3 mt-8">
         {slides.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-2 rounded-full transition-all duration-500 ${
-              idx === currentIndex 
-                ? "w-10 bg-primary" 
+            className={`h-2 rounded-full transition-all duration-100 ${idx === currentIndex
+                ? "w-10 bg-primary"
                 : "w-2 bg-primary/20 hover:bg-primary/40"
-            }`}
+              }`}
             aria-label={`Go to slide ${idx + 1}`}
           ></button>
         ))}
