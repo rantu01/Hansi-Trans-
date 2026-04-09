@@ -111,13 +111,13 @@ const Testimonials = () => {
                   key={item._id}
                   className={`absolute transition-all duration-700 ease-in-out flex flex-col items-center ${isCenter
                       ? "z-30 w-[90%] md:w-full md:max-w-5xl opacity-100 scale-100"
-                      : "z-10 w-[70%] md:w-[80%] md:max-w-4xl opacity-40 scale-90 blur-[1px]"
+                      : "z-10 w-[70%] md:w-[80%] md:max-w-4xl opacity-100 scale-90 "
                     }`}
                   style={{
                     transform: isLeft
-                      ? "translateX(-65%)"
+                      ? "translateX(-110%)"
                       : isRight
-                        ? "translateX(65%)"
+                        ? "translateX(110%)"
                         : "translateX(0)",
                   }}
                 >

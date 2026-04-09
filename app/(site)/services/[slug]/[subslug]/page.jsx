@@ -4,6 +4,7 @@ import PublicLayout from "@/app/components/layout/PublicLayout";
 import SubServiceDetails from "@/app/components/service-page/SubServiceDetails";
 import SubServiceContent from "@/app/components/service-page/SubServiceContent";
 import { API } from "@/app/config/api";
+import RelatedServices from "@/app/components/common/RelatedServices";
 
 // সাব-সার্ভিস ডেটা ফেচ করার ফাংশন
 async function getSubServiceDetails(path) {
@@ -47,6 +48,7 @@ export default async function SubServiceDetailsPage({ params }) {
       </Hero>
 
       <SubServiceContent subService={subService} />
+      <RelatedServices />
     </PublicLayout>
   );
 }

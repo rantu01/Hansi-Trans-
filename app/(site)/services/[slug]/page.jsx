@@ -1,4 +1,5 @@
 import Hero from "@/app/components/common/Hero";
+import OurServices2 from "@/app/components/common/OurServices2";
 import Testimonials from "@/app/components/common/Testimonials";
 import WorkProcess from "@/app/components/common/WorkProcess";
 import PublicLayout from "@/app/components/layout/PublicLayout";
@@ -68,7 +69,7 @@ export default async function ServiceDetailsPage({ params }) {
         section={pageContent}
       />
 
-      <OurServices />
+      <OurServices2 />
       <WorkProcess />
       <Testimonials />
     </PublicLayout>

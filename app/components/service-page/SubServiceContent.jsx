@@ -38,7 +38,7 @@ const SubServiceContent = ({ subService }) => {
       <div className="container mx-auto">
         {/* Why Matters Section - UPDATED to match static */}
         <div className="mb-12 flex flex-col gap-6 md:mb-20 md:flex-row md:justify-between md:gap-12">
-          <h2
+          {/* <h2
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "clamp(28px, 4vw, 48px)",
@@ -50,9 +50,16 @@ const SubServiceContent = ({ subService }) => {
             }}
           >
             {content.introTitle}
-          </h2>
+          </h2> */}
           {/* CHANGED: text-sm md:text-base → text-xs md:text-sm */}
-          <p className="flex-1 text-xs md:text-sm leading-relaxed text-gray-500 md:max-w-md">
+          <p style={{
+            fontFamily: "Inter, sans-serif",
+            fontWeight: "500",
+            fontSize: "18px",
+            color: "#6B6B6B",
+            lineHeight: "150%",
+            marginBottom: "16px",
+          }}>
             {content.introDescription}
           </p>
         </div>
@@ -226,6 +233,10 @@ const SubServiceContent = ({ subService }) => {
               </div>
             );
           })}
+        </div>
+
+        <div className="flex items-center justify-center ">
+          <img src="/photo/Document & Text Localization Flow .png" alt="" className="max-w-full h-auto rounded-md" />
         </div>
 
         {/* Footer Section - UPDATED to match static */}

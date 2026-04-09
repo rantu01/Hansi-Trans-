@@ -4,7 +4,7 @@ import { ArrowDown } from "lucide-react";
 
 const ServiceCard2 = ({ service }) => {
   return (
-    <section className="py-10 px-6">
+    <section className="py-10 px-0">
       <div className="container mx-auto">
         <div
           style={{

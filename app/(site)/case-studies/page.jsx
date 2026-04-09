@@ -1,5 +1,6 @@
 import CaseStudies from "@/app/components/CaseStudies-page/CaseStudies";
 import FeaturedCaseStudies from "@/app/components/common/FeaturedCaseStudies";
+import FeaturedCaseStudies2 from "@/app/components/common/FeaturedCaseStudies2";
 import Hero from "@/app/components/common/Hero";
 import PublicLayout from "@/app/components/layout/PublicLayout";
 
@@ -14,7 +15,7 @@ export default function ContactPage() {
         
       </Hero>
       <CaseStudies></CaseStudies>
-      <FeaturedCaseStudies></FeaturedCaseStudies>
+      <FeaturedCaseStudies2></FeaturedCaseStudies2>
       
     </PublicLayout>
   );

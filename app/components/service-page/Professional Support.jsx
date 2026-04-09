@@ -45,7 +45,8 @@ const ProfessionalSupport = ({ data = [], section = {} }) => {
               whiteSpace: "nowrap",    // text একই লাইনে থাকবে
             }}
           >
-            {section.supportTitle || "Professional Support Services"}
+            {/* {section.supportTitle || "Add-Ons"}  */}
+            Add-Ons
           </h2>
         </div>
 

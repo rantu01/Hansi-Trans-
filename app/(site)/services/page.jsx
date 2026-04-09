@@ -1,3 +1,6 @@
+import CaseStudies from "@/app/components/CaseStudies-page/CaseStudies";
+import Achievement2 from "@/app/components/common/Achievement2";
+import CaseStudies2 from "@/app/components/common/CaseStudies2";
 import Domains from "@/app/components/common/Domains";
 import Hero from "@/app/components/common/Hero";
 import Testimonials from "@/app/components/common/Testimonials";
@@ -17,7 +20,9 @@ export default function ServicePage() {
       </Hero>
       <OurServices></OurServices>
       <Domains></Domains>
+      <CaseStudies2></CaseStudies2>
       <Testimonials></Testimonials>
+      <Achievement2></Achievement2>
       
     </PublicLayout>
   );

@@ -5,7 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { API } from "@/app/config/api";
 
-const OurServices = () => {
+const OurServices2 = () => {
   const [serviceList, setServiceList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +37,7 @@ const OurServices = () => {
         {/* Header matching the provided image style */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl">
-            <div
+            {/* <div
               className="inline-flex items-center justify-center mb-6"
               style={{
                 height: "50px",
@@ -62,7 +62,7 @@ const OurServices = () => {
               >
                 Service
               </span>
-            </div>
+            </div> */}
             <h2
               className="font-['Inter'] font-medium capitalize"
               style={{
@@ -72,7 +72,7 @@ const OurServices = () => {
                 letterSpacing: '0%'
               }}
             >
-              Our Services
+              Related More <br /> Service
             </h2>
           </div>
           <div className="max-w-lg">
@@ -207,4 +207,4 @@ const OurServices = () => {
   );
 };
 
-export default OurServices;
+export default OurServices2;
