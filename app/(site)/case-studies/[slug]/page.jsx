@@ -4,44 +4,46 @@ import CaseStudyDetailsPage from "@/app/components/CaseStudies-page/CaseStudyDet
 import Hero from "@/app/components/common/Hero";
 import CaseStudyContent from "@/app/components/CaseStudies-page/CaseStudyContent";
 import { API } from "@/app/config/api";
+import Hero2 from "@/app/components/common/Hero2";
+import FeaturedCaseStudies3 from "@/app/components/common/FeaturedCaseStudies3";
 
 async function getCaseStudyBySlug(slug) {
   try {
     console.log("🔍 Fetching from:", API.featuredCaseStudies);
-    
-    const res = await fetch(API.featuredCaseStudies, { 
+
+    const res = await fetch(API.featuredCaseStudies, {
       cache: "no-store",
       headers: {
         'Content-Type': 'application/json',
       }
     });
-    
+
     console.log("📡 Response Status:", res.status);
-    
+
     if (!res.ok) {
       console.error("❌ API Error:", res.status);
       return null;
     }
-    
+
     const data = await res.json();
     console.log("📦 Full API Response:", data);
-    
+
     // Response structure check - adjust based on your API
     let caseStudies = [];
-    
+
     if (data.data && Array.isArray(data.data)) {
       caseStudies = data.data;
     } else if (Array.isArray(data)) {
       caseStudies = data;
     }
-    
+
     console.log("📚 Total Case Studies:", caseStudies.length);
-    
+
     // Slug match করা
     const found = caseStudies.find((c) => c.slug === slug);
-    
+
     console.log("🎯 Found Case Study:", found ? found.title : "Not found");
-    
+
     return found || null;
   } catch (error) {
     console.error("❌ Fetch Error:", error);
@@ -51,7 +53,7 @@ async function getCaseStudyBySlug(slug) {
 
 export default async function CaseStudyPage({ params }) {
   const { slug } = await params;
-  
+
   console.log("🔗 Current Slug:", slug);
 
   const caseStudy = await getCaseStudyBySlug(slug);
@@ -74,14 +76,18 @@ export default async function CaseStudyPage({ params }) {
 
   return (
     <PublicLayout>
-      <Hero
+      <Hero2
         title={caseStudy.title || "Case Study Details"}
         breadcrumb={`Home › Case Studies › ${caseStudy.title || slug}`}
-        description={caseStudy.description || "Case study details"}
+        description={caseStudy.description}
+        backgroundImage={caseStudy.image} // এখানে ইমেজটি পাস করুন
       >
+        {/* এটি এখন হিরো সেকশনের ভেতরে ওভারলে হিসেবে দেখাবে */}
         <CaseStudyDetailsPage caseStudy={caseStudy} />
-      </Hero>
+      </Hero2>
+
       <CaseStudyContent caseStudy={caseStudy} />
+      <FeaturedCaseStudies3 />
     </PublicLayout>
   );
 }

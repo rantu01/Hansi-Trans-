@@ -58,7 +58,7 @@ const iconMap = {
   pen: <PenLine className="w-5 h-5 text-primary" />,
 };
 
-const FeaturedCaseStudies = () => {
+const FeaturedCaseStudies3 = () => {
   const router = useRouter();
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,37 +97,7 @@ const FeaturedCaseStudies = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl">
-            <div
-              className="inline-flex items-center justify-center mb-6"
-              style={{
-                display: 'flex',
-                height: '50px',
-                width: '200px',
-                padding: '8px 16px',
-                gap: '8px',
-                borderRadius: '49px',
-                background: '#FFF',
-              }}
-            >
-              <img
-                src="/Frame.svg"
-                alt="icon"
-                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-              />
-              <span
-                style={{
-                  color: '#404040', // var(--dark-5)
-                  fontFamily: 'var(--font-poppins), sans-serif',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: '500',
-                  lineHeight: '160%',
-                  letterSpacing: '0.16px',
-                }}
-              >
-                Case studies
-              </span>
-            </div>
+
             <h2
               className="capitalize"
               style={{
@@ -138,30 +108,14 @@ const FeaturedCaseStudies = () => {
                 lineHeight: '120%'
               }}
             >
-              Featured Case Studies
+              Related More Case Studies
             </h2>
-          </div>
-
-          <div className="md:max-w-lg pt-4 md:pt-14 text-left">
-            <p
-              style={{
-                color: '#616161',
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '16px',
-                fontWeight: '500',
-                lineHeight: '160%',
-                letterSpacing: '0.128px'
-              }}
-            >
-              See how HS+ helps games, anime, and tech brands go global through
-              localization, voice-over, and creator-led marketing.
-            </p>
           </div>
         </div>
 
         {/* Case Studies List */}
         <div className="space-y-12">
-          {cases.map((item, index) => (
+          {cases.slice(0, 2).map((item, index) => (
             <div
               key={item._id || index}
               className={`flex flex-col ${item.isReverse ? "lg:flex-row-reverse" : "lg:flex-row"
@@ -389,4 +343,4 @@ const FeaturedCaseStudies = () => {
   );
 };
 
-export default FeaturedCaseStudies;
+export default FeaturedCaseStudies3;

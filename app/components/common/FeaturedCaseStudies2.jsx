@@ -318,6 +318,32 @@ const FeaturedCaseStudies2 = () => {
                   ))}
                 </div>
 
+                {/* Company Logo Section - Added by User Request */}
+                <div className="flex items-center justify-between mt-6 mb-10 border-t border-[#D9D9D9] pt-8">
+                  <div
+                    style={{
+                      color: '#0A0A0A',
+                      fontFamily: 'Inter, sans-serif', // Figma-র "Family/Body" সাধারণত ইন্টার বা পপিন্স হয়
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      lineHeight: '160%',
+                      letterSpacing: '0.16px', // 1% spacing
+                    }}
+                  >
+                    Tencent Games company
+                  </div>
+
+                  <div className="flex items-center">
+                    <img
+                      src="/photo/images.png" // আপনার লোগো ফাইলটির সঠিক পাথ এখানে দিন
+                      alt="Tencent Logo"
+                      className="h-8 object-contain"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+
+                  </div>
+                </div>
+
                 <button
                   onClick={() => handleViewCaseStudy(item.slug)}
                   className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px] self-start"

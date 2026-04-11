@@ -7,7 +7,7 @@ const CaseStudiesDetails = ({ caseStudy }) => {
     <section className="py-16 px-6 md:px-12 font-sans">
       <div className="container mx-auto">
         <div
-          className="w-full h-[300px] md:h-[500px] mb-12 overflow-hidden rounded-[40px]
+          className="w-full md:w-[1,296px] h-[300px] md:h-[620.84px] mb-12 overflow-hidden rounded-[0px]
                      bg-primary/5 border border-primary/10 shadow-2xl shadow-primary/5
                      relative group"
         >
