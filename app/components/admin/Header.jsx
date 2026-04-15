@@ -7,6 +7,12 @@ import { API } from "@/app/config/api";
 const Header = ({ toggleSidebar }) => {
   const router = useRouter();
 
+  const clearAdminSessionCookie = () => {
+    if (typeof document === "undefined") return;
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `adminToken=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+  };
+
   const handleLogout = async () => {
     try {
       await fetch(API.auth.logout, {
@@ -17,6 +23,7 @@ const Header = ({ toggleSidebar }) => {
       // fall through to client cleanup
     } finally {
       localStorage.removeItem("adminToken");
+      clearAdminSessionCookie();
       router.replace("/login");
     }
   };

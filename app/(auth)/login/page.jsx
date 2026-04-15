@@ -15,6 +15,14 @@ export default function LoginPage() {
   // prevent double submit
   const isSubmitting = useRef(false);
 
+  const setAdminSessionCookie = (token) => {
+    if (!token || typeof document === "undefined") return;
+
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    const encodedToken = encodeURIComponent(token);
+    document.cookie = `adminToken=${encodedToken}; Path=/; Max-Age=604800; SameSite=Lax${secure}`;
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -56,12 +64,14 @@ export default function LoginPage() {
        */
       if (data?.token) {
         localStorage.setItem("adminToken", data.token);
+        setAdminSessionCookie(data.token);
         router.replace("/admin");
         return;
       }
 
-      if (data?.success === true) {
+      if (data?.success === true && data?.token) {
         localStorage.setItem("adminToken", data.token);
+        setAdminSessionCookie(data.token);
         router.replace("/admin");
         return;
       }
