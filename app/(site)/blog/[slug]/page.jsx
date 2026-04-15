@@ -15,7 +15,8 @@ export default async function BlogPostPage({ params }) {
     });
     
     if (res.ok) {
-      blogPost = await res.json();
+      const data = await res.json();
+      blogPost = data?.data || data?.blog || data;
     }
   } catch (error) {
     console.error("Error fetching blog details:", error);

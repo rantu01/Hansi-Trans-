@@ -4,6 +4,67 @@
 import React, { useState, useEffect } from "react";
 import { Facebook as FbIcon, Twitter as TwIcon, Linkedin as LiIcon, Youtube } from "lucide-react";
 
+const defaultBlogContent = {
+  title: "How To Localize Games For Asian Markets: A Complete Guide",
+  author: "Chung Hsu",
+  date: "12 Sep 2025",
+  image: "/photo/blog-hero.jpg",
+  sections: [
+    {
+      type: "heading",
+      text: "Introduction",
+    },
+    {
+      type: "paragraph",
+      text: "Expanding into Asian markets is a major opportunity, but it requires careful localization, cultural adaptation, and production planning.",
+    },
+    {
+      type: "heading",
+      text: "Understanding The Asian Gaming Market",
+    },
+    {
+      type: "list",
+      items: [
+        "Mobile gaming dominates in China and Southeast Asia.",
+        "Japan has a strong console and anime-driven audience.",
+        "Korea leads in esports and PC-cafe culture.",
+        "Southeast Asia is diverse with fast-growing markets like Indonesia and Thailand.",
+      ],
+    },
+    {
+      type: "image",
+      src: "/photo/blog-hero.jpg",
+      alt: "Blog section image",
+    },
+    {
+      type: "heading",
+      text: "Multilingual Voice-Over: Bringing Characters To Life",
+    },
+    {
+      type: "paragraph",
+      text: "Parallel voice production with coordinated PM and live-directed sessions reduces turnaround and keeps performance consistent across languages.",
+    },
+    {
+      type: "quote",
+      text: "People will forget what you said, but they'll remember how your brand made them feel.",
+    },
+    {
+      type: "heading",
+      text: "Conclusion",
+    },
+    {
+      type: "paragraph",
+      text: "Localization is more than translation. It is a production discipline that brings together localization, voice, QA, and cultural design.",
+    },
+  ],
+};
+
+const mergeBlogContent = (input = {}) => ({
+  ...defaultBlogContent,
+  ...input,
+  sections: Array.isArray(input.sections) && input.sections.length > 0 ? input.sections : defaultBlogContent.sections,
+});
+
 const BlogDetails = ({ blogPost }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -11,9 +72,8 @@ const BlogDetails = ({ blogPost }) => {
     setMounted(true);
   }, []);
 
-  if (!blogPost) return null;
-
-  const { title, author, date, image, description, sections } = blogPost;
+  const content = mergeBlogContent(blogPost || {});
+  const { title, author, date, image, sections } = content;
 
   // Render section based on type
   const renderSection = (section, index) => {
@@ -111,7 +171,36 @@ const BlogDetails = ({ blogPost }) => {
           </div>
         );
 
+      case 'highlight':
+        return (
+          <div
+            key={index}
+            style={{
+              borderLeft: '4px solid #0168B4',
+              background: '#F3F8FD',
+              borderRadius: '18px',
+              padding: '20px 24px',
+              marginBottom: '24px',
+              marginTop: '12px',
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: '500',
+                fontSize: '16px',
+                lineHeight: '160%',
+                color: '#0168B4',
+                margin: 0,
+              }}
+            >
+              {section.text}
+            </p>
+          </div>
+        );
+
       case 'image':
+        if (!section.src && !section.image) return null;
         return (
           <div
             key={index}
@@ -126,8 +215,8 @@ const BlogDetails = ({ blogPost }) => {
             }}
           >
             <img
-              src={section.src}
-              alt="Section"
+              src={section.src || section.image}
+              alt={section.alt || section.text || "Section"}
               style={{
                 width: '100%',
                 height: '100%',
@@ -212,6 +301,7 @@ const BlogDetails = ({ blogPost }) => {
             {/* Social Icons */}
             <div className="flex gap-2">
               {[
+                { Icon: FbIcon, color: '#002C4C' },
                 { Icon: TwIcon, color: '#002C4C' },
                 { Icon: LiIcon, color: '#002C4C' },
                 { Icon: Youtube, color: '#002C4C' }
@@ -252,20 +342,10 @@ const BlogDetails = ({ blogPost }) => {
         </div>
 
         {/* Dynamic Sections Rendering */}
-        <div className="contsiner mx-auto" >
+        <div className="container mx-auto" >
           {mounted && sections && sections.length > 0 ? (
             sections.map((section, index) => renderSection(section, index))
-          ) : (
-            <p style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: '400',
-              fontSize: '18px',
-              lineHeight: '160%',
-              color: '#6B6B6B'
-            }}>
-              No Content
-            </p>
-          )}
+          ) : null}
         </div>
 
       </div>

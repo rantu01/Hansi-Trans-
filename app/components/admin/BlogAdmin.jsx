@@ -1,10 +1,88 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { API } from "@/app/config/api";
-import { Trash2, Edit, Plus, FileText, Loader2, X, UploadCloud, Search, Tag, Trash } from "lucide-react";
+import { Trash2, Edit, Plus, FileText, Loader2, X, UploadCloud, Search, Trash } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
+
+const normalizeSlug = (value = "") =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+  const defaultSections = [
+    {
+      type: "heading",
+      text: "HS+ is a global partner for localization, multilingual voice-over, and cross-border marketing. Since 2010, we’ve helped leading game studios, anime creators, and tech innovators connect with audiences in over 40 languages.",
+      items: [],
+      src: null,
+      alt: ""
+    },
+    {
+      type: "paragraph",
+      text: "When people hear the word “branding,” many immediately think of logos, colors, and fonts. While those are important, branding is much deeper—it’s about perception, emotion, and connection. Branding answers a vital question in every customer’s mind:  “How does this make me feel?” When done right, branding shapes how customers experience your business—and how they remember it.",
+      items: [],
+      src: null,
+      alt: ""
+    },
+    { type: "heading", text: "Introduction", items: [], src: null, alt: "" },
+    {
+      type: "paragraph",
+      text: "Expanding your game into Asian markets is an exciting opportunity—but without proper localization, even the best game can fail to connect. This guide walks you through cultural adaptation, language challenges, voice-over best practices, and marketing strategies to make your game a success in China, Japan, Korea, and Southeast Asia.",
+      items: [],
+      src: null,
+      alt: ""
+    },
+    { type: "heading", text: "Understanding the Asian Gaming Market", items: [], src: null, alt: "" },
+    { type: "paragraph", text: "Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.", items: [], src: null, alt: "" },
+    {
+      type: "list",
+      text: "Your text here",
+      items: [
+        "Mobile gaming dominates in China and SEA.",
+        "Japan has a strong console and anime-driven game culture.",
+        "Korea is a leader in esports and PC café gaming.",
+        "SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.",
+        "👉 Key takeaway: One region ≠ one strategy. Treat each country uniquely."
+      ],
+      src: null,
+      alt: ""
+    },
+    { type: "heading", text: "The Role of Localization Beyond Translation", items: [], src: null, alt: "" },
+    { type: "paragraph", text: "Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.", items: [], src: null, alt: "" },
+    {
+      type: "list",
+      text: "Your text here",
+      items: [
+        "The Role of Localization Beyond Translation",
+        "SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.",
+        "Mobile gaming dominates in China and SEA.",
+        "👉 Key takeaway: One region ≠ one strategy. Treat each country uniquely."
+      ],
+      src: null,
+      alt: ""
+    },
+    { type: "quote", text: '"People will forget what you said, but they\'ll remember how your brand made them feel."', items: [], src: null, alt: "" },
+    { type: "image", text: "", items: [], src: "https://res.cloudinary.com/dyhhdl1hy/image/upload/v1776276984/site/ketxdvxuivnvqkurictm.png", alt: "Section image..." },
+    { type: "heading", text: "Multilingual Voice-Over: Bringing Characters to Life", items: [], src: null, alt: "" },
+    { type: "paragraph", text: "Think about your favorite brands. Apple, Nike, or Airbnb don’t just sell products. They sell trust, identity, and belonging.", items: [], src: null, alt: "" },
+    { type: "list", text: "", items: ["Mobile gaming dominates in China and SEA.", "Japan has a strong console and anime-driven game culture.", "Korea is a leader in esports and PC café gaming.", "SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast."], src: null, alt: "" },
+    { type: "heading", text: "Influencer & KOL Marketing for Games", items: [], src: null, alt: "" },
+    { type: "list", text: "", items: ["Brand Identity (Visuals)"], src: null, alt: "" },
+    { type: "paragraph", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust.", items: [], src: null, alt: "" },
+    { type: "list", text: "", items: ["Tone of Voice"], src: null, alt: "" },
+    { type: "paragraph", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust.", items: [], src: null, alt: "" },
+    { type: "list", text: "", items: ["Brand Story"], src: null, alt: "" },
+    { type: "paragraph", text: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust.", items: [], src: null, alt: "" },
+    { type: "image", text: "", items: [], src: "https://res.cloudinary.com/dyhhdl1hy/image/upload/v1776277305/site/klbqzwwofr2luc5rfkzd.png", alt: "Section image" },
+    { type: "quote", text: "People will forget what you said, but they'll remember how your brand made them feel.", items: [], src: null, alt: "" },
+    { type: "heading", text: "Conclusion", items: [], src: null, alt: "" },
+    { type: "paragraph", text: "Expanding into Asian markets is more than just translation—it’s about building authentic cultural connections. By combining localization, high-quality voice-over, and region-specific marketing, you can scale your game successfully.", items: [], src: null, alt: "" }
+  ];
 
 const BlogAdmin = () => {
   const token = typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
@@ -20,19 +98,22 @@ const BlogAdmin = () => {
     title: "",
     slug: "",
     description: "",
-    sections: [],
+    sections: defaultSections,
     category: "Games",
     filterTag: "Games",
     image: "",
     author: "Hansi Trans Admin"
   });
   const [preview, setPreview] = useState("");
+  const dragSrc = useRef(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const fetchBlogs = async () => {
     try {
       const res = await fetch(API.Blogs.getAll);
       const data = await res.json();
-      setBlogs(data);
+      setBlogs(Array.isArray(data) ? data : data?.data || []);
     } catch (error) {
       toast.error("Failed to load blogs");
     } finally {
@@ -42,16 +123,20 @@ const BlogAdmin = () => {
 
   useEffect(() => { fetchBlogs(); }, []);
 
-  // Title থেকে অটো Slug তৈরি
   const handleTitleChange = (e) => {
     const title = e.target.value;
-    const slug = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    const slug = normalizeSlug(title);
     setFormData({ ...formData, title, slug });
   };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error("File too large (Max 4MB)");
+      return;
+    }
+
     setUploading(true);
     setPreview(URL.createObjectURL(file));
     const loadingToast = toast.loading("Uploading image...");
@@ -67,8 +152,10 @@ const BlogAdmin = () => {
       });
       const data = await res.json();
       if (data.url) {
-        setFormData({ ...formData, image: data.url });
+        setFormData((prev) => ({ ...prev, image: data.url }));
         toast.success("Image uploaded!", { id: loadingToast });
+      } else {
+        toast.error("Upload failed", { id: loadingToast });
       }
     } catch (err) {
       toast.error("Upload failed", { id: loadingToast });
@@ -78,13 +165,47 @@ const BlogAdmin = () => {
     }
   };
 
-  // Add section
+  const handleSectionImageUpload = async (sectionIndex, file) => {
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error("File too large (Max 4MB)");
+      return;
+    }
+
+    setUploading(true);
+    const loadingToast = toast.loading("Uploading section image...");
+
+    const uploadData = new FormData();
+    uploadData.append("image", file);
+
+    try {
+      const res = await fetch(API.uploadImage, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: uploadData,
+      });
+      const data = await res.json();
+
+      if (data.url) {
+        updateSection(sectionIndex, "src", data.url);
+        toast.success("Section image uploaded!", { id: loadingToast });
+      } else {
+        toast.error("Section image upload failed", { id: loadingToast });
+      }
+    } catch (error) {
+      toast.error("Section image upload failed", { id: loadingToast });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const addSection = (type) => {
     const newSection = {
       type,
-      text: type === 'heading' ? 'New Heading' : 'Your text here',
-      items: type === 'list' ? ['Item 1', 'Item 2'] : [],
-      src: type === 'image' ? '' : null
+      text: type === "heading" ? "New Heading" : "",
+      items: type === "list" ? ["Item 1", "Item 2"] : [],
+      src: type === "image" ? "" : null,
+      alt: type === "image" ? "Section image" : "",
     };
     setFormData({ 
       ...formData, 
@@ -92,14 +213,12 @@ const BlogAdmin = () => {
     });
   };
 
-  // Update section
   const updateSection = (index, field, value) => {
     const updatedSections = [...formData.sections];
     updatedSections[index] = { ...updatedSections[index], [field]: value };
     setFormData({ ...formData, sections: updatedSections });
   };
 
-  // Remove section
   const removeSection = (index) => {
     setFormData({
       ...formData,
@@ -107,7 +226,6 @@ const BlogAdmin = () => {
     });
   };
 
-  // Add list item
   const addListItem = (sectionIndex) => {
     const updatedSections = [...formData.sections];
     if (!Array.isArray(updatedSections[sectionIndex].items)) {
@@ -117,14 +235,48 @@ const BlogAdmin = () => {
     setFormData({ ...formData, sections: updatedSections });
   };
 
-  // Update list item
+  const moveSection = (from, to) => {
+    if (from === to) return;
+    const sections = Array.from(formData.sections || []);
+    const [moved] = sections.splice(from, 1);
+    sections.splice(to, 0, moved);
+    setFormData({ ...formData, sections });
+  };
+
+  const onDragStart = (e, index) => {
+    dragSrc.current = index;
+    setIsDragging(true);
+    try { e.dataTransfer.setData("text/plain", String(index)); } catch (err) {}
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const onDragOver = (e, index) => {
+    e.preventDefault();
+    if (dragOverIndex !== index) setDragOverIndex(index);
+  };
+
+  const onDrop = (e, index) => {
+    e.preventDefault();
+    const from = dragSrc.current !== null ? dragSrc.current : parseInt(e.dataTransfer.getData("text/plain"), 10);
+    const to = index;
+    moveSection(from, to);
+    setIsDragging(false);
+    setDragOverIndex(null);
+    dragSrc.current = null;
+  };
+
+  const onDragEnd = () => {
+    setIsDragging(false);
+    setDragOverIndex(null);
+    dragSrc.current = null;
+  };
+
   const updateListItem = (sectionIndex, itemIndex, value) => {
     const updatedSections = [...formData.sections];
     updatedSections[sectionIndex].items[itemIndex] = value;
     setFormData({ ...formData, sections: updatedSections });
   };
 
-  // Remove list item
   const removeListItem = (sectionIndex, itemIndex) => {
     const updatedSections = [...formData.sections];
     updatedSections[sectionIndex].items = updatedSections[sectionIndex].items.filter((_, i) => i !== itemIndex);
@@ -135,6 +287,16 @@ const BlogAdmin = () => {
     e.preventDefault();
     if (!formData.image) return toast.error("Please upload a cover image");
     if (formData.sections.length === 0) return toast.error("Please add at least one section");
+
+    const payload = {
+      ...formData,
+      slug: normalizeSlug(formData.slug || formData.title),
+      sections: formData.sections.map((section) => ({
+        ...section,
+        items: Array.isArray(section.items) ? section.items : [],
+        src: section.type === "image" ? section.src || "" : section.src,
+      })),
+    };
 
     const url = editId ? API.Blogs.update(editId) : API.Blogs.add;
     const method = editId ? "PUT" : "POST";
@@ -147,7 +309,7 @@ const BlogAdmin = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}` 
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -162,7 +324,7 @@ const BlogAdmin = () => {
 
   const clearForm = () => {
     setFormData({
-      title: "", slug: "", description: "", sections: [],
+      title: "", slug: "", description: "", sections: defaultSections,
       category: "Games", filterTag: "Games", image: "", author: "Hansi Trans Admin"
     });
     setPreview("");
@@ -175,7 +337,10 @@ const BlogAdmin = () => {
       title: blog.title,
       slug: blog.slug,
       description: blog.description,
-      sections: blog.sections || [],
+      sections: (blog.sections || []).map((section) => ({
+        ...section,
+        alt: section.alt || "",
+      })),
       category: blog.category,
       filterTag: blog.filterTag,
       image: blog.image,
@@ -256,67 +421,97 @@ const BlogAdmin = () => {
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Image Upload */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Cover Image</label>
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Cover Image</label>
                 <div className="relative group">
                   <input type="file" id="blog-upload" className="hidden" onChange={handleImageUpload} accept="image/*" />
-                  <label htmlFor="blog-upload" className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-3xl cursor-pointer hover:bg-gray-50 transition-all overflow-hidden">
-                    {preview ? <img src={preview} className="w-full h-full object-cover" alt="Preview" /> : <UploadCloud size={30} className="text-gray-300" />}
+                  <label
+                    htmlFor="blog-upload"
+                    className={`flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-3xl cursor-pointer transition-all overflow-hidden ${
+                      preview ? "border-black bg-white" : "border-gray-200 bg-gray-50/70 hover:border-black hover:bg-white"
+                    }`}
+                  >
+                    {preview ? (
+                      <img src={preview} className="w-full h-full object-cover" alt="Preview" />
+                    ) : (
+                      <div className="flex flex-col items-center text-gray-400 group-hover:text-black">
+                        <UploadCloud size={30} />
+                        <span className="text-xs font-bold mt-2">Click to upload</span>
+                        <span className="text-[10px] mt-1">PNG, JPG, WEBP up to 4MB</span>
+                      </div>
+                    )}
                   </label>
                 </div>
               </div>
 
-              {/* Title */}
-              <input 
-                className="w-full bg-gray-50 p-4 rounded-xl outline-none font-bold text-sm" 
-                placeholder="Blog Title" 
-                value={formData.title} 
-                onChange={handleTitleChange} 
-                required 
-              />
-
-              {/* Slug */}
-              <input 
-                className="w-full bg-gray-50 p-4 rounded-xl outline-none text-xs text-gray-400" 
-                placeholder="Slug (Auto-generated)" 
-                value={formData.slug} 
-                readOnly
-              />
-
-              {/* Description */}
-              <textarea 
-                className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm h-20" 
-                placeholder="Short Description (For Hero Section)" 
-                value={formData.description} 
-                onChange={(e) => setFormData({...formData, description: e.target.value})} 
-              />
-
-              {/* Category & Author */}
-              <div className="flex gap-2">
-                <select 
-                  className="w-1/2 bg-gray-50 p-4 rounded-xl outline-none text-sm font-bold"
-                  value={formData.category}
-                  onChange={(e) => setFormData({...formData, category: e.target.value, filterTag: e.target.value})}
-                >
-                  <option value="Games">Games</option>
-                  <option value="Voice">Voice</option>
-                  <option value="Tech Innovations">Tech Innovations</option>
-                </select>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Title</label>
                 <input 
-                  className="w-1/2 bg-gray-50 p-4 rounded-xl outline-none text-sm" 
-                  placeholder="Author Name" 
-                  value={formData.author} 
-                  onChange={(e) => setFormData({...formData, author: e.target.value})} 
+                  className="w-full bg-gray-50 p-4 rounded-xl outline-none font-bold text-sm" 
+                  placeholder="Blog Title" 
+                  value={formData.title} 
+                  onChange={handleTitleChange} 
+                  required 
                 />
               </div>
 
-              {/* Submit */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Slug</label>
+                <input 
+                  className="w-full bg-gray-50 p-4 rounded-xl outline-none text-xs text-gray-500" 
+                  placeholder="Slug (Auto-generated)" 
+                  value={formData.slug} 
+                  readOnly
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Short Description</label>
+                <textarea 
+                  className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm h-20" 
+                  placeholder="Short Description (For Hero Section)" 
+                  value={formData.description} 
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })} 
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Category</label>
+                  <select 
+                    className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm font-bold"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value, filterTag: e.target.value })}
+                  >
+                    <option value="Games">Games</option>
+                    <option value="Voice">Voice</option>
+                    <option value="Tech Innovations">Tech Innovations</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Author</label>
+                  <input 
+                    className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm" 
+                    placeholder="Author Name" 
+                    value={formData.author} 
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })} 
+                  />
+                </div>
+              </div>
+
+              <input 
+                className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm" 
+                placeholder="Filter Tag" 
+                value={formData.filterTag}
+                onChange={(e) => setFormData({ ...formData, filterTag: e.target.value })}
+              />
+
               <button 
                 disabled={uploading} 
                 className="w-full py-4 rounded-xl font-black text-white bg-[#0066b2] shadow-lg shadow-blue-200 hover:scale-[1.02] transition-transform disabled:bg-gray-300"
               >
-                {editId ? "Update" : "Publish"}
+                {uploading ? "Uploading..." : editId ? "Update" : "Publish"}
               </button>
             </form>
           </div>
@@ -330,36 +525,49 @@ const BlogAdmin = () => {
               <div className="flex gap-2 flex-wrap">
                 <button 
                   type="button"
-                  onClick={() => addSection('heading')}
+                  onClick={() => addSection("heading")}
                   className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-200"
                 >
                   + Heading
                 </button>
                 <button 
                   type="button"
-                  onClick={() => addSection('paragraph')}
+                  onClick={() => addSection("paragraph")}
                   className="px-3 py-2 bg-green-100 text-green-700 rounded-lg text-xs font-bold hover:bg-green-200"
                 >
                   + Paragraph
                 </button>
                 <button 
                   type="button"
-                  onClick={() => addSection('list')}
+                  onClick={() => addSection("list")}
                   className="px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold hover:bg-purple-200"
                 >
                   + List
                 </button>
                 <button 
                   type="button"
-                  onClick={() => addSection('quote')}
+                  onClick={() => addSection("quote")}
                   className="px-3 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold hover:bg-orange-200"
                 >
                   + Quote
                 </button>
+                <button 
+                  type="button"
+                  onClick={() => addSection("image")}
+                  className="px-3 py-2 bg-cyan-100 text-cyan-700 rounded-lg text-xs font-bold hover:bg-cyan-200"
+                >
+                  + Image
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => addSection("highlight")}
+                  className="px-3 py-2 bg-amber-100 text-amber-700 rounded-lg text-xs font-bold hover:bg-amber-200"
+                >
+                  + Highlight
+                </button>
               </div>
             </div>
 
-            {/* Sections List */}
             <div className="space-y-4">
               {formData.sections.length === 0 ? (
                 <p className="text-gray-400 text-center py-8">Add a section →</p>
@@ -373,11 +581,12 @@ const BlogAdmin = () => {
                   >
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-xs font-bold uppercase text-gray-500">
-                        {section.type === 'heading' && '📝 Heading'}
-                        {section.type === 'paragraph' && '📄 Paragraph'}
-                        {section.type === 'list' && '📋 List'}
-                        {section.type === 'quote' && '💬 Quote'}
-                        {section.type === 'image' && '🖼️ Image'}
+                        {section.type === "heading" && "Heading"}
+                        {section.type === "paragraph" && "Paragraph"}
+                        {section.type === "list" && "List"}
+                        {section.type === "quote" && "Quote"}
+                        {section.type === "image" && "Image"}
+                        {section.type === "highlight" && "Highlight"}
                       </span>
                       <button 
                         type="button"
@@ -388,29 +597,26 @@ const BlogAdmin = () => {
                       </button>
                     </div>
 
-                    {/* Heading Input */}
-                    {section.type === 'heading' && (
+                    {section.type === "heading" && (
                       <input
                         type="text"
                         value={section.text}
-                        onChange={(e) => updateSection(index, 'text', e.target.value)}
+                        onChange={(e) => updateSection(index, "text", e.target.value)}
                         className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm font-bold"
                         placeholder="Write heading"
                       />
                     )}
 
-                    {/* Paragraph Input */}
-                    {section.type === 'paragraph' && (
+                    {section.type === "paragraph" && (
                       <textarea
                         value={section.text}
-                        onChange={(e) => updateSection(index, 'text', e.target.value)}
+                        onChange={(e) => updateSection(index, "text", e.target.value)}
                         className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm h-20"
                         placeholder="Write paragraph"
                       />
                     )}
 
-                    {/* List Input */}
-                    {section.type === 'list' && (
+                    {section.type === "list" && (
                       <div className="space-y-2">
                         {section.items.map((item, itemIndex) => (
                           <div key={itemIndex} className="flex gap-2">
@@ -440,14 +646,51 @@ const BlogAdmin = () => {
                       </div>
                     )}
 
-                    {/* Quote Input */}
-                    {section.type === 'quote' && (
+                    {section.type === "quote" && (
                       <textarea
                         value={section.text}
-                        onChange={(e) => updateSection(index, 'text', e.target.value)}
+                        onChange={(e) => updateSection(index, "text", e.target.value)}
                         className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm h-16"
                         placeholder="Write quote"
                       />
+                    )}
+
+                    {section.type === "highlight" && (
+                      <textarea
+                        value={section.text}
+                        onChange={(e) => updateSection(index, "text", e.target.value)}
+                        className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm h-16"
+                        placeholder="Write highlight text"
+                      />
+                    )}
+
+                    {section.type === "image" && (
+                      <div className="space-y-2">
+                        <input type="file" id={`section-image-${index}`} className="hidden" accept="image/*" onChange={(e) => handleSectionImageUpload(index, e.target.files?.[0])} />
+                        <label
+                          htmlFor={`section-image-${index}`}
+                          className={`flex items-center justify-center w-full h-36 border-2 border-dashed rounded-2xl cursor-pointer transition-all overflow-hidden ${
+                            section.src ? "border-black bg-white" : "border-gray-200 bg-gray-50 hover:border-black hover:bg-white"
+                          }`}
+                        >
+                          {section.src ? (
+                            <img src={section.src} alt={section.alt || "Section image"} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="flex flex-col items-center text-gray-400">
+                              <UploadCloud size={24} />
+                              <span className="text-xs font-bold mt-2">Click to upload section image</span>
+                            </div>
+                          )}
+                        </label>
+
+                        <input
+                          type="text"
+                          value={section.alt || ""}
+                          onChange={(e) => updateSection(index, "alt", e.target.value)}
+                          className="w-full bg-white p-3 rounded-lg border border-gray-200 outline-none text-sm"
+                          placeholder="Alt text"
+                        />
+                      </div>
                     )}
                   </motion.div>
                 ))
