@@ -235,9 +235,15 @@ const SubServiceContent = ({ subService }) => {
           })}
         </div>
 
-        <div className="flex items-center justify-center ">
-          <img src="/photo/Document & Text Localization Flow .png" alt="" className="max-w-full h-auto rounded-md" />
-        </div>
+        {content.flowImage ? (
+          <div className="flex items-center justify-center">
+            <img
+              src={content.flowImage}
+              alt={`${subService?.title || "Service"} flow`}
+              className="max-w-full h-80 rounded-md"
+            />
+          </div>
+        ) : null}
 
         {/* Footer Section - UPDATED to match static */}
         <div className="mx-auto mt-16 max-w-7xl px-4 py-10 text-center md:mt-32 md:px-8 md:py-16">

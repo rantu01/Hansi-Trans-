@@ -37,6 +37,9 @@ export const API = {
     details: (slug) => `${API_BASE_URL}/api/services/${slug}`, // সিঙ্গেল সার্ভিস
     pathDetails: (path) => `${API_BASE_URL}/api/services/path/${path}`, // nested service path
     subServices: (parentSlug) => `${API_BASE_URL}/api/services/sub/${parentSlug}`, // সাব-সার্ভিস
+    add: `${API_BASE_URL}/api/services/add`,
+    update: (id) => `${API_BASE_URL}/api/services/update/${id}`,
+    delete: (id) => `${API_BASE_URL}/api/services/delete/${id}`,
   },
 
   CaseStudies: {
@@ -56,5 +59,10 @@ export const API = {
   ThemeSettings: {
     get: `${API_BASE_URL}/api/site/settings`,
     update: `${API_BASE_URL}/api/site/settings/update`,
+  },
+  contact: {
+    schedule: `${API_BASE_URL}/api/contact/schedule`,
+    updateScheduleStatus: (id) => `${API_BASE_URL}/api/contact/schedule/${id}/status`,
+    deleteSchedule: (id) => `${API_BASE_URL}/api/contact/schedule/${id}`,
   },
 };

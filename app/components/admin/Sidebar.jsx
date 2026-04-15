@@ -13,7 +13,8 @@ import {
   Layers,
   FileText,
   Info,
-  ToyBrick
+  ToyBrick,
+  Mail
 } from "lucide-react";
 import { API } from "@/app/config/api";
 
@@ -179,6 +180,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
           <NavLink href="/admin/about-us" icon={Info} label="About Us" onClick={closeSidebar} />
           <NavLink href="/admin/services" icon={Briefcase} label="Services" onClick={closeSidebar} />
           <NavLink href="/admin/blog" icon={ToyBrick} label="Blog" onClick={closeSidebar} />
+          <NavLink href="/admin/schedule-requests" icon={Mail} label="Schedule Requests" onClick={closeSidebar} />
 
           <div className="pt-6 pb-4">
             <p className="text-[11px] text-slate-500 uppercase font-bold tracking-[2px] mb-4 px-4">Advanced</p>

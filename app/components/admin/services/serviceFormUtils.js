@@ -50,6 +50,7 @@ const createSubServicePageContent = () => ({
   introDescription: "",
   featureCards: [createFeatureCard(), createFeatureCard(), createFeatureCard()],
   detailSections: [createDetailSection(), createDetailSection()],
+  flowImage: "",
   footerTitle: "",
   footerDescription: "",
 });
@@ -176,6 +177,7 @@ export const mergeServiceIntoFormData = (service = {}) => {
         createDetailSection,
         1
       ),
+      flowImage: subServicePageContent.flowImage || "",
     },
     metaTitle: service.metaTitle || "",
     metaDescription: service.metaDescription || "",
@@ -255,6 +257,7 @@ export const buildServicePayload = (formData) => {
       introDescription: formData.subServicePageContent.introDescription.trim(),
       featureCards,
       detailSections,
+      flowImage: formData.subServicePageContent.flowImage.trim(),
       footerTitle: formData.subServicePageContent.footerTitle.trim(),
       footerDescription: formData.subServicePageContent.footerDescription.trim(),
     },

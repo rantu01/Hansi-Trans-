@@ -91,6 +91,7 @@ export const getSubServicePageContent = (service = {}) => {
       Array.isArray(section.detailSections) && section.detailSections.length > 0
         ? section.detailSections
         : fallbackDetailSections,
+    flowImage: section.flowImage || "/photo/Document & Text Localization Flow .png",
     footerTitle: section.footerTitle || "Ready for 40+ Languages",
     footerDescription: section.footerDescription || defaultCoverageDescription,
   };

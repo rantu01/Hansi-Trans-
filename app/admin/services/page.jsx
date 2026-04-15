@@ -60,7 +60,7 @@ export default function AdminServiceList() {
 
     const loadingToast = toast.loading("Deleting service...");
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/delete/${id}`);
+      await axios.delete(API.services.delete(id));
       toast.success("Service deleted.", { id: loadingToast });
       fetchAllServices();
     } catch (error) {

@@ -480,6 +480,13 @@ export default function ServiceEditorForm({
             </div>
           </div>
 
+          <ImageUploadField
+            label="Flow Diagram Image"
+            value={formData.subServicePageContent.flowImage}
+            onUpload={(file) => handleImageUpload(file, "subServicePageContent.flowImage")}
+            disabled={uploading}
+          />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Field label="Footer Title" value={formData.subServicePageContent.footerTitle} onChange={(event) => updateField("subServicePageContent.footerTitle", event.target.value)} placeholder="Ready for 40+ Languages" />
             <TextArea label="Footer Description" rows={4} value={formData.subServicePageContent.footerDescription} onChange={(event) => updateField("subServicePageContent.footerDescription", event.target.value)} placeholder="Final closing copy on the sub-service page." />

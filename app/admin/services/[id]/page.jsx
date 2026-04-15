@@ -51,7 +51,7 @@ export default function EditServicePage() {
     const loadingToast = toast.loading("Updating service...");
 
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/update/${params.id}`, payload);
+      await axios.put(API.services.update(params.id), payload);
       toast.success("Service updated successfully.", { id: loadingToast });
       router.push("/admin/services");
     } catch (error) {
