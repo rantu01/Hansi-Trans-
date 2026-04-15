@@ -5,6 +5,7 @@ import SubServiceDetails from "@/app/components/service-page/SubServiceDetails";
 import SubServiceContent from "@/app/components/service-page/SubServiceContent";
 import { API } from "@/app/config/api";
 import RelatedServices from "@/app/components/common/RelatedServices";
+import Achievement2 from "@/app/components/common/Achievement2";
 
 // সাব-সার্ভিস ডেটা ফেচ করার ফাংশন
 async function getSubServiceDetails(path) {
@@ -49,6 +50,7 @@ export default async function SubServiceDetailsPage({ params }) {
 
       <SubServiceContent subService={subService} />
       <RelatedServices />
+      <Achievement2></Achievement2>
     </PublicLayout>
   );
 }

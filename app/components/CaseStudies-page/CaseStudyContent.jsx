@@ -8,28 +8,23 @@ const fallbackDetailsContent = {
     text: "Expanding your game into Asian markets is an exciting opportunity—but without proper localization, even the best game can fail to connect. This guide walks you through cultural adaptation, language challenges, voice-over best practices, and marketing strategies to make your game a success in China, Japan, Korea, and Southeast Asia.",
   },
   sectionOne: {
-    title: "Understanding The Asian Gaming Market",
-    text: "Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products. They sell trust, identity, and belonging.",
-    points: [
-      "Mobile gaming dominates in China and SEA.",
-      "Japan has a strong console and anime-driven game culture.",
-      "Korea is a leader in esports and PC cafe gaming.",
-      "SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.",
-    ],
-    highlight: "👉 Key takeaway: One region ≠ one strategy. Treat each country uniquely.",
-    image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800",
+    title: "The Challenge",
+    text: "DragonHeir presented two major challenges at the same time. The first was scale. On the voice side, the project involved 38,000+ lines, around 350 actors, 12 fully produced songs, and cross-language scheduling over a tight two-month production window. On the localization side, the game required large-scale story, dialogue, and system-text support across launch languages, with the need to preserve fantasy tone while keeping the writing readable and natural for different audiences. The second was consistency. High-fantasy content can easily lose strength when terminology, character voice, and emotional tone drift between languages. For DragonHeir, the work had to feel epic without becoming unnatural, and multilingual assets had to remain aligned across both production and post-production.",
+    image: "/photo/challenge-image.png", // Replace with your actual image path
+    highlight: "Coordinated multilingual production and tone consistency across launch languages.",
   },
   sectionTwo: {
-    title: "Understanding The Asian Gaming Market",
-    text: "Think about your favorite brands. Apple, Nike, or Airbnb don't just sell products. They sell trust, identity, and belonging.",
+    title: "What HS+ Delivered",
+    text: "HS+ supported DragonHeir through a coordinated multilingual production model that covered:",
     points: [
-      "Mobile gaming dominates in China and SEA.",
-      "Japan has a strong console and anime-driven game culture.",
-      "Korea is a leader in esports and PC cafe gaming.",
-      "SEA is diverse, with markets like Indonesia, Thailand, and Vietnam growing fast.",
+      "multilingual voice-over production in English, Japanese, Korean, and Chinese",
+      "cross-language project management for casting, scheduling, and delivery",
+      "remote live-directed sessions for faster creative alignment and retakes",
+      "edit, cleanup, mix, and master-to-spec post-production with version control",
+      "localization and editorial services from Simplified Chinese into English, Japanese, and Korean across large volumes of story, dialogue, and system text",
+      "terminology and tone handling to maintain a readable but still epic fantasy voice in English and aligned character treatment across all launch languages",
     ],
-    highlight: "👉 Key takeaway: One region ≠ one strategy. Treat each country uniquely.",
-    image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800",
+    image: "/photo/dragonheir-logo-image.png", // Replace with your actual image path
   },
   richSectionOne: {
     title: "Multilingual Voice-Over: Bringing Characters To Life",
@@ -50,7 +45,7 @@ const fallbackDetailsContent = {
       { title: "User Experience (UX)", description: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." },
     ],
   },
-  bannerImage: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800",
+  bannerImage: "/Contra Return 2.avif",
   quoteText: "\"People will forget what you said, but they'll remember how your brand made them feel.\"",
   conclusion: {
     title: "Conclusion",
@@ -103,88 +98,68 @@ const CaseStudyContent = ({ caseStudy }) => {
   const stats = caseStudy?.stats || [];
   const content = mergeDetailsContent(caseStudy?.detailsContent || {});
 
+  // Updated render function to handle list points and image positioning
   const renderImageTextSection = (section, imageFirst = false) => (
     <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-16 md:mb-24">
+      {/* If imageFirst is true, show image on left (Desktop) */}
       {imageFirst && (
-        <div className="flex-1 w-full" style={{ aspectRatio: "632 / 444" }}>
+        <div className="flex-1 w-full order-1" style={{ aspectRatio: "632 / 444" }}>
           <img
             src={section.image}
             className="w-full h-full object-cover shadow-xl shadow-primary/5"
             style={{ borderRadius: "32px" }}
-            alt="Case Study"
+            alt={section.title}
           />
         </div>
       )}
 
-      <div className="flex-1 space-y-6 w-full">
+      <div className={`flex-1 space-y-6 w-full ${imageFirst ? "order-2" : "order-1"}`}>
         <h3
-          className="text-secondary"
           style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: "500",
-            fontStyle: "normal",
             fontSize: "clamp(22px, 3vw, 32px)",
             lineHeight: "120%",
-            letterSpacing: "0%",
-            textTransform: "capitalize",
             color: "#0F0F0F",
+            textTransform: "capitalize",
           }}
         >
           {section.title}
         </h3>
+
         <p
           style={{
             fontFamily: "'Poppins', sans-serif",
             fontWeight: "400",
-            fontStyle: "normal",
             fontSize: "16px",
-            lineHeight: "150%",
-            letterSpacing: "0%",
+            lineHeight: "160%",
             color: "#6B6B6B",
           }}
         >
           {section.text}
         </p>
-        <ol
-          className="space-y-4 list-decimal pl-5"
-          style={{
-            fontFamily: "'Poppins', sans-serif",
-            fontWeight: "400",
-            fontStyle: "normal",
-            fontSize: "18px",
-            lineHeight: "160%",
-            letterSpacing: "0%",
-            color: "#0F0F0F",
-          }}
-        >
-          {(section.points || []).map((point, index) => (
-            <li key={index}>{point}</li>
-          ))}
-        </ol>
-        <div className="w-fit">
-          <p
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: "500",
-              fontStyle: "normal",
-              fontSize: "18px",
-              lineHeight: "150%",
-              letterSpacing: "0%",
-              color: "#015FA4",
-            }}
-          >
-            {section.highlight}
-          </p>
-        </div>
+
+        {/* Render points if they exist (for the second section) */}
+        {section.points && section.points.length > 0 && (
+          <ul className="space-y-3">
+            {section.points.map((point, idx) => (
+              <li key={idx} className="flex gap-3" style={{ fontFamily: "'Poppins', sans-serif", fontSize: "16px", color: "#6B6B6B" }}>
+                <span className="font-medium text-[#0F0F0F]">{idx + 1}.</span>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
+      {/* If imageFirst is false, show image on right (Desktop) */}
       {!imageFirst && (
-        <div className="flex-1 w-full" style={{ aspectRatio: "632 / 444" }}>
+        <div className="flex-1 w-full order-2" style={{ aspectRatio: "632 / 444" }}>
           <img
             src={section.image}
             className="w-full h-full object-cover shadow-xl shadow-primary/5"
             style={{ borderRadius: "32px" }}
-            alt="Case Study"
+            alt={section.title}
           />
         </div>
       )}
@@ -317,102 +292,7 @@ const CaseStudyContent = ({ caseStudy }) => {
         {renderImageTextSection(content.sectionOne, false)}
         {renderImageTextSection(content.sectionTwo, true)}
 
-        <div className="container mx-auto py-6 px-2 sm:px-6 space-y-6 mb-8 md:mb-12">
-          <section className="space-y-6">
-            <h2
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontSize: "clamp(24px, 4vw, 40px)",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textTransform: "capitalize",
-                color: "#0F0F0F",
-              }}
-            >
-              {content.richSectionOne.title}
-            </h2>
-            <p
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: "400",
-                fontStyle: "normal",
-                fontSize: "18px",
-                lineHeight: "160%",
-                letterSpacing: "0%",
-                color: "#6B6B6B",
-              }}
-            >
-              {content.richSectionOne.text}
-            </p>
-            <ol
-              className="list-decimal pl-5 space-y-3"
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: "400",
-                fontStyle: "normal",
-                fontSize: "18px",
-                lineHeight: "160%",
-                letterSpacing: "0%",
-                color: "#0F0F0F",
-              }}
-            >
-              {(content.richSectionOne.points || []).map((point, idx) => (
-                <li key={idx}>{point}</li>
-              ))}
-            </ol>
-          </section>
 
-          <section className="space-y-8">
-            <h2
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontSize: "clamp(24px, 4vw, 40px)",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textTransform: "capitalize",
-                color: "#0F0F0F",
-              }}
-            >
-              {content.richSectionTwo.title}
-            </h2>
-            <div className="space-y-6">
-              {(content.richSectionTwo.cards || []).map((item, index) => (
-                <div key={index} className="space-y-2">
-                  <h4
-                    style={{
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: "500",
-                      fontStyle: "normal",
-                      fontSize: "18px",
-                      lineHeight: "150%",
-                      letterSpacing: "0%",
-                      color: "#0F0F0F",
-                    }}
-                  >
-                    {index + 1}. {item.title}
-                  </h4>
-                  <p
-                    style={{
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: "500",
-                      fontStyle: "normal",
-                      fontSize: "16px",
-                      lineHeight: "160%",
-                      letterSpacing: "1%",
-                      color: "#616161",
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
 
         <div className=" px-6 py-12 font-sans text-[#333]">
 
@@ -475,72 +355,11 @@ const CaseStudyContent = ({ caseStudy }) => {
             </div>
           </section>
         </div>
-        <div
-          className="w-full relative mb-8 md:mb-12"
-          style={{
-            aspectRatio: "16 / 5",
-            opacity: 1,
-            transform: "rotate(0deg)",
-          }}
-        >
-          <img
-            src={content.bannerImage}
-            className="w-full h-full object-cover shadow-xl shadow-primary/5"
-            style={{ borderRadius: "24px" }}
-            alt="Case Study Banner"
-          />
-        </div>
 
-        <div className="border-2 border-dashed border-primary rounded-[40px] p-8 md:p-16 my-12 md:my-24 relative overflow-hidden">
-          <h4
-            className="relative z-10"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: "500",
-              fontStyle: "normal",
-              fontSize: "clamp(22px, 3.5vw, 40px)",
-              lineHeight: "120%",
-              letterSpacing: "0%",
-              textTransform: "capitalize",
-              verticalAlign: "middle",
-              color: "#0168B4",
-            }}
-          >
-            {content.quoteText}
-          </h4>
-        </div>
 
-        <div className="mb-12 md:mb-20 py-8 md:py-12">
-          <h3
-            className="mb-6"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: "500",
-              fontStyle: "normal",
-              fontSize: "clamp(26px, 4vw, 40px)",
-              lineHeight: "120%",
-              letterSpacing: "0%",
-              textTransform: "capitalize",
-              color: "#0F0F0F",
-            }}
-          >
-            {content.conclusion.title}
-          </h3>
-          <p
-            className="container"
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: "400",
-              fontStyle: "normal",
-              fontSize: "18px",
-              lineHeight: "160%",
-              letterSpacing: "0%",
-              color: "#6B6B6B",
-            }}
-          >
-            {content.conclusion.text}
-          </p>
-        </div>
+
+
+
 
         <div className=" mx-auto px-4 py-12 ">
           {/* Heading */}
