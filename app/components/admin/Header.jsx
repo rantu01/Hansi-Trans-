@@ -2,13 +2,23 @@
 
 import { LogOut, Home, Menu, Bell, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API } from "@/app/config/api";
 
 const Header = ({ toggleSidebar }) => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    router.push("/");
+  const handleLogout = async () => {
+    try {
+      await fetch(API.auth.logout, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      // fall through to client cleanup
+    } finally {
+      localStorage.removeItem("adminToken");
+      router.replace("/login");
+    }
   };
 
   return (

@@ -10,6 +10,7 @@ export const API = {
 
   auth: {
     login: `${API_BASE_URL}/api/auth/login`,
+    logout: `${API_BASE_URL}/api/auth/logout`,
     register: `${API_BASE_URL}/api/auth/register`,
     refreshToken: `${API_BASE_URL}/api/auth/refresh-token`,
   },

@@ -35,6 +35,7 @@ export default function LoginPage() {
       const res = await fetch(API.auth.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
         signal: controller.signal,
       });
@@ -55,13 +56,13 @@ export default function LoginPage() {
        */
       if (data?.token) {
         localStorage.setItem("adminToken", data.token);
-        router.push("/admin");
+        router.replace("/admin");
         return;
       }
 
       if (data?.success === true) {
         localStorage.setItem("adminToken", data.token);
-        router.push("/admin");
+        router.replace("/admin");
         return;
       }
 
