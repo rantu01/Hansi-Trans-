@@ -63,7 +63,7 @@ const Testimonials = () => {
   if (!isMounted || testimonials.length === 0) return null;
 
   return (
-    <section className="py-20 bg-[#F7F7F7] overflow-hidden">
+    <section className="py-20 bg-[#F7F7F7] overflow-hidden rounded-t-[40px]">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
@@ -110,8 +110,8 @@ const Testimonials = () => {
                 <div
                   key={item._id}
                   className={`absolute transition-all duration-700 ease-in-out flex flex-col items-center ${isCenter
-                      ? "z-30 w-[90%] md:w-full md:max-w-5xl opacity-100 scale-100"
-                      : "z-10 w-[70%] md:w-[80%] md:max-w-4xl opacity-100 scale-90 "
+                    ? "z-30 w-[90%] md:w-full md:max-w-5xl opacity-100 scale-100"
+                    : "z-10 w-[70%] md:w-[80%] md:max-w-4xl opacity-100 scale-100 "
                     }`}
                   style={{
                     transform: isLeft
@@ -149,7 +149,7 @@ const Testimonials = () => {
                     <div className="flex justify-start mb-6">
                       <img src="/qoute.png" alt="quote" className="w-[60px] md:w-[83px] object-contain" />
                     </div>
-                    <p className="text-[#262626] text-xl md:text-[32px] font-medium leading-[1.2] mb-8 max-w-[800px]">
+                    <p className="font-['Inter'] font-medium capitalize text-[#0F0F0F] text-[28px] leading-[1.2] tracking-normal mb-8 max-w-[800px]">
                       "{item.quote}"
                     </p>
                     <div className="flex flex-col items-start gap-2">

@@ -24,7 +24,7 @@ const CoreMission = () => {
     <section 
       className="container mx-auto flex flex-col items-start overflow-hidden mb-10"
       style={{
-        width: '1376px',
+        
         height: '590px',
         background: 'linear-gradient(0deg, #F7F7F7 0%, #CCE7FB 55.48%, #A9DAFF 100%)',
         borderRadius: '44px',

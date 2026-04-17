@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast"; // টোস্ট ইমপ�
 import { 
   Trash2, Upload, Plus, X, Save, 
   Target, Eye, User, Image as ImageIcon, 
-  Briefcase, Calendar, Loader2
+  Briefcase, Calendar, Sparkles, Loader2
 } from "lucide-react";
 
 const EMPTY_STATE = {
@@ -25,7 +25,16 @@ const EMPTY_STATE = {
     description: "",
     decorativeImage: "",
   },
-  workWithUs: { headline: "", buttonText: "" },
+  whatWeBelieve: {
+    badge: "",
+    title: "",
+    cards: [
+      { title: "", description: "", iconName: "" },
+      { title: "", description: "", iconName: "" },
+      { title: "", description: "", iconName: "" },
+    ],
+  },
+  workWithUs: { headline: "", buttonText: "", videoUrl: "" },
   company: {
     badge: "",
     sectionTitle: "",
@@ -65,6 +74,7 @@ export default function AboutUsAdmin() {
             hero: { ...EMPTY_STATE.hero, ...result.hero },
             whoWeAre: { ...EMPTY_STATE.whoWeAre, ...result.whoWeAre, avatars: result.whoWeAre?.avatars || [] },
             coreMission: { ...EMPTY_STATE.coreMission, ...result.coreMission },
+            whatWeBelieve: { ...EMPTY_STATE.whatWeBelieve, ...result.whatWeBelieve, cards: result.whatWeBelieve?.cards || EMPTY_STATE.whatWeBelieve.cards },
             workWithUs: { ...EMPTY_STATE.workWithUs, ...result.workWithUs },
             company: { ...EMPTY_STATE.company, ...result.company, images: result.company?.images || [] },
             gallery: { ...EMPTY_STATE.gallery, ...result.gallery, images: result.gallery?.images || [] },
@@ -161,6 +171,17 @@ export default function AboutUsAdmin() {
     updateField("ceo.stats", nextStats);
   };
 
+  // Belief cards management
+  const addBeliefCard = () => {
+    const next = [...(data.whatWeBelieve?.cards || []) , { title: "", description: "", iconName: "" }];
+    updateField("whatWeBelieve.cards", next);
+  };
+
+  const removeBeliefCard = (index) => {
+    const next = (data.whatWeBelieve?.cards || []).filter((_, i) => i !== index);
+    updateField("whatWeBelieve.cards", next);
+  };
+
   const saveData = async () => {
     setLoading(true);
     const loadingToast = toast.loading("Publishing changes...");
@@ -220,6 +241,18 @@ export default function AboutUsAdmin() {
           </div>
         </div>
       </Section>
+      {/* FOOTER ACTIONS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Section title="Work With Us Section" icon={Briefcase}>
+           <Input label="Action Headline" value={data.workWithUs.headline} onChange={(v) => updateField("workWithUs.headline", v)} />
+           <Input label="Button Display Text" value={data.workWithUs.buttonText} onChange={(v) => updateField("workWithUs.buttonText", v)} />
+           <Input label="YouTube Video URL" value={data.workWithUs.videoUrl} onChange={(v) => updateField("workWithUs.videoUrl", v)} placeholder="https://www.youtube.com/watch?v=..." />
+        </Section>
+        <Section title="Schedule/CTA Area" icon={Calendar}>
+           <Input label="CTA Title" value={data.schedule.title} onChange={(v) => updateField("schedule.title", v)} />
+           <Textarea label="Short Pitch" value={data.schedule.description} onChange={(v) => updateField("schedule.description", v)} />
+        </Section>
+      </div>
 
       <Section title="Who We Are" icon={ImageIcon}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -255,6 +288,47 @@ export default function AboutUsAdmin() {
           <Input label="Title" value={data.coreMission.title} onChange={(v) => updateField("coreMission.title", v)} placeholder="Our Company Main Mission" />
           <Textarea label="Description" value={data.coreMission.description} onChange={(v) => updateField("coreMission.description", v)} rows={4} />
           <ImageUpload label="Decorative Image" image={data.coreMission.decorativeImage} onUpload={(f) => uploadImage(f, "coreMission.decorativeImage")} aspect="square" />
+        </div>
+      </Section>
+
+      <Section title="What We Believe" icon={Sparkles}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Input label="Badge" value={data.whatWeBelieve.badge} onChange={(v) => updateField("whatWeBelieve.badge", v)} placeholder="Believe" />
+          <Input label="Section Title" value={data.whatWeBelieve.title} onChange={(v) => updateField("whatWeBelieve.title", v)} placeholder="What We Believe" />
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-slate-800">Belief Cards ({(data.whatWeBelieve?.cards || []).length} Cards)</h3>
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={addBeliefCard} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm font-semibold">
+                <Plus size={14} /> Add Card
+              </button>
+            </div>
+          </div>
+          {(data.whatWeBelieve?.cards || []).map((card, idx) => (
+            <div key={idx} className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4 relative">
+              <div className="absolute top-4 right-4">
+                <button type="button" onClick={() => removeBeliefCard(idx)} className="h-10 w-10 flex items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-100">
+                  <Trash2 size={16} />
+                </button>
+              </div>
+              <Input label={`Card ${idx + 1} Title`} value={card.title || ""} onChange={(v) => {
+                const nextCards = [...(data.whatWeBelieve.cards || [])];
+                nextCards[idx] = { ...nextCards[idx], title: v };
+                updateField("whatWeBelieve.cards", nextCards);
+              }} placeholder="Card title" />
+              <Textarea label={`Card ${idx + 1} Description`} value={card.description || ""} onChange={(v) => {
+                const nextCards = [...(data.whatWeBelieve.cards || [])];
+                nextCards[idx] = { ...nextCards[idx], description: v };
+                updateField("whatWeBelieve.cards", nextCards);
+              }} rows={3} placeholder="Card description" />
+              <Input label={`Card ${idx + 1} Icon Name`} value={card.iconName || ""} onChange={(v) => {
+                const nextCards = [...(data.whatWeBelieve.cards || [])];
+                nextCards[idx] = { ...nextCards[idx], iconName: v };
+                updateField("whatWeBelieve.cards", nextCards);
+              }} placeholder="e.g., Search, Files, Rocket" />
+            </div>
+          ))}
         </div>
       </Section>
 
@@ -380,17 +454,7 @@ export default function AboutUsAdmin() {
         </div>
       </Section>
 
-      {/* FOOTER ACTIONS */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Section title="Work With Us Section" icon={Briefcase}>
-           <Input label="Action Headline" value={data.workWithUs.headline} onChange={(v) => updateField("workWithUs.headline", v)} />
-           <Input label="Button Display Text" value={data.workWithUs.buttonText} onChange={(v) => updateField("workWithUs.buttonText", v)} />
-        </Section>
-        <Section title="Schedule/CTA Area" icon={Calendar}>
-           <Input label="CTA Title" value={data.schedule.title} onChange={(v) => updateField("schedule.title", v)} />
-           <Textarea label="Short Pitch" value={data.schedule.description} onChange={(v) => updateField("schedule.description", v)} />
-        </Section>
-      </div>
+      
     </div>
   );
 }

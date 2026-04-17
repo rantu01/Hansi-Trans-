@@ -23,10 +23,10 @@ const WhoWeAre = () => {
   const avatars = Array.isArray(section?.avatars) && section.avatars.length > 0
     ? section.avatars
     : [
-        "https://i.pravatar.cc/150?u=1",
-        "https://i.pravatar.cc/150?u=2",
-        "https://i.pravatar.cc/150?u=3",
-      ];
+      "https://i.pravatar.cc/150?u=1",
+      "https://i.pravatar.cc/150?u=2",
+      "https://i.pravatar.cc/150?u=3",
+    ];
 
   return (
     <section className="container mx-auto px-6 py-16 font-sans">
@@ -64,8 +64,20 @@ const WhoWeAre = () => {
             >
               {section?.badge || "About"}
             </span>
-          </div>
 
+          </div>
+          <h2
+            className="capitalize"
+            style={{
+              color: '#0168B4',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: 'clamp(32px, 5vw, 48px)',
+              fontWeight: '500',
+              lineHeight: '120%'
+            }}
+          >
+            Who We Are?
+          </h2>
           <div className="relative overflow-hidden shadow-sm"
             style={{
               width: '569px',

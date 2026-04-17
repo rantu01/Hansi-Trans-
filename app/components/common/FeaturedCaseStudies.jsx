@@ -95,7 +95,7 @@ const FeaturedCaseStudies = () => {
 
       <div className="container mx-auto px-4">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
+        {/* <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
           <div className="max-w-2xl">
             <div
               className="inline-flex items-center justify-center mb-6"
@@ -157,7 +157,7 @@ const FeaturedCaseStudies = () => {
               localization, voice-over, and creator-led marketing.
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Case Studies List */}
         <div className="space-y-12">

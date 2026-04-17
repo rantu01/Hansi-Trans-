@@ -11,6 +11,7 @@ import FAQ from "../components/home/FAQ";
 import Footer from "../components/layout/Footer";
 import Testimonials from "../components/common/Testimonials";
 import CaseStudies from "../components/CaseStudies-page/CaseStudies";
+import CaseStudies3 from "../components/common/CaseStudies3";
 
 export default function Home() {
 
@@ -19,12 +20,12 @@ export default function Home() {
       <Hero />
       <Achievement />
       <Service />
-      <CaseStudies></CaseStudies>
+      <CaseStudies3></CaseStudies3>
       <FeaturedCaseStudies />
       <WorkProcess />
       <WhyChooseUs />
       <Testimonials />
-      <OurInfluencer />
+      {/* <OurInfluencer /> */}
       <Blogs />
       <FAQ />
       <Footer />
