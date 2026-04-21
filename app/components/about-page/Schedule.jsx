@@ -78,14 +78,14 @@ const Schedule = () => {
   };
 
   return (
-    <section className="relative bg-background py-20 px-6 md:px-12 font-sans overflow-hidden min-h-[900px] flex items-center">
+    <section className="relative bg-background py-12 md:py-20 px-4 md:px-12 font-sans overflow-hidden min-h-[auto] md:min-h-[900px] flex items-center">
 
       {/* Background Abstract Image - Positioned like the reference */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
         <img
           src="/photo/About US/schedule-bg.png"
           alt="background effect"
-          className="absolute left-[0px] top-[30%] w-[600px] md:w-[800px] opacity-80 object-contain"
+          className="hidden md:block absolute left-0 top-[30%] w-[600px] md:w-[800px] opacity-80 object-contain"
         />
       </div>
 
@@ -93,18 +93,7 @@ const Schedule = () => {
 
         {/* Left Side Content */}
         <div className="flex flex-col pt-10">
-          <h2
-            className="leading-[120%] mb-6"
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontWeight: '500', // Medium
-              fontStyle: 'normal',
-              fontSize: '48px',
-              letterSpacing: '0%',
-              textTransform: 'capitalize',
-              color: '#0168B4'
-            }}
-          >
+          <h2 className="leading-[120%] mb-6 text-2xl md:text-[48px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: '500', fontStyle: 'normal', letterSpacing: '0%', textTransform: 'capitalize', color: '#0168B4' }}>
             {scheduleData?.title || "Let’s Talk And Create Schedule"}
           </h2>
           <p

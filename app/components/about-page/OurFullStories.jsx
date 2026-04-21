@@ -60,8 +60,7 @@ function ImageScroller({ images = [], direction = -1, speed = 40, onOpen = () =>
     <div className="overflow-hidden rounded-[40px]">
       <div
         ref={containerRef}
-        className="w-full"
-        style={{ height: 350 }}
+        className="w-full h-[220px] md:h-[350px]"
       >
         <div
           ref={innerRef}
@@ -71,7 +70,7 @@ function ImageScroller({ images = [], direction = -1, speed = 40, onOpen = () =>
           {items.map((src, i) => (
             <div
               key={i}
-              className="min-w-[280px] md:min-w-[420px] h-[300px] md:h-[350px] overflow-hidden rounded-[30px] bg-white flex-shrink-0"
+              className="min-w-[220px] md:min-w-[420px] h-[220px] md:h-[350px] overflow-hidden rounded-[30px] bg-white flex-shrink-0"
             >
               <img
                 src={src}

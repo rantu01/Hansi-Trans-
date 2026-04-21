@@ -96,13 +96,11 @@ const OurCompany = () => {
                 {company?.badge || "Mission & Vision"}
               </span>
             </div>
-            <h1
-              className="text-primary"
+            <h1 className="text-primary text-2xl md:text-[48px]"
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: '500',
                 fontStyle: 'normal',
-                fontSize: '48px',
                 lineHeight: '120%',
                 letterSpacing: '0%',
                 textTransform: 'capitalize',
@@ -114,12 +112,11 @@ const OurCompany = () => {
           </div>
 
           <div className="max-w-lg">
-            <p
+            <p className="text-sm md:text-base"
               style={{
                 fontFamily: 'Poppins, sans-serif',
                 fontWeight: '400',
                 fontStyle: 'normal',
-                fontSize: '16px',
                 lineHeight: '150%',
                 letterSpacing: '0%',
                 color: '#616161',
@@ -140,11 +137,10 @@ const OurCompany = () => {
           <div className="flex flex-col justify-center">
             <div>
               <h2 className="mb-6">
-                <span
+                <span className="text-xl md:text-[32px]"
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: '500',
-                    fontSize: '32px',
                     lineHeight: '120%',
                     textTransform: 'capitalize',
                     color: '#0168B4'
@@ -152,11 +148,10 @@ const OurCompany = () => {
                 >
                   {company?.missionLabel || "Mission Statement:"}
                 </span>{" "}
-                <span
+                <span className="text-xl md:text-[32px]"
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: '500',
-                    fontSize: '32px',
                     lineHeight: '120%',
                     textTransform: 'capitalize',
                     color: '#0A0A0A'
@@ -189,11 +184,10 @@ const OurCompany = () => {
           <div className="order-2 lg:order-1 flex flex-col justify-center">
             <div>
               <h2 className="mb-6">
-                <span
+                <span className="text-xl md:text-[32px]"
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: '500',
-                    fontSize: '32px',
                     lineHeight: '120%',
                     textTransform: 'capitalize',
                     color: '#0168B4'
@@ -201,11 +195,10 @@ const OurCompany = () => {
                 >
                   {company?.visionLabel || "Vision Statement:"}
                 </span>{" "}
-                <span
+                <span className="text-xl md:text-[32px]"
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: '500',
-                    fontSize: '32px',
                     lineHeight: '120%',
                     textTransform: 'capitalize',
                     color: '#0A0A0A'

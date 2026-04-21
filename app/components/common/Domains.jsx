@@ -55,7 +55,7 @@ const Domains = () => {
               <img src="/Frame.svg" alt="icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
               <span style={{ color: '#404040', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', fontWeight: '500' }}>Domains</span>
             </div>
-            <h2 style={{ fontFamily: 'Inter, sans-serif', fontWeight: '500', fontSize: '48px', lineHeight: '120%', textTransform: 'capitalize', color: '#0A0A0A' }}>
+            <h2 className="text-2xl md:text-[48px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: '500', lineHeight: '120%', textTransform: 'capitalize', color: '#0A0A0A' }}>
               Vertical Domains
             </h2>
           </div>
@@ -89,17 +89,17 @@ const Domains = () => {
                 {renderIcon(domain.title)}
               </div>
 
-              <h3 className="mb-3" style={{ fontFamily: 'Inter, sans-serif', fontWeight: '500', fontSize: '28px', color: '#0A0A0A', textTransform: 'capitalize' }}>
+              <h3 className="mb-3 text-lg md:text-[28px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: '500', color: '#0A0A0A', textTransform: 'capitalize' }}>
                 {domain.title}
               </h3>
 
-              <p className="mb-6 leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '400', fontSize: '16px', color: '#616161' }}>
+              <p className="mb-6 leading-relaxed text-sm md:text-[16px]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '400', color: '#616161' }}>
                 {domain.description || "Global network of linguists and 3,000+ voice talents ready to scale."}
               </p>
 
               <div className="flex flex-wrap gap-[10px] mt-auto">
                 {domain.tags?.map((tag, idx) => (
-                  <span key={idx} className="flex items-center justify-center" style={{ width: '99px', height: '25px', borderRadius: '51px', background: '#FFFFFF', fontSize: '12px', fontWeight: '500', color: '#0A0A0A', border: '1px solid rgba(1, 104, 180, 0.1)' }}>
+                  <span key={idx} className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-white text-sm font-medium text-[#0A0A0A] border" style={{ borderColor: 'rgba(1, 104, 180, 0.1)' }}>
                     {tag}
                   </span>
                 ))}

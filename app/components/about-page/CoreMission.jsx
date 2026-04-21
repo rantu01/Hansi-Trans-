@@ -22,13 +22,10 @@ const CoreMission = () => {
 
   return (
     <section 
-      className="container mx-auto flex flex-col items-start overflow-hidden mb-10"
+      className="container mx-auto flex flex-col items-start overflow-hidden mb-10 py-12 md:py-0 px-4"
       style={{
-        
-        height: '590px',
         background: 'linear-gradient(0deg, #F7F7F7 0%, #CCE7FB 55.48%, #A9DAFF 100%)',
         borderRadius: '44px',
-        padding: ' 50px 16px',
         opacity: 1,
       }}
     >
@@ -81,9 +78,8 @@ const CoreMission = () => {
         <div className="space-y-10 z-10">
           {/* Main Title */}
           <h2 
-            className="font-['Inter'] font-medium capitalize"
+            className="font-['Inter'] font-medium capitalize text-2xl md:text-[40px]"
             style={{
-              fontSize: '40px',
               lineHeight: '120%',
               color: '#0168B4',
               letterSpacing: '0%'
@@ -94,9 +90,8 @@ const CoreMission = () => {
 
           {/* Mission Description */}
           <p 
-            className="font-['Inter'] font-medium capitalize max-w-[1100px]"
+            className="font-['Inter'] font-medium capitalize max-w-[1100px] text-lg md:text-[40px]"
             style={{
-              fontSize: '40px',
               lineHeight: '120%',
               color: '#595959',
               letterSpacing: '0%'

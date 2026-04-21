@@ -89,7 +89,7 @@ const WhatWeBelieve = () => {
         </div>
 
         {/* Heading */}
-        <h2 className="font-['Inter'] font-medium text-[48px] leading-[1.2] tracking-[-0.03em] capitalize text-[#0A0A0A] mb-16">
+        <h2 className="font-['Inter'] font-medium text-2xl md:text-[48px] leading-[1.2] tracking-[-0.03em] capitalize text-[#0A0A0A] mb-16">
           {title}
         </h2>
 
@@ -100,7 +100,7 @@ const WhatWeBelieve = () => {
             return (
               <div
                 key={index}
-                className="relative overflow-hidden rounded-[40px] p-10 min-h-[550px] flex flex-col transition-transform duration-300 hover:-translate-y-2 shadow-2xl bg-[#0A0A0A]"
+                className="relative overflow-hidden rounded-[40px] p-6 md:p-10 min-h-[350px] md:min-h-[550px] flex flex-col transition-transform duration-300 hover:-translate-y-2 shadow-2xl bg-[#0A0A0A]"
               >
                 {/* --- Dynamic Blue Overlay Circle --- */}
                 <div
@@ -125,10 +125,10 @@ const WhatWeBelieve = () => {
 
                 {/* --- Content Section --- */}
                 <div className="relative z-10">
-                  <h3 className="font-['Inter'] font-medium text-[32px] leading-[1.2] tracking-normal capitalize text-[#FFFFFF] mb-6">
+                  <h3 className="font-['Inter'] font-medium text-xl md:text-[32px] leading-[1.2] tracking-normal capitalize text-[#FFFFFF] mb-6">
                     {card.title}
                   </h3>
-                  <p className="font-['Poppins'] font-normal text-[16px] leading-[1.4] tracking-[0.02em] text-[#B3B3B3]">
+                  <p className="font-['Poppins'] font-normal text-sm md:text-[16px] leading-[1.4] tracking-[0.02em] text-[#B3B3B3]">
                     {card.description}
                   </p>
                 </div>

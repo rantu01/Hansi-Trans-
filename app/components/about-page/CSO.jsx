@@ -51,20 +51,8 @@ const CEO = () => {
     : defaultStats;
 
   return (
-    <section
-      className="relative w-full overflow-hidden flex items-center"
-      style={{
-        width: '100%',
-        minHeight: '746px',
-        borderTopLeftRadius: '32px',
-        borderTopRightRadius: '32px',
-        paddingTop: '100px',
-        paddingRight: '72px',
-        paddingBottom: '0px',
-        paddingLeft: '72px',
-        background: '#0168B4',
-      }}
-    >
+    <section className="relative w-full overflow-hidden flex items-center bg-[#0168B4] pt-16 pb-12 px-6 md:py-24 md:px-20 rounded-t-[32px]">
+    
       <div
         className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-40"
         style={{
@@ -88,12 +76,11 @@ const CEO = () => {
 
           {/* Title - Dynamic Name */}
           <h2
-            className="leading-tight mb-8 max-w-md"
+            className="leading-tight mb-8 max-w-md text-3xl md:text-[48px]"
             style={{
               fontFamily: 'Inter, sans-serif',
               fontWeight: '500',
               fontStyle: 'normal',
-              fontSize: '48px',
               lineHeight: '120%',
               letterSpacing: '0%',
               textTransform: 'capitalize',
@@ -126,14 +113,13 @@ const CEO = () => {
               <div key={index} className="flex flex-col items-start justify-center">
                 <span
                   style={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontWeight: '500',
-                    fontSize: '40px',
-                    lineHeight: '120%',
-                    color: '#FFFFFF'
-                  }}
-                  className="mb-2"
-                >
+                      fontFamily: 'Inter, sans-serif',
+                      fontWeight: '500',
+                      lineHeight: '120%',
+                      color: '#FFFFFF'
+                    }}
+                    className="mb-2 text-2xl md:text-[40px]"
+                  >
                   {inView ? (
                     <>
                       <CountUp end={stat.targetValue} duration={2.5} />

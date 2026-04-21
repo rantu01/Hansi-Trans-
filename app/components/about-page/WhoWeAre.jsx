@@ -79,19 +79,11 @@ const WhoWeAre = () => {
             Who We Are?
           </h2>
 
-          <div
-            className="relative overflow-hidden shadow-sm"
-            style={{
-              width: '569px',
-              height: '684px',
-              borderRadius: '30.6px',
-              opacity: 1
-            }}
-          >
+          <div className="relative overflow-hidden shadow-sm w-full max-w-[569px] rounded-[30.6px]">
             <img
               src={section?.image || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000"}
               alt="Team working"
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-cover"
             />
           </div>
         </div>
@@ -118,13 +110,13 @@ const WhoWeAre = () => {
 
           {/* ✅ Story + Stats — vertically centered in remaining space */}
           <div className="flex-1 flex flex-col justify-center">
-            <p className="font-['Inter'] font-medium text-[32px] leading-[120%] tracking-[0%] capitalize text-[#595959] mb-8">
+            <p className="font-['Inter'] font-medium text-lg md:text-[32px] leading-[120%] tracking-[0%] capitalize text-[#595959] mb-8">
               {section?.story || "Founded In 2010, HS+ Supports Projects Across 40+ Languages And Global Platforms For Games, Animation, And Digital Content—With A Focus On Long-Term Collaboration Rather Than One-Off Delivery. We Don't Operate As A Translation Marketplace Or A Chain Of Vendors. We Operate As One Integrated System, Built For Long-Term Global Delivery."}
             </p>
 
             <div className="flex items-center justify-between gap-6">
               <div>
-                <h3 className="font-['Inter'] font-medium text-[40px] leading-[120%] tracking-[0%] capitalize text-[#0168B4]">
+                <h3 className="font-['Inter'] font-medium text-2xl md:text-[40px] leading-[120%] tracking-[0%] capitalize text-[#0168B4]">
                   {section?.statValue || "1k+"}
                 </h3>
                 <p className="font-['Poppins'] font-normal text-[18px] leading-[160%] tracking-[0%] text-[#0A0A0A] mt-1">

@@ -395,26 +395,15 @@ const Hero = ({
           <div className="relative mt-auto mb-20 md:mb-60 mx-25">
             <div className="flex flex-col md:flex-row justify-between items-end pb-4">
               <div className="w-full md:w-1/2 mb-10 md:-mb-30">
-                <p
-                  className="mb-4 text-cta-text opacity-90 text-start"
-                  style={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontWeight: "400",
-                    fontStyle: "normal",
-                    fontSize: "16px",
-                    lineHeight: "150%",
-                    letterSpacing: "0%",
-                  }}
-                >
+                <p className="mb-4 text-cta-text opacity-90 text-start text-sm md:text-base">
                   {breadcrumb}
                 </p>
                 <h1
-                  className="text-white"
+                  className="text-white text-3xl md:text-[60px]"
                   style={{
                     fontFamily: "Inter, sans-serif",
                     fontWeight: "500",
                     fontStyle: "normal",
-                    fontSize: "60px",
                     lineHeight: "120%",
                     letterSpacing: "0%",
                     textTransform: "capitalize",
