@@ -95,7 +95,7 @@ const Testimonials = () => {
 
         {/* Testimonial Slider Wrapper */}
         <div
-          className="relative h-[750px] md:container md:mx-auto flex items-center justify-center"
+          className="relative h-auto mt-80 mb-28 md:mt-0 md:mb-0 md:h-[750px] md:container md:mx-auto flex items-center justify-center"
         >
           <div className="flex items-center justify-center w-full relative">
             {testimonials.map((item, index) => {

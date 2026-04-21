@@ -128,27 +128,17 @@ const WhyChooseUs = () => {
           {/* Left Large Card */}
           <motion.div
             whileHover={{ y: -8 }}
+            className="shadow-2xl cursor-pointer w-full max-w-[346px] md:min-h-[527px] p-6 md:p-8 rounded-[35px] bg-white flex flex-col justify-between items-start"
             style={{
-              display: 'flex',
-              width: '100%',
-              maxWidth: '346px',
-              minHeight: '527px',
-              padding: '32px',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              borderRadius: '35px',
-              background: '#FFFFFF',
+              background: '#FFFFFF'
             }}
-            className="shadow-2xl cursor-pointer"
           >
             <div className="text-left w-full">
               <h3
-                className="capitalize mb-6"
+                className="capitalize mb-4 text-xl md:text-[32px]"
                 style={{
                   color: '#0168B4',
                   fontFamily: 'Inter, sans-serif',
-                  fontSize: '32px',
                   fontWeight: '500',
                   lineHeight: '120%',
                   whiteSpace: 'pre-line'
@@ -156,11 +146,10 @@ const WhyChooseUs = () => {
               >
                 {left?.title?.replace(/<br\s*\/?>/gi, '\n')}
               </h3>
-              <p
+              <p className="text-sm md:text-base"
                 style={{
                   color: '#575757',
                   fontFamily: 'Poppins, sans-serif',
-                  fontSize: '16px',
                   fontWeight: '400',
                   lineHeight: '150%'
                 }}
@@ -169,7 +158,7 @@ const WhyChooseUs = () => {
               </p>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-6 md:mt-10">
               {/* LeftIcon er poriborrte Vector.png */}
               <img
                 src="/Vector.png"
@@ -188,18 +177,8 @@ const WhyChooseUs = () => {
             {/* Middle Top Card */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              style={{
-                display: 'flex',
-                height: '247.5px',
-                padding: '32px',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '32px',
-                alignSelf: 'stretch',
-                borderRadius: '32px',
-                background: '#FFFFFF',
-              }}
-              className="shadow-xl cursor-pointer flex-col sm:flex-row"
+              className="shadow-xl cursor-pointer flex-col sm:flex-row w-full p-6 md:h-[247.5px] md:p-8 rounded-[32px] bg-white"
+              style={{ gap: '32px' }}
             >
               <div className="shrink-0">
                 {/* MidTopIcon er poriborrte Frame (1).png */}
@@ -210,11 +189,10 @@ const WhyChooseUs = () => {
                 />
               </div>
               <div className="text-left">
-                <h3
+                <h3 className="text-xl md:text-[32px]"
                   style={{
                     color: '#0168B4',
                     fontFamily: 'var(--font-inter), sans-serif',
-                    fontSize: '32px',
                     fontWeight: '500',
                     lineHeight: '120%',
                     textTransform: 'capitalize',
@@ -223,7 +201,7 @@ const WhyChooseUs = () => {
                 >
                   {middleTop?.title}
                 </h3>
-                <p style={{ color: '#575757', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', lineHeight: '150%' }}>
+                <p className="text-sm md:text-base" style={{ color: '#575757', fontFamily: 'var(--font-poppins), sans-serif', lineHeight: '150%' }}>
                   {middleTop?.description}
                 </p>
               </div>
@@ -232,18 +210,8 @@ const WhyChooseUs = () => {
             {/* Middle Bottom Card */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              style={{
-                display: 'flex',
-                height: '247.5px',
-                padding: '32px',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '32px',
-                alignSelf: 'stretch',
-                borderRadius: '32px',
-                background: '#FFFFFF',
-              }}
-              className="shadow-xl cursor-pointer flex-col sm:flex-row"
+              className="shadow-xl cursor-pointer flex-col sm:flex-row w-full p-6 md:h-[247.5px] md:p-8 rounded-[32px] bg-white"
+              style={{ gap: '32px' }}
             >
               <div className="shrink-0">
                 {/* MidBottomIcon er poriborrte Frame (2).png */}
@@ -254,11 +222,10 @@ const WhyChooseUs = () => {
                 />
               </div>
               <div className="text-left">
-                <h3
+                <h3 className="text-xl md:text-[32px]"
                   style={{
                     color: '#0168B4',
                     fontFamily: 'var(--font-inter), sans-serif',
-                    fontSize: '32px',
                     fontWeight: '500',
                     lineHeight: '120%',
                     textTransform: 'capitalize',
@@ -267,7 +234,7 @@ const WhyChooseUs = () => {
                 >
                   {middleBottom?.title}
                 </h3>
-                <p style={{ color: '#575757', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '16px', lineHeight: '150%' }}>
+                <p className="text-sm md:text-base" style={{ color: '#575757', fontFamily: 'var(--font-poppins), sans-serif', lineHeight: '150%' }}>
                   {middleBottom?.description}
                 </p>
               </div>
@@ -277,27 +244,15 @@ const WhyChooseUs = () => {
           {/* Right Large Card */}
           <motion.div
             whileHover={{ y: -8 }}
-            style={{
-              display: 'flex',
-              width: '100%',
-              maxWidth: '346px',
-              minHeight: '527px',
-              padding: '32px',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              borderRadius: '35px',
-              background: '#FFFFFF',
-            }}
-            className="shadow-2xl cursor-pointer"
+            className="shadow-2xl cursor-pointer w-full max-w-[346px] md:min-h-[527px] p-6 md:p-8 rounded-[35px] bg-white flex flex-col justify-between items-start"
+            style={{ background: '#FFFFFF' }}
           >
             <div className="text-left w-full">
               <h3
-                className="capitalize mb-6"
+                className="capitalize mb-4 text-xl md:text-[32px]"
                 style={{
                   color: '#0168B4',
                   fontFamily: 'var(--font-inter), sans-serif',
-                  fontSize: '32px',
                   fontWeight: '500',
                   lineHeight: '120%',
                   whiteSpace: 'pre-line'
@@ -305,11 +260,10 @@ const WhyChooseUs = () => {
               >
                 {right?.title?.replace(/<br\s*\/?>/gi, '\n')}
               </h3>
-              <p
+              <p className="text-sm md:text-base"
                 style={{
                   color: '#575757',
                   fontFamily: 'var(--font-poppins), sans-serif',
-                  fontSize: '16px',
                   fontWeight: '400',
                   lineHeight: '150%'
                 }}
@@ -318,7 +272,7 @@ const WhyChooseUs = () => {
               </p>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-6 md:mt-10">
               <div className="relative">
                 {/* RightIcon er poriborrte Frame (3).png */}
                 <img

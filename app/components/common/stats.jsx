@@ -67,17 +67,19 @@ const Stats = () => {
               >
                 {/* Icon and Counter side-by-side */}
                 <div className="flex items-center justify-center gap-4 mb-2">
-                  <div className={`w-14 h-14 rounded-full ${iconData.color} ${iconData.textColor} flex items-center justify-center text-2xl shadow-md`}>
-                    {iconData.icon}
+                  <div className={`rounded-full ${iconData.color} ${iconData.textColor} flex items-center justify-center shadow-md mb-3 sm:mb-4`}>
+                    <div className="flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 text-xl sm:text-2xl">
+                      {iconData.icon}
+                    </div>
                   </div>
 
+                  {/* Counter Value */}
                   <h3
-                    className="capitalize"
+                    className="capitalize text-2xl sm:text-[40px]"
                     style={{
                       color: '#0A0A0A',
-                      textAlign: 'left',
+                      textAlign: 'center',
                       fontFamily: 'Inter, sans-serif',
-                      fontSize: '40px',
                       fontStyle: 'normal',
                       fontWeight: '500',
                       lineHeight: '120%', // 48px
@@ -97,12 +99,11 @@ const Stats = () => {
 
                 {/* Label */}
                 <p
-                  className="mt-0"
+                  className="mt-0 text-sm sm:text-base"
                   style={{
                     color: '#616161',
                     textAlign: 'center',
                     fontFamily: 'Poppins, sans-serif',
-                    fontSize: '18px',
                     fontStyle: 'normal',
                     fontWeight: '500',
                     lineHeight: '150%', // 27px

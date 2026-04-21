@@ -181,11 +181,10 @@ const FeaturedCaseStudies = () => {
               <div className="w-full lg:w-1/2 p-8 md:p-14 flex flex-col justify-center">
                 <div className="flex flex-wrap justify-between items-start mb-6 gap-4">
                   <h3
-                    className="pr-4 capitalize flex-1"
+                    className="pr-4 capitalize flex-1 text-2xl md:text-[32px]"
                     style={{
                       color: '#0A0A0A',
                       fontFamily: 'Inter, sans-serif',
-                      fontSize: '32px',
                       fontWeight: '500',
                       lineHeight: '120%'
                     }}
@@ -228,11 +227,10 @@ const FeaturedCaseStudies = () => {
                 </div>
 
                 <p
-                  className="mb-8"
+                  className="mb-8 text-sm md:text-base"
                   style={{
                     color: '#616161', // var(--paragraph-color-900)
                     fontFamily: 'var(--font-poppins), sans-serif',
-                    fontSize: '16px',
                     fontStyle: 'normal',
                     fontWeight: '400', // Regular weight
                     lineHeight: '150%', // 24px
@@ -250,11 +248,10 @@ const FeaturedCaseStudies = () => {
                     >
                       {/* Value ba Icon Container */}
                       <div
-                        className="min-w-[100px] flex items-center"
+                        className="min-w-[100px] flex items-center text-2xl md:text-[40px]"
                         style={{
                           color: '#0168B4',
                           fontFamily: 'var(--font-inter), sans-serif',
-                          fontSize: '40px',
                           fontWeight: '500',
                           lineHeight: '120%',
                         }}
@@ -271,15 +268,12 @@ const FeaturedCaseStudies = () => {
                       </div>
 
                       {/* Label Container */}
-                      <div
-                        style={{
+                      <div className="text-sm md:text-base" style={{
                           color: '#616161',
                           fontFamily: 'var(--font-poppins), sans-serif',
-                          fontSize: '16px',
                           fontWeight: '400',
                           lineHeight: '150%'
-                        }}
-                      >
+                        }}>
                         {stat.label}
                       </div>
                     </div>
@@ -287,18 +281,17 @@ const FeaturedCaseStudies = () => {
                 </div>
                 {/* Company Logo Section - Added by User Request */}
                 <div className="flex items-center justify-between mt-6 mb-10 border-t border-[#D9D9D9] pt-8">
-                  <div
-                    style={{
-                      color: '#0A0A0A',
-                      fontFamily: 'Inter, sans-serif', // Figma-র "Family/Body" সাধারণত ইন্টার বা পপিন্স হয়
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      lineHeight: '160%',
-                      letterSpacing: '0.16px', // 1% spacing
-                    }}
-                  >
-                    Tencent Games company
-                  </div>
+                  <div className="text-sm md:text-base"
+                      style={{
+                        color: '#0A0A0A',
+                        fontFamily: 'Inter, sans-serif', // Figma-র "Family/Body" সাধারণত ইন্টার বা পপিন্স হয়
+                        fontWeight: '600',
+                        lineHeight: '160%',
+                        letterSpacing: '0.16px', // 1% spacing
+                      }}
+                    >
+                      Tencent Games company
+                    </div>
 
                   <div className="flex items-center">
                     <img
@@ -313,7 +306,7 @@ const FeaturedCaseStudies = () => {
 
                 <button
                   onClick={() => handleViewCaseStudy(item.slug)}
-                  className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px] self-start"
+                  className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px] self-start text-sm md:text-base"
                   style={{
                     height: '52px',
                     padding: '4px 4px 4px 12px',
@@ -322,7 +315,6 @@ const FeaturedCaseStudies = () => {
                     background: 'transparent',
                     // Typography
                     fontFamily: 'var(--font-poppins), sans-serif',
-                    fontSize: '16px',
                     fontWeight: '500',
                     lineHeight: '160%',
                     letterSpacing: '0.16px',
@@ -353,7 +345,7 @@ const FeaturedCaseStudies = () => {
         <div className="mt-16 flex justify-center">
           <Link
             href="/case-studies"
-            className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px]"
+            className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap rounded-[100px] text-sm md:text-base"
             style={{
               height: '52px',
               padding: '4px 4px 4px 12px',
@@ -361,7 +353,6 @@ const FeaturedCaseStudies = () => {
               background: '#0168B4', // Primary-blue-500
               // Typography
               fontFamily: 'var(--font-poppins), sans-serif',
-              fontSize: '16px',
               fontWeight: '500',
               lineHeight: '160%',
               letterSpacing: '0.16px',

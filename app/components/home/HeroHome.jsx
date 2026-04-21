@@ -436,7 +436,7 @@ const HansiTrans = () => {
             </div>
 
             {/* Mobile Service Buttons - Only Hover Effect */}
-            <div className="md:hidden absolute bottom-[-40px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4 pointer-events-none">
+            <div className="md:hidden absolute bottom-[50px] left-0 right-0 flex flex-wrap justify-center gap-3 px-4 pointer-events-none">
               {services.map((service, index) => (
                 <motion.div
                   key={index}

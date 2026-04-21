@@ -52,7 +52,7 @@ const CaseStudies3 = () => {
   if (slides.length === 0) return null;
 
   return (
-    <section className="overflow-hidden relative mt-[-200px] z-1">
+    <section className="overflow-hidden relative mt-[-200px] z-1 p-4 md:p-0">
 
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto">
@@ -76,7 +76,7 @@ const CaseStudies3 = () => {
             />
             <span
               style={{
-                color: '#404040', // var(--dark-5)
+                color: '#404040',
                 fontFamily: 'var(--font-poppins), sans-serif',
                 fontSize: '16px',
                 fontStyle: 'normal',
@@ -117,12 +117,14 @@ const CaseStudies3 = () => {
           </p>
         </div>
       </div>
+
       <div
         className="relative w-full flex justify-center items-center"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="flex justify-center items-start w-full overflow-hidden relative gap-4 md:gap-6 px-4 min-h-[750px]">
+        {/* ✅ mobile এ min-h সরানো হয়েছে, শুধু md তে থাকবে */}
+        <div className="flex justify-center items-start w-full overflow-hidden relative gap-4 md:gap-6 px-4 md:min-h-[750px]">
           {slides.map((slide, index) => {
             const isCenter = index === currentIndex;
             const isLeft = index === currentIndex - 1;
@@ -144,8 +146,8 @@ const CaseStudies3 = () => {
                   marginRight: isRight ? "-12%" : undefined,
                 }}
               >
-                {/* Image Container */}
-                <div className="relative overflow-hidden rounded-[40px] h-[300px] md:h-[590px] lg:h-[600px] shadow-2xl shadow-primary/10">
+                {/* Image Container (info overlay moved inside to avoid layout shift) */}
+                <div className="relative overflow-hidden rounded-[40px] h-[460px] sm:h-[460px] md:h-[590px] lg:h-[600px] shadow-2xl shadow-primary/10">
                   <img
                     src={slide.image}
                     alt={slide.title || "Case Study"}
@@ -155,37 +157,33 @@ const CaseStudies3 = () => {
                     role="button"
                     tabIndex={0}
                   />
-                  {/* Image Overlay */}
-                  {isCenter && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none group-hover:bg-black/5 transition-colors duration-500"></div>
-                  )}
-                </div>
 
-                {/* --- INFO BOX (Downwards transition outside image) --- */}
-                {isCenter && (
-                  <div className="w-full pt-6 opacity-0 translate-y-[-20px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                          {slide.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm md:text-base max-w-3xl">
-                          {slide.description}
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0 self-start md:self-center">
-                        <div className="inline-flex items-center gap-2 bg-[#0070f3] text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/30">
-                          <img
-                            src="/Frame.svg"
-                            alt="icon"
-                            style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-                          />
-                          <span>{slide.tag || "Accent-Matched Voice-Over"}</span>
+                  {isCenter && (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none group-hover:bg-black/5 transition-colors duration-500" />
+
+                      {/* INFO BOX — absolute overlay so it doesn't affect carousel height */}
+                      <div className="absolute left-6 right-6 bottom-6 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/95 p-4 rounded-[12px] shadow-lg">
+                          <div className="flex-1">
+                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                              {slide.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm md:text-base max-w-3xl">
+                              {slide.description}
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0 self-start md:self-center">
+                            <div className="inline-flex items-center gap-2 bg-[#0070f3] text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/30">
+                              <img src="/Frame.svg" alt="icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                              <span>{slide.tag || "Accent-Matched Voice-Over"}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -193,7 +191,7 @@ const CaseStudies3 = () => {
       </div>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center items-center gap-3 mt-8">
+      <div className="flex justify-center items-center gap-3 mt-6 md:mt-8">
         {slides.map((_, idx) => (
           <button
             key={idx}

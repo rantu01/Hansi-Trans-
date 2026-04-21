@@ -99,11 +99,10 @@ const FAQ = () => {
                 alt="icon"
                 style={{ width: '20px', height: '20px', objectFit: 'contain' }}
               />
-              <span
+              <span className="text-sm md:text-base"
                 style={{
                   color: '#404040', // var(--dark-5)
                   fontFamily: 'var(--font-poppins), sans-serif',
-                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: '500',
                   lineHeight: '160%',
@@ -113,12 +112,12 @@ const FAQ = () => {
                 FAQs
               </span>
             </div>
-            <h2 className="text-5xl font-medium leading-[1.1] tracking-tight" style={{ color: typography.colors.dark, fontFamily: typography.fonts.inter, fontSize: typography.sizes.h2 }}>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight" style={{ color: typography.colors.dark, fontFamily: typography.fonts.inter }}>
               Frequently Asked <br /> Questions
             </h2>
           </div>
           <div className="lg:pt-4">
-            <p className="text-base leading-relaxed max-w-md" style={{ color: typography.colors.muted, fontFamily: typography.fonts.poppins, fontSize: typography.sizes.p, lineHeight: typography.lineHeights.p }}>
+            <p className="text-sm md:text-base leading-relaxed max-w-md" style={{ color: typography.colors.muted, fontFamily: typography.fonts.poppins, lineHeight: typography.lineHeights.p }}>
               Explore tips, guides, and industry trends shaping global launches today.
             </p>
           </div>
@@ -136,7 +135,7 @@ const FAQ = () => {
                     onClick={() => setOpenLeft(openLeft === index ? -1 : index)}
                     className="w-full flex items-center justify-between text-left group"
                   >
-                    <span className="font-medium transition-colors" style={{ fontFamily: typography.fonts.inter, fontSize: typography.sizes.h6, color: openLeft === index ? typography.colors.primary : typography.colors.dark }}>
+                    <span className="font-medium transition-colors text-lg md:text-2xl" style={{ fontFamily: typography.fonts.inter, color: openLeft === index ? typography.colors.primary : typography.colors.dark }}>
                       {faq.question}
                     </span>
                     <div className="shrink-0">
@@ -148,7 +147,7 @@ const FAQ = () => {
                     </div>
                   </button>
                   <div className={`overflow-hidden transition-all duration-300 ${openLeft === index ? 'max-h-40 mt-4' : 'max-h-0'}`}>
-                    <p style={{ color: typography.colors.muted, fontFamily: typography.fonts.poppins, fontSize: typography.sizes.p, lineHeight: typography.lineHeights.p }} className="max-w-2xl">
+                    <p className="max-w-2xl text-sm md:text-base" style={{ color: typography.colors.muted, fontFamily: typography.fonts.poppins, lineHeight: typography.lineHeights.p }}>
                       {faq.answer}
                     </p>
                   </div>
@@ -163,7 +162,7 @@ const FAQ = () => {
               <div key={`right-${index}`} className="border-b" style={{ borderColor: '#E5E5E5' }}>
                 <div className="py-6">
                   <button onClick={() => setOpenRight(openRight === index ? -1 : index)} className="w-full flex items-center justify-between text-left group">
-                    <span style={{ fontFamily: typography.fonts.inter, fontSize: typography.sizes.h6, color: openRight === index ? typography.colors.primary : typography.colors.dark, fontWeight: typography.weights.medium }}>
+                    <span className="text-lg md:text-2xl font-medium" style={{ fontFamily: typography.fonts.inter, color: openRight === index ? typography.colors.primary : typography.colors.dark }}>
                       {faq.question}
                     </span>
                     <div className="shrink-0">
@@ -175,7 +174,7 @@ const FAQ = () => {
                     </div>
                   </button>
                   <div className={`overflow-hidden transition-all duration-300 ${openRight === index ? 'max-h-40 mt-4' : 'max-h-0'}`}>
-                    <p style={{ color: typography.colors.muted, fontFamily: typography.fonts.poppins, fontSize: typography.sizes.p, lineHeight: typography.lineHeights.p }} className="max-w-2xl">
+                    <p className="max-w-2xl text-sm md:text-base" style={{ color: typography.colors.muted, fontFamily: typography.fonts.poppins, lineHeight: typography.lineHeights.p }}>
                       {faq.answer}
                     </p>
                   </div>

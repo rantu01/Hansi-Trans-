@@ -65,8 +65,12 @@ const Footer = () => {
 
   return (
     <footer className="relative w-full overflow-hidden pt-20" style={{ minHeight: '1313px' }}>
-      {/* --- Background Image Section --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* --- Background: mobile gradient, desktop image --- */}
+      {/* Mobile: gradient from #adcfe7 down to white */}
+      <div className="absolute inset-0 z-0 pointer-events-none md:hidden" style={{ background: 'linear-gradient(to bottom, #adcfe7 0%, #ffffff 100%)' }} />
+
+      {/* Desktop & up: background image */}
+      <div className="absolute inset-0 z-0 pointer-events-none hidden md:block">
         <img
           src="/footerBg.png"
           alt="footer background"

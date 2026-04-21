@@ -139,10 +139,6 @@ const WorkProcess = () => {
                 // Hover state start
                 whileHover="hover"
                 style={{
-                  width: '100%',
-                  maxWidth: '306px',
-                  height: '462px',
-                  padding: '40px 32px',
                   borderRadius: '40px',
                   background: '#FFFFFF',
                   display: 'flex',
@@ -157,25 +153,23 @@ const WorkProcess = () => {
                     transition: { duration: 0.2, ease: "easeOut" }
                   }
                 }}
-                className="shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl transition-shadow duration-300 border border-white/40"
+                className={`w-full max-w-[306px] md:h-[462px] p-6 md:p-[40px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl transition-shadow duration-300 border border-white/40`}
               >
                 <div className="w-full">
-                  <h3
+                  <h3 className="mb-4 text-xl md:text-[32px]"
                     style={{
                       fontFamily: 'var(--font-inter), sans-serif',
-                      fontSize: '32px',
                       fontWeight: '500',
                       color: '#0A0A0A',
-                      marginBottom: '16px',
                       lineHeight: '1.2'
                     }}
                   >
                     {step.title}
                   </h3>
                   <p
+                    className="text-sm md:text-base"
                     style={{
                       fontFamily: 'var(--font-inter), sans-serif',
-                      fontSize: '16px',
                       color: '#616161',
                       lineHeight: '1.6',
                       fontWeight: '500'
@@ -396,7 +390,7 @@ const WorkProcess = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 flex-grow">
+            <div className="grid grid-cols-4 sm:grid-cols-4 gap-4 mb-8 flex-grow">
               {tools.map((tool, i) => (
                 <motion.div
                   key={i}
