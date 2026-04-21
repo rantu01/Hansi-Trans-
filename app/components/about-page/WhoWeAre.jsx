@@ -53,7 +53,7 @@ const WhoWeAre = () => {
             />
             <span
               style={{
-                color: '#404040', // var(--dark-5)
+                color: '#404040',
                 fontFamily: 'var(--font-poppins), sans-serif',
                 fontSize: '16px',
                 fontStyle: 'normal',
@@ -64,8 +64,8 @@ const WhoWeAre = () => {
             >
               {section?.badge || "About"}
             </span>
-
           </div>
+
           <h2
             className="capitalize"
             style={{
@@ -78,30 +78,34 @@ const WhoWeAre = () => {
           >
             Who We Are?
           </h2>
-          <div className="relative overflow-hidden shadow-sm"
+
+          <div
+            className="relative overflow-hidden shadow-sm"
             style={{
               width: '569px',
               height: '684px',
               borderRadius: '30.6px',
               opacity: 1
-            }}>
+            }}
+          >
             <img
               src={section?.image || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000"}
               alt="Team working"
-              className="w-full h-full object-cover" // h-full dilam jate container puruta cover kore
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
 
-        {/* Right Side: Description and Stats */}
-        <div className="lg:pt-10">
-          <div className="flex justify-end mb-16 ml-22 text-right">
+        {/* Right Side */}
+        <div className="flex flex-col h-full lg:pt-10">
 
+          {/* ✅ Badge এর বরাবর ডান পাশে — description */}
+          <div className="mb-16">
             <p
               style={{
                 fontFamily: 'Poppins, sans-serif',
                 fontWeight: '400',
-                fontStyle: 'normal', // Regular
+                fontStyle: 'normal',
                 fontSize: '16px',
                 lineHeight: '150%',
                 letterSpacing: '0%',
@@ -112,8 +116,9 @@ const WhoWeAre = () => {
             </p>
           </div>
 
-          <div className="space-y-10">
-            <p className="font-['Inter'] font-medium text-[32px] leading-[120%] tracking-[0%] capitalize text-[#595959]">
+          {/* ✅ Story + Stats — vertically centered in remaining space */}
+          <div className="flex-1 flex flex-col justify-center">
+            <p className="font-['Inter'] font-medium text-[32px] leading-[120%] tracking-[0%] capitalize text-[#595959] mb-8">
               {section?.story || "Founded In 2010, HS+ Supports Projects Across 40+ Languages And Global Platforms For Games, Animation, And Digital Content—With A Focus On Long-Term Collaboration Rather Than One-Off Delivery. We Don't Operate As A Translation Marketplace Or A Chain Of Vendors. We Operate As One Integrated System, Built For Long-Term Global Delivery."}
             </p>
 
@@ -140,8 +145,8 @@ const WhoWeAre = () => {
               </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </section>
   );

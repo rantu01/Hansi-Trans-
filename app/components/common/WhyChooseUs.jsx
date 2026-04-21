@@ -104,7 +104,7 @@ const WhyChooseUs = () => {
                 lineHeight: '120%'
               }}
             >
-              Why people choose HS+?
+              Why HS+?
             </h2>
           </div>
           <div className="md:max-w-lg pt-4 md:pt-14 text-left">

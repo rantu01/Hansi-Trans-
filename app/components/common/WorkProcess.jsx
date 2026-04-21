@@ -105,7 +105,7 @@ const WorkProcess = () => {
                 lineHeight: '120%'
               }}
             >
-              Guiding Lights Of Our <br className="hidden md:block" /> Works
+              How We Work
             </h2>
           </div>
           <div className="md:max-w-lg pt-0 md:pt-14">
@@ -118,7 +118,7 @@ const WorkProcess = () => {
                 lineHeight: '150%'
               }}
             >
-              Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
+              A clear pipeline from brief to delivery—built for cross-border production.
             </p>
           </div>
         </motion.div>

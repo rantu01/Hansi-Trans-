@@ -37,7 +37,7 @@ const HansiTrans = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Service", path: "/services", isService: true },
+    { name: "Service", path: "/services" },
     { name: "Case Studies", path: "/case-studies" },
     { name: "Blog", path: "/blog" },
     { name: "Others", path: "#", isOthers: true },

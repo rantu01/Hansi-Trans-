@@ -22,14 +22,11 @@ const OurCompany = () => {
   }, []);
 
   const images = company?.images || [];
-  // 4 images for Mission and 4 for Vision to match the layout
   const missionImages = images.slice(0, 4);
   const visionImages = images.slice(4, 8);
 
-  // Helper component to keep the logic clean and reuse the 4-image layout
   const ImageGrid = ({ imgs }) => (
     <div className="grid grid-cols-12 gap-3">
-      {/* Top Left: Large Image */}
       <div className="col-span-8">
         <img
           src={imgs[0]}
@@ -37,7 +34,6 @@ const OurCompany = () => {
           className="w-full h-48 md:h-64 object-cover rounded-[30px] border border-gray-50"
         />
       </div>
-      {/* Top Right: Small Image */}
       <div className="col-span-4">
         <img
           src={imgs[1]}
@@ -45,7 +41,6 @@ const OurCompany = () => {
           className="w-full h-48 md:h-64 object-cover rounded-[30px] border border-gray-50"
         />
       </div>
-      {/* Bottom Left: Small Image */}
       <div className="col-span-4">
         <img
           src={imgs[2]}
@@ -53,7 +48,6 @@ const OurCompany = () => {
           className="w-full h-48 md:h-64 object-cover rounded-[30px] border border-gray-50"
         />
       </div>
-      {/* Bottom Right: Medium/Wide Image */}
       <div className="col-span-8">
         <img
           src={imgs[3]}
@@ -90,7 +84,7 @@ const OurCompany = () => {
               />
               <span
                 style={{
-                  color: '#404040', // var(--dark-5)
+                  color: '#404040',
                   fontFamily: 'var(--font-poppins), sans-serif',
                   fontSize: '16px',
                   fontStyle: 'normal',
@@ -106,13 +100,13 @@ const OurCompany = () => {
               className="text-primary"
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontWeight: '500', // Medium
+                fontWeight: '500',
                 fontStyle: 'normal',
                 fontSize: '48px',
                 lineHeight: '120%',
                 letterSpacing: '0%',
-                textTransform: 'capitalize', // Spec onujayi
-                color: '#0168B4', // Spec background/color onujayi
+                textTransform: 'capitalize',
+                color: '#0168B4',
               }}
             >
               {company?.sectionTitle || "Our Company Main Mission"}
@@ -124,7 +118,7 @@ const OurCompany = () => {
               style={{
                 fontFamily: 'Poppins, sans-serif',
                 fontWeight: '400',
-                fontStyle: 'normal', // Regular
+                fontStyle: 'normal',
                 fontSize: '16px',
                 lineHeight: '150%',
                 letterSpacing: '0%',
@@ -137,15 +131,13 @@ const OurCompany = () => {
         </div>
 
         {/* Mission Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-center">
 
-          {/* Image Grid Left (4 Images) */}
+          {/* Image Grid Left */}
           <ImageGrid imgs={missionImages} />
 
-          {/* Text Content Right */}
-          <div className="flex flex-col h-full justify-between items-start">
-            {/* h-full use kora hoyeche jeno height-er shob tuku jayga ney */}
-
+          {/* Text Content Right — vertically centered */}
+          <div className="flex flex-col justify-center">
             <div>
               <h2 className="mb-6">
                 <span
@@ -181,62 +173,20 @@ const OurCompany = () => {
                   fontSize: '16px',
                   lineHeight: '150%',
                   color: '#616161',
-                  marginBottom: '32px' // Text theke button-er gap maintain korbe
+                  marginBottom: '32px'
                 }}
               >
                 {company?.missionDescription}
               </p>
             </div>
-
-            {/* --- Exact Spec Button --- */}
-            {/* <button
-              className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 mt-auto"
-              style={{
-                width: '185px',
-                height: '52px',
-                padding: '4px 4px 4px 12px',
-                gap: '8px',
-                borderRadius: '100px',
-                background: '#0168B4',
-                border: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <span
-                style={{
-                  flexGrow: 1,
-                  textAlign: 'left',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontWeight: '500',
-                  fontSize: '16px',
-                  lineHeight: '160%',
-                  letterSpacing: '0.16px',
-                  color: '#FFFFFF'
-                }}
-              >
-                  {company?.ctaText || "Work with us?"}
-              </span>
-              <span
-                className="bg-white rounded-full transition-transform duration-300 group-hover:rotate-45 flex items-center justify-center"
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  flexShrink: 0
-                }}
-              >
-                <ArrowUpRight size={28} style={{ color: '#0168B4' }} />
-              </span>
-            </button> */}
           </div>
         </div>
 
         {/* Vision Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-          {/* Text Content Left */}
-          <div className="order-2 lg:order-1 flex flex-col h-full justify-between items-start">
-            {/* Flex container ensure korbe jeno button niche thake */}
-
+          {/* Text Content Left — vertically centered */}
+          <div className="order-2 lg:order-1 flex flex-col justify-center">
             <div>
               <h2 className="mb-6">
                 <span
@@ -279,49 +229,9 @@ const OurCompany = () => {
                 {company?.visionDescription}
               </p>
             </div>
-
-            {/* Exact Spec Button - mt-auto ensures it stays at the bottom */}
-            {/* <button
-              className="flex items-center transition-all group hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 mt-auto"
-              style={{
-                width: '185px',
-                height: '52px',
-                padding: '4px 4px 4px 12px',
-                gap: '8px',
-                borderRadius: '100px',
-                background: '#0168B4',
-                border: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <span
-                style={{
-                  flexGrow: 1,
-                  textAlign: 'left',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontWeight: '500',
-                  fontSize: '16px',
-                  lineHeight: '160%',
-                  letterSpacing: '0.16px',
-                  color: '#FFFFFF'
-                }}
-              >
-                Work with us?
-              </span>
-              <span
-                className="bg-white rounded-full transition-transform duration-300 group-hover:rotate-45 flex items-center justify-center"
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  flexShrink: 0
-                }}
-              >
-                <ArrowRight size={20} style={{ color: '#0168B4' }} />
-              </span>
-            </button> */}
           </div>
 
-          {/* Image Grid Right (4 Images) */}
+          {/* Image Grid Right */}
           <div className="order-1 lg:order-2">
             <ImageGrid imgs={visionImages} />
           </div>
