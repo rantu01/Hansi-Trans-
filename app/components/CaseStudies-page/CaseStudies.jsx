@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
-import { API } from "@/app/config/api";
 import { useRouter } from "next/navigation";
+import { API } from "@/app/config/api";
 
 const CaseStudies = () => {
   const [slides, setSlides] = useState([]);
@@ -52,13 +51,13 @@ const CaseStudies = () => {
   if (slides.length === 0) return null;
 
   return (
-    <section className="overflow-hidden relative mt-[-200px] z-1">
+    <section className="overflow-hidden relative md:mt-[-200px] z-1 p-4 md:p-0">
       <div
         className="relative w-full flex justify-center items-center"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="flex justify-center items-start w-full overflow-hidden relative gap-4 md:gap-6 px-4 min-h-[750px]">
+        <div className="flex justify-center items-start w-full overflow-hidden relative gap-4 md:gap-6 px-4">
           {slides.map((slide, index) => {
             const isCenter = index === currentIndex;
             const isLeft = index === currentIndex - 1;
@@ -81,7 +80,7 @@ const CaseStudies = () => {
                 }}
               >
                 {/* Image Container */}
-                <div className="relative overflow-hidden rounded-[40px] h-[300px] md:h-[590px] lg:h-[600px] shadow-2xl shadow-primary/10">
+                <div className="relative overflow-hidden rounded-[40px] h-[460px] sm:h-[460px] md:h-[590px] lg:h-[600px] shadow-2xl shadow-primary/10">
                   <img
                     src={slide.image}
                     alt={slide.title || "Case Study"}
@@ -91,16 +90,29 @@ const CaseStudies = () => {
                     role="button"
                     tabIndex={0}
                   />
-                  {/* Image Overlay */}
+
                   {isCenter && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none group-hover:bg-black/5 transition-colors duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none group-hover:bg-black/5 transition-colors duration-500" />
                   )}
                 </div>
 
-                {/* --- INFO BOX (Downwards transition outside image) --- */}
+                {/* INFO BOX — slides down smoothly below the image on hover */}
                 {isCenter && (
-                  <div className="w-full pt-6 opacity-0 translate-y-[-20px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div
+                    className="
+                      overflow-hidden
+                      max-h-0
+                      group-hover:max-h-[200px]
+                      opacity-0
+                      group-hover:opacity-100
+                      transition-all
+                      duration-500
+                      ease-in-out
+                      mt-0
+                      group-hover:mt-4
+                    "
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/95 p-4 rounded-[12px] shadow-lg">
                       <div className="flex-1">
                         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                           {slide.title}
@@ -134,12 +146,13 @@ const CaseStudies = () => {
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-2 rounded-full transition-all duration-100 ${idx === currentIndex
+            className={`h-2 rounded-full transition-all duration-100 ${
+              idx === currentIndex
                 ? "w-10 bg-primary"
                 : "w-2 bg-primary/20 hover:bg-primary/40"
-              }`}
+            }`}
             aria-label={`Go to slide ${idx + 1}`}
-          ></button>
+          />
         ))}
       </div>
     </section>

@@ -159,29 +159,24 @@ const CaseStudies3 = () => {
                   />
 
                   {isCenter && (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none group-hover:bg-black/5 transition-colors duration-500" />
-
-                      {/* INFO BOX — absolute overlay so it doesn't affect carousel height */}
-                      <div className="absolute left-6 right-6 bottom-6 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-out">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/95 p-4 rounded-[12px] shadow-lg">
-                          <div className="flex-1">
-                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                              {slide.title}
-                            </h3>
-                            <p className="text-gray-600 text-sm md:text-base max-w-3xl">
-                              {slide.description}
-                            </p>
-                          </div>
-                          <div className="flex-shrink-0 self-start md:self-center">
-                            <div className="inline-flex items-center gap-2 bg-[#0070f3] text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/30">
-                              <img src="/Frame.svg" alt="icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
-                              <span>{slide.tag || "Accent-Matched Voice-Over"}</span>
-                            </div>
+                    <div className="w-full pt-6 opacity-0 translate-y-[-20px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                            {slide.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm md:text-base max-w-3xl">
+                            {slide.description}
+                          </p>
+                        </div>
+                        <div className="flex-shrink-0 self-start md:self-center">
+                          <div className="inline-flex items-center gap-2 bg-[#0070f3] text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/30">
+                            <img src="/Frame.svg" alt="icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                            <span>{slide.tag || "Accent-Matched Voice-Over"}</span>
                           </div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>

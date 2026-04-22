@@ -212,16 +212,7 @@ const FeaturedCaseStudies2 = () => {
               {/* Content Side */}
               <div className="w-full lg:w-1/2 p-8 md:p-14 flex flex-col justify-center">
                 <div className="flex flex-wrap justify-between items-start mb-6 gap-4">
-                  <h3
-                    className="pr-4 capitalize flex-1"
-                    style={{
-                      color: '#0A0A0A',
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '32px',
-                      fontWeight: '500',
-                      lineHeight: '120%'
-                    }}
-                  >
+                  <h3 className="pr-4 capitalize flex-1 text-2xl md:text-[32px]" style={{ color: '#0A0A0A', fontFamily: 'Inter, sans-serif', fontWeight: 500, lineHeight: '120%' }}>
                     {item.title}
                   </h3>
                   <span
@@ -259,17 +250,7 @@ const FeaturedCaseStudies2 = () => {
                   </span>
                 </div>
 
-                <p
-                  className="mb-8"
-                  style={{
-                    color: '#616161', // var(--paragraph-color-900)
-                    fontFamily: 'var(--font-poppins), sans-serif',
-                    fontSize: '16px',
-                    fontStyle: 'normal',
-                    fontWeight: '400', // Regular weight
-                    lineHeight: '150%', // 24px
-                  }}
-                >
+                <p className="mb-8 text-sm md:text-base" style={{ color: '#616161', fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 400, lineHeight: '150%' }}>
                   {item.description}
                 </p>
 
@@ -281,16 +262,7 @@ const FeaturedCaseStudies2 = () => {
                       className="flex items-center gap-6 border-b border-[#D9D9D9] pb-4 last:border-0"
                     >
                       {/* Value ba Icon Container */}
-                      <div
-                        className="min-w-[100px] flex items-center"
-                        style={{
-                          color: '#0168B4',
-                          fontFamily: 'var(--font-inter), sans-serif',
-                          fontSize: '40px',
-                          fontWeight: '500',
-                          lineHeight: '120%',
-                        }}
-                      >
+                      <div className="min-w-[100px] flex items-center text-2xl md:text-[40px]" style={{ color: '#0168B4', fontFamily: 'var(--font-inter), sans-serif', fontWeight: 500, lineHeight: '120%' }}>
                         {stat.isIcon ? (
                           <img
                             src="/Vector.svg"
