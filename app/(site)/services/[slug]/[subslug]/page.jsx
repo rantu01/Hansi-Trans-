@@ -6,6 +6,7 @@ import SubServiceContent from "@/app/components/service-page/SubServiceContent";
 import { API } from "@/app/config/api";
 import RelatedServices from "@/app/components/common/RelatedServices";
 import Achievement2 from "@/app/components/common/Achievement2";
+import Hero3 from "@/app/components/common/Hero3";
 
 // সাব-সার্ভিস ডেটা ফেচ করার ফাংশন
 async function getSubServiceDetails(path) {
@@ -38,7 +39,7 @@ export default async function SubServiceDetailsPage({ params }) {
 
   return (
     <PublicLayout>
-      <Hero
+      <Hero3
         title={subService.title}
         // স্লাগ গুলোকে বড় হাতের করার জন্য একটি সিম্পল লজিক দেওয়া হলো ব্রেডক্রাম্বে
         breadcrumb={`Home › Services › ${slug.replace(/-/g, " ")} › ${subService.title}`}
@@ -46,7 +47,7 @@ export default async function SubServiceDetailsPage({ params }) {
       >
         {/* Pass fetched subService as prop */}
         <SubServiceDetails subService={subService} />
-      </Hero>
+      </Hero3>
 
       <SubServiceContent subService={subService} />
       <RelatedServices />

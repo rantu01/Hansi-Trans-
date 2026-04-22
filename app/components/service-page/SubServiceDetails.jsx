@@ -5,15 +5,14 @@ const SubServiceDetails = ({ subService }) => {
   const features = subService.features || [];
 
   return (
-    <section className="py-6 px-4 sm:px-6 md:px-12 font-sans overflow-hidden">
-      <div className="mx-auto max-w-6xl">
+    <section className="py-6 px-4 sm:px-6 md:px-12 font-sans overflow-hidden md:mt-0 mt-40">
+      <div className="mx-auto max-w-full md:max-w-6xl">
 
         {/* Main Hero Image with Brand Shadow */}
         {subService.image && (
           <div
-            className="mx-auto mb-2 overflow-hidden group relative w-full"
+            className="mx-auto mb-2 overflow-hidden group relative w-full max-w-full md:max-w-[1078px]"
             style={{
-              maxWidth: "1078px",
               aspectRatio: "1078 / 539",
               borderRadius: "clamp(16px, 2.5vw, 32px)",
               opacity: "1",
