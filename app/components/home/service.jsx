@@ -22,7 +22,7 @@ const StackedCards = ({ services }) => {
 
   return (
     <div ref={containerRef} className="relative" style={{ height: `${services.length * 100}vh` }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-[#F7F7F7]">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-[#F7F7F7] mb-20">
         <div className="container mx-auto px-4">
 
           {/* Header Section */}
