@@ -100,7 +100,7 @@ const CaseStudyContent = ({ caseStudy }) => {
 
   // Updated render function to handle list points and image positioning
   const renderImageTextSection = (section, imageFirst = false) => (
-    <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-16 md:mb-24">
+    <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-12 md:mb-24">
       {/* If imageFirst is true, show image on left (Desktop) */}
       {imageFirst && (
         <div className="flex-1 w-full order-1" style={{ aspectRatio: "632 / 444" }}>
@@ -114,28 +114,11 @@ const CaseStudyContent = ({ caseStudy }) => {
       )}
 
       <div className={`flex-1 space-y-6 w-full ${imageFirst ? "order-2" : "order-1"}`}>
-        <h3
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: "500",
-            fontSize: "clamp(22px, 3vw, 32px)",
-            lineHeight: "120%",
-            color: "#0F0F0F",
-            textTransform: "capitalize",
-          }}
-        >
+        <h3 className="text-xl sm:text-2xl md:text-[32px] font-medium" style={{ fontFamily: "'Inter', sans-serif", lineHeight: '120%', color: '#0F0F0F', textTransform: 'capitalize' }}>
           {section.title}
         </h3>
 
-        <p
-          style={{
-            fontFamily: "'Poppins', sans-serif",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "160%",
-            color: "#6B6B6B",
-          }}
-        >
+        <p className="text-sm sm:text-base md:text-[16px]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, lineHeight: '160%', color: '#6B6B6B' }}>
           {section.text}
         </p>
 
@@ -174,18 +157,7 @@ const CaseStudyContent = ({ caseStudy }) => {
           {/* Left Side: Icon + Label */}
           <div className="flex items-center gap-2">
             <img src="/Frame.svg" alt="icon" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
-            <span
-              style={{
-                color: '#015FA4', // টেক্সট কালার সাদা (যেহেতু ব্যাকগ্রাউন্ড গাঢ় নীল)
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '32px',
-                fontWeight: '500', // Medium
-                fontStyle: 'normal',
-                lineHeight: '120%',
-                letterSpacing: '0%',
-                textTransform: 'capitalize',
-              }}
-            >
+            <span className="text-secondary font-medium text-lg md:text-[32px]" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '120%', textTransform: 'capitalize', color: '#015FA4' }}>
               publisher
             </span>
           </div>
@@ -213,19 +185,7 @@ const CaseStudyContent = ({ caseStudy }) => {
                 key={index}
                 className="bg-white rounded-[32px] py-10 text-center shadow-sm shadow-primary/5 hover:border-primary/30 transition-all"
               >
-                <h2
-                  className="mb-2"
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: "500",
-                    fontStyle: "normal",
-                    fontSize: "clamp(32px, 4vw, 48px)",
-                    lineHeight: "120%",
-                    letterSpacing: "0%",
-                    textTransform: "capitalize",
-                    color: "#0168B4",
-                  }}
-                >
+                <h2 className="mb-2 text-3xl sm:text-4xl md:text-[48px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, lineHeight: '120%', textTransform: 'capitalize', color: '#0168B4' }}>
                   <CountUp
                     start={0}
                     end={numericValue}
@@ -237,18 +197,7 @@ const CaseStudyContent = ({ caseStudy }) => {
                     {({ countUpRef }) => <span ref={countUpRef} />}
                   </CountUp>
                 </h2>
-                <p
-                  style={{
-                    fontFamily: "'Poppins', sans-serif",
-                    fontWeight: "400",
-                    fontStyle: "normal",
-                    fontSize: "18px",
-                    lineHeight: "160%",
-                    letterSpacing: "0%",
-                    textAlign: "center",
-                    color: "#616161",
-                  }}
-                >
+                <p className="text-sm sm:text-base" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, lineHeight: '160%', textAlign: 'center', color: '#616161' }}>
                   {stat.label}
                 </p>
               </div>
@@ -257,34 +206,10 @@ const CaseStudyContent = ({ caseStudy }) => {
         </div>
 
         <div className="mb-12 md:mb-20">
-          <h3
-            className="text-secondary mb-6"
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: "500",
-              fontStyle: "normal",
-              fontSize: "clamp(26px, 4vw, 40px)",
-              lineHeight: "120%",
-              letterSpacing: "0%",
-              textTransform: "capitalize",
-              color: "#0F0F0F",
-            }}
-          >
+          <h3 className="text-secondary mb-6 text-2xl sm:text-3xl md:text-[40px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, lineHeight: '120%', textTransform: 'capitalize', color: '#0F0F0F' }}>
             {content.introduction.title}
           </h3>
-          <p
-            className="container"
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: "400",
-              fontStyle: "normal",
-              fontSize: "18px",
-              lineHeight: "160%",
-              letterSpacing: "0%",
-              color: "#616161",
-              textRendering: "optimizeLegibility",
-            }}
-          >
+          <p className="container text-sm sm:text-base md:text-[18px]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, lineHeight: '160%', color: '#616161', textRendering: 'optimizeLegibility' }}>
             {content.introduction.text}
           </p>
         </div>
@@ -298,7 +223,7 @@ const CaseStudyContent = ({ caseStudy }) => {
 
           {/* --- Execution Approach Section --- */}
           <section className="mb-12">
-            <h2 className="text-4xl font-semibold mb-6">Execution Approach</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6">Execution Approach</h2>
             <div className="space-y-4 text-lg leading-relaxed text-gray-600">
               <p>
                 The project was delivered on schedule ahead of launch on the voice-production side, with continued support for ongoing character updates and UA / advertising voice-over after release.
@@ -311,7 +236,7 @@ const CaseStudyContent = ({ caseStudy }) => {
 
           {/* --- Results Section --- */}
           <section className="mb-16">
-            <h2 className="text-4xl font-semibold mb-6">Results</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6">Results</h2>
             <div className="space-y-4 text-lg leading-relaxed text-gray-600">
               <p>
                 On the voice-over side, HS+ used a parallel production workflow. Daily cross-language PM coordination kept casting, session timing, and asset handoff aligned, while remote live-directed sessions enabled real-time direction and faster retakes. Post-production then processed more than 80,000 dialogue takes, applying cleanup, mix, master, standardized naming, and strict version control before delivery.
@@ -324,30 +249,30 @@ const CaseStudyContent = ({ caseStudy }) => {
 
           {/* --- Outcome Highlights Section --- */}
           <section>
-            <h2 className="text-4xl font-semibold mb-10">Outcome Highlights</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-10">Outcome Highlights</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
               {/* Card 1 */}
-              <div className="bg-gradient-to-b from-[#0B253B] to-[#010101] p-10 rounded-[40px] text-white min-h-[350px] flex flex-col justify-between shadow-xl">
-                <h3 className="text-3xl font-medium leading-tight mb-6">Delivered Ahead Of Launch</h3>
-                <p className="text-gray-400 text-lg leading-relaxed">
+              <div className="bg-gradient-to-b from-[#0B253B] to-[#010101] p-8 md:p-10 rounded-[40px] text-white md:min-h-[350px] flex flex-col justify-between shadow-xl">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-medium leading-tight mb-6">Delivered Ahead Of Launch</h3>
+                <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
                   Multilingual VO completed on schedule with structured post-production and delivery.
                 </p>
               </div>
 
               {/* Card 2 */}
-              <div className="bg-gradient-to-b from-[#0B253B] to-[#010101] p-10 rounded-[40px] text-white min-h-[350px] flex flex-col justify-between shadow-xl">
-                <h3 className="text-3xl font-medium leading-tight mb-6">Cross-language consistency</h3>
-                <p className="text-gray-400 text-lg leading-relaxed">
+              <div className="bg-gradient-to-b from-[#0B253B] to-[#010101] p-8 md:p-10 rounded-[40px] text-white md:min-h-[350px] flex flex-col justify-between shadow-xl">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-medium leading-tight mb-6">Cross-language consistency</h3>
+                <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
                   Fantasy tone, character voice, and terminology stayed aligned across launch languages.
                 </p>
               </div>
 
               {/* Card 3 */}
-              <div className="bg-gradient-to-b from-[#0B253B] to-[#010101] p-10 rounded-[40px] text-white min-h-[350px] flex flex-col justify-between shadow-xl">
-                <h3 className="text-3xl font-medium leading-tight mb-6">Ongoing support</h3>
-                <p className="text-gray-400 text-lg leading-relaxed">
+              <div className="bg-gradient-to-b from-[#0B253B] to-[#010101] p-8 md:p-10 rounded-[40px] text-white md:min-h-[350px] flex flex-col justify-between shadow-xl">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-medium leading-tight mb-6">Ongoing support</h3>
+                <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
                   HS+ continued supporting updates and UA / advertising voice-over after the main production cycle.
                 </p>
               </div>
@@ -363,29 +288,12 @@ const CaseStudyContent = ({ caseStudy }) => {
 
         <div className=" mx-auto px-4 py-12 ">
           {/* Heading */}
-          <h2
-            className="text-[#111111] mb-6"
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "40px",
-              fontWeight: "600",
-              lineHeight: "120%",
-              letterSpacing: "-0.02em"
-            }}
-          >
+          <h2 className="text-[#111111] mb-6 text-2xl sm:text-3xl md:text-[40px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, lineHeight: '120%', letterSpacing: '-0.02em' }}>
             Why This Case Matters
           </h2>
 
           {/* Description Paragraph */}
-          <p
-            className="text-[#555555] mb-10 "
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "18px",
-              fontWeight: "400",
-              lineHeight: "160%",
-            }}
-          >
+          <p className="text-[#555555] mb-10 text-sm sm:text-base md:text-[18px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, lineHeight: '160%' }}>
             DragonHeir is a strong example of what HS+ does best: handling global content as a connected production system rather than splitting localization, performance, and post into disconnected vendors. The project combined large-scale voice-over, editorial localization, cross-language PM, fantasy-tone control, and delivery discipline in one workflow. That made it possible to move fast without losing clarity, tone, or production control. This is exactly the kind of coordinated global-launch support the HS+ website content is built around.
           </p>
 
@@ -399,85 +307,37 @@ const CaseStudyContent = ({ caseStudy }) => {
           </div>
         </div>
 
-        <div className="inline-flex items-center justify-center mb-6 px-4 py-5 bg-white rounded-full shadow-sm gap-2 w-full ">
+        <div className="inline-flex items-center justify-center mb-6 px-4 py-3 md:py-5 bg-white rounded-full shadow-sm gap-2 w-full ">
           <img src="/Frame.svg" alt="icon" className="w-10 h-10" />
-          <span style={{ color: '#404040', fontFamily: 'var(--font-poppins), sans-serif', fontSize: '32px', fontWeight: '500' }}>Testimonials</span>
+          <span className="text-lg md:text-[32px]" style={{ color: '#404040', fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500 }}>Testimonials</span>
         </div>
 
 
-        <div className="flex space-x-4 bg-gray-50 p-6 rounded-xl overflow-x-auto mx-auto ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 sm:p-6 rounded-xl overflow-visible md:flex md:space-x-4 md:overflow-x-auto mx-auto">
           {/* Localization Card */}
-          <div className="flex h-[148px] w-[315px] items-center justify-center rounded-xl bg-white p-6 shadow-sm">
-            <h3
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontSize: "28px",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textAlign: "center",
-                textTransform: "capitalize",
-                color: "#015FA4", // আপনার দেওয়া কালার কোড
-              }}
-            >
+          <div className="flex h-[148px] w-full md:w-[315px] items-center justify-center rounded-xl bg-white p-4 md:p-6 shadow-sm">
+            <h3 className="text-lg md:text-[28px] font-medium text-center text-[#015FA4]" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '120%', textTransform: 'capitalize' }}>
               Localization
             </h3>
           </div>
 
           {/* Multilingual Voice-Over Card */}
-          <div className="flex h-[148px] w-[315px] items-center justify-center rounded-xl bg-white p-6 shadow-sm">
-            <h3
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontSize: "28px",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textAlign: "center",
-                textTransform: "capitalize",
-                color: "#015FA4",
-              }}
-            >
+          <div className="flex h-[148px] w-full md:w-[315px] items-center justify-center rounded-xl bg-white p-4 md:p-6 shadow-sm">
+            <h3 className="text-lg md:text-[28px] font-medium text-center text-[#015FA4]" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '120%', textTransform: 'capitalize' }}>
               Multilingual Voice-Over
             </h3>
           </div>
 
           {/* Cross-Language PM Card */}
-          <div className="flex h-[148px] w-[315px] items-center justify-center rounded-xl bg-white p-6 shadow-sm">
-            <h3
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontSize: "28px",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textAlign: "center",
-                textTransform: "capitalize",
-                color: "#015FA4",
-              }}
-            >
+          <div className="flex h-[148px] w-full md:w-[315px] items-center justify-center rounded-xl bg-white p-4 md:p-6 shadow-sm">
+            <h3 className="text-lg md:text-[28px] font-medium text-center text-[#015FA4]" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '120%', textTransform: 'capitalize' }}>
               Cross-Language PM
             </h3>
           </div>
 
           {/* Post-Production Card */}
-          <div className="flex h-[148px] w-[315px] items-center justify-center rounded-xl bg-white p-6 shadow-sm">
-            <h3
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontSize: "28px",
-                lineHeight: "120%",
-                letterSpacing: "0%",
-                textAlign: "center",
-                textTransform: "capitalize",
-                color: "#015FA4",
-              }}
-            >
+          <div className="flex h-[148px] w-full md:w-[315px] items-center justify-center rounded-xl bg-white p-4 md:p-6 shadow-sm">
+            <h3 className="text-lg md:text-[28px] font-medium text-center text-[#015FA4]" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '120%', textTransform: 'capitalize' }}>
               Post-Production
             </h3>
           </div>

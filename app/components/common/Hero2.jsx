@@ -399,12 +399,9 @@ const Hero = ({
                             {/* বাম পাশ: Title Section */}
                             <div className="w-full md:w-1/2">
                                 <h1
-                                    className="text-white"
+                                    className="text-white text-3xl sm:text-4xl md:text-[60px] font-medium"
                                     style={{
                                         fontFamily: "Inter, sans-serif",
-                                        fontWeight: "500",
-                                        fontStyle: "normal",
-                                        fontSize: "60px",
                                         lineHeight: "120%",
                                         letterSpacing: "0%",
                                         textTransform: "capitalize",
@@ -433,26 +430,10 @@ const Hero = ({
                                 {/* Info & Socials */}
                                 <div className="flex flex-col gap-2">
                                     <div>
-                                        <h3
-                                            style={{
-                                                fontFamily: 'Inter, sans-serif',
-                                                fontSize: '28px',
-                                                fontWeight: '500',
-                                                color: '#FFFFFF',
-                                                lineHeight: '120%'
-                                            }}
-                                        >
+                                        <h3 className="text-white text-lg sm:text-xl md:text-[28px] font-medium" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '120%' }}>
                                             Chung Hua
                                         </h3>
-                                        <p
-                                            style={{
-                                                fontFamily: 'Inter, sans-serif',
-                                                fontSize: '16px',
-                                                fontWeight: '400',
-                                                color: 'rgba(255, 255, 255, 0.7)',
-                                                marginTop: '4px'
-                                            }}
-                                        >
+                                        <p className="text-white/70 text-xs sm:text-sm md:text-[16px]" style={{ fontFamily: 'Inter, sans-serif', marginTop: '4px' }}>
                                             Posted on 12 Sep 2025
                                         </p>
                                     </div>
