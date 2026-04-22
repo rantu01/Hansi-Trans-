@@ -78,7 +78,7 @@ const PrivacyPolicy = () => {
   };
 
   return (
-    <div className="w-full container mx-auto px-4 py-12 mb-20">
+    <div className="w-full container mx-auto px-4 py-12 mb-20 mt-40 md:mt-0">
       <div className="flex flex-col gap-8">
         {sections.map((section) => (
           <div

@@ -41,7 +41,7 @@ const ServiceHero = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-[300px] sm:h-[360px] md:h-[600px] overflow-hidden flex items-center justify-center px-4 sm:px-6">
+    <section className="relative w-full h-[300px] sm:h-[360px] md:h-[600px] overflow-hidden flex items-center justify-center px-4 sm:px-6 md:mt-0 mt-40">
       <div className="relative w-full h-full max-w-7xl mx-auto">
         {/* Floating Service Pills - Using same logic as Hero */}
         <div className="absolute inset-0 pointer-events-none mt-12 md:mt-0">
