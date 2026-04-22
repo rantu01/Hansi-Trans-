@@ -2,6 +2,7 @@ import PublicLayout from "@/app/components/layout/PublicLayout";
 import BlogDetails from "@/app/components/blog/BlogDetails";
 import Hero from "@/app/components/common/Hero";
 import { API } from "@/app/config/api";
+import Hero3 from "@/app/components/common/Hero3";
 
 export default async function BlogPostPage({ params }) {
   // Next.js 15+ এ params একটি Promise
@@ -34,13 +35,13 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <PublicLayout>
-      <Hero
+      <Hero3
         title={blogPost.title}
         breadcrumb={`Home › Blog › ${blogPost.title}`}
         description={blogPost.description || "Read our latest insights and updates."}
       >
         {/* আপনি চাইলে Hero-র ভেতরেও কিছু দেখাতে পারেন */}
-      </Hero>
+      </Hero3>
       <BlogDetails blogPost={blogPost} />
     </PublicLayout>
   );

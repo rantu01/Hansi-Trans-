@@ -82,17 +82,8 @@ const BlogDetails = ({ blogPost }) => {
         return (
           <h2
             key={index}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: '500',
-              fontSize: '40px',
-              lineHeight: '120%',
-              letterSpacing: '0%',
-              textTransform: 'capitalize',
-              color: '#0F0F0F',
-              marginBottom: '20px',
-              marginTop: '24px',
-            }}
+            className="text-2xl sm:text-3xl md:text-[40px] font-medium mb-5 mt-6 text-[#0F0F0F] capitalize"
+            style={{ fontFamily: "'Inter', sans-serif", lineHeight: '120%' }}
           >
             {section.text}
           </h2>
@@ -102,16 +93,8 @@ const BlogDetails = ({ blogPost }) => {
         return (
           <p
             key={index}
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: '400',
-              fontSize: '18px',
-              lineHeight: '160%',
-              letterSpacing: '0%',
-              color: '#6B6B6B',
-              marginBottom: '24px',
-              marginTop: '8px',
-            }}
+            className="text-sm sm:text-base md:text-[18px] text-[#6B6B6B] mb-6 mt-2 leading-relaxed"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, lineHeight: '160%' }}
           >
             {section.text}
           </p>
@@ -121,20 +104,11 @@ const BlogDetails = ({ blogPost }) => {
         return (
           <ol
             key={index}
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: '500',
-              fontSize: '18px',
-              lineHeight: '160%',
-              letterSpacing: '0%',
-              color: '#0F0F0F',
-              marginBottom: '24px',
-              paddingLeft: '20px',
-              listStyleType: 'decimal',
-            }}
+            className="text-sm sm:text-base md:text-[18px] text-[#0F0F0F] mb-6 pl-5 list-decimal"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, lineHeight: '160%' }}
           >
             {section.items && section.items.map((item, i) => (
-              <li key={i} style={{ marginBottom: '12px' }}>
+              <li key={i} className="mb-3">
                 {item}
               </li>
             ))}
@@ -145,26 +119,11 @@ const BlogDetails = ({ blogPost }) => {
         return (
           <div
             key={index}
-            style={{
-              border: '2px dashed #0168B4',
-              borderRadius: '24px',
-              padding: '32px',
-              textAlign: 'center',
-              backgroundColor: 'transparent',
-              marginBottom: '24px',
-              marginTop: '24px',
-            }}
+            className="border-2 border-dashed border-[#0168B4] rounded-2xl p-6 sm:p-8 text-center my-6"
           >
             <h3
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: '500',
-                fontSize: '40px',
-                lineHeight: '120%',
-                letterSpacing: '0%',
-                color: '#0168B4',
-                textAlign: 'center',
-              }}
+              className="text-xl sm:text-2xl md:text-[40px] text-[#0168B4]"
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, lineHeight: '120%' }}
             >
               "{section.text}"
             </h3>
@@ -175,25 +134,9 @@ const BlogDetails = ({ blogPost }) => {
         return (
           <div
             key={index}
-            style={{
-              borderLeft: '4px solid #0168B4',
-              background: '#F3F8FD',
-              borderRadius: '18px',
-              padding: '20px 24px',
-              marginBottom: '24px',
-              marginTop: '12px',
-            }}
+            className="border-l-4 border-[#0168B4] bg-[#F3F8FD] rounded-lg px-4 py-3 my-3"
           >
-            <p
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: '500',
-                fontSize: '16px',
-                lineHeight: '160%',
-                color: '#0168B4',
-                margin: 0,
-              }}
-            >
+            <p className="text-sm sm:text-base text-[#0168B4] m-0" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, lineHeight: '160%' }}>
               {section.text}
             </p>
           </div>
@@ -204,25 +147,15 @@ const BlogDetails = ({ blogPost }) => {
         return (
           <div
             key={index}
-            style={{
-              height: '480px',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              maxWidth: '100%',
-              marginInline: 'auto',
-              marginBottom: '24px',
-              marginTop: '24px',
-            }}
+            className="w-full overflow-hidden rounded-[24px] mb-6 mt-6"
           >
-            <img
-              src={section.src || section.image}
-              alt={section.alt || section.text || "Section"}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
+            <div className="h-56 sm:h-72 md:h-[480px] w-full overflow-hidden rounded-[24px]">
+              <img
+                src={section.src || section.image}
+                alt={section.alt || section.text || "Section"}
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         );
 
@@ -232,35 +165,24 @@ const BlogDetails = ({ blogPost }) => {
   };
 
   return (
-    <section className="py-16 px-6 md:px-12 font-sans bg-background">
-      <div className="container mx-auto px-4 md:px-2 relative z-1 -mt-[200px]">
+    <section className="mt-45 md:mt-0 md:mt-60 md:py-16 px-4 sm:px-6 md:px-12 font-sans bg-background">
+      <div className="container mx-auto px-2 relative z-1 -mt-[160px] md:-mt-[200px]">
 
         {/* Blog Meta Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-8 pb-12">
 
           {/* Left Side: Title */}
           <div className="flex-1">
-            <h2
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: '500',
-                fontSize: '48px',
-                lineHeight: '120%',
-                letterSpacing: '0%',
-                textTransform: 'capitalize',
-                color: '#0A0A0A',
-                maxWidth: '700px'
-              }}
-            >
+            <h2 className="text-2xl sm:text-3xl md:text-[48px] font-semibold text-[#0A0A0A] max-w-full md:max-w-[700px]" style={{ fontFamily: "'Inter', sans-serif", lineHeight: '120%', textTransform: 'capitalize' }}>
               {title}
             </h2>
           </div>
 
           {/* Right Side: Author & Social Icons Group */}
-          <div className="flex flex-col items-start gap-10">
+          <div className="flex flex-col items-start gap-6 md:gap-10">
 
             {/* Author Info */}
-            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
               <img
                 src='/photo/avater.jpg'
                 alt="Author"
@@ -268,30 +190,14 @@ const BlogDetails = ({ blogPost }) => {
               />
               <div className="flex flex-col">
                 <span
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: '500',
-                    fontSize: '24px',
-                    lineHeight: '120%',
-                    letterSpacing: '0%',
-                    textTransform: 'capitalize',
-                    color: '#0F0F0F',
-                    display: 'block',
-                    marginBottom: '4px'
-                  }}
+                    className="text-base md:text-[24px] font-medium text-[#0F0F0F] mb-1"
+                    style={{ fontFamily: "'Inter', sans-serif", display: 'block', textTransform: 'capitalize' }}
                 >
                   {author || "Chung Hua"}
                 </span>
                 <span
-                  style={{
-                    fontFamily: "'Poppins', sans-serif",
-                    fontWeight: '400',
-                    fontSize: '16px',
-                    lineHeight: '150%',
-                    letterSpacing: '0%',
-                    color: '#0A0A0A',
-                    display: 'block'
-                  }}
+                    className="text-sm md:text-[16px] text-[#0A0A0A]"
+                    style={{ fontFamily: "'Poppins', sans-serif", display: 'block' }}
                 >
                   Posted on {date || "12 Sep 2025"}
                 </span>
@@ -319,26 +225,17 @@ const BlogDetails = ({ blogPost }) => {
         </div>
 
         {/* Hero Banner Image */}
-        <div
-          style={{
-            height: '620.84px',
-            borderRadius: '32px',
-            overflow: 'hidden',
-            maxWidth: '100%',
-            marginInline: 'auto',
-            marginBottom: '48px'
-          }}
-        >
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-full object-cover"
-            style={{
-              transition: 'transform 1s ease-out',
-            }}
-            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-          />
+        <div className="w-full mx-auto mb-12">
+          <div className="h-56 sm:h-72 md:h-[620.84px] w-full rounded-[32px] overflow-hidden">
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover"
+              style={{ transition: 'transform 1s ease-out' }}
+              onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+            />
+          </div>
         </div>
 
         {/* Dynamic Sections Rendering */}

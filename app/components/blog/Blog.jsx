@@ -41,7 +41,7 @@ const BlogPage = () => {
   }
 
   return (
-    <section className="py-10 md:py-16 px-4 sm:px-6 md:px-12 font-sans bg-background">
+    <section className="mt-16 py-10 md:py-16 px-4 sm:px-6 md:px-12 font-sans bg-background">
       <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 relative z-1 -mt-[80px] sm:-mt-[120px] md:-mt-[200px]">
 
         {/* Header Section */}

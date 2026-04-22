@@ -19,6 +19,7 @@ import WhoWeAre from "@/app/components/about-page/WhoWeAre";
 import CoreMission from "@/app/components/about-page/CoreMission";
 import WhatWeBelieve from "@/app/components/about-page/WhatWeBelieve";
 import Achievement2 from "@/app/components/common/Achievement2";
+import Hero3 from "@/app/components/common/Hero3";
 
 export default function AboutPage() {
   const [heroData, setHeroData] = useState(null);
@@ -39,7 +40,7 @@ export default function AboutPage() {
 
   return (
     <PublicLayout>
-      <Hero
+      <Hero3
         title={heroData?.title || "About HS+"}
         breadcrumb="Home › About Us"
         description={
@@ -48,7 +49,7 @@ export default function AboutPage() {
         }
       >
         <WorkWithUs />
-      </Hero>
+      </Hero3>
       <WhoWeAre />
       <Stats />
       <CoreMission />
