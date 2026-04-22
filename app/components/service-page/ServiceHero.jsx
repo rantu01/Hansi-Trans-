@@ -41,18 +41,18 @@ const ServiceHero = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-[450px] md:h-[600px] overflow-hidden flex items-center justify-center">
+    <section className="relative w-full h-[300px] sm:h-[360px] md:h-[600px] overflow-hidden flex items-center justify-center px-4 sm:px-6">
       <div className="relative w-full h-full max-w-7xl mx-auto">
         {/* Floating Service Pills - Using same logic as Hero */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none mt-12 md:mt-0">
           {services.map((service, index) => {
             // Matching the positions used in your HansiTrans hero section
             const positions = [
-              "top-[15%] left-[0%]",
-              "top-[35%] left-[20%]",
-              "top-[15%] right-[0%]",
-              "top-[35%] right-[20%]",
-              "bottom-[35%] left-1/2 -translate-x-1/2",
+              "top-[8%] left-4 md:top-[15%] md:left-[0%]",
+              "top-[30%] left-4 md:top-[35%] md:left-[20%]",
+              "top-[8%] right-4 md:top-[15%] md:right-[0%]",
+              "top-[30%] right-4 md:top-[35%] md:right-[20%]",
+              "bottom-[18%] left-1/2 -translate-x-1/2 md:bottom-[35%]",
             ];
 
             return (
@@ -65,35 +65,14 @@ const ServiceHero = () => {
                 className={`absolute ${positions[index % positions.length]} pointer-events-auto`}
               >
                 <button
-                  className="flex transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0"
-                  style={{
-                    width: "auto",
-                    height: "61px",
-                    padding: "12px 16px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "8px",
-                    borderRadius: "38px",
-                    background: "#0A0A0A",
-                    backdropFilter: "blur(186.9px)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    color: "#FFFFFF",
-                  }}
+                  className="flex transition-all duration-300 hover:scale-105 active:scale-95 flex-shrink-0 h-10 sm:h-12 md:h-[61px] px-3 sm:px-4 md:px-6 items-center gap-2 md:gap-3 rounded-[38px] bg-[#0A0A0A] border border-white/10 text-white"
+                  style={{ backdropFilter: "blur(186.9px)" }}
                 >
-                  <span
-                    style={{
-                      fontFamily: "Poppins, sans-serif",
-                      fontSize: "16px",
-                      fontWeight: "500",
-                      lineHeight: "160%",
-                      letterSpacing: "0.16px",
-                      color: "#FFF",
-                    }}
-                  >
+                  <span className="text-xs sm:text-sm md:text-base font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
                     {service.title}
                   </span>
-                  <span className="bg-gray-800 p-1.5 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Layers size={16} className="text-white" />
+                  <span className="bg-gray-800 p-1 rounded-full flex items-center justify-center flex-shrink-0 md:p-1.5">
+                    <Layers size={16} className="text-white w-3.5 h-3.5 md:w-4 md:h-4" />
                   </span>
                 </button>
               </motion.div>

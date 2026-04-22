@@ -35,7 +35,7 @@ const OurServices = () => {
     <section className="bg-[#F7F7F7] py-20 px-6 md:px-12">
       <div className="container mx-auto">
         {/* Header matching the provided image style */}
-        <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
           <div className="max-w-2xl">
             <div
               className="inline-flex items-center justify-center mb-6"
@@ -66,7 +66,7 @@ const OurServices = () => {
             <h2
               className="font-['Inter'] font-medium capitalize"
               style={{
-                fontSize: '60px',
+                fontSize: 'clamp(28px, 6vw, 60px)',
                 lineHeight: '120%',
                 color: '#0168B4',
                 letterSpacing: '0%'
@@ -80,7 +80,7 @@ const OurServices = () => {
               style={{
                 color: "#6B6B6B",
                 fontFamily: "Poppins, sans-serif",
-                fontSize: "15px",
+                fontSize: "clamp(14px, 3.5vw, 16px)",
                 lineHeight: "1.6",
               }}
             >
@@ -116,7 +116,7 @@ const OurServices = () => {
                   style={{
                     color: "#616161",
                     fontFamily: "Poppins, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "clamp(14px, 3.5vw, 16px)",
                     lineHeight: "1.6",
                   }}
                 >
@@ -130,7 +130,7 @@ const OurServices = () => {
                     style={{
                       color: "#090E2F",
                       fontFamily: "Poppins, sans-serif",
-                      fontSize: "18px",
+                      fontSize: "clamp(16px, 2.6vw, 18px)",
                       fontWeight: "600",
                     }}
                   >
@@ -153,7 +153,7 @@ const OurServices = () => {
                           style={{
                             color: "#0A0A0A",
                             fontFamily: "Poppins, sans-serif",
-                            fontSize: "15px",
+                            fontSize: "clamp(13px, 2.8vw, 15px)",
                             fontWeight: "400",
                             lineHeight: "1.4"
                           }}
@@ -169,28 +169,28 @@ const OurServices = () => {
                   href={`/services/${service.slug}`}
                   className="group inline-flex items-center justify-center transition-all duration-300 rounded-full"
                   style={{
-                    height: "52px",
-                    padding: "4px 4px 4px 20px",
+                    height: "clamp(40px, 4.5vw, 52px)",
+                    padding: "4px 4px 4px 16px",
                     gap: "12px",
                     background: "#0168B4",
                     color: "#FFF",
                     fontFamily: "Poppins, sans-serif",
-                    fontSize: "15px",
+                    fontSize: "clamp(14px, 3.2vw, 15px)",
                     fontWeight: "500",
                   }}
                 >
                   Explore Services
                   <span
                     className="bg-white rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
-                    style={{ width: "44px", height: "44px" }}
+                    style={{ width: "40px", height: "40px" }}
                   >
-                    <ArrowUpRight className="w-7 h-7 text-[#0168B4]" />
+                    <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#0168B4]" />
                   </span>
                 </Link>
               </div>
 
               {/* Image Container matching rounded borders in screenshot */}
-              <div className="flex-1 w-full h-[320px] md:h-[420px]">
+              <div className="flex-1 w-full h-[220px] sm:h-[280px] md:h-[420px]">
                 <div className="relative rounded-[35px] md:rounded-[50px] overflow-hidden h-full border-4 border-white/20">
                   <img
                     src={service.image}
