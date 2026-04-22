@@ -35,24 +35,14 @@ const FeatureGrid = ({ section = {}, supportFeatures = [] }) => {
                         alt="icon"
                         style={{ width: '20px', height: '20px', objectFit: 'contain' }}
                     />
-                    <span
-                        style={{
-                            color: '#404040', // var(--dark-5)
-                            fontFamily: 'var(--font-poppins), sans-serif',
-                            fontSize: '16px',
-                            fontStyle: 'normal',
-                            fontWeight: '500',
-                            lineHeight: '160%',
-                            letterSpacing: '0.16px',
-                        }}
-                    >
+                    <span className="text-[14px] sm:text-[16px] md:text-[16px] text-gray-700 font-medium" style={{ fontFamily: 'var(--font-poppins), sans-serif', lineHeight: '160%' }}>
                         {section.badgeText || "Core promise"}
                     </span>
                 </div>
 
                 {/* Right Badge: over 5k+ project */}
-                <div className="px-5 py-2 border border-gray-200 rounded-full shadow-sm">
-                    <span className="font-['Inter'] font-normal text-[16px] text-gray-500">
+                <div className="px-4 py-2 border border-gray-200 rounded-full shadow-sm">
+                    <span className="font-['Inter'] font-normal text-sm sm:text-[16px] text-gray-500">
                         {section.projectSummaryText || "over 5k+ project"}
                     </span>
                 </div>
@@ -60,14 +50,7 @@ const FeatureGrid = ({ section = {}, supportFeatures = [] }) => {
 
             {/* Main Description Text - Dynamic */}
             <div className="mb-10">
-                <p
-                    className="font-['Inter'] font-medium text-[#595959]"
-                    style={{
-                        fontSize: 'clamp(24px, 3.5vw, 32px)',
-                        lineHeight: '140%',
-                        letterSpacing: '0%',
-                    }}
-                >
+                <p className="font-['Inter'] font-medium text-[#595959] text-base sm:text-lg md:text-xl lg:text-[28px] leading-[1.4]">
                     {mainDescription}
                 </p>
             </div>
@@ -88,53 +71,17 @@ const FeatureGrid = ({ section = {}, supportFeatures = [] }) => {
                         }}
                     >
                         {/* Number/ID */}
-                        <span
-                            style={{
-                                fontFamily: "Inter, sans-serif",
-                                fontSize: "clamp(32px, 4vw, 48px)",
-                                fontWeight: "500",
-                                color: "#B0D0E8",
-                                lineHeight: "120%",
-                                letterSpacing: "0%",
-                                textTransform: "capitalize",
-                                display: "inline-block",
-                                marginBottom: "8px",
-                            }}
-                        >
+                        <span className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#B0D0E8] mb-2 inline-block">
                             {feature.id || String(index + 1).padStart(2, '0')}
                         </span>
 
                         {/* Title */}
-                        <h4
-                            style={{
-                                fontFamily: "Inter, sans-serif",
-                                fontSize: "clamp(18px, 2.5vw, 28px)",
-                                fontWeight: "500",
-                                color: "#0A0A0A",
-                                lineHeight: "120%",
-                                letterSpacing: "0%",
-                                textTransform: "capitalize",
-                                margin: "0",
-                                fontStyle: "normal",
-                            }}
-                        >
+                        <h4 className="text-lg sm:text-xl md:text-2xl font-medium text-[#0A0A0A] m-0">
                             {feature.title}
                         </h4>
 
                         {/* Description */}
-                        <p
-                            className="line-clamp-3"
-                            style={{
-                                fontFamily: "Poppins, sans-serif",
-                                fontSize: "clamp(13px, 1.5vw, 16px)",
-                                fontWeight: "400",
-                                color: "#616161",
-                                lineHeight: "150%",
-                                letterSpacing: "0%",
-                                margin: "0",
-                                fontStyle: "normal",
-                            }}
-                        >
+                        <p className="line-clamp-3 text-sm sm:text-base md:text-base text-[#616161]" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.5', margin: 0 }}>
                             {feature.description || feature.desc}
                         </p>
                     </div>
@@ -156,36 +103,10 @@ const FeatureGrid = ({ section = {}, supportFeatures = [] }) => {
                     border: "1px solid rgba(0,0,0,0.05)",
                 }}
             >
-                <h3
-                    style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "clamp(22px, 3.5vw, 40px)",
-                        fontWeight: "500",
-                        color: "#0A0A0A",
-                        lineHeight: "120%",
-                        letterSpacing: "0%",
-                        textAlign: "center",
-                        textTransform: "capitalize",
-                        margin: "0",
-                        fontStyle: "normal",
-                    }}
-                >
+                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-center text-[#0A0A0A] m-0">
                     {section.coverageTitle || "Coverage Across 40+ Languages"}
                 </h3>
-                <p
-                    className="max-w-3xl"
-                    style={{
-                        fontFamily: "Poppins, sans-serif",
-                        fontSize: "clamp(13px, 1.5vw, 18px)",
-                        fontWeight: "400",
-                        color: "#6B6B6B",
-                        lineHeight: "160%",
-                        letterSpacing: "0%",
-                        textAlign: "center",
-                        margin: "0 auto",
-                        fontStyle: "normal",
-                    }}
-                >
+                <p className="max-w-3xl text-sm sm:text-base md:text-lg text-center text-[#6B6B6B]" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.6', margin: '0 auto' }}>
                     {section.coverageDescription || "We support a wide range of global and regional languages so your projects can ship with confidence across markets."}
                 </p>
             </div>

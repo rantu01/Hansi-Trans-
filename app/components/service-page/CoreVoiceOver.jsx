@@ -52,54 +52,17 @@ const CoreVoiceOver = ({ mainSlug, subServices: prefetchedSubServices, section =
     <section id="service-sub-services" className="bg-background py-10 md:py-16 px-4 sm:px-6 md:px-12 font-sans scroll-mt-24">
       <div className="container mx-auto">
 
-        <div
-          className="flex items-start justify-start mb-10 md:mb-12"
-          style={{
-            width: 'fit-content',  // '100%' থেকে 'fit-content' করলাম
-            maxWidth: 'none',      // '636px' থেকে 'none' করলাম - এখন যত বড় text হবে তত বাড়বে
-            minHeight: '70px',
-            padding: '8px 16px',
-            gap: '8px',
-            borderRadius: '49px',
-            background: '#FFFFFF',
-            opacity: '1',
-            display: 'flex',
-            alignItems: 'center',
-            boxShadow: '0px 4px 20px rgba(0,0,0,0.05)',
-          }}
-        >
+        <div className="flex items-center justify-start mb-10 md:mb-12 inline-flex gap-3 bg-white px-3 py-2 rounded-[49px] " >
           {/* Icon Frame */}
-          <img
-            src="/Frame2.svg"
-            alt="Achievement Frame"
-            style={{
-              width: '36px',
-              height: '36px',
-              objectFit: 'contain',
-              flexShrink: 0,
-            }}
-          />
+          <img src="/Frame2.svg" alt="Achievement Frame" className="w-9 h-9 object-contain flex-shrink-0" />
 
-          <h2
-            className="capitalize"
-            style={{
-              color: '#0168B4',
-              fontFamily: 'Inter, sans-serif',
-              fontSize: 'clamp(18px, 3vw, 32px)',
-              fontWeight: '500',
-              lineHeight: '120%',
-              letterSpacing: '0%',
-              textAlign: 'center',
-              display: 'inline-block',
-              whiteSpace: 'nowrap',  // Text কে একই লাইনে রাখবে
-            }}
-          >
+          <h2 className="capitalize text-[#0168B4] font-medium text-lg sm:text-xl md:text-3xl md:py-3  leading-[1.15] whitespace-nowrap">
             {section.subServicesTitle || `Core ${mainSlug?.replace(/-/g, ' ')} Services`}
           </h2>
         </div>
 
         {section.subServicesDescription ? (
-          <p className="mx-auto mb-10 max-w-3xl text-center text-sm leading-7 text-slate-500 md:text-base">
+          <p className="mx-auto mb-10 max-w-3xl text-center text-sm sm:text-base text-slate-500 leading-7">
             {section.subServicesDescription}
           </p>
         ) : null}
@@ -130,68 +93,20 @@ const CoreVoiceOver = ({ mainSlug, subServices: prefetchedSubServices, section =
 
               {/* Content Wrapper */}
               <div className="flex flex-col flex-grow">
-                <h3
-                  className="transition-colors duration-300 group-hover:text-[#0168B4] mt-4 w-full"
-                  style={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: 'clamp(18px, 2vw, 24px)',
-                    fontWeight: '500',
-                    color: '#0F0F0F',
-                    lineHeight: '120%',
-                    letterSpacing: '0%',
-                    textTransform: 'capitalize',
-                    marginBottom: '12px',
-                  }}
-                >
+                <h3 className="transition-colors duration-300 group-hover:text-[#0168B4] mt-4 w-full text-base sm:text-lg md:text-xl font-medium text-[#0F0F0F] mb-3 capitalize">
                   {card.title}
                 </h3>
 
-                <p
-                  className="line-clamp-3 w-full"
-                  style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: '14px',
-                    fontWeight: '400',
-                    color: '#6B6B6B',
-                    lineHeight: '150%',
-                    letterSpacing: '0%',
-                    marginBottom: '24px',
-                    fontStyle: 'normal',
-                    flexGrow: 1,
-                  }}
-                >
+                <p className="line-clamp-3 w-full text-sm sm:text-base text-[#6B6B6B] mb-6 flex-grow" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.5' }}>
                   {card.description}
                 </p>
 
                 {/* Action Button */}
                 <div className="mt-auto">
-                  <Link
-                    href={`/services/${mainSlug}/${card.slug}`}
-                    className="group inline-flex items-center justify-center transition-all duration-300 whitespace-nowrap"
-                    style={{
-                      width: '100%',
-                      maxWidth: '198px',
-                      height: '52px',
-                      borderRadius: '100px',
-                      border: '1px solid #0168B4',
-                      padding: '4px 4px 4px 12px',
-                      gap: '8px',
-                      opacity: '1',
-                      fontFamily: 'Poppins, sans-serif',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      lineHeight: '160%',
-                      letterSpacing: '0.16px',
-                      color: '#0168B4',
-                      textDecoration: 'none',
-                    }}
-                  >
+                  <Link href={`/services/${mainSlug}/${card.slug}`} className="group inline-flex items-center justify-between transition-all duration-300 whitespace-nowrap w-full max-w-[198px] h-12 rounded-full border border-[#0168B4] px-4 gap-3 text-sm sm:text-base font-medium text-[#0168B4]">
                     <span>Explore Services</span>
-                    <div
-                      className="bg-[#0168B4] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
-                      style={{ width: '42px', height: '42px', flexShrink: 0 }}
-                    >
-                      <ArrowUpRight size={25} className="text-[#fff]" strokeWidth={2.5} />
+                    <div className="bg-[#0168B4] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45 w-10 h-10 flex-shrink-0">
+                      <ArrowUpRight size={20} className="text-white" strokeWidth={2.5} />
                     </div>
                   </Link>
                 </div>

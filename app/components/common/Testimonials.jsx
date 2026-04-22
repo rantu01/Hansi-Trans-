@@ -63,7 +63,7 @@ const Testimonials = () => {
   if (!isMounted || testimonials.length === 0) return null;
 
   return (
-    <section className="py-20 bg-[#F7F7F7] overflow-hidden rounded-t-[40px]">
+    <section className="py-20 my-6 bg-[#F7F7F7] overflow-hidden rounded-t-[40px]">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">

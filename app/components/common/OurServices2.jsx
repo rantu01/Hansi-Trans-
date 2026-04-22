@@ -32,7 +32,7 @@ const OurServices2 = () => {
   if (loading) return null;
 
   return (
-    <section className="bg-[#F7F7F7] py-20 px-6 md:px-12">
+    <section className="bg-[#F7F7F7] my-6 md:py-20 px-6 md:px-12 md:">
       <div className="container mx-auto">
         {/* Header matching the provided image style */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
@@ -63,27 +63,12 @@ const OurServices2 = () => {
                 Service
               </span>
             </div> */}
-            <h2
-              className="font-['Inter'] font-medium capitalize"
-              style={{
-                fontSize: '60px',
-                lineHeight: '120%',
-                color: '#0168B4',
-                letterSpacing: '0%'
-              }}
-            >
+            <h2 className="font-['Inter'] font-medium capitalize text-3xl sm:text-4xl md:text-5xl lg:text-[60px] leading-[1.15] text-[#0168B4]">
               Related More <br /> Service
             </h2>
           </div>
           <div className="max-w-lg">
-            <p
-              style={{
-                color: "#6B6B6B",
-                fontFamily: "Poppins, sans-serif",
-                fontSize: "15px",
-                lineHeight: "1.6",
-              }}
-            >
+            <p className="text-sm sm:text-base md:text-lg text-[#6B6B6B] leading-[1.6] font-['Poppins']">
               Our services help you create digital products and solve your problems objectively, strategy, technology and analysis.
             </p>
           </div>
@@ -102,38 +87,17 @@ const OurServices2 = () => {
             >
               {/* Text Content */}
               <div className="flex-1 space-y-6">
-                <h3
-                  style={{
-                    color: "#0A0A0A",
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "clamp(26px, 3vw, 42px)",
-                    fontWeight: "600",
-                  }}
-                >
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-semibold text-[#0A0A0A]">
                   {service.title}
                 </h3>
-                <p
-                  style={{
-                    color: "#616161",
-                    fontFamily: "Poppins, sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.6",
-                  }}
-                >
+                <p className="text-sm sm:text-base md:text-lg text-[#616161] leading-[1.6] font-['Poppins']">
                   {service.description}
                 </p>
 
                 {/* Features list based on image design */}
                 {/* Key Features Section */}
                 <div className="space-y-4 mb-10">
-                  <h4
-                    style={{
-                      color: "#090E2F",
-                      fontFamily: "Poppins, sans-serif",
-                      fontSize: "18px",
-                      fontWeight: "600",
-                    }}
-                  >
+                  <h4 className="text-base sm:text-lg font-semibold text-[#090E2F]">
                     Key Features:
                   </h4>
 
@@ -149,15 +113,7 @@ const OurServices2 = () => {
                           style={{ opacity: 0.8 }}
                         />
 
-                        <span
-                          style={{
-                            color: "#0A0A0A",
-                            fontFamily: "Poppins, sans-serif",
-                            fontSize: "15px",
-                            fontWeight: "400",
-                            lineHeight: "1.4"
-                          }}
-                        >
+                        <span className="text-sm sm:text-base text-[#0A0A0A] font-['Poppins'] leading-[1.4]">
                           {feature}
                         </span>
                       </li>
@@ -165,26 +121,10 @@ const OurServices2 = () => {
                   </ul>
                 </div>
 
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="group inline-flex items-center justify-center transition-all duration-300 rounded-full"
-                  style={{
-                    height: "52px",
-                    padding: "4px 4px 4px 20px",
-                    gap: "12px",
-                    background: "#0168B4",
-                    color: "#FFF",
-                    fontFamily: "Poppins, sans-serif",
-                    fontSize: "15px",
-                    fontWeight: "500",
-                  }}
-                >
-                  Explore Services
-                  <span
-                    className="bg-white rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-45"
-                    style={{ width: "44px", height: "44px" }}
-                  >
-                    <ArrowUpRight className="w-7 h-7 text-[#0168B4]" />
+                <Link href={`/services/${service.slug}`} className="group inline-flex items-center justify-between transition-all duration-300 rounded-full w-full sm:w-auto max-w-[280px] h-12 sm:h-14 bg-[#0168B4] text-white px-4 gap-3 text-sm sm:text-base font-medium">
+                  <span>Explore Services</span>
+                  <span className="bg-white rounded-full w-11 h-11 flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
+                    <ArrowUpRight className="w-5 h-5 text-[#0168B4]" />
                   </span>
                 </Link>
               </div>

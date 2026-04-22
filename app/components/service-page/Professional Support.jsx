@@ -10,48 +10,15 @@ const ProfessionalSupport = ({ data = [], section = {} }) => {
       <div className="container mx-auto">
 
         {/* Header Badge */}
-        <div
-          className="flex items-start justify-start mb-12"  // mx-auto removed, justify-center → justify-start, items-center → items-start
-          style={{
-            width: 'fit-content',     // auto width based on content
-            maxWidth: 'none',         // no width limit
-            minHeight: "70px",
-            padding: "8px 16px",
-            gap: "8px",
-            borderRadius: "49px",
-            background: "#FFFFFF",
-            opacity: "1",
-            display: "flex",
-            alignItems: "center",      // center থেকে start করলাম
-            boxShadow: "0px 4px 20px rgba(0,0,0,0.05)",
-          }}
-        >
-          <img
-            src="/Frame2.svg"
-            alt="Icon Frame"
-            style={{ width: "36px", height: "36px", objectFit: 'contain', flexShrink: 0 }}
-          />
-          <h2
-            className="capitalize"
-            style={{
-              color: "#0168B4",
-              fontFamily: "Inter, sans-serif",
-              fontSize: "clamp(18px, 3vw, 32px)",
-              fontWeight: "500",
-              lineHeight: "120%",
-              letterSpacing: "0%",
-              textAlign: "left",       // center থেকে left করলাম
-              display: "inline-block",
-              whiteSpace: "nowrap",    // text একই লাইনে থাকবে
-            }}
-          >
-            {/* {section.supportTitle || "Add-Ons"}  */}
+        <div className="flex items-center justify-start mb-12 inline-flex gap-3 bg-white px-3 py-2 md:py-3 rounded-[49px] shadow-md">
+          <img src="/Frame2.svg" alt="Icon Frame" className="w-9 h-9 object-contain flex-shrink-0" />
+          <h2 className="capitalize text-[#0168B4] font-medium text-lg sm:text-xl md:text-2xl leading-[1.15] whitespace-nowrap">
             Add-Ons
           </h2>
         </div>
 
         {section.supportDescription ? (
-          <p className="mx-auto mb-10 max-w-3xl text-center text-sm leading-7 text-slate-500 md:text-base">
+          <p className="mx-auto mb-10 max-w-3xl text-center text-sm sm:text-base text-slate-500 leading-7">
             {section.supportDescription}
           </p>
         ) : null}
@@ -77,35 +44,10 @@ const ProfessionalSupport = ({ data = [], section = {} }) => {
                     style={{ borderRadius: "16px" }}
                   />
                 </div>
-                <h3
-                  className="transition-colors duration-300 group-hover:text-[#0168B4]"
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "clamp(18px, 2vw, 24px)",
-                    fontWeight: "500",
-                    color: "#0F0F0F",
-                    lineHeight: "120%",
-                    letterSpacing: "0%",
-                    textTransform: "capitalize",
-                    marginBottom: "8px",
-                    fontStyle: "normal",
-                  }}
-                >
+                <h3 className="transition-colors duration-300 group-hover:text-[#0168B4] text-base sm:text-lg md:text-xl font-medium text-[#0F0F0F] mb-2 capitalize">
                   {card.title}
                 </h3>
-                <p
-                  className="line-clamp-4"
-                  style={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#6B6B6B",
-                    lineHeight: "150%",
-                    letterSpacing: "0%",
-                    marginBottom: "24px",
-                    fontStyle: "normal",
-                  }}
-                >
+                <p className="line-clamp-4 text-sm sm:text-base text-[#6B6B6B] mb-6" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.5' }}>
                   {card.description}
                 </p>
               </div>
