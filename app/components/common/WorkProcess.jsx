@@ -409,14 +409,14 @@ const WorkProcess = () => {
                     borderRadius: '24px',
                   }}
                 >
-                  <div className="w-full h-full flex items-center justify-center">
+                  <div className="w-full h-full flex items-center justify-center p-1">
                     {tool.image ? (
                       <img
                         src={tool.image}
                         alt={tool.name}
-                        className="w-full h-full object-contain"
+                        className="w-auto h-18 sm:h-18 md:h-full object-contain"
                         style={{
-                          filter: 'drop-shadow(0px 4px 10px rgba(0,0,0,0.05))' // Ektu depth dewar jonno
+                          filter: 'drop-shadow(0px 4px 10px rgba(0,0,0,0.05))'
                         }}
                       />
                     ) : (

@@ -115,9 +115,9 @@ const Testimonials = () => {
                     }`}
                   style={{
                     transform: isLeft
-                      ? "translateX(-110%)"
+                      ? (isMobile ? "translateX(-150%)" : "translateX(-110%)")
                       : isRight
-                        ? "translateX(110%)"
+                        ? (isMobile ? "translateX(150%)" : "translateX(110%)")
                         : "translateX(0)",
                   }}
                 >
