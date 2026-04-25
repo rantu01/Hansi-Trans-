@@ -4,24 +4,62 @@ import Hero from "@/app/components/common/Hero";
 import { API } from "@/app/config/api";
 import Hero3 from "@/app/components/common/Hero3";
 
-export default async function BlogPostPage({ params }) {
-  // Next.js 15+ এ params একটি Promise
-  const { slug } = await params;
-
-  let blogPost = null;
-
+async function getBlogBySlug(slug) {
   try {
     const res = await fetch(API.Blogs.getSingle(slug), {
-      cache: 'no-store' // প্রতিবার নতুন ডেটা দেখানোর জন্য
+      cache: 'no-store'
     });
     
     if (res.ok) {
       const data = await res.json();
-      blogPost = data?.data || data?.blog || data;
+      return data?.data || data?.blog || data;
     }
   } catch (error) {
     console.error("Error fetching blog details:", error);
   }
+  return null;
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const blogPost = await getBlogBySlug(slug);
+
+  if (!blogPost) {
+    return {
+      title: "Blog Post Not Found",
+      description: "The blog post you're looking for doesn't exist.",
+    };
+  }
+
+  // Use metaTags from API if available, otherwise generate from content
+  const metaTags = blogPost.metaTags || {};
+  const title = metaTags.title || blogPost.title || "Blog Post";
+  const description = metaTags.description || blogPost.description || "Read our latest blog post";
+  const keywords = metaTags.keywords || [];
+  const ogImage = metaTags.ogImage || blogPost.image || "";
+
+  return {
+    title: `${title} | Hansi Trans Blog`,
+    description,
+    keywords: keywords.length > 0 ? keywords.join(", ") : "blog, gaming, localization",
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      images: ogImage ? [{ url: ogImage, alt: title }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : [],
+    },
+  };
+}
+
+export default async function BlogPostPage({ params }) {
+  const { slug } = await params;
+  const blogPost = await getBlogBySlug(slug);
 
   if (!blogPost) {
     return (

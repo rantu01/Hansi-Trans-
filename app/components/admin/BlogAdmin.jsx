@@ -24,7 +24,7 @@ const normalizeSlug = (value = "") =>
     },
     {
       type: "paragraph",
-      text: "When people hear the word “branding,” many immediately think of logos, colors, and fonts. While those are important, branding is much deeper—it’s about perception, emotion, and connection. Branding answers a vital question in every customer’s mind:  “How does this make me feel?” When done right, branding shapes how customers experience your business—and how they remember it.",
+      text: "When people hear the word “branding,” many immediately think of logos, colors, and fonts. While those are important, branding is much deeper—it’s about perception, emotion, and connection. Branding answers a vital question in every customer’s mind: “How does this make me feel?” When done right, branding shapes how customers experience your business—and how they remember it.",
       items: [],
       src: null,
       alt: ""
@@ -102,7 +102,13 @@ const BlogAdmin = () => {
     category: "Games",
     filterTag: "Games",
     image: "",
-    author: "Hansi Trans Admin"
+    author: "Hansi Trans Admin",
+    metaTags: {
+      title: "",
+      description: "",
+      keywords: [],
+      ogImage: ""
+    }
   });
   const [preview, setPreview] = useState("");
   const dragSrc = useRef(null);
@@ -325,7 +331,8 @@ const BlogAdmin = () => {
   const clearForm = () => {
     setFormData({
       title: "", slug: "", description: "", sections: defaultSections,
-      category: "Games", filterTag: "Games", image: "", author: "Hansi Trans Admin"
+      category: "Games", filterTag: "Games", image: "", author: "Hansi Trans Admin",
+      metaTags: { title: "", description: "", keywords: [], ogImage: "" }
     });
     setPreview("");
     setEditId(null);
@@ -344,7 +351,8 @@ const BlogAdmin = () => {
       category: blog.category,
       filterTag: blog.filterTag,
       image: blog.image,
-      author: blog.author
+      author: blog.author,
+      metaTags: blog.metaTags || { title: "", description: "", keywords: [], ogImage: "" }
     });
     setPreview(blog.image);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -506,6 +514,72 @@ const BlogAdmin = () => {
                 value={formData.filterTag}
                 onChange={(e) => setFormData({ ...formData, filterTag: e.target.value })}
               />
+
+              {/* SEO/META TAGS SECTION */}
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <h4 className="text-sm font-black text-gray-700 mb-3">SEO Meta Tags</h4>
+                
+                <div className="space-y-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Meta Title</label>
+                    <input 
+                      className="w-full bg-gray-50 p-3 rounded-lg outline-none text-xs" 
+                      placeholder="SEO Title (50-60 characters)" 
+                      value={formData.metaTags?.title || ""}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        metaTags: { ...formData.metaTags, title: e.target.value } 
+                      })} 
+                      maxLength="60"
+                    />
+                    <span className="text-xs text-gray-400 ml-2">{(formData.metaTags?.title || "").length}/60</span>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Meta Description</label>
+                    <textarea 
+                      className="w-full bg-gray-50 p-3 rounded-lg outline-none text-xs h-16" 
+                      placeholder="SEO Description (150-160 characters)" 
+                      value={formData.metaTags?.description || ""}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        metaTags: { ...formData.metaTags, description: e.target.value } 
+                      })}
+                      maxLength="160"
+                    />
+                    <span className="text-xs text-gray-400 ml-2">{(formData.metaTags?.description || "").length}/160</span>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Keywords (comma separated)</label>
+                    <input 
+                      className="w-full bg-gray-50 p-3 rounded-lg outline-none text-xs" 
+                      placeholder="e.g. blog, tech, gaming" 
+                      value={(formData.metaTags?.keywords || []).join(", ")}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        metaTags: { 
+                          ...formData.metaTags, 
+                          keywords: e.target.value.split(",").map(k => k.trim()).filter(k => k) 
+                        } 
+                      })} 
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">OG Image URL</label>
+                    <input 
+                      className="w-full bg-gray-50 p-3 rounded-lg outline-none text-xs" 
+                      placeholder="Social media preview image URL" 
+                      value={formData.metaTags?.ogImage || ""}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        metaTags: { ...formData.metaTags, ogImage: e.target.value } 
+                      })} 
+                    />
+                  </div>
+                </div>
+              </div>
 
               <button 
                 disabled={uploading} 

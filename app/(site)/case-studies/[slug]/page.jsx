@@ -51,6 +51,43 @@ async function getCaseStudyBySlug(slug) {
   }
 }
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const caseStudy = await getCaseStudyBySlug(slug);
+
+  if (!caseStudy) {
+    return {
+      title: "Case Study Not Found",
+      description: "The case study you're looking for doesn't exist.",
+    };
+  }
+
+  // Use metaTags from API if available, otherwise generate from content
+  const metaTags = caseStudy.metaTags || {};
+  const title = metaTags.title || caseStudy.title || "Case Study";
+  const description = metaTags.description || caseStudy.description || "Read our latest case study";
+  const keywords = metaTags.keywords || [];
+  const ogImage = metaTags.ogImage || caseStudy.image || "";
+
+  return {
+    title: `${title} | Hansi Trans Case Studies`,
+    description,
+    keywords: keywords.length > 0 ? keywords.join(", ") : "case study, gaming, localization",
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      images: ogImage ? [{ url: ogImage, alt: title }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : [],
+    },
+  };
+}
+
 export default async function CaseStudyPage({ params }) {
   const { slug } = await params;
 

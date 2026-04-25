@@ -113,6 +113,12 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
   const [stats, setStats] = useState([]);
   const [detailsContent, setDetailsContent] = useState(defaultDetailsContent);
   const [uploading, setUploading] = useState(false);
+  const [metaTags, setMetaTags] = useState({
+    title: "",
+    description: "",
+    keywords: [],
+    ogImage: ""
+  });
 
   useEffect(() => {
     if (editing) {
@@ -125,6 +131,10 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
       setPreview(editing.image || "");
       setStats(editing.stats || []);
       setDetailsContent(mergeDetailsContent(editing.detailsContent || {}));
+      setMetaTags(editing.metaTags || { title: "", description: "", keywords: [], ogImage: "" });
+    } else {
+      // Reset metaTags when not editing
+      setMetaTags({ title: "", description: "", keywords: [], ogImage: "" });
     }
   }, [editing]);
 
@@ -250,6 +260,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
       isReverse,
       stats,
       detailsContent,
+      metaTags,
     };
 
     const url = editing ? `${API.featuredCaseStudies}/${editing._id}` : API.featuredCaseStudies;
@@ -275,6 +286,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
     setIsReverse(false);
     setStats([]);
     setDetailsContent(defaultDetailsContent);
+    setMetaTags({ title: "", description: "", keywords: [], ogImage: "" });
     if (clearEdit) clearEdit();
   };
 
@@ -541,6 +553,60 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
             value={detailsContent.conclusion.text}
             onChange={(e) => setDetailsContent((prev) => ({ ...prev, conclusion: { ...prev.conclusion, text: e.target.value } }))}
           />
+        </div>
+      </div>
+
+      {/* SEO/META TAGS SECTION */}
+      <div className="border-t pt-4 space-y-4 bg-gray-50 p-4 rounded-lg">
+        <h3 className="font-bold text-gray-700 mb-4">SEO Meta Tags</h3>
+        
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Meta Title</label>
+            <input 
+              className="border p-2.5 w-full rounded-lg outline-none text-xs" 
+              placeholder="SEO Title (50-60 characters)" 
+              value={metaTags.title || ""}
+              onChange={(e) => setMetaTags({ ...metaTags, title: e.target.value })}
+              maxLength="60"
+            />
+            <span className="text-xs text-gray-400 ml-2">{(metaTags.title || "").length}/60</span>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Meta Description</label>
+            <textarea 
+              className="border p-2.5 w-full rounded-lg outline-none text-xs h-16" 
+              placeholder="SEO Description (150-160 characters)" 
+              value={metaTags.description || ""}
+              onChange={(e) => setMetaTags({ ...metaTags, description: e.target.value })}
+              maxLength="160"
+            />
+            <span className="text-xs text-gray-400 ml-2">{(metaTags.description || "").length}/160</span>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Keywords (comma separated)</label>
+            <input 
+              className="border p-2.5 w-full rounded-lg outline-none text-xs" 
+              placeholder="e.g. case study, gaming, localization" 
+              value={(metaTags.keywords || []).join(", ")}
+              onChange={(e) => setMetaTags({ 
+                ...metaTags, 
+                keywords: e.target.value.split(",").map(k => k.trim()).filter(k => k) 
+              })}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-500 uppercase ml-1">OG Image URL</label>
+            <input 
+              className="border p-2.5 w-full rounded-lg outline-none text-xs" 
+              placeholder="Social media preview image URL" 
+              value={metaTags.ogImage || ""}
+              onChange={(e) => setMetaTags({ ...metaTags, ogImage: e.target.value })}
+            />
+          </div>
         </div>
       </div>
 
