@@ -52,7 +52,7 @@ const CaseStudies3 = () => {
   if (slides.length === 0) return null;
 
   return (
-    <section className="overflow-hidden relative mt-[-200px] z-1 p-4 md:p-0">
+    <section className="overflow-hidden relative mt-0 md:mt-[-200px] z-1 p-4 md:p-0">
 
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6 container mx-auto">
