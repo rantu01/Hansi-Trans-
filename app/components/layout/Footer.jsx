@@ -261,7 +261,7 @@ const Footer = () => {
           </div>
 
           {/* Navigation Links */}
-          <div className="md:col-span-2">
+          <div className="hidden md:block md:col-span-2">
             <h4
               className="mb-8"
               style={{
@@ -303,8 +303,7 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-
-          <div className="md:col-span-2">
+          <div className="hidden md:block md:col-span-2">
             <h4
               className="mb-8"
               style={{
@@ -347,16 +346,107 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* Make Company and Utilities side-by-side on mobile: use flex on small screens */}
+          <div className="md:hidden col-span-1 sm:col-span-2 w-full">
+            <div className="flex flex-col flex-row gap-8">
+              <div className="w-1/2">
+                <h4
+                  className="mb-8"
+                  style={{
+                    color: '#0A0A0A',
+                    fontFamily: 'var(--font-poppins), sans-serif',
+                    fontSize: '18px',
+                    fontStyle: 'normal',
+                    fontWeight: '500',
+                    lineHeight: '150%',
+                  }}
+                >
+                  Company
+                </h4>
+                <ul className="space-y-5">
+                  {[
+                    { name: "Home", href: "/" },
+                    { name: "About us", href: "/about" },
+                    { name: "Work", href: "/case-studies" },
+                    { name: "Blog", href: "/blog" },
+                    { name: "Shop", href: "/shop" },
+                    { name: "Contact Us", href: "/contact" },
+                  ].map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="transition-colors hover:text-[#0168B4]"
+                        style={{
+                          color: '#0A0A0A',
+                          fontFamily: 'var(--font-poppins), sans-serif',
+                          fontSize: '16px',
+                          fontStyle: 'normal',
+                          fontWeight: '400',
+                          lineHeight: '160%',
+                        }}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="w-1/2">
+                <h4
+                  className="mb-8"
+                  style={{
+                    color: '#0A0A0A',
+                    fontFamily: 'var(--font-poppins), sans-serif',
+                    fontSize: '18px',
+                    fontStyle: 'normal',
+                    fontWeight: '500',
+                    lineHeight: '150%',
+                  }}
+                >
+                  Utilities
+                </h4>
+                <ul className="space-y-5">
+                  {[
+                    { name: "Privacy & policy", href: "/privacy-policy" },
+                    { name: "Terms Condition", href: "/terms-condition" },
+                    { name: "Coming Soon", href: "/coming-soon" },
+                    { name: "Coming-Soon 2", href: "/coming-soon2" },
+                    { name: "License", href: "/license" },
+                    { name: "404 page", href: "/404" },
+                  ].map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="transition-colors hover:text-[#0168B4]"
+                        style={{
+                          color: '#0A0A0A',
+                          fontFamily: 'var(--font-poppins), sans-serif',
+                          fontSize: '16px',
+                          fontStyle: 'normal',
+                          fontWeight: '400',
+                          lineHeight: '160%',
+                        }}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* Social and Location */}
           <div className="md:col-span-3">
             <h4
               style={{
                 color: '#0A0A0A',
-                fontFamily: '"Sequel Sans", sans-serif',
-                fontSize: '16px',
-                fontWeight: '310',
-                lineHeight: '160%',
-                letterSpacing: '0.128px'
+                    fontFamily: 'var(--font-poppins), sans-serif',
+                    fontSize: '18px',
+                    fontStyle: 'normal',
+                    fontWeight: '500',
+                    lineHeight: '150%',
               }}
               className="mb-6"
             >
@@ -392,43 +482,86 @@ const Footer = () => {
 
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
+                {/* Desktop: ellipse + marker above text */}
                 <div
-                  className="relative flex items-center justify-center overflow-visible"
+                  className="relative hidden md:flex items-center justify-center overflow-visible"
                   style={{
                     width: '76px',   // Background image width
                     height: '76px',  // Background image height
                   }}
                 >
-                  {/* Background Circle Image (Ellipse) */}
                   <img
                     src="/Ellipse (1).png"
                     alt="bg-circle"
                     className="absolute inset-0 w-full h-full object-contain"
                   />
-
-                  {/* Marker Icon Image */}
                   <img
                     src="/marker-1.png"
                     alt="location-marker"
                     className="relative z-10"
                     style={{
-                      width: '40px', // Exact icon width
-                      height: '40px', // Exact icon height
+                      width: '40px',
+                      height: '40px',
                       objectFit: 'contain'
                     }}
                   />
                 </div>
 
-                <div>
+                {/* Mobile: marker left of text */}
+                <div className="md:hidden flex items-start gap-4">
+                  <div style={{ width: '48px', height: '48px' }}>
+                    <img src="/marker-1.png" alt="marker" className="w-full h-full object-contain" />
+                  </div>
+                  <div>
+                    <p
+                      className="mb-1"
+                      style={{
+                        color: '#6B6B6B',
+                        fontFamily: 'var(--font-poppins), sans-serif',
+                        fontSize: '18px',
+                        fontStyle: 'normal',
+                        fontWeight: '500',
+                        lineHeight: '150%',
+                      }}
+                    >
+                      Drop in us
+                    </p>
+                    <Link
+                      href="#"
+                      className="flex items-center gap-2 hover:text-[#0168B4] group transition-colors mt-2"
+                      style={{
+                        color: '#0F0F0F',
+                        fontFamily: 'var(--font-inter), sans-serif',
+                        fontSize: '20px',
+                        fontStyle: 'normal',
+                        fontWeight: '500',
+                        lineHeight: '120%',
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      Get Directions
+                      <ArrowRight
+                        className="transition-transform group-hover:translate-x-1"
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          color: '#6B6B6B',
+                        }}
+                      />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="hidden md:block">
                   <p
                     className="mb-2"
                     style={{
-                      color: '#6B6B6B',                         // Exact spec color
+                      color: '#6B6B6B',
                       fontFamily: 'var(--font-poppins), sans-serif',
-                      fontSize: '18px',                        // Updated to 18px
+                      fontSize: '18px',
                       fontStyle: 'normal',
-                      fontWeight: '500',                        // Medium weight
-                      lineHeight: '150%',                      // 27px
+                      fontWeight: '500',
+                      lineHeight: '150%',
                     }}
                   >
                     Drop in us
@@ -437,24 +570,23 @@ const Footer = () => {
                     href="#"
                     className="flex items-center gap-2 hover:text-[#0168B4] group transition-colors mt-6"
                     style={{
-                      color: '#0F0F0F',                         // Exact spec color
-                      fontFamily: 'var(--font-inter), sans-serif', // Heading/H6 Font Family
-                      fontSize: '24px',                        // Exact spec size
-                      fontStyle: 'normal',                     // Normal style
-                      fontWeight: '500',                        // Medium weight
-                      lineHeight: '120%',                      // 28.8px
-                      textTransform: 'capitalize'               // Capitalize
+                      color: '#0F0F0F',
+                      fontFamily: 'var(--font-inter), sans-serif',
+                      fontSize: '24px',
+                      fontStyle: 'normal',
+                      fontWeight: '500',
+                      lineHeight: '120%',
+                      textTransform: 'capitalize'
                     }}
                   >
                     Get Directions
-                    {/* Arrow icon with a slight hover animation */}
                     <ArrowRight
                       className="transition-transform group-hover:translate-x-1"
                       style={{
-                        width: '25px',         // Exact width spec
-                        height: '25px',        // Exact height spec
-                        aspectRatio: '19/20',  // Maintain aspect ratio
-                        color: '#6B6B6B',        // Fill color as per spec
+                        width: '25px',
+                        height: '25px',
+                        aspectRatio: '19/20',
+                        color: '#6B6B6B',
                       }}
                     />
                   </Link>
@@ -479,33 +611,69 @@ const Footer = () => {
               lineHeight: '150%'
             }}
           >
-            <p>All Rights Reserved.</p>
+            <p className="text-start">All Rights Reserved.</p>
             <p>
               Designed by <span className="font-medium">HANSI TRANS+</span> | Powered by
             </p>
           </div>
 
-          <div className="flex gap-8">
-            {[
-              { name: "Privacy policy", href: "/privacy" },
-              { name: "Terms of service", href: "/terms" },
-            ].map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="hover:text-[#0168B4] transition-colors"
-                style={{
-                  color: '#0A0A0A',                         // Exact spec color
-                  fontFamily: 'var(--font-poppins), sans-serif',
-                  fontSize: '16px',                        // Updated to 16px
-                  fontStyle: 'normal',                     // Normal style
-                  fontWeight: '400',                        // Regular weight
-                  lineHeight: '150%',                      // 24px
-                }}
-              >
-                {link.name}
-              </Link>
-            ))}
+          <div className="flex w-full md:w-auto">
+            <div className="w-full">
+              <div className="hidden md:flex gap-8">
+                {[
+                  { name: "Privacy policy", href: "/privacy" },
+                  { name: "Terms of service", href: "/terms" },
+                ].map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="hover:text-[#0168B4] transition-colors"
+                    style={{
+                      color: '#0A0A0A',
+                      fontFamily: 'var(--font-poppins), sans-serif',
+                      fontSize: '16px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      lineHeight: '150%',
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Mobile: justify-between */}
+              <div className="md:hidden flex justify-between w-full">
+                <Link
+                  href="/privacy"
+                  className="hover:text-[#0168B4] transition-colors"
+                  style={{
+                    color: '#0A0A0A',
+                    fontFamily: 'var(--font-poppins), sans-serif',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    lineHeight: '150%',
+                  }}
+                >
+                  Privacy policy
+                </Link>
+                <Link
+                  href="/terms"
+                  className="hover:text-[#0168B4] transition-colors"
+                  style={{
+                    color: '#0A0A0A',
+                    fontFamily: 'var(--font-poppins), sans-serif',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    lineHeight: '150%',
+                  }}
+                >
+                  Terms of service
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
