@@ -181,7 +181,7 @@ const WorkProcess = () => {
 
                 {/* Icon Container with Hover Animation */}
                 <motion.div
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16"
                   // Ekhane variants define kora holo
                   variants={{
                     initial: { scale: 1, rotate: 0 },
@@ -198,8 +198,6 @@ const WorkProcess = () => {
                   }}
                   // Parent er whileHover="hover" thakle eta auto trigger hobe
                   style={{
-                    height: '64px',
-                    width: '64px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
@@ -207,15 +205,13 @@ const WorkProcess = () => {
                 >
                   {IconComponent ? (
                     <IconComponent
-                      size={52}
                       strokeWidth={3}
-                      className="text-[#0168B4]"
+                      className="text-[#0168B4] w-10 h-10 md:w-14 md:h-14"
                     />
                   ) : (
                     <Settings
-                      size={52}
                       strokeWidth={3}
-                      className="text-[#0168B4] opacity-20"
+                      className="text-[#0168B4] opacity-20 w-10 h-10 md:w-14 md:h-14"
                     />
                   )}
                 </motion.div>
