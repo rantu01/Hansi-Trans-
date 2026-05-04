@@ -82,7 +82,7 @@ const WhyChooseUs = () => {
               />
               <span
                 style={{
-                  color: '#404040', // var(--dark-5)
+                  color: '#404040',
                   fontFamily: 'var(--font-poppins), sans-serif',
                   fontSize: '16px',
                   fontStyle: 'normal',
@@ -123,15 +123,13 @@ const WhyChooseUs = () => {
         </div>
 
         {/* Main Grid Layout */}
-        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-8  mx-auto items-center">
+        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-8 mx-auto items-center">
 
           {/* Left Large Card */}
           <motion.div
             whileHover={{ y: -8 }}
-            className="shadow-2xl cursor-pointer w-full max-w-[346px] md:min-h-[527px] p-6 md:p-8 rounded-[35px] bg-white flex flex-col justify-between items-start"
-            style={{
-              background: '#FFFFFF'
-            }}
+            className="shadow-2xl cursor-pointer w-full max-w-[346px] md:min-h-[571px] p-6 md:p-8 rounded-[35px] bg-white flex flex-col justify-between items-start"
+            style={{ background: '#FFFFFF' }}
           >
             <div className="text-left w-full">
               <h3
@@ -158,34 +156,33 @@ const WhyChooseUs = () => {
               </p>
             </div>
 
-            <div className="mt-6 md:mt-10">
-              {/* LeftIcon er poriborrte Vector.png */}
+            {/* ✅ FIX: mobile-e center, desktop-e right */}
+            <div className="mt-6 md:mt-10 flex justify-center md:justify-end w-full">
               <img
                 src="/Vector.png"
                 alt="icon"
-                style={{
-                  width: '60px',  // w-14 equivalent
-                  height: '60px', // h-14 equivalent
-                  objectFit: 'contain'
-                }}
+                className="w-10 h-10 md:w-14 md:h-14 object-contain"
               />
             </div>
           </motion.div>
 
           {/* Middle Section */}
-          <div className="flex flex-col gap-[32px] w-full lg:w-[500px]">
+          {/* ✅ FIX: w-full max-w-[346px] lg:max-w-none lg:w-[500px] — mobile-e same width as left/right */}
+          <div className="flex flex-col gap-[32px] w-full max-w-[346px] lg:max-w-none lg:w-[500px]">
+
             {/* Middle Top Card */}
+            {/* ✅ FIX: flex class add kora hoyeche, icon center hobe mobile-e */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="shadow-xl cursor-pointer flex-col sm:flex-row w-full p-6 md:h-[247.5px] md:p-8 rounded-[32px] bg-white"
+              className="shadow-xl cursor-pointer flex flex-col w-full p-6 md:h-[271px] md:p-8 rounded-[32px] bg-white"
               style={{ gap: '32px' }}
             >
-              <div className="shrink-0">
-                {/* MidTopIcon er poriborrte Frame (1).png */}
+              {/* ✅ FIX: mobile-e items-center (icon center), desktop-e items-start */}
+              <div className="shrink-0 flex justify-center md:justify-start">
                 <img
                   src="/Frame (1).png"
                   alt="icon-top"
-                  style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+                  className="w-10 h-10 md:w-14 md:h-14 object-contain mb-4 md:mb-0"
                 />
               </div>
               <div className="text-left">
@@ -210,15 +207,15 @@ const WhyChooseUs = () => {
             {/* Middle Bottom Card */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="shadow-xl cursor-pointer flex-col sm:flex-row w-full p-6 md:h-[247.5px] md:p-8 rounded-[32px] bg-white"
+              className="shadow-xl cursor-pointer flex flex-col w-full p-6 md:h-[271px] md:p-8 rounded-[32px] bg-white"
               style={{ gap: '32px' }}
             >
-              <div className="shrink-0">
-                {/* MidBottomIcon er poriborrte Frame (2).png */}
+              {/* ✅ FIX: mobile-e center, desktop-e start */}
+              <div className="shrink-0 flex justify-center md:justify-start">
                 <img
                   src="/Frame (2).png"
                   alt="icon-bottom"
-                  style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+                  className="w-10 h-10 md:w-14 md:h-14 object-contain mb-4 md:mb-0"
                 />
               </div>
               <div className="text-left">
@@ -244,7 +241,7 @@ const WhyChooseUs = () => {
           {/* Right Large Card */}
           <motion.div
             whileHover={{ y: -8 }}
-            className="shadow-2xl cursor-pointer w-full max-w-[346px] md:min-h-[527px] p-6 md:p-8 rounded-[35px] bg-white flex flex-col justify-between items-start"
+            className="shadow-2xl cursor-pointer w-full max-w-[346px] md:min-h-[571px] p-6 md:p-8 rounded-[35px] bg-white flex flex-col justify-between items-start"
             style={{ background: '#FFFFFF' }}
           >
             <div className="text-left w-full">
@@ -272,20 +269,14 @@ const WhyChooseUs = () => {
               </p>
             </div>
 
-            <div className="mt-6 md:mt-10">
+            {/* ✅ FIX: mobile-e center, desktop-e right */}
+            <div className="mt-6 md:mt-10 flex justify-center md:justify-end w-full">
               <div className="relative">
-                {/* RightIcon er poriborrte Frame (3).png */}
                 <img
                   src="/Frame (3).png"
                   alt="right-icon"
-                  style={{
-                    width: '60px', // w-14 equivalent
-                    height: '60px',
-                    objectFit: 'contain'
-                  }}
+                  className="w-10 h-10 md:w-14 md:h-14 object-contain"
                 />
-
-                {/* Badge thik image er uporei thakbe */}
                 {right?.badge && (
                   <span className="absolute -top-1 -right-2 bg-[#0168B4] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {right.badge}
@@ -294,6 +285,7 @@ const WhyChooseUs = () => {
               </div>
             </div>
           </motion.div>
+
         </div>
       </div>
     </section>
