@@ -178,7 +178,7 @@ const FeaturedCaseStudies3 = () => {
 
                 {/* Stats Section */}
                 <div className="space-y-6 mb-10">
-                  {item.stats && item.stats.map((stat, i) => (
+                  {(item.stats || []).slice(0, 3).map((stat, i) => (
                     <div
                       key={i}
                       className="flex items-center gap-6 border-b border-[#D9D9D9] pb-4 last:border-0"
@@ -223,13 +223,13 @@ const FeaturedCaseStudies3 = () => {
                       letterSpacing: '0.16px', // 1% spacing
                     }}
                   >
-                    Tencent Games company
+                    {item.detailsContent?.publisher?.name || item.tag || item.title || "Company"}
                   </div>
 
                   <div className="flex items-center">
                     <img
-                      src="/photo/images.png" // আপনার লোগো ফাইলটির সঠিক পাথ এখানে দিন
-                      alt="Tencent Logo"
+                      src={item.logo || item.detailsContent?.publisher?.logo || "/photo/images.png"}
+                      alt={item.detailsContent?.publisher?.name || item.title || "Publisher Logo"}
                       className="h-8 object-contain"
                       onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     />

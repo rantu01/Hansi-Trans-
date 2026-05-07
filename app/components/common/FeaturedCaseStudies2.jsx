@@ -200,11 +200,11 @@ const FeaturedCaseStudies2 = () => {
                 } bg-white rounded-[40px] overflow-hidden group`}
             >
               {/* Image Section */}
-              <div className="w-full lg:w-1/2 h-[350px] md:h-[700px]  lg:h-[720] overflow-hidden">
+              <div className="w-full lg:w-1/2 h-[350px] md:h-auto overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-110"
+                  className="w-full h-full object-cover object-bottom transition-transform duration-700 ease-in-out hover:scale-110"
                   onError={(e) => { e.currentTarget.src = "/fallback-case.png"; }}
                 />
               </div>
@@ -256,7 +256,7 @@ const FeaturedCaseStudies2 = () => {
 
                 {/* Stats Section */}
                 <div className="space-y-6 mb-10">
-                  {item.stats && item.stats.map((stat, i) => (
+                  {(item.stats || []).slice(0, 3).map((stat, i) => (
                     <div
                       key={i}
                       className="flex items-center gap-6 border-b border-[#D9D9D9] pb-4 last:border-0"
@@ -302,13 +302,13 @@ const FeaturedCaseStudies2 = () => {
                       letterSpacing: '0.16px', // 1% spacing
                     }}
                   >
-                    Tencent Games company
+                    {item.detailsContent?.publisher?.name || item.tag || item.title || "Company"}
                   </div>
 
                   <div className="flex items-center">
                     <img
-                      src="/photo/images.png" // আপনার লোগো ফাইলটির সঠিক পাথ এখানে দিন
-                      alt="Tencent Logo"
+                      src={item.logo || item.detailsContent?.publisher?.logo || "/photo/images.png"}
+                      alt={item.detailsContent?.publisher?.name || item.title || "Publisher Logo"}
                       className="h-8 object-contain"
                       onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     />

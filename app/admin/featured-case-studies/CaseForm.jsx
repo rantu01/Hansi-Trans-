@@ -3,7 +3,29 @@
 import { API } from "@/app/config/api";
 import { useEffect, useState } from "react";
 
+const createFlexibleSectionCard = () => ({
+  title: "",
+  description: "",
+});
+
+const createFlexibleSection = () => ({
+  type: "text",
+  title: "",
+  text: "",
+  image: "",
+  layout: "image-left",
+  variant: "grid",
+  points: [""],
+  cards: [createFlexibleSectionCard()],
+  quote: "",
+  caption: "",
+});
+
 const defaultDetailsContent = {
+  publisher: {
+    name: "",
+    logo: "",
+  },
   introduction: {
     title: "Introduction",
     text: "Expanding your game into Asian markets is an exciting opportunity—but without proper localization, even the best game can fail to connect. This guide walks you through cultural adaptation, language challenges, voice-over best practices, and marketing strategies to make your game a success in China, Japan, Korea, and Southeast Asia.",
@@ -51,6 +73,7 @@ const defaultDetailsContent = {
       { title: "User Experience (UX)", description: "This includes your logo, color palette, typography, and imagery. Consistency here builds recognition and trust." },
     ],
   },
+  sections: [createFlexibleSection()],
   bannerImage: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=800",
   quoteText: "\"People will forget what you said, but they'll remember how your brand made them feel.\"",
   conclusion: {
@@ -62,6 +85,10 @@ const defaultDetailsContent = {
 const mergeDetailsContent = (input = {}) => ({
   ...defaultDetailsContent,
   ...input,
+  publisher: {
+    ...defaultDetailsContent.publisher,
+    ...(input.publisher || {}),
+  },
   introduction: {
     ...defaultDetailsContent.introduction,
     ...(input.introduction || {}),
@@ -94,6 +121,9 @@ const mergeDetailsContent = (input = {}) => ({
       ? input.richSectionTwo.cards
       : defaultDetailsContent.richSectionTwo.cards,
   },
+  sections: Array.isArray(input.sections)
+    ? input.sections
+    : defaultDetailsContent.sections,
   conclusion: {
     ...defaultDetailsContent.conclusion,
     ...(input.conclusion || {}),
@@ -109,6 +139,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
   const [tag, setTag] = useState("");
   const [isReverse, setIsReverse] = useState(false);
   const [image, setImage] = useState("");
+  const [logo, setLogo] = useState("");
   const [preview, setPreview] = useState("");
   const [stats, setStats] = useState([]);
   const [detailsContent, setDetailsContent] = useState(defaultDetailsContent);
@@ -128,6 +159,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
       setTag(editing.tag || "");
       setIsReverse(editing.isReverse || false);
       setImage(editing.image || "");
+      setLogo(editing.logo || editing.detailsContent?.publisher?.logo || "");
       setPreview(editing.image || "");
       setStats(editing.stats || []);
       setDetailsContent(mergeDetailsContent(editing.detailsContent || {}));
@@ -247,6 +279,86 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
     }));
   };
 
+  const addFlexibleSection = () => {
+    setDetailsContent((prev) => ({
+      ...prev,
+      sections: [...(prev.sections || []), createFlexibleSection()],
+    }));
+  };
+
+  const removeFlexibleSection = (index) => {
+    setDetailsContent((prev) => ({
+      ...prev,
+      sections: (prev.sections || []).filter((_, itemIndex) => itemIndex !== index),
+    }));
+  };
+
+  const moveFlexibleSection = (fromIndex, direction) => {
+    setDetailsContent((prev) => {
+      const sections = [...(prev.sections || [])];
+      const toIndex = fromIndex + direction;
+      if (toIndex < 0 || toIndex >= sections.length) {
+        return prev;
+      }
+
+      const [movedSection] = sections.splice(fromIndex, 1);
+      sections.splice(toIndex, 0, movedSection);
+      return { ...prev, sections };
+    });
+  };
+
+  const updateFlexibleSection = (index, updater) => {
+    setDetailsContent((prev) => {
+      const sections = [...(prev.sections || [])];
+      sections[index] = updater(sections[index] || createFlexibleSection());
+      return { ...prev, sections };
+    });
+  };
+
+  const updateFlexibleSectionPoint = (sectionIndex, pointIndex, value) => {
+    updateFlexibleSection(sectionIndex, (section) => {
+      const points = [...(section.points || [])];
+      points[pointIndex] = value;
+      return { ...section, points };
+    });
+  };
+
+  const addFlexibleSectionPoint = (sectionIndex) => {
+    updateFlexibleSection(sectionIndex, (section) => ({
+      ...section,
+      points: [...(section.points || []), ""],
+    }));
+  };
+
+  const removeFlexibleSectionPoint = (sectionIndex, pointIndex) => {
+    updateFlexibleSection(sectionIndex, (section) => ({
+      ...section,
+      points: (section.points || []).filter((_, idx) => idx !== pointIndex),
+    }));
+  };
+
+  const addFlexibleSectionCard = (sectionIndex) => {
+    updateFlexibleSection(sectionIndex, (section) => ({
+      ...section,
+      cards: [...(section.cards || []), createFlexibleSectionCard()],
+    }));
+  };
+
+  const updateFlexibleSectionCard = (sectionIndex, cardIndex, field, value) => {
+    updateFlexibleSection(sectionIndex, (section) => {
+      const cards = [...(section.cards || [])];
+      cards[cardIndex] = { ...(cards[cardIndex] || createFlexibleSectionCard()), [field]: value };
+      return { ...section, cards };
+    });
+  };
+
+  const removeFlexibleSectionCard = (sectionIndex, cardIndex) => {
+    updateFlexibleSection(sectionIndex, (section) => ({
+      ...section,
+      cards: (section.cards || []).filter((_, idx) => idx !== cardIndex),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!image) return alert("Please upload an image first");
@@ -257,6 +369,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
       description,
       tag,
       image,
+      logo,
       isReverse,
       stats,
       detailsContent,
@@ -282,6 +395,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
     setDescription("");
     setTag("");
     setImage("");
+    setLogo("");
     setPreview("");
     setIsReverse(false);
     setStats([]);
@@ -343,20 +457,56 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
 
       <div className="space-y-2 border-t pt-4">
         <p className="text-xs font-bold text-gray-500 uppercase ml-1">Feature Image</p>
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          <input
-            type="file"
-            accept="image/*"
-            className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (!file) return;
-              setPreview(URL.createObjectURL(file));
-              await handleUploadAndSet(file, setImage);
-            }}
-          />
-          {preview && <img src={preview} alt="Preview" className="w-24 h-16 object-cover rounded-lg border shadow-sm" />}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-4 transition hover:border-black hover:bg-white sm:min-w-[260px]">
+            <div>
+              <p className="text-sm font-semibold text-gray-900">Upload feature image</p>
+              <p className="text-xs text-gray-500">PNG, JPG, WEBP</p>
+            </div>
+            <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">
+              Browse
+            </span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                setPreview(URL.createObjectURL(file));
+                await handleUploadAndSet(file, setImage);
+              }}
+            />
+          </label>
+          {preview && <img src={preview} alt="Preview" className="h-20 w-28 object-cover rounded-2xl border shadow-sm" />}
         </div>
+      </div>
+
+      <div className="space-y-2 border-t pt-4">
+        <p className="text-xs font-bold text-gray-500 uppercase ml-1">Publisher Logo</p>
+        <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
+          <input
+            className="border p-2.5 w-full rounded-2xl focus:ring-2 focus:ring-black outline-none bg-white"
+            placeholder="Logo image URL"
+            value={logo}
+            onChange={(e) => setLogo(e.target.value)}
+          />
+          <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 transition hover:border-black hover:bg-white">
+            <span className="text-sm font-semibold text-gray-900">Upload logo</span>
+            <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                await handleUploadAndSet(file, setLogo);
+              }}
+            />
+          </label>
+        </div>
+        {logo ? <img src={logo} alt="Publisher logo preview" className="h-14 w-auto rounded-lg border bg-white object-contain p-2" /> : null}
       </div>
 
       <div className="bg-gray-50 rounded-xl p-4 space-y-4">
@@ -387,6 +537,21 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
         <p className="font-bold text-gray-700">Case Study Details Page Content</p>
 
         <div className="space-y-2">
+          <label className="text-xs font-bold text-gray-500 uppercase ml-1">Publisher Name</label>
+          <input
+            className="border p-2.5 w-full rounded-lg outline-none"
+            value={detailsContent.publisher?.name || ""}
+            onChange={(e) => setDetailsContent((prev) => ({
+              ...prev,
+              publisher: {
+                ...(prev.publisher || {}),
+                name: e.target.value,
+              },
+            }))}
+          />
+        </div>
+
+        <div className="space-y-2">
           <label className="text-xs font-bold text-gray-500 uppercase ml-1">Introduction Title</label>
           <input
             className="border p-2.5 w-full rounded-lg outline-none"
@@ -401,7 +566,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
           />
         </div>
 
-        {["sectionOne", "sectionTwo"].map((sectionKey, idx) => (
+        {/* {["sectionOne", "sectionTwo"].map((sectionKey, idx) => (
           <div key={sectionKey} className="bg-white p-3 rounded-lg border space-y-2">
             <p className="font-semibold text-sm">{idx === 0 ? "Section One (Text Left, Image Right)" : "Section Two (Image Left, Text Right)"}</p>
             <input
@@ -460,9 +625,9 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
               />
             </div>
           </div>
-        ))}
+        ))} */}
 
-        <div className="bg-white p-3 rounded-lg border space-y-2">
+        {/* <div className="bg-white p-3 rounded-lg border space-y-2">
           <p className="font-semibold text-sm">Text Section One</p>
           <input
             className="border p-2.5 w-full rounded-lg outline-none"
@@ -485,9 +650,9 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
             </div>
           ))}
           <button type="button" onClick={() => addSectionPoint("richSectionOne")} className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg font-bold">+ Add Point</button>
-        </div>
+        </div> */}
 
-        <div className="bg-white p-3 rounded-lg border space-y-2">
+        {/* <div className="bg-white p-3 rounded-lg border space-y-2">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-sm">Text Section Two</p>
             <button type="button" onClick={addCard} className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg font-bold">+ Add Card</button>
@@ -514,24 +679,210 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
               <button type="button" onClick={() => removeCard(index)} className="px-3 py-1 rounded-lg bg-red-50 text-red-600 text-xs font-bold">Remove Card</button>
             </div>
           ))}
+        </div> */}
+
+        <div className="bg-white p-4 rounded-2xl border space-y-4 shadow-sm">
+          <div className="flex justify-between items-center gap-3">
+            <div>
+              <p className="font-semibold text-sm">Page Content Sections</p>
+              <p className="text-xs text-gray-500">Build the page from custom blocks. Existing fields still work for legacy content.</p>
+            </div>
+            
+          </div>
+
+          <div className="space-y-4">
+            {(detailsContent.sections || []).map((section, sectionIndex) => (
+              <div key={sectionIndex} className="rounded-2xl border border-gray-200 bg-gray-50 p-4 space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-sm">Section {sectionIndex + 1}</p>
+                    <p className="text-xs text-gray-500">{section.type || "text"} block</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={() => moveFlexibleSection(sectionIndex, -1)} className="rounded-full border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-700 disabled:opacity-40" disabled={sectionIndex === 0}>↑</button>
+                    <button type="button" onClick={() => moveFlexibleSection(sectionIndex, 1)} className="rounded-full border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-700 disabled:opacity-40" disabled={sectionIndex === (detailsContent.sections || []).length - 1}>↓</button>
+                    <button type="button" onClick={() => removeFlexibleSection(sectionIndex)} className="px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-bold">Remove</button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-gray-500 uppercase ml-1">Type</label>
+                    <select
+                      className="border p-2.5 w-full rounded-lg outline-none"
+                      value={section.type}
+                      onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, type: e.target.value }))}
+                    >
+                      <option value="text">Text</option>
+                      <option value="image-text">Image + Text</option>
+                      <option value="cards">Card Grid</option>
+                      <option value="quote">Quote</option>
+                      <option value="image">Image</option>
+                      <option value="list">List</option>
+                    </select>
+                  </div>
+
+                  {section.type === "image-text" ? (
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-gray-500 uppercase ml-1">Layout</label>
+                      <select
+                        className="border p-2.5 w-full rounded-lg outline-none"
+                        value={section.layout}
+                        onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, layout: e.target.value }))}
+                      >
+                        <option value="image-left">Image Left</option>
+                        <option value="image-right">Image Right</option>
+                      </select>
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input
+                    className="border p-2.5 w-full rounded-lg outline-none"
+                    placeholder="Section title"
+                    value={section.title}
+                    onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, title: e.target.value }))}
+                  />
+                  <input
+                    className="border p-2.5 w-full rounded-lg outline-none"
+                    placeholder="Caption / small note"
+                    value={section.caption || ""}
+                    onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, caption: e.target.value }))}
+                  />
+                </div>
+
+                {section.type !== "quote" ? (
+                  <textarea
+                    className="border p-2.5 w-full rounded-lg h-24 outline-none"
+                    placeholder={section.type === "cards" ? "Intro text for card grid" : "Section text"}
+                    value={section.text}
+                    onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, text: e.target.value }))}
+                  />
+                ) : null}
+
+                {(section.type === "image" || section.type === "image-text") ? (
+                  <div className="space-y-2">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <input
+                        className="border p-2.5 w-full rounded-2xl outline-none bg-white"
+                        placeholder="Image URL"
+                        value={section.image || ""}
+                        onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, image: e.target.value }))}
+                      />
+                      <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 transition hover:border-black hover:bg-white sm:w-[220px]">
+                        <span className="text-sm font-semibold text-gray-900">Upload image</span>
+                        <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files[0];
+                            await handleUploadAndSet(file, (url) => setDetailsContent((prev) => ({
+                              ...prev,
+                              sections: (prev.sections || []).map((item, idx) => idx === sectionIndex ? { ...item, image: url } : item),
+                            })));
+                          }}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                ) : null}
+
+                {section.type === "quote" ? (
+                  <textarea
+                    className="border p-2.5 w-full rounded-lg h-20 outline-none"
+                    placeholder="Quote text"
+                    value={section.quote || ""}
+                    onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, quote: e.target.value }))}
+                  />
+                ) : null}
+
+                {section.type === "cards" ? (
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-500 uppercase ml-1">Variant</label>
+                    <select
+                      className="border p-2.5 w-full rounded-lg outline-none"
+                      value={section.variant || "grid"}
+                      onChange={(e) => updateFlexibleSection(sectionIndex, (current) => ({ ...current, variant: e.target.value }))}
+                    >
+                      <option value="grid">Grid (default)</option>
+                      <option value="strip">Compact strip (for small cards)</option>
+                    </select>
+                  </div>
+                ) : null}
+
+                {(section.type === "list" || section.type === "image-text") ? (
+                  <div className="space-y-2">
+                    <p className="text-xs font-bold text-gray-500 uppercase ml-1">Points</p>
+                    {(section.points || []).map((point, pointIndex) => (
+                      <div key={pointIndex} className="flex gap-2">
+                        <input
+                          className="border p-2 w-full rounded-lg outline-none"
+                          value={point}
+                          onChange={(e) => updateFlexibleSectionPoint(sectionIndex, pointIndex, e.target.value)}
+                        />
+                        <button type="button" onClick={() => removeFlexibleSectionPoint(sectionIndex, pointIndex)} className="px-3 rounded-lg bg-red-50 text-red-600 text-xs font-bold">Remove</button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => addFlexibleSectionPoint(sectionIndex)} className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg font-bold">+ Add Point</button>
+                  </div>
+                ) : null}
+
+                {section.type === "cards" ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-bold text-gray-500 uppercase ml-1">Cards</p>
+                      <button type="button" onClick={() => addFlexibleSectionCard(sectionIndex)} className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg font-bold">+ Add Card</button>
+                    </div>
+                    {(section.cards || []).map((card, cardIndex) => (
+                      <div key={cardIndex} className="border rounded-lg p-2 space-y-2 bg-white">
+                        <input
+                          className="border p-2 w-full rounded-lg outline-none"
+                          placeholder="Card title"
+                          value={card.title || ""}
+                          onChange={(e) => updateFlexibleSectionCard(sectionIndex, cardIndex, "title", e.target.value)}
+                        />
+                        <textarea
+                          className="border p-2 w-full rounded-lg h-16 outline-none"
+                          placeholder="Card description"
+                          value={card.description || ""}
+                          onChange={(e) => updateFlexibleSectionCard(sectionIndex, cardIndex, "description", e.target.value)}
+                        />
+                        <button type="button" onClick={() => removeFlexibleSectionCard(sectionIndex, cardIndex)} className="px-3 py-1 rounded-lg bg-red-50 text-red-600 text-xs font-bold">Remove Card</button>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+          <button type="button" onClick={addFlexibleSection} className="text-xs bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-full font-bold shadow-sm">+ Add Section</button>
         </div>
 
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <label className="text-xs font-bold text-gray-500 uppercase">Banner Image URL</label>
-          <input
-            className="border p-2.5 w-full rounded-lg outline-none"
-            value={detailsContent.bannerImage}
-            onChange={(e) => setDetailsContent((prev) => ({ ...prev, bannerImage: e.target.value }))}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            className="text-sm"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              await handleUploadAndSet(file, (url) => setDetailsContent((prev) => ({ ...prev, bannerImage: url })));
-            }}
-          />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <input
+              className="border p-2.5 w-full rounded-2xl outline-none bg-white"
+              value={detailsContent.bannerImage}
+              onChange={(e) => setDetailsContent((prev) => ({ ...prev, bannerImage: e.target.value }))}
+            />
+            <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 transition hover:border-black hover:bg-white sm:w-[220px]">
+              <span className="text-sm font-semibold text-gray-900">Upload banner</span>
+              <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files[0];
+                  await handleUploadAndSet(file, (url) => setDetailsContent((prev) => ({ ...prev, bannerImage: url })));
+                }}
+              />
+            </label>
+          </div>
 
           <label className="text-xs font-bold text-gray-500 uppercase">Quote</label>
           <textarea
@@ -553,7 +904,7 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
             value={detailsContent.conclusion.text}
             onChange={(e) => setDetailsContent((prev) => ({ ...prev, conclusion: { ...prev.conclusion, text: e.target.value } }))}
           />
-        </div>
+        </div> */}
       </div>
 
       {/* SEO/META TAGS SECTION */}
