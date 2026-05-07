@@ -36,9 +36,9 @@ const SubServiceContent = ({ subService }) => {
   return (
     <div className="bg-background container mx-auto p-4 md:p-6 font-sans">
       <div className="container mx-auto">
-        {/* Why Matters Section - UPDATED to match static */}
-        <div className="mb-12 flex flex-col gap-6 md:mb-20 md:flex-row md:justify-between md:gap-12">
-          {/* <h2
+        {/* Flexible intro block */}
+        <div className="mb-12 grid gap-6 rounded-[32px] bg-white px-6 py-8 shadow-sm md:mb-20 md:grid-cols-[0.9fr_1.1fr] md:px-10 md:py-12">
+          <h2
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "clamp(28px, 4vw, 48px)",
@@ -46,20 +46,20 @@ const SubServiceContent = ({ subService }) => {
               color: "#0A0A0A",
               lineHeight: "120%",
               margin: "0",
-              flex: "1",
             }}
           >
             {content.introTitle}
-          </h2> */}
-          {/* CHANGED: text-sm md:text-base → text-xs md:text-sm */}
-          <p style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: "500",
-            fontSize: "18px",
-            color: "#6B6B6B",
-            lineHeight: "150%",
-            marginBottom: "16px",
-          }}>
+          </h2>
+          <p
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: "500",
+              fontSize: "18px",
+              color: "#6B6B6B",
+              lineHeight: "150%",
+              marginBottom: "16px",
+            }}
+          >
             {content.introDescription}
           </p>
         </div>

@@ -93,6 +93,7 @@ export const createEmptyServiceFormData = () => ({
   professionalSupports: [createSupportCard(), createSupportCard(), createSupportCard()],
   servicePageContent: createServicePageContent(),
   subServicePageContent: createSubServicePageContent(),
+  relatedServices: [],
   metaTitle: "",
   metaDescription: "",
   metaTags: {
@@ -179,6 +180,11 @@ export const mergeServiceIntoFormData = (service = {}) => {
       ),
       flowImage: subServicePageContent.flowImage || "",
     },
+    relatedServices: Array.isArray(service.relatedServices)
+      ? service.relatedServices
+          .map((r) => (typeof r === "string" ? r : r?._id || r?.id || r?.toString?.() || ""))
+          .filter(Boolean)
+      : [],
     metaTitle: service.metaTitle || "",
     metaDescription: service.metaDescription || "",
     metaTags: {
@@ -261,6 +267,9 @@ export const buildServicePayload = (formData) => {
       footerTitle: formData.subServicePageContent.footerTitle.trim(),
       footerDescription: formData.subServicePageContent.footerDescription.trim(),
     },
+    relatedServices: Array.isArray(formData.relatedServices)
+      ? formData.relatedServices.filter(Boolean)
+      : [],
     metaTitle: formData.metaTitle.trim(),
     metaDescription: formData.metaDescription.trim(),
     metaTags: {

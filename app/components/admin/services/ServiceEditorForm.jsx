@@ -104,6 +104,22 @@ export default function ServiceEditorForm({
     setFormData(initialData ? mergeServiceIntoFormData(initialData) : createEmptyServiceFormData());
   }, [initialData]);
 
+  const [allServicesList, setAllServicesList] = useState([]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await fetch(API.services.main);
+        const json = await res.json();
+        if (json.success) setAllServicesList(json.data || []);
+      } catch (err) {
+        console.error("Failed to fetch services for related list", err);
+      }
+    };
+
+    fetchAll();
+  }, []);
+
   const selectedParent = useMemo(
     () => mainServices.find((service) => service._id === formData.parentService),
     [formData.parentService, mainServices]
@@ -119,6 +135,14 @@ export default function ServiceEditorForm({
   const canSelectParent = useMemo(
     () => mainServices.filter((service) => service._id !== initialData?._id),
     [initialData?._id, mainServices]
+  );
+
+  const selectedRelatedServices = useMemo(
+    () =>
+      allServicesList.filter((service) =>
+        (formData.relatedServices || []).includes(service._id)
+      ),
+    [allServicesList, formData.relatedServices]
   );
 
   const isSubService = Boolean(formData.parentService);
@@ -357,7 +381,7 @@ export default function ServiceEditorForm({
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-900">Professional Support Cards</h3>
+              <h3 className="text-lg font-semibold text-slate-900">Add-Ons Update Here</h3>
               <button type="button" className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" onClick={() => addArrayItem("professionalSupports", createSupportCard)}>
                 <Plus size={16} /> Add Card
               </button>
@@ -366,7 +390,7 @@ export default function ServiceEditorForm({
               {formData.professionalSupports.map((card, index) => (
                 <div key={`support-${index}`} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-semibold text-slate-800">Support Card {index + 1}</h4>
+                    <h4 className="font-semibold text-slate-800">Add-Ons Card {index + 1}</h4>
                     {formData.professionalSupports.length > 1 ? (
                       <button type="button" className="rounded-xl border border-red-200 p-2 text-red-500 hover:bg-red-50" onClick={() => removeArrayItem("professionalSupports", index)}>
                         <Trash2 size={16} />
@@ -490,6 +514,59 @@ export default function ServiceEditorForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Field label="Footer Title" value={formData.subServicePageContent.footerTitle} onChange={(event) => updateField("subServicePageContent.footerTitle", event.target.value)} placeholder="Ready for 40+ Languages" />
             <TextArea label="Footer Description" rows={4} value={formData.subServicePageContent.footerDescription} onChange={(event) => updateField("subServicePageContent.footerDescription", event.target.value)} placeholder="Final closing copy on the sub-service page." />
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-900">Related Services</h3>
+              <div className="flex items-center gap-2">
+                <a href="/admin/services/add" className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Add More Service</a>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-slate-700">Selected related services</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">{selectedRelatedServices.length} chosen</p>
+              </div>
+              {selectedRelatedServices.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {selectedRelatedServices.map((service) => (
+                    <span key={service._id} className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                      {service.title}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-slate-500">Pick the services that should appear in the public related-services section.</p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {allServicesList
+                .filter((s) => s._id !== initialData?._id)
+                .map((service) => (
+                  <label key={service._id} className="inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                    <input
+                      type="checkbox"
+                      checked={(formData.relatedServices || []).includes(service._id)}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        updateField(
+                          "relatedServices",
+                          checked
+                            ? [...(formData.relatedServices || []), service._id]
+                            : (formData.relatedServices || []).filter((id) => id !== service._id)
+                        );
+                      }}
+                    />
+                    <div>
+                      <div className="font-semibold">{service.title}</div>
+                      <div className="text-sm text-slate-500">{service.description?.slice(0, 80)}</div>
+                    </div>
+                  </label>
+                ))}
+            </div>
           </div>
         </SectionCard>
       )}

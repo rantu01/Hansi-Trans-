@@ -50,7 +50,7 @@ export default async function SubServiceDetailsPage({ params }) {
       </Hero3>
 
       <SubServiceContent subService={subService} />
-      <RelatedServices />
+      <RelatedServices relatedServices={subService.relatedServices || []} />
       <Achievement2></Achievement2>
     </PublicLayout>
   );

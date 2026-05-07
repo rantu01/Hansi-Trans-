@@ -1,22 +1,67 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { API } from "@/app/config/api";
 
-const RelatedServices = () => {
+const normalizeServiceId = (value) => {
+    if (!value) return "";
+    if (typeof value === "string") return value;
+    if (typeof value === "object") {
+        return value._id || value.id || value.toString?.() || "";
+    }
+    return String(value);
+};
+
+const normalizeService = (value) => {
+    if (!value || typeof value !== "object") return null;
+
+    return {
+        _id: normalizeServiceId(value),
+        title: value.title || "",
+        slug: value.slug || "",
+        image: value.image || "",
+        description: value.description || "",
+    };
+};
+
+const RelatedServices = ({ relatedServices, relatedIds }) => {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const providedServices = useMemo(
+        () => (Array.isArray(relatedServices) ? relatedServices.map(normalizeService).filter(Boolean) : []),
+        [relatedServices]
+    );
+
+    const providedIds = useMemo(
+        () => (Array.isArray(relatedIds) ? relatedIds.map(normalizeServiceId).filter(Boolean) : []),
+        [relatedIds]
+    );
 
     useEffect(() => {
         const fetchRelatedServices = async () => {
             try {
-                // আপনার API কনফিগ অনুযায়ী মেইন সার্ভিস লিস্ট ফেচ করা হচ্ছে
-                const response = await fetch(`${API.services.main}/main/list`);
+                if (providedServices.length > 0) {
+                    setServices(providedServices.slice(0, 4));
+                    return;
+                }
+
+                // fetch all services then filter by provided relatedIds if given
+                const response = await fetch(API.services.main);
                 const result = await response.json();
                 if (result.success) {
-                    // ইমেজে ৪টি সার্ভিস দেখানো হয়েছে, তাই প্রথম ৪টি স্লাইস করা হলো
-                    setServices(result.data.slice(0, 4));
+                    const list = Array.isArray(result.data) ? result.data : [];
+
+                    if (providedIds.length > 0) {
+                        const lookup = new Map(list.map((service) => [String(service._id), service]));
+                        const selected = providedIds
+                            .map((id) => lookup.get(String(id)))
+                            .filter(Boolean);
+                        setServices(selected.slice(0, 4));
+                    } else {
+                        setServices(list.slice(0, 4));
+                    }
                 }
             } catch (err) {
                 console.error("Failed to fetch related services:", err);
@@ -25,7 +70,7 @@ const RelatedServices = () => {
             }
         };
         fetchRelatedServices();
-    }, []);
+    }, [providedIds, providedServices]);
 
     if (loading) return null;
 

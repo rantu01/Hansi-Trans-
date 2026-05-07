@@ -179,12 +179,12 @@ const Footer = () => {
           <div className="md:col-span-5 flex flex-col gap-6">
             <div className="flex flex-col gap-4 ">
               <img
-                src={siteConfig.logo || "/Hansi-Logo1.png"}
+                src={siteConfig.logoo || "/Hansi-Logo1.png"}
                 alt="hansi TRANS+"
-                className="w-30 h-30 object-contain ml-20"
+                className="w-20 h-20 object-contain ml-20"
               />
 
-              {/* <h3
+              <h3
                 className="w-full text-left uppercase font-medium text-[#0A0A0A]"
                 style={{
                   fontFamily: "Inter, sans-serif",
@@ -192,7 +192,7 @@ const Footer = () => {
                 }}
               >
                 {siteConfig.brandText || "HANSI Trans+"}
-              </h3> */}
+              </h3>
             </div>
 
             <div className="max-w-xs text-left">
