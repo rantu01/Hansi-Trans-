@@ -1,7 +1,22 @@
-import React from 'react';
+"use client";
+import React, { useState, useRef } from 'react';
 import { Mail, MapPin, Phone, Upload, ArrowUpRight } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
+import { API } from '@/app/config/api';
 
 const ContactForm = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [company, setCompany] = useState('');
+  const [service, setService] = useState('');
+  const [country, setCountry] = useState('US');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [agree, setAgree] = useState(false);
+  const [nda, setNda] = useState(false);
+  const fileRef = useRef(null);
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 my-20">
       <div className="bg-background rounded-[40px]  flex flex-col md:flex-row container w-full overflow-hidden min-h-[800px]  relative">
@@ -74,66 +89,131 @@ const ContactForm = () => {
             </p>
           </div>
 
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={async (e) => {
+            e.preventDefault();
+            const fd = new FormData();
+            fd.append('firstName', firstName);
+            fd.append('lastName', lastName);
+            fd.append('email', email);
+            fd.append('company', company);
+            fd.append('service', service);
+            fd.append('country', country);
+            fd.append('phone', phone);
+            fd.append('message', message);
+            fd.append('agree', agree);
+            fd.append('nda', nda);
+            if (fileRef.current && fileRef.current.files[0]) fd.append('attachment', fileRef.current.files[0]);
+
+            const loading = toast.loading('Sending...');
+            try {
+              const res = await fetch(API.contact.schedule, {
+                method: 'POST',
+                body: fd,
+              });
+              if (res.ok) {
+                toast.success('Message sent!', { id: loading });
+                // reset
+                setFirstName(''); setLastName(''); setEmail(''); setCompany(''); setService(''); setCountry('US'); setPhone(''); setMessage(''); setAgree(false); setNda(false);
+                if (fileRef.current) fileRef.current.value = '';
+              } else {
+                const err = await res.text();
+                toast.error('Send failed: ' + err, { id: loading });
+              }
+            } catch (err) {
+              toast.error('Network error', { id: loading });
+            }
+          }}>
+            <Toaster />
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-gray-600">First name</label>
-                <input type="text" placeholder="First name" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
+                <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First name" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-gray-600">Last name</label>
-                <input type="text" placeholder="Last name" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
+                <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last name" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
               </div>
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-600">Email</label>
-              <input type="email" placeholder="you@company.com" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
+              <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="you@company.com" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-600">Company or studio Name</label>
-              <input type="text" placeholder="Your Company" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
+              <input value={company} onChange={(e) => setCompany(e.target.value)} type="text" placeholder="Your Company" className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-gray-400 text-black" />
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-600">Service Needed</label>
-              <select className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none appearance-none text-gray-500 cursor-pointer">
-                <option>Select Services</option>
+              <select value={service} onChange={(e) => setService(e.target.value)} className="w-full p-3 bg-cta-text/20 border-none rounded-xl focus:ring-2 focus:ring-accent outline-none appearance-none text-gray-500 cursor-pointer">
+                <option value="">Select Services</option>
+                <option value="Localization">Localization</option>
+                <option value="Voice-Over">Voice-Over</option>
+                <option value="Marketing">Marketing</option>
               </select>
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-600">Phone number</label>
               <div className="flex gap-2">
-                <select className="bg-cta-text/30 p-3 rounded-xl border-none outline-none text-sm font-medium text-secondary">
-                  <option>US</option>
-                  <option>IN</option>
+                <select value={country} onChange={(e) => setCountry(e.target.value)} className="bg-cta-text/30 p-3 rounded-xl border-none outline-none text-sm font-medium text-secondary">
+                  <option value="US">US</option>
+                  <option value="IN">IN</option>
+                  <option value="BD">BD</option>
                 </select>
-                <input type="text" placeholder="+1 (555) 000-0000" className="w-full p-3 bg-cta-text/20 text-black border-none rounded-xl outline-none focus:ring-2 focus:ring-accent transition-all" />
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="+1 (555) 000-0000" className="w-full p-3 bg-cta-text/20 text-black border-none rounded-xl outline-none focus:ring-2 focus:ring-accent transition-all" />
               </div>
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-600">Message</label>
-              <textarea rows="4" placeholder="How can we help?" className="w-full p-3 bg-cta-text/20 border-none rounded-xl outline-none focus:ring-2 focus:ring-accent transition-all resize-none placeholder:text-gray-400 text-black"></textarea>
+              <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows="4" placeholder="How can we help?" className="w-full p-3 bg-cta-text/20 border-none rounded-xl outline-none focus:ring-2 focus:ring-accent transition-all resize-none placeholder:text-gray-400 text-black"></textarea>
             </div>
 
             {/* Upload Area */}
-            <div className="border-2 border-dashed border-accent/30 rounded-2xl p-8 flex flex-col items-center justify-center bg-cta-text/10 hover:bg-cta-text/30 transition-all cursor-pointer group">
+            <div onClick={() => fileRef.current && fileRef.current.click()} className="border-2 border-dashed border-accent/30 rounded-2xl p-8 flex flex-col items-center justify-center bg-cta-text/10 hover:bg-cta-text/30 transition-all cursor-pointer group relative">
+              <input ref={fileRef} type="file" className="hidden" />
               <Upload className="text-accent mb-2 group-hover:scale-110 transition-transform" size={28} />
               <p className="font-bold text-secondary">Attachment (optional)</p>
-              <p className="text-xs text-gray-400 mt-1">"Upload brief/script/assets (max 50 MB)"</p>
+              <p className="text-xs text-gray-400 mt-1">Upload brief/script/assets (max 50 MB)</p>
+              <div className="text-xs text-gray-500 mt-2">{fileRef.current && fileRef.current.files[0] ? fileRef.current.files[0].name : ''}</div>
             </div>
 
             {/* Checkboxes */}
             <div className="space-y-3 pt-2">
               <label className="flex items-center gap-3 text-sm text-gray-600 cursor-pointer group">
-                <input type="checkbox" className="rounded-md border-gray-300 text-primary focus:ring-primary h-4 w-4 transition-all" />
+                <input checked={agree} onChange={(e) => setAgree(e.target.checked)} type="checkbox" className="rounded-md border-gray-300 text-primary focus:ring-primary h-4 w-4 transition-all" />
                 <span className="group-hover:text-secondary transition-colors">You agree to our friendly privacy policy.</span>
               </label>
               <label className="flex items-start gap-3 text-sm text-gray-600 cursor-pointer group">
-                <input type="checkbox" className="rounded-md border-gray-300 text-primary focus:ring-primary h-4 w-4 mt-0.5 transition-all" />
+                <input checked={nda} onChange={(e) => setNda(e.target.checked)} type="checkbox" className="rounded-md border-gray-300 text-primary focus:ring-primary h-4 w-4 mt-0.5 transition-all" />
                 <span className="group-hover:text-secondary transition-colors leading-tight">
                   NDA (Non Discloser agreement) • "I'd like to sign an NDA before sharing files."
                 </span>
@@ -141,8 +221,8 @@ const ContactForm = () => {
             </div>
 
             {/* Submit Button */}
-            <button className="bg-primary text-white px-10 py-4 rounded-full flex items-center gap-2 font-bold hover:bg-accent shadow-lg shadow-primary/20 transition-all transform active:scale-95 mt-4">
-              Send massage <ArrowUpRight size={20} className="rotate-45" />
+            <button type="submit" className="bg-primary text-white px-10 py-4 rounded-full flex items-center gap-2 font-bold hover:bg-accent shadow-lg shadow-primary/20 transition-all transform active:scale-95 mt-4">
+              Send message <ArrowUpRight size={20} className="rotate-45" />
             </button>
           </form>
         </div>

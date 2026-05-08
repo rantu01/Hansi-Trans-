@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { Filter, Layers, Loader2, Pencil, Plus, Trash2 } from "lucide-react";
+import { Filter, Layers, Loader2, Pencil, Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { API } from "@/app/config/api";
@@ -41,6 +41,20 @@ export default function AdminServiceList() {
 
     return services;
   }, [filterType, services]);
+
+  const [expanded, setExpanded] = useState({});
+
+  const mainServicesList = useMemo(() => services.filter((s) => !s.parentService), [services]);
+
+  const getSubServices = (parentId) =>
+    services.filter((s) => {
+      if (!s.parentService) return false;
+      // parentService may be populated object or an id string
+      const parent = s.parentService._id || s.parentService;
+      return parent === parentId;
+    });
+
+  const toggleExpand = (id) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const deleteService = async (id) => {
     const result = await Swal.fire({
@@ -120,42 +134,113 @@ export default function AdminServiceList() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filteredServices.map((service) => (
-                    <tr key={service._id} className="transition hover:bg-blue-50/40">
-                      <td className="px-8 py-5">
-                        <div className="flex items-center gap-4">
-                          <img src={service.image || "https://via.placeholder.com/160x120"} alt={service.title} className="h-14 w-14 rounded-2xl object-cover border border-slate-200" />
-                          <div>
-                            <p className="text-lg font-bold text-slate-900">{service.title}</p>
-                            <p className="text-xs text-slate-400">{service.slug}</p>
+                  {filterType === "sub" ? (
+                    filteredServices.map((service) => (
+                      <tr key={service._id} className="transition hover:bg-blue-50/40">
+                        <td className="px-8 py-5">
+                          <div className="flex items-center gap-4">
+                            <img src={service.image || "https://via.placeholder.com/160x120"} alt={service.title} className="h-12 w-12 rounded-lg object-cover border border-slate-200" />
+                            <div>
+                              <p className="text-sm font-bold text-slate-900">{service.title}</p>
+                              <p className="text-xs text-slate-400">{service.slug}</p>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-8 py-5">
-                        {service.parentService ? (
+                        </td>
+                        <td className="px-8 py-5">
                           <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-[10px] font-black uppercase text-blue-700">
                             <Layers size={12} /> Sub Service
                           </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1.5 text-[10px] font-black uppercase text-emerald-700">
-                            <Layers size={12} /> Main Service
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-8 py-5 text-sm font-medium text-slate-600">{service.slugPath || service.slug}</td>
-                      <td className="px-8 py-5 text-sm text-slate-500">{service.parentService?.title || "-"}</td>
-                      <td className="px-8 py-5">
-                        <div className="flex justify-end gap-3">
-                          <Link href={`/admin/services/${service._id}`} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-blue-200 hover:bg-white hover:text-blue-600">
-                            <Pencil size={18} />
-                          </Link>
-                          <button type="button" onClick={() => deleteService(service._id)} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-red-200 hover:bg-white hover:text-red-500">
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="px-8 py-5 text-sm font-medium text-slate-600">{service.slugPath || service.slug}</td>
+                        <td className="px-8 py-5 text-sm text-slate-500">{service.parentService?.title || "-"}</td>
+                        <td className="px-8 py-5">
+                          <div className="flex justify-end gap-3">
+                            <Link href={`/admin/services/${service._id}`} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-blue-200 hover:bg-white hover:text-blue-600">
+                              <Pencil size={18} />
+                            </Link>
+                            <button type="button" onClick={() => deleteService(service._id)} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-red-200 hover:bg-white hover:text-red-500">
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    mainServicesList.map((main) => {
+                      const subs = getSubServices(main._id);
+                      return (
+                        <React.Fragment key={main._id}>
+                          <tr className="transition hover:bg-blue-50/10">
+                            <td className="px-8 py-5">
+                              <div className="flex items-center gap-4">
+                                <button type="button" onClick={() => toggleExpand(main._id)} className="rounded-full p-1 text-slate-500 hover:bg-slate-100">
+                                  {expanded[main._id] ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                                </button>
+                                <img src={main.image || "https://via.placeholder.com/160x120"} alt={main.title} className="h-14 w-14 rounded-2xl object-cover border border-slate-200" />
+                                <div>
+                                  <p className="text-lg font-bold text-slate-900">{main.title}</p>
+                                  <p className="text-xs text-slate-400">{main.slug}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-8 py-5">
+                              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1.5 text-[10px] font-black uppercase text-emerald-700">
+                                <Layers size={12} /> Main Service
+                              </span>
+                            </td>
+                            <td className="px-8 py-5 text-sm font-medium text-slate-600">{main.slugPath || main.slug}</td>
+                            <td className="px-8 py-5 text-sm text-slate-500">-</td>
+                            <td className="px-8 py-5">
+                              <div className="flex justify-end gap-3">
+                                <Link href={`/admin/services/add?parentService=${main._id}`} className="w-auto rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-emerald-200 hover:bg-white hover:text-emerald-600" title="Add Sub-Service">
+                                  <h1>Add Core Digital (Sub Service)</h1>
+                                  {/* <Plus size={18} /> */}
+                                </Link>
+                                <Link href={`/admin/services/${main._id}`} className="text-center rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-blue-200 hover:bg-white hover:text-blue-600">
+                                  <Pencil size={18} />
+                                </Link>
+                                <button type="button" onClick={() => deleteService(main._id)} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-red-200 hover:bg-white hover:text-red-500">
+                                  <Trash2 size={18} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+
+                          {expanded[main._id] && subs.length > 0 &&
+                            subs.map((service) => (
+                              <tr key={service._id} className="bg-blue-50/30">
+                                <td className="px-8 py-4">
+                                  <div className="flex items-center gap-4">
+                                    <div className="ml-8 h-12 w-12 rounded-lg bg-white/40" />
+                                    <div>
+                                      <p className="text-sm font-semibold text-slate-900">{service.title}</p>
+                                      <p className="text-xs text-slate-400">{service.slug}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="px-8 py-4">
+                                  <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-[10px] font-black uppercase text-blue-700">
+                                    <Layers size={12} /> Sub Service
+                                  </span>
+                                </td>
+                                <td className="px-8 py-4 text-sm font-medium text-slate-600">{service.slugPath || service.slug}</td>
+                                <td className="px-8 py-4 text-sm text-slate-500">{service.parentService?.title || "-"}</td>
+                                <td className="px-8 py-4">
+                                  <div className="flex justify-end gap-3">
+                                    <Link href={`/admin/services/${service._id}`} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-blue-200 hover:bg-white hover:text-blue-600">
+                                      <Pencil size={18} />
+                                    </Link>
+                                    <button type="button" onClick={() => deleteService(service._id)} className="rounded-xl border border-slate-200 p-3 text-slate-500 transition hover:border-red-200 hover:bg-white hover:text-red-500">
+                                      <Trash2 size={18} />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                        </React.Fragment>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>

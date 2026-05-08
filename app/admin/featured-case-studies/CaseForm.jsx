@@ -2,6 +2,7 @@
 
 import { API } from "@/app/config/api";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const createFlexibleSectionCard = () => ({
   title: "",
@@ -196,8 +197,16 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
     try {
       const url = await uploadImage(file);
       setter(url || "");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Upload successful',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
-      alert("Upload failed");
+      Swal.fire({ icon: 'error', title: 'Upload failed', text: String(error || "") });
     } finally {
       setUploading(false);
     }
@@ -379,14 +388,24 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
     const url = editing ? `${API.featuredCaseStudies}/${editing._id}` : API.featuredCaseStudies;
     const method = editing ? "PUT" : "POST";
 
-    await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      });
 
-    clearForm();
-    refresh();
+      if (res.ok) {
+        Swal.fire({ icon: 'success', title: editing ? 'Case study updated' : 'Case study created', showConfirmButton: false, timer: 1800 });
+        clearForm();
+        refresh();
+      } else {
+        const err = await res.text();
+        Swal.fire({ icon: 'error', title: 'Save failed', text: err || 'Server error' });
+      }
+    } catch (err) {
+      Swal.fire({ icon: 'error', title: 'Save failed', text: String(err || '') });
+    }
   };
 
   const clearForm = () => {
@@ -463,9 +482,11 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
               <p className="text-sm font-semibold text-gray-900">Upload feature image</p>
               <p className="text-xs text-gray-500">PNG, JPG, WEBP</p>
             </div>
-            <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">
-              Browse
-            </span>
+            {uploading ? (
+              <span className="rounded-full bg-gray-600 px-3 py-1 text-xs font-bold text-white">Uploading...</span>
+            ) : (
+              <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+            )}
             <input
               type="file"
               accept="image/*"
@@ -493,7 +514,11 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
           />
           <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 transition hover:border-black hover:bg-white">
             <span className="text-sm font-semibold text-gray-900">Upload logo</span>
-            <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+            {uploading ? (
+              <span className="rounded-full bg-gray-600 px-3 py-1 text-xs font-bold text-white">Uploading...</span>
+            ) : (
+              <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+            )}
             <input
               type="file"
               accept="image/*"
@@ -772,7 +797,11 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
                       />
                       <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 transition hover:border-black hover:bg-white sm:w-[220px]">
                         <span className="text-sm font-semibold text-gray-900">Upload image</span>
-                        <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+                        {uploading ? (
+                          <span className="rounded-full bg-gray-600 px-3 py-1 text-xs font-bold text-white">Uploading...</span>
+                        ) : (
+                          <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+                        )}
                         <input
                           type="file"
                           accept="image/*"
@@ -871,7 +900,11 @@ export default function CaseForm({ refresh, editing, clearEdit }) {
             />
             <label className="group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 transition hover:border-black hover:bg-white sm:w-[220px]">
               <span className="text-sm font-semibold text-gray-900">Upload banner</span>
-              <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+              {uploading ? (
+                <span className="rounded-full bg-gray-600 px-3 py-1 text-xs font-bold text-white">Uploading...</span>
+              ) : (
+                <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white transition group-hover:bg-gray-800">Browse</span>
+              )}
               <input
                 type="file"
                 accept="image/*"

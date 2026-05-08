@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { API } from "@/app/config/api";
@@ -11,7 +11,10 @@ import ServiceEditorForm from "@/app/components/admin/services/ServiceEditorForm
 
 export default function AddServicePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const parentServiceId = searchParams.get("parentService");
   const [mainServices, setMainServices] = useState([]);
+  const [preSelectedParent, setPreSelectedParent] = useState(parentServiceId || "");
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -53,7 +56,7 @@ export default function AddServicePage() {
           <h1 className="text-3xl font-black tracking-tight text-slate-900">Add Service</h1>
           <p className="text-slate-500">Create a main service or a nested sub-service with fully editable page content.</p>
         </div>
-        <ServiceEditorForm mode="create" mainServices={mainServices} submitLabel="Create Service" onSave={handleSave} />
+        <ServiceEditorForm mode="create" mainServices={mainServices} submitLabel="Create Service" onSave={handleSave} preSelectedParent={preSelectedParent} />
       </div>
     </div>
   );

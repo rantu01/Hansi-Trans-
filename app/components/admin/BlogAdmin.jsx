@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { API } from "@/app/config/api";
-import { Trash2, Edit, Plus, FileText, Loader2, X, UploadCloud, Search, Trash } from "lucide-react";
+import { Trash2, Edit, Plus, FileText, Loader2, X, UploadCloud, Search, Trash, Eye } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
@@ -111,6 +111,7 @@ const BlogAdmin = () => {
     }
   });
   const [preview, setPreview] = useState("");
+  const [categories, setCategories] = useState(["Games", "Voice", "Tech Innovations"]);
   const dragSrc = useRef(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -425,7 +426,12 @@ const BlogAdmin = () => {
           <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-xl border border-gray-50 sticky top-8">
             <h3 className="font-black text-xl mb-8 flex justify-between items-center">
               {editId ? "Edit Blog" : "Create New Blog"}
-              {editId && <X className="cursor-pointer text-red-500" onClick={clearForm} />}
+              <div className="flex items-center gap-3">
+                {editId && (
+                  <button type="button" onClick={() => window.open(`/blog/${formData.slug}`, "_blank")} className="px-3 py-1 bg-gray-100 rounded-md text-sm hover:bg-gray-200">Preview</button>
+                )}
+                {editId && <X className="cursor-pointer text-red-500" onClick={clearForm} />}
+              </div>
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -486,15 +492,22 @@ const BlogAdmin = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div className="space-y-1">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2">Category</label>
-                  <select 
+                  <input
+                    list="category-list"
                     className="w-full bg-gray-50 p-4 rounded-xl outline-none text-sm font-bold"
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value, filterTag: e.target.value })}
-                  >
-                    <option value="Games">Games</option>
-                    <option value="Voice">Voice</option>
-                    <option value="Tech Innovations">Tech Innovations</option>
-                  </select>
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setFormData({ ...formData, category: v, filterTag: v });
+                      if (v && !categories.includes(v)) setCategories((prev) => [...prev, v]);
+                    }}
+                    placeholder="Choose or type a category"
+                  />
+                  <datalist id="category-list">
+                    {categories.map((c) => (
+                      <option value={c} key={c} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div className="space-y-1">
@@ -797,6 +810,7 @@ const BlogAdmin = () => {
                   <h4 className="font-bold text-gray-800 line-clamp-1">{blog.title}</h4>
                   <div className="flex gap-3 mt-3">
                     <button onClick={() => handleEdit(blog)} className="p-2 bg-gray-50 rounded-lg hover:bg-black hover:text-white transition-colors"><Edit size={16} /></button>
+                    <button onClick={() => window.open(`/blog/${blog.slug}`, "_blank")} className="p-2 bg-gray-50 rounded-lg hover:bg-slate-900 hover:text-white transition-colors"><Eye size={16} /></button>
                     <button onClick={() => handleDelete(blog._id)} className="p-2 bg-gray-50 rounded-lg hover:bg-red-500 hover:text-white transition-colors"><Trash2 size={16} /></button>
                   </div>
                 </div>

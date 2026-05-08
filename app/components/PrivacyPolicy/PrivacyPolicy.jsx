@@ -1,8 +1,50 @@
 
-import React from "react";
+"use client";
 
-const PrivacyPolicy = () => {
-  const sections = [
+import React, { useEffect, useMemo, useState } from "react";
+import { API } from "@/app/config/api";
+
+const legacyTextToSections = (text = "") => {
+  const cleaned = String(text || "").replace(/\r/g, "").trim();
+  if (!cleaned) return [];
+
+  const parts = cleaned.split(/\n\n+/);
+  return parts.map((part, index) => {
+    const lines = part.split("\n").map((line) => line.trim()).filter(Boolean);
+    const firstLine = lines[0] || "";
+    const bulletItems = lines.filter((line) => /^[-*•]/.test(line)).map((line) => line.replace(/^[-*•]\s*/, ""));
+    const hasNumberedHeading = /^\d+[\.).]\s+/.test(firstLine);
+    return {
+      type: bulletItems.length ? "list" : "paragraph",
+      title: hasNumberedHeading ? firstLine.replace(/^\d+[\.).]\s+/, "") : (index === 0 ? "" : firstLine),
+      content: bulletItems.length ? lines.filter((line) => !/^[-*•]/.test(line)).join("\n") : lines.join("\n"),
+      items: bulletItems,
+    };
+  });
+};
+
+const PrivacyPolicy = ({ initialContent = null, initialSections = null }) => {
+  const [remoteContent, setRemoteContent] = useState(initialContent);
+  const [remoteSections, setRemoteSections] = useState(initialSections || []);
+
+  useEffect(() => {
+    if (initialContent || (initialSections && initialSections.length)) return;
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch(API.site.getConfig);
+        const data = await res.json();
+        if (data?.success && data.data) {
+          const cfg = data.data;
+          if (cfg.privacySections) setRemoteSections(Array.isArray(cfg.privacySections) ? cfg.privacySections : []);
+          if (cfg.privacyContent) setRemoteContent(cfg.privacyContent);
+        }
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchConfig();
+  }, [initialContent, initialSections]);
+  const fallbackSections = [
     {
       id: 1,
       title: "1. Information We Collect",
@@ -56,7 +98,13 @@ const PrivacyPolicy = () => {
     },
   ];
 
-  // টাইটেলের জন্য কমন স্টাইল (Inter)
+  const sections = useMemo(() => {
+    if (remoteSections && remoteSections.length) return remoteSections;
+    if (remoteContent) return legacyTextToSections(remoteContent);
+    if (initialContent) return legacyTextToSections(initialContent);
+    return fallbackSections;
+  }, [remoteSections, remoteContent, initialContent]);
+
   const titleStyle = {
     fontFamily: "'Inter', sans-serif",
     fontWeight: "500",
@@ -67,7 +115,6 @@ const PrivacyPolicy = () => {
     color: "#0A0A0A",
   };
 
-  // কন্টেন্ট এবং পয়েন্টের জন্য কমন স্টাইল (Poppins)
   const bodyStyle = {
     fontFamily: "'Poppins', sans-serif",
     fontWeight: "400",
@@ -77,69 +124,103 @@ const PrivacyPolicy = () => {
     color: "#262626",
   };
 
+  const renderBlock = (section, index) => {
+    const type = section.type || (section.items && section.items.length ? "list" : "paragraph");
+    const title = section.title || "";
+    const content = section.content || "";
+    const items = Array.isArray(section.items) ? section.items : [];
+
+    if (type === "heading") {
+      return <h3 key={index} style={titleStyle} className="mb-6">{title || content}</h3>;
+    }
+
+    if (type === "paragraph") {
+      return (
+        <div key={index} className="space-y-4">
+          {title ? <h3 style={titleStyle}>{title}</h3> : null}
+          <p style={bodyStyle}>{content}</p>
+        </div>
+      );
+    }
+
+    if (type === "quote") {
+      return (
+        <div key={index} className="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4">
+          {title ? <p style={{ ...bodyStyle, fontWeight: 600 }} className="mb-2">{title}</p> : null}
+          <p style={bodyStyle} className="italic">{content}</p>
+        </div>
+      );
+    }
+
+    if (type === "highlight") {
+      return (
+        <div key={index} className="rounded-3xl bg-blue-50 border border-blue-100 px-5 py-4">
+          {title ? <p style={{ ...bodyStyle, fontWeight: 600 }} className="mb-2">{title}</p> : null}
+          <p style={bodyStyle}>{content}</p>
+        </div>
+      );
+    }
+
+    if (type === "list") {
+      return (
+        <div key={index} className="space-y-4">
+          {title ? <h3 style={titleStyle}>{title}</h3> : null}
+          {content ? <p style={bodyStyle}>{content}</p> : null}
+          <ul className="list-disc pl-6 space-y-3" style={bodyStyle}>
+            {items.map((item, itemIndex) => <li key={itemIndex}>{item}</li>)}
+          </ul>
+        </div>
+      );
+    }
+
+    return (
+      <div key={index} className="space-y-4">
+        {title ? <h3 style={titleStyle}>{title}</h3> : null}
+        {content ? <p style={bodyStyle}>{content}</p> : null}
+        {items.length ? (
+          <ul className="list-disc pl-6 space-y-3" style={bodyStyle}>
+            {items.map((item, itemIndex) => <li key={itemIndex}>{item}</li>)}
+          </ul>
+        ) : null}
+      </div>
+    );
+  };
+
+  const renderSection = (section, index) => {
+    if (Array.isArray(section.blocks) && section.blocks.length) {
+      return (
+        <div
+          key={`box-${index}`}
+          className="bg-white p-8 md:p-12 border border-gray-100 shadow-sm text-slate-800"
+          style={{ borderRadius: "32px" }}
+        >
+          {section.title ? <h3 style={titleStyle} className="mb-6">{section.title}</h3> : null}
+          <div className="space-y-4">
+            {section.blocks.map((block, blockIndex) => (
+              <div key={`${block.type || "block"}-${blockIndex}`} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                {renderBlock(block, blockIndex)}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        key={`block-${index}`}
+        className="bg-white p-8 md:p-12 border border-gray-100 shadow-sm text-slate-800"
+        style={{ borderRadius: "32px" }}
+      >
+        {renderBlock(section, index)}
+      </div>
+    );
+  };
+
   return (
     <div className="w-full container mx-auto px-4 py-12 mb-20 mt-40 md:mt-0">
       <div className="flex flex-col gap-8">
-        {sections.map((section) => (
-          <div
-            key={section.id}
-            className="bg-white p-8 md:p-12 border border-gray-100 shadow-sm"
-            style={{ borderRadius: "32px" }}
-          >
-            {/* Title Section (Inter) */}
-            <h3 style={titleStyle} className="mb-6">
-              {section.title}
-            </h3>
-            
-            {/* Main Content (Poppins) */}
-            <p style={bodyStyle} className="mb-4">
-              {section.content}
-            </p>
-
-            {/* Render direct points if available */}
-            {section.points && !section.subSections && (
-              <ul className="list-disc pl-6 space-y-3" style={bodyStyle}>
-                {section.points.map((point, idx) => (
-                  <li key={idx}>{point}</li>
-                ))}
-              </ul>
-            )}
-
-            {/* Render subsections (a, b format) */}
-            {section.subSections && (
-              <div className="mt-4 space-y-6">
-                {section.subSections.map((sub, idx) => (
-                  <div key={idx}>
-                    <p style={{...bodyStyle, fontWeight: "600"}} className="mb-3">
-                      {sub.label}
-                    </p>
-                    <ul className="list-disc pl-8 space-y-2" style={bodyStyle}>
-                      {sub.points.map((p, pIdx) => (
-                        <li key={pIdx}>{p}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* SubText (Poppins) */}
-            {section.subText && (
-              <p style={{...bodyStyle, fontWeight: "600"}} className="mt-6 mb-3">
-                {section.subText}
-              </p>
-            )}
-
-            {/* Final Points Rendering (Poppins) */}
-            {section.id === 4 && section.points && (
-              <ul className="list-disc pl-6 space-y-2" style={bodyStyle}>
-                {section.points.map((point, idx) => (
-                  <li key={idx}>{point}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))}
+        {sections.map((section, index) => renderSection(section, index))}
       </div>
     </div>
   );

@@ -122,7 +122,7 @@ const FeaturedCaseStudies3 = () => {
                 } bg-white rounded-[40px] overflow-hidden group`}
             >
               {/* Image Section */}
-              <div className="w-full lg:w-1/2 h-[350px] md:h-[700px]  lg:h-[720] overflow-hidden">
+              <div className="w-full lg:w-1/2 h-[350px] md:h-auto overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}

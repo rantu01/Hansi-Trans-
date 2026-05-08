@@ -60,10 +60,7 @@ const Header = ({ toggleSidebar }) => {
           <Home size={20} className="group-hover:scale-110 transition-transform" />
         </button>
 
-        <button className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-600 transition-all relative">
-          <Bell size={20} />
-          <span className="absolute top-2 right-2.5 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></span>
-        </button>
+        
 
         <div className="h-8 w-px bg-slate-200 mx-2" />
 

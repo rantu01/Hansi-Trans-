@@ -95,14 +95,19 @@ export default function ServiceEditorForm({
   mainServices = [],
   submitLabel,
   onSave,
+  preSelectedParent = "",
 }) {
   const [formData, setFormData] = useState(createEmptyServiceFormData());
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    setFormData(initialData ? mergeServiceIntoFormData(initialData) : createEmptyServiceFormData());
-  }, [initialData]);
+    const newFormData = initialData ? mergeServiceIntoFormData(initialData) : createEmptyServiceFormData();
+    if (preSelectedParent && !initialData) {
+      newFormData.parentService = preSelectedParent;
+    }
+    setFormData(newFormData);
+  }, [initialData, preSelectedParent]);
 
   const [allServicesList, setAllServicesList] = useState([]);
 

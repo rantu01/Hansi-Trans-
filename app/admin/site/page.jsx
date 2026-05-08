@@ -19,6 +19,385 @@ import {
   Loader2
 } from "lucide-react";
 
+const LEGAL_SECTION_TYPES = [
+  { value: "section", label: "Sections" },
+  { value: "heading", label: "Heading" },
+  { value: "paragraph", label: "Paragraph" },
+  { value: "list", label: "List" },
+  { value: "quote", label: "Quote" },
+  { value: "highlight", label: "Highlight" },
+];
+
+const createLegalBlock = (type = "section") => ({
+  type,
+  title: type === "heading" ? "New heading" : type === "section" ? "Section title" : "",
+  content: type === "paragraph" || type === "quote" || type === "highlight" ? "Write content here" : "",
+  items: type === "list" ? ["List item 1"] : [],
+});
+
+const createLegalBox = () => ({
+  title: "Section box",
+  blocks: [],
+});
+
+const safeParseJson = (value, fallback) => {
+  if (!value) return fallback;
+  if (Array.isArray(value)) return value;
+  if (typeof value !== "string") return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const legacyTextToBoxes = (text = "") => {
+  const cleaned = String(text || "").replace(/\r/g, "").trim();
+  if (!cleaned) return [];
+
+  const lines = cleaned.split("\n");
+  const blocks = [];
+  let current = null;
+
+  const pushCurrent = () => {
+    if (current) blocks.push(current);
+    current = null;
+  };
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+    if (!trimmed) return;
+
+    const headingMatch = trimmed.match(/^(\d+\.|\d+\)|[A-Za-z]\.)\s*(.+)$/);
+    const bulletMatch = trimmed.match(/^[-*•]\s+(.+)$/);
+
+    if (headingMatch) {
+      pushCurrent();
+      current = {
+        type: "section",
+        title: headingMatch[2],
+        content: "",
+        items: [],
+      };
+      return;
+    }
+
+    if (!current) {
+      current = { type: "paragraph", title: "", content: trimmed, items: [] };
+      return;
+    }
+
+    if (bulletMatch) {
+      current.type = current.type === "paragraph" ? "list" : current.type;
+      current.items = current.items || [];
+      current.items.push(bulletMatch[1]);
+      return;
+    }
+
+    current.content = current.content ? `${current.content}\n${trimmed}` : trimmed;
+  });
+
+  pushCurrent();
+  return blocks.length ? [{ title: "Section box", blocks }] : [];
+};
+
+const normalizeLegalBoxes = (value = []) => {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => {
+    if (item && Array.isArray(item.blocks)) {
+      return {
+        title: item.title || "Section box",
+        blocks: item.blocks,
+      };
+    }
+
+    return {
+      title: item?.title || "Section box",
+      blocks: [item].filter(Boolean),
+    };
+  });
+};
+
+const sectionsToPlainText = (sections = []) =>
+  sections
+    .map((box, index) => {
+      const blocks = Array.isArray(box.blocks) ? box.blocks : [box];
+      const boxTitle = box.title || `Section ${index + 1}`;
+      const blockText = blocks
+        .map((section, blockIndex) => {
+          const title = section.title || `${blockIndex + 1}. ${section.type}`;
+          const content = section.content ? `\n${section.content}` : "";
+          const items = Array.isArray(section.items) && section.items.length
+            ? `\n${section.items.map((item) => `- ${item}`).join("\n")}`
+            : "";
+          return `${title}${content}${items}`.trim();
+        })
+        .join("\n");
+      return `${boxTitle}\n${blockText}`.trim();
+    })
+    .join("\n\n");
+
+const LegalSectionEditor = ({ label, sections, onChange, payload, onPayloadChange }) => {
+  const [activeBoxIndex, setActiveBoxIndex] = useState(null);
+
+  const updateBox = (boxIndex, field, value) => {
+    const next = [...sections];
+    next[boxIndex] = { ...next[boxIndex], [field]: value };
+    onChange(next);
+  };
+
+  const updateBlock = (boxIndex, blockIndex, field, value) => {
+    const next = [...sections];
+    const box = { ...next[boxIndex] };
+    const blocks = [...(box.blocks || [])];
+    blocks[blockIndex] = { ...blocks[blockIndex], [field]: value };
+    box.blocks = blocks;
+    next[boxIndex] = box;
+    onChange(next);
+  };
+
+  const updateBlockItem = (boxIndex, blockIndex, itemIndex, value) => {
+    const next = [...sections];
+    const box = { ...next[boxIndex] };
+    const blocks = [...(box.blocks || [])];
+    const block = { ...blocks[blockIndex] };
+    block.items = [...(block.items || [])];
+    block.items[itemIndex] = value;
+    blocks[blockIndex] = block;
+    box.blocks = blocks;
+    next[boxIndex] = box;
+    onChange(next);
+  };
+
+  const addBlockItem = (boxIndex, blockIndex) => {
+    const next = [...sections];
+    const box = { ...next[boxIndex] };
+    const blocks = [...(box.blocks || [])];
+    const block = { ...blocks[blockIndex] };
+    block.items = [...(block.items || []), "New item"];
+    blocks[blockIndex] = block;
+    box.blocks = blocks;
+    next[boxIndex] = box;
+    onChange(next);
+  };
+
+  const removeBlockItem = (boxIndex, blockIndex, itemIndex) => {
+    const next = [...sections];
+    const box = { ...next[boxIndex] };
+    const blocks = [...(box.blocks || [])];
+    const block = { ...blocks[blockIndex] };
+    block.items = (block.items || []).filter((_, index) => index !== itemIndex);
+    blocks[blockIndex] = block;
+    box.blocks = blocks;
+    next[boxIndex] = box;
+    onChange(next);
+  };
+
+  const addBox = () => {
+    const next = [...sections, createLegalBox()];
+    onChange(next);
+    setActiveBoxIndex(next.length - 1);
+  };
+
+  const removeBox = (index) => {
+    const next = sections.filter((_, boxIndex) => boxIndex !== index);
+    onChange(next);
+    if (activeBoxIndex === index) setActiveBoxIndex(null);
+  };
+
+  const addBlockToBox = (boxIndex, type) => {
+    const next = [...sections];
+    const box = { ...next[boxIndex] };
+    box.blocks = [...(box.blocks || []), createLegalBlock(type)];
+    next[boxIndex] = box;
+    onChange(next);
+    setActiveBoxIndex(null);
+  };
+
+  const renderBlockFields = (boxIndex, block, blockIndex) => {
+    const baseClass = "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 outline-none focus:border-blue-500";
+
+    if (block.type === "heading") {
+      return (
+        <input
+          className={baseClass}
+          value={block.title || ""}
+          onChange={(e) => updateBlock(boxIndex, blockIndex, "title", e.target.value)}
+          placeholder="Heading text"
+        />
+      );
+    }
+
+    if (block.type === "paragraph" || block.type === "quote" || block.type === "highlight") {
+      return (
+        <textarea
+          className={`${baseClass} resize-none`}
+          rows={block.type === "paragraph" ? 4 : 3}
+          value={block.content || ""}
+          onChange={(e) => updateBlock(boxIndex, blockIndex, "content", e.target.value)}
+          placeholder={`${label} ${block.type}`}
+        />
+      );
+    }
+
+    if (block.type === "list") {
+      return (
+        <div className="space-y-3">
+          <input
+            className={baseClass}
+            value={block.title || ""}
+            onChange={(e) => updateBlock(boxIndex, blockIndex, "title", e.target.value)}
+            placeholder="List heading (optional)"
+          />
+          {(block.items || []).map((item, itemIndex) => (
+            <div key={itemIndex} className="flex gap-2">
+              <input
+                className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 outline-none focus:border-blue-500"
+                value={item}
+                onChange={(e) => updateBlockItem(boxIndex, blockIndex, itemIndex, e.target.value)}
+                placeholder={`Item ${itemIndex + 1}`}
+              />
+              <button type="button" onClick={() => removeBlockItem(boxIndex, blockIndex, itemIndex)} className="rounded-2xl border border-slate-200 px-4 py-3 text-rose-600 hover:bg-rose-50">
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" onClick={() => addBlockItem(boxIndex, blockIndex)} className="rounded-2xl border border-dashed border-slate-300 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+            + Add list item
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-3">
+        <input
+          className={baseClass}
+          value={block.title || ""}
+          onChange={(e) => updateBlock(boxIndex, blockIndex, "title", e.target.value)}
+          placeholder="Section title"
+        />
+        <textarea
+          className={`${baseClass} resize-none`}
+          rows={4}
+          value={block.content || ""}
+          onChange={(e) => updateBlock(boxIndex, blockIndex, "content", e.target.value)}
+          placeholder="Section content"
+        />
+      </div>
+    );
+  };
+
+  return (
+    <section className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-5">
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="font-bold text-slate-800 text-lg">{label}</h3>
+        <span className="text-xs font-semibold text-slate-500">Click the white box to add blocks</span>
+      </div>
+
+      <button
+        type="button"
+        onClick={addBox}
+        className="w-full rounded-[2rem] border-2 border-dashed border-slate-200 bg-white px-5 py-8 text-left transition-all hover:border-blue-300 hover:bg-blue-50/40"
+      >
+        <div className="flex flex-col gap-3">
+          <div className="text-sm font-semibold text-slate-700">White box to add a new block box</div>
+          <div className="text-sm text-slate-500">Click once to create a box, then use Add inside that box to insert List, Quote, Highlight, Sections, Heading, Paragraph.</div>
+        </div>
+      </button>
+
+      <div className="space-y-4">
+        {sections.length === 0 ? (
+          <div className="rounded-[2rem] border border-slate-100 bg-slate-50 px-5 py-8 text-center text-sm text-slate-500">
+            No blocks yet. Add a section above.
+          </div>
+        ) : (
+          sections.map((box, boxIndex) => (
+            <div key={`box-${boxIndex}`} className="rounded-[2rem] border border-slate-200 bg-slate-50 p-4 md:p-5 space-y-4">
+              <div className="flex items-center justify-between gap-3">
+                <input
+                  className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 outline-none"
+                  value={box.title || ""}
+                  onChange={(e) => updateBox(boxIndex, "title", e.target.value)}
+                  placeholder="Box title"
+                />
+                <button type="button" onClick={() => removeBox(boxIndex)} className="rounded-xl border border-rose-200 bg-white px-3 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50">
+                  Delete box
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setActiveBoxIndex(activeBoxIndex === boxIndex ? null : boxIndex)} className="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                    + Add block
+                  </button>
+                  <span className="text-xs text-slate-500 self-center">Blocks inside this box: {Array.isArray(box.blocks) ? box.blocks.length : 0}</span>
+                </div>
+
+                {activeBoxIndex === boxIndex && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 rounded-2xl border border-slate-200 bg-white p-3">
+                    {LEGAL_SECTION_TYPES.map((type) => (
+                      <button
+                        key={type.value}
+                        type="button"
+                        onClick={() => addBlockToBox(boxIndex, type.value)}
+                        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-900 hover:text-white"
+                      >
+                        {type.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                {(box.blocks || []).length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-6 text-center text-sm text-slate-500">
+                    No blocks in this box yet. Use + Add block.
+                  </div>
+                ) : (
+                  (box.blocks || []).map((block, blockIndex) => (
+                    <div key={`${block.type}-${blockIndex}`} className="rounded-2xl border border-slate-200 bg-white p-4 space-y-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <select
+                          className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 outline-none"
+                          value={block.type}
+                          onChange={(e) => updateBlock(boxIndex, blockIndex, "type", e.target.value)}
+                        >
+                          {LEGAL_SECTION_TYPES.map((type) => (
+                            <option key={type.value} value={type.value}>{type.label}</option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const next = [...sections];
+                            const boxCopy = { ...next[boxIndex] };
+                            boxCopy.blocks = (boxCopy.blocks || []).filter((_, idx) => idx !== blockIndex);
+                            next[boxIndex] = boxCopy;
+                            onChange(next);
+                          }}
+                          className="rounded-xl border border-rose-200 bg-white px-3 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50"
+                        >
+                          Delete block
+                        </button>
+                      </div>
+                      {renderBlockFields(boxIndex, block, blockIndex)}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      
+    </section>
+  );
+};
+
 const SiteSettingsPage = () => {
   const [logoPreview, setLogoPreview] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
@@ -39,6 +418,10 @@ const SiteSettingsPage = () => {
     socialYoutube: "",
     socialFacebook: "",
     socialGlobe: "",
+    termsPayload: "",
+    privacyPayload: "",
+    termsSections: [],
+    privacySections: [],
   });
 
   useEffect(() => {
@@ -61,6 +444,10 @@ const SiteSettingsPage = () => {
             socialYoutube: d.socialYoutube || "",
             socialFacebook: d.socialFacebook || "",
             socialGlobe: d.socialGlobe || "",
+            termsPayload: d.termsPayload || "",
+            privacyPayload: d.privacyPayload || "",
+            termsSections: normalizeLegalBoxes(safeParseJson(d.termsSections, legacyTextToBoxes(d.termsContent))),
+            privacySections: normalizeLegalBoxes(safeParseJson(d.privacySections, legacyTextToBoxes(d.privacyContent))),
           });
           if (d.logo) setLogoPreview(d.logo);
           if (d.ctaImage) setCtaPreview(d.ctaImage);
@@ -108,7 +495,18 @@ const SiteSettingsPage = () => {
       const formData = new FormData();
       if (logoFile) formData.append("logo", logoFile);
       if (ctaFile) formData.append("ctaImage", ctaFile);
-      Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+      const termsSections = Array.isArray(form.termsSections) ? form.termsSections : [];
+      const privacySections = Array.isArray(form.privacySections) ? form.privacySections : [];
+
+      Object.entries(form).forEach(([key, value]) => {
+        if (key === "termsSections" || key === "privacySections") return;
+        formData.append(key, value);
+      });
+
+      formData.set("termsSections", JSON.stringify(termsSections));
+      formData.set("privacySections", JSON.stringify(privacySections));
+      formData.set("termsContent", sectionsToPlainText(termsSections));
+      formData.set("privacyContent", sectionsToPlainText(privacySections));
 
       const res = await fetch(API.site.getConfig, {
         method: "PUT",
@@ -309,6 +707,22 @@ const SiteSettingsPage = () => {
               />
             </div>
           </section>
+
+          <LegalSectionEditor
+            label="Terms & Conditions"
+            sections={form.termsSections}
+            onChange={(sections) => setForm({ ...form, termsSections: sections })}
+            payload={form.termsPayload}
+            onPayloadChange={(value) => setForm({ ...form, termsPayload: value })}
+          />
+
+          <LegalSectionEditor
+            label="Privacy Policy"
+            sections={form.privacySections}
+            onChange={(sections) => setForm({ ...form, privacySections: sections })}
+            payload={form.privacyPayload}
+            onPayloadChange={(value) => setForm({ ...form, privacyPayload: value })}
+          />
         </div>
       </form>
     </div>

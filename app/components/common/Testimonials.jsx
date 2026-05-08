@@ -95,7 +95,7 @@ const Testimonials = () => {
 
         {/* Testimonial Slider Wrapper */}
         <div
-          className="relative h-auto mt-80 mb-28 md:mt-0 md:mb-0 md:h-[750px] md:container md:mx-auto flex items-center justify-center"
+          className="relative h-auto py-20 mt-80 mb-28 md:mt-0 md:mb-0 md:h-[750px] md:container md:mx-auto flex items-center justify-center"
         >
           <div className="flex items-center justify-center w-full relative">
             {testimonials.map((item, index) => {
@@ -149,7 +149,7 @@ const Testimonials = () => {
                     <div className="flex justify-start mb-6">
                       <img src="/qoute.png" alt="quote" className="w-[60px] md:w-[83px] object-contain" />
                     </div>
-                    <p className="font-['Inter'] font-medium capitalize text-[#0F0F0F] text-[28px] leading-[1.2] tracking-normal mb-8 max-w-[800px]">
+                    <p className="font-['Inter'] font-medium capitalize text-[#0F0F0F] text-[28px] leading-[1.2] tracking-normal mb-8 max-w-[800px] line-clamp-3 ...">
                       "{item.quote}"
                     </p>
                     <div className="flex flex-col items-start gap-2">

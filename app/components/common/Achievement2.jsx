@@ -108,11 +108,11 @@ const Achievement2 = () => {
             {firstRow.length > 0 && (
               <Marquee gradient={false} speed={40} pauseOnHover={false}>
                 {firstRow.map((partner, i) => (
-                  <div key={`row1-${partner._id || i}`} className="mx-6 h-16 w-16 md:h-20 md:w-34 flex items-center justify-center">
+                  <div key={`row1-${partner._id || i}`} className="mx-6 h-24 w-24 md:h-20 md:w-34 flex items-center justify-center">
                     <img
                       src={partner.logo}
                       alt={partner.name || "Partner"}
-                      className="h-full w-full object-contain rounded-full shadow-sm p-1 bg-white"
+                      className="h-full w-full object-contain "
                       onError={(e) => { e.currentTarget.src = "/fallback-logo.png" }} // ইমেজ না থাকলে ক্র্যাশ করবে না
                     />
                   </div>
@@ -124,11 +124,11 @@ const Achievement2 = () => {
             {secondRow.length > 0 && (
               <Marquee gradient={false} speed={40} pauseOnHover={false} direction="right">
                 {secondRow.map((partner, i) => (
-                  <div key={`row2-${partner._id || i}`} className="mx-6 h-16 w-16 md:h-20 md:w-34 flex items-center justify-center">
+                  <div key={`row2-${partner._id || i}`} className="mx-6 h-24 w-24 md:h-20 md:w-34 flex items-center justify-center">
                     <img
                       src={partner.logo}
                       alt={partner.name || "Partner"}
-                      className="h-full w-full object-contain rounded-full shadow-sm p-1 bg-white"
+                      className="h-full w-full object-contain "
                       onError={(e) => { e.currentTarget.src = "/fallback-logo.png" }}
                     />
                   </div>

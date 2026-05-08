@@ -1,10 +1,23 @@
 import Hero from "@/app/components/common/Hero";
 import Hero3 from "@/app/components/common/Hero3";
 import PublicLayout from "@/app/components/layout/PublicLayout";
-// ইমপোর্ট করার সময় নাম বদলে PrivacyPolicyContent দিন যাতে পেজের নামের সাথে না মিলে যায়
 import PrivacyPolicyContent from "@/app/components/PrivacyPolicy/PrivacyPolicy";
+import { API } from "@/app/config/api";
 
-export default function PrivacyPolicyPage() { // ফাংশনের নাম পরিবর্তন করে PrivacyPolicyPage দিন
+export default async function PrivacyPolicyPage() {
+  let privacyContent = null;
+  let privacySections = null;
+  try {
+    const res = await fetch(API.site.getConfig);
+    const data = await res.json();
+    if (data?.success && data.data) {
+      privacyContent = data.data.privacyContent || null;
+      privacySections = data.data.privacySections || null;
+    }
+  } catch (err) {
+    // ignore
+  }
+
   return (
     <PublicLayout>
       <Hero3
@@ -12,8 +25,7 @@ export default function PrivacyPolicyPage() { // ফাংশনের নাম
         breadcrumb="Home › Privacy Policy"
         description="Our services help you create digital products and solve your problems objectively, strategy, technology and analysis."
       >
-        {/* এখানে ইমপোর্ট করা নতুন নামের কম্পোনেন্টটি ব্যবহার করুন */}
-        <PrivacyPolicyContent />
+        <PrivacyPolicyContent initialContent={privacyContent} initialSections={privacySections} />
       </Hero3>
     </PublicLayout>
   );
