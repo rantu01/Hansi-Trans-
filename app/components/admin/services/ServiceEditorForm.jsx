@@ -473,12 +473,12 @@ export default function ServiceEditorForm({
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-slate-900">Detail Sections</h3>
               <button type="button" className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" onClick={() => addArrayItem("subServicePageContent.detailSections", createDetailSection)}>
                 <Plus size={16} /> Add Section
               </button>
-            </div>
+            </div> */}
             <div className="space-y-6">
               {formData.subServicePageContent.detailSections.map((section, index) => (
                 <div key={`detail-${index}`} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 space-y-5">
@@ -506,6 +506,12 @@ export default function ServiceEditorForm({
                   <ImageUploadField label="Section Image" value={section.image} onUpload={(file) => handleImageUpload(file, `subServicePageContent.detailSections.${index}.image`)} disabled={uploading} />
                 </div>
               ))}
+            </div>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-900">Detail Sections</h3>
+              <button type="button" className="cursor-pointer inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" onClick={() => addArrayItem("subServicePageContent.detailSections", createDetailSection)}>
+                <Plus size={16} /> Add Section
+              </button>
             </div>
           </div>
 

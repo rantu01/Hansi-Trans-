@@ -37,19 +37,7 @@ const SubServiceContent = ({ subService }) => {
     <div className="bg-background container mx-auto p-4 md:p-6 font-sans">
       <div className="container mx-auto">
         {/* Flexible intro block */}
-        <div className="mb-12 grid gap-6 rounded-[32px] bg-white px-6 py-8 shadow-sm md:mb-20 md:grid-cols-[0.9fr_1.1fr] md:px-10 md:py-12">
-          <h2
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "clamp(28px, 4vw, 48px)",
-              fontWeight: "500",
-              color: "#0A0A0A",
-              lineHeight: "120%",
-              margin: "0",
-            }}
-          >
-            {content.introTitle}
-          </h2>
+        <div className="mb-12 rounded-[32px]  px-6 py-8  md:mb-20 md:px-10 md:py-12">
           <p
             style={{
               fontFamily: "Inter, sans-serif",
