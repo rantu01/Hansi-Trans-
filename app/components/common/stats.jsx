@@ -3,10 +3,7 @@ import { API } from "@/app/config/api";
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-import { HiOutlineTranslate } from "react-icons/hi";
-import { RiAwardLine } from "react-icons/ri";
-import { MdOutlineMicNone } from "react-icons/md";
-import { GiWorld } from "react-icons/gi";
+// Using SVG icons from public/hansi all icon instead of react-icons
 
 const Stats = () => {
   const [stats, setStats] = useState([]);
@@ -18,10 +15,10 @@ const Stats = () => {
   });
 
   const hardCodedIcons = [
-    { icon: <HiOutlineTranslate />, color: "bg-[#0070c0]", textColor: "text-white" },
-    { icon: <RiAwardLine />, color: "bg-[#facc15]", textColor: "text-white" },
-    { icon: <MdOutlineMicNone />, color: "bg-[#22c55e]", textColor: "text-white" },
-    { icon: <GiWorld />, color: "bg-[#ef4444]", textColor: "text-white" },
+    { src: "/hansi all icon/Sicne.svg",  alt: "Sicne" },
+    { src: "/hansi all icon/succesful project.svg",  alt: "Succesful Project" },
+    { src: "/hansi all icon/Languase.svg",  alt: "Languase" },
+    { src: "/hansi all icon/Voice talent.svg",  alt: "Voice talent" },
   ];
 
   useEffect(() => {
@@ -67,9 +64,9 @@ const Stats = () => {
               >
                 {/* Icon and Counter side-by-side */}
                 <div className="flex items-center justify-center gap-4 mb-2">
-                  <div className={`rounded-full ${iconData.color} ${iconData.textColor} flex items-center justify-center shadow-md mb-3 sm:mb-4`}>
-                    <div className="flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 text-xl sm:text-2xl">
-                      {iconData.icon}
+                  <div className={`rounded-full ${iconData.color} flex items-center justify-center `}>
+                    <div className="flex items-center justify-center w-20 h-20 sm:w-14 sm:h-14">
+                      <img src={encodeURI(iconData.src)} alt={iconData.alt} className="md:w-10 md:h-10 w-8 h-8 object-contain" />
                     </div>
                   </div>
 
